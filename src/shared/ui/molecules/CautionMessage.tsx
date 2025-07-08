@@ -1,26 +1,22 @@
 import React from 'react';
 
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text } from 'react-native';
 
-import SvgIcon from '@/shared/ui/atoms/SvgIcon'; // 커스텀 아이콘 컴포넌트 사용
+import SvgIcon from '@/shared/ui/atoms/SvgIcon';
 
-export default function InfoSection() {
-  return (
-    <View>
-      <SvgIcon
-        name={'caution'}
-        size={16}
-        fill="#F04438"
-        style={{ marginRight: 6 }}
-      />
-      <Text style={styles.cautionText}>이미 사용중인 닉네임입니다.</Text>
-    </View>
-  );
+interface CautionMessageProps {
+  message?: string;
 }
 
-const styles = StyleSheet.create({
-  cautionText: {
-    color: '#F04438',
-    fontSize: 14,
-  },
-});
+const CautionMessage: React.FC<CautionMessageProps> = ({
+  message = '이미 사용중인 닉네임입니다.',
+}) => (
+  <View className="flex flex-row items-center">
+    <SvgIcon
+      shape="Caution" /* size={16} fill="#F04438" style={{ marginRight: 6 }} */
+    />
+    <Text className="ml-1 text-[14px] text-[#F04438]">{message}</Text>
+  </View>
+);
+
+export default CautionMessage;
