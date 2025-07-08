@@ -1,42 +1,71 @@
-import React from 'react';
+import ButtonXIcon from '../../../assets/icons/button/button-x.svg';
+import LeftlineIcon from '../../../assets/icons/button/left-line.svg';
+import LeftIcon from '../../../assets/icons/button/left.svg';
+import CautionIcon from '../../../assets/icons/caution/caution.svg';
+import CautionCircleIcon from '../../../assets/icons/caution/checkbox-circle.svg';
+import CheckboxNoneIcon from '../../../assets/icons/check-box/check-box-none.svg';
+import CheckboxIcon from '../../../assets/icons/check-box/checkbox-circle-fill.svg';
+import DownIcon from '../../../assets/icons/dropbox/down.svg';
+import UpIcon from '../../../assets/icons/dropbox/up.svg';
+import EyecloseIcon from '../../../assets/icons/eye/eye-close.svg';
+import EyeopenIcon from '../../../assets/icons/eye/eye-open.svg';
+import BellIcon from '../../../assets/icons/icon/bell.svg';
+import EmailIcon from '../../../assets/icons/icon/email.svg';
+import ReadingGlassIcon from '../../../assets/icons/icon/reading-glasses.svg';
+interface Props {
+  shape:
+    | 'email'
+    | 'Reading-glass'
+    | 'Button-x'
+    | 'Left-line'
+    | 'Left'
+    | 'Caution'
+    | 'Caution-circle'
+    | 'checkbox'
+    | 'checkbox-circle'
+    | 'checkbox-none'
+    | 'Up'
+    | 'Down'
+    | 'Eye-open'
+    | 'Eye-close'
+    | 'Bell';
+}
 
-import { SvgProps } from 'react-native-svg';
-
-import * as Icons from '../../../assets';
-
-type TSvgIconProps = SvgProps & {
-  // res 에서 re-export 되는 SVG 파일들의 이름을 name 으로 받을 수 있다.
-  name: keyof typeof Icons;
-  size?: number;
-};
-const SvgIcon = ({
-  name,
-  fill,
-  width: _width,
-  height: _height,
-  size,
-  ...props
-}: TSvgIconProps) => {
-  const Comp = Icons[name];
-  // `width`, `height` 를 따로 지정할 수 있지만
-  // 아이콘은 보통 가로 세로 값이 같은 정사각형 형식이기 때문에
-  // 여기서는 `size` 를 사용해 너비와 높이를 같이 지정할 수 있게 해주었다.
-  const width = _width ?? size;
-  const height = _height ?? size;
-  const sizeProps = {
-    ...(width !== undefined ? { width } : {}),
-    ...(height !== undefined ? { height } : {}),
-  };
-
-  return (
-    <Comp
-      {...props}
-      // 1.2.3. `.svgrrc` 의 설정 덕분에 `fill` prop 을 이렇게 사용할 수 있다.
-      fill={fill}
-      {...sizeProps}
-      scaleX={1}
-    />
-  );
+const SvgIcon: React.FC<Props> = ({ shape }) => {
+  switch (shape) {
+    case 'email':
+      return <EmailIcon />;
+    case 'Reading-glass':
+      return <ReadingGlassIcon />;
+    case 'Button-x':
+      return <ButtonXIcon />;
+    case 'Left-line':
+      return <LeftlineIcon />;
+    case 'Left':
+      return <LeftIcon />;
+    case 'Caution':
+      return <CautionIcon />;
+    case 'Caution-circle':
+      return <CautionCircleIcon />;
+    case 'checkbox':
+      return <CheckboxIcon />;
+    case 'checkbox-circle':
+      return <CautionCircleIcon />;
+    case 'checkbox-none':
+      return <CheckboxNoneIcon />;
+    case 'Up':
+      return <UpIcon />;
+    case 'Down':
+      return <DownIcon />;
+    case 'Eye-open':
+      return <EyeopenIcon />;
+    case 'Eye-close':
+      return <EyecloseIcon />;
+    case 'Bell':
+      return <BellIcon />;
+    default:
+      return null;
+  }
 };
 
 export default SvgIcon;
