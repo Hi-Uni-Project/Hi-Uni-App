@@ -12,7 +12,7 @@
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		761780ED2CA45674006654EE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 761780EC2CA45674006654EE /* AppDelegate.swift */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
-		709C4F178F52416E84606836 /* PretendardVariable.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9D4D56B7B23F47A1B4506895 /* PretendardVariable.ttf */; };
+		0D9EC2FB9FD440E48D12ACD8 /* PretendardVariable.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BD32B3EAD1F848C8A5736FC3 /* PretendardVariable.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,7 +26,7 @@
 		761780EC2CA45674006654EE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = hiuniFE/AppDelegate.swift; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = hiuniFE/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
-		9D4D56B7B23F47A1B4506895 /* PretendardVariable.ttf */ = {isa = PBXFileReference; name = "PretendardVariable.ttf"; path = "../assets/fonts/PretendardVariable.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		BD32B3EAD1F848C8A5736FC3 /* PretendardVariable.ttf */ = {isa = PBXFileReference; name = "PretendardVariable.ttf"; path = "../src/assets/fonts/PretendardVariable.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -104,7 +104,7 @@
 		97AD550A86164C8EB170667A /* Resources */ = {
 			isa = "PBXGroup";
 			children = (
-				9D4D56B7B23F47A1B4506895 /* PretendardVariable.ttf */,
+				BD32B3EAD1F848C8A5736FC3 /* PretendardVariable.ttf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -173,7 +173,7 @@
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				0FAFF62CFAF0F9C9033DB249 /* PrivacyInfo.xcprivacy in Resources */,
-				709C4F178F52416E84606836 /* PretendardVariable.ttf in Resources */,
+				0D9EC2FB9FD440E48D12ACD8 /* PretendardVariable.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
