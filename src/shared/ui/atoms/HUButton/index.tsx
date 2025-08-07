@@ -98,4 +98,4 @@ const HUButton = ({
   );
 };
 
-export { HUButton };
+export default HUButton;
