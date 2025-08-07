@@ -12,18 +12,19 @@ type ActionType = 'search' | 'close' | 'erase' | 'message';
 interface Props {
   type: ActionType;
   color?: ColorValue;
+  size?: number;
 }
 
-const ActionIcons = ({ type, color }: Props) => {
+const ActionIcons = ({ type, color, size = 20 }: Props) => {
   switch (type) {
     case 'search':
-      return <Search color={color} />;
+      return <Search color={color} width={size} height={size} />;
     case 'close':
-      return <Close color={color} />;
+      return <Close color={color} width={size} height={size} />;
     case 'erase':
-      return <Erase color={color} />;
+      return <Erase color={color} width={size} height={size} />;
     case 'message':
-      return <Message color={color} />;
+      return <Message color={color} width={size} height={size} />;
     default:
       return null;
   }
