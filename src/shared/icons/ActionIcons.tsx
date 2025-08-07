@@ -13,18 +13,20 @@ interface Props {
   type: ActionType;
   color?: ColorValue;
   size?: number;
+  width?: number;
+  height?: number;
 }
 
-const ActionIcons = ({ type, color, size = 20 }: Props) => {
+const ActionIcons = ({ type, color, width, height }: Props) => {
   switch (type) {
     case 'search':
-      return <Search color={color} width={size} height={size} />;
+      return <Search color={color} width={width} height={height} />;
     case 'close':
-      return <Close color={color} width={size} height={size} />;
+      return <Close color={color} width={width} height={height} />;
     case 'erase':
-      return <Erase color={color} width={size} height={size} />;
+      return <Erase color={color} width={width} height={height} />;
     case 'message':
-      return <Message color={color} width={size} height={size} />;
+      return <Message color={color} width={width} height={height} />;
     default:
       return null;
   }

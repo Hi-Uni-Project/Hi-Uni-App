@@ -55,7 +55,7 @@ const HUInput = ({
     <View className={cn(viewVariants({ variant }), 'relative')}>
       {variant === 'find' && (
         <View className="absolute left-[16px]">
-          <ActionIcons type="search" size={17} color={'#979797'} />
+          <ActionIcons type="search" width={17} height={17} color={'#979797'} />
         </View>
       )}
       <TextInput

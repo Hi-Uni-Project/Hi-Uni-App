@@ -20,22 +20,24 @@ type ToggleType =
 interface Props {
   type: ToggleType;
   color?: ColorValue;
+  width?: number;
+  height?: number;
 }
 
-const ToggleIcons = ({ type, color }: Props) => {
+const ToggleIcons = ({ type, color, width, height }: Props) => {
   switch (type) {
     case 'eyeOpen':
-      return <EyeOpen color={color} />;
+      return <EyeOpen color={color} width={width} height={height} />;
     case 'eyeClose':
-      return <EyeClose color={color} />;
+      return <EyeClose color={color} width={width} height={height} />;
     case 'check':
-      return <CheckFill color={color} />;
+      return <CheckFill color={color} width={width} height={height} />;
     case 'nonCheck':
-      return <NonCheck color={color} />;
+      return <NonCheck color={color} width={width} height={height} />;
     case 'alert':
-      return <Alert color={color} />;
+      return <Alert color={color} width={width} height={height} />;
     case 'disableAlert':
-      return <DisableAlert color={color} />;
+      return <DisableAlert color={color} width={width} height={height} />;
     default:
       return null;
   }

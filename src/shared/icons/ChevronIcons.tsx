@@ -9,16 +9,18 @@ import ChevronTop from '@/static/icons/top_chevron.svg';
 interface Props {
   direction: 'left' | 'top' | 'bottom';
   color?: ColorValue;
+  width?: number;
+  height?: number;
 }
 
-const ChevronIcons = ({ direction, color }: Props) => {
+const ChevronIcons = ({ direction, color, width, height }: Props) => {
   switch (direction) {
     case 'left':
-      return <ChevronLeft color={color} />;
+      return <ChevronLeft color={color} width={width} height={height} />;
     case 'top':
-      return <ChevronTop color={color} />;
+      return <ChevronTop color={color} width={width} height={height} />;
     case 'bottom':
-      return <ChevronBottom color={color} />;
+      return <ChevronBottom color={color} width={width} height={height} />;
     default:
       return null;
   }

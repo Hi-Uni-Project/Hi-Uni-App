@@ -10,14 +10,16 @@ type StatusType = 'check' | 'caution';
 interface Props {
   status: StatusType;
   color?: ColorValue;
+  width?: number;
+  height?: number;
 }
 
-const StatusIcons = ({ status, color }: Props) => {
+const StatusIcons = ({ status, color, width, height }: Props) => {
   switch (status) {
     case 'check':
-      return <Check color={color} />;
+      return <Check color={color} width={width} height={height} />;
     case 'caution':
-      return <Caution color={color} />;
+      return <Caution color={color} width={width} height={height} />;
     default:
       return null;
   }
