@@ -93,7 +93,9 @@ const HUButton = ({
           height={21}
         />
       )}
-      <Text className={textVariants({ variant, disabled })}>{children}</Text>
+      <Text className={cn(textVariants({ variant, disabled }))}>
+        {children}
+      </Text>
     </Pressable>
   );
 };
