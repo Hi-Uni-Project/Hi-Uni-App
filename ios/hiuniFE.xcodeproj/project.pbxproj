@@ -8,11 +8,13 @@
 
 /* Begin PBXBuildFile section */
 		0C80B921A6F3F58F76C31292 /* libPods-hiuniFE.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DCACB8F33CDC322A6C60F78 /* libPods-hiuniFE.a */; };
+		0D9EC2FB9FD440E48D12ACD8 /* PretendardVariable.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BD32B3EAD1F848C8A5736FC3 /* PretendardVariable.ttf */; };
 		0FAFF62CFAF0F9C9033DB249 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		761780ED2CA45674006654EE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 761780EC2CA45674006654EE /* AppDelegate.swift */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
-		0D9EC2FB9FD440E48D12ACD8 /* PretendardVariable.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BD32B3EAD1F848C8A5736FC3 /* PretendardVariable.ttf */; };
+		E8D2B8C104804E37A934E3F8 /* BootSplash.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B802DB23AEC74AF4BA5EA186 /* BootSplash.storyboard */; };
+		BD6EBBA0FA614069BD0F4194 /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FDF029203F1142178A64350D /* Colors.xcassets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -25,8 +27,10 @@
 		5DCACB8F33CDC322A6C60F78 /* libPods-hiuniFE.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-hiuniFE.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		761780EC2CA45674006654EE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = hiuniFE/AppDelegate.swift; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = hiuniFE/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		BD32B3EAD1F848C8A5736FC3 /* PretendardVariable.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = PretendardVariable.ttf; path = ../src/assets/fonts/PretendardVariable.ttf; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
-		BD32B3EAD1F848C8A5736FC3 /* PretendardVariable.ttf */ = {isa = PBXFileReference; name = "PretendardVariable.ttf"; path = "../src/assets/fonts/PretendardVariable.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		B802DB23AEC74AF4BA5EA186 /* BootSplash.storyboard */ = {isa = PBXFileReference; name = "BootSplash.storyboard"; path = "hiuniFE/BootSplash.storyboard"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		FDF029203F1142178A64350D /* Colors.xcassets */ = {isa = PBXFileReference; name = "Colors.xcassets"; path = "hiuniFE/Colors.xcassets"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = folder.assetcatalog; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -49,6 +53,8 @@
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */,
 				13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */,
+				B802DB23AEC74AF4BA5EA186 /* BootSplash.storyboard */,
+				FDF029203F1142178A64350D /* Colors.xcassets */,
 			);
 			name = hiuniFE;
 			sourceTree = "<group>";
@@ -92,6 +98,15 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		97AD550A86164C8EB170667A /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				BD32B3EAD1F848C8A5736FC3 /* PretendardVariable.ttf */,
+			);
+			name = Resources;
+			path = "";
+			sourceTree = "<group>";
+		};
 		BBD78D7AC51CEA395F1C20DB /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -100,15 +115,6 @@
 			);
 			path = Pods;
 			sourceTree = "<group>";
-		};
-		97AD550A86164C8EB170667A /* Resources */ = {
-			isa = "PBXGroup";
-			children = (
-				BD32B3EAD1F848C8A5736FC3 /* PretendardVariable.ttf */,
-			);
-			name = Resources;
-			sourceTree = "<group>";
-			path = "";
 		};
 /* End PBXGroup section */
 
@@ -174,6 +180,8 @@
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				0FAFF62CFAF0F9C9033DB249 /* PrivacyInfo.xcprivacy in Resources */,
 				0D9EC2FB9FD440E48D12ACD8 /* PretendardVariable.ttf in Resources */,
+				E8D2B8C104804E37A934E3F8 /* BootSplash.storyboard in Resources */,
+				BD6EBBA0FA614069BD0F4194 /* Colors.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
