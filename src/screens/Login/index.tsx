@@ -1,17 +1,16 @@
 import React from 'react';
 
-import { SafeAreaView } from 'react-native-safe-area-context';
-
 import LoginBottomSheet from '@/features/login/components/LoginBottomSheet';
 import LoginHeader from '@/features/login/components/LoginHeader';
+import ScreenLayout from '@/shared/components/layouts/ScreenLayout';
 
 const LoginScreen = () => {
   return (
-    <SafeAreaView className="flex-1 bg-surface-50">
+    <ScreenLayout>
       <LoginHeader />
 
       <LoginBottomSheet />
-    </SafeAreaView>
+    </ScreenLayout>
   );
 };
 
