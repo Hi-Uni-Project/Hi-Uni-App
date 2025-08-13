@@ -72,6 +72,13 @@ module.exports = function addFontsUtil({ addUtilities }) {
       'line-height': '24px',
       'letter-spacing': '-2%',
     },
+    // 디자인팀에서 새로 추가되는 폰트
+    '.typo-sub-title-18-regular': {
+      'font-weight': 400,
+      'font-size': '18px',
+      'line-height': '24px',
+      'letter-spacing': '-2%',
+    },
   };
   addUtilities({ ...typoUtilities });
 };
