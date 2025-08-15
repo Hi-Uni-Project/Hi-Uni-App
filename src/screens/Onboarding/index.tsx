@@ -8,7 +8,7 @@ import PaginationView from './PaginationView';
 import TextProvider from './TextProvider';
 import TextView from './TextView';
 
-const TutorialScreen = () => {
+const OnboardingScreen = () => {
   const [currentStep, setCurrentStep] = useState(0);
   const progress = useSharedValue<number>(0);
   const textProvider = TextProvider;
@@ -52,4 +52,4 @@ const TutorialScreen = () => {
   );
 };
 
-export default TutorialScreen;
+export default OnboardingScreen;
