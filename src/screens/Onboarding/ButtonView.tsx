@@ -14,9 +14,11 @@ type Props = {
 const ButtonView: React.FC<Props> = ({ currentStep, onNext }) => {
   return (
     <View>
-      <HUButton variant="primary" onPress={onNext}>
-        {TextProvider[currentStep]?.button ?? '다음'}
-      </HUButton>
+      <HUButton
+        variant="primary"
+        onPress={onNext}
+        text={TextProvider[currentStep]?.button ?? '다음'}
+      />
     </View>
   );
 };

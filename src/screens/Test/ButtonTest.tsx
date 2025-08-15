@@ -25,37 +25,39 @@ const ButtonTest = () => {
       <HUButton
         variant="primary"
         onPress={() => setLastPressed('primary')}
-        disabled={isDisabled}>
-        기본 버튼
-      </HUButton>
+        text="기본 버튼"
+        disabled={isDisabled}
+      />
       <HUButton
         variant="kakao"
+        text="카카오 로그인"
         onPress={() => setLastPressed('kakao')}
-        disabled={isDisabled}>
-        카카오 로그인
-      </HUButton>
+        disabled={isDisabled}
+      />
       <HUButton
         variant="naver"
+        text="네이버 로그인"
         onPress={() => setLastPressed('naver')}
-        disabled={isDisabled}>
-        네이버 로그인
-      </HUButton>
+        disabled={isDisabled}
+      />
       <HUButton
         variant="google"
+        text="구글 로그인"
         onPress={() => setLastPressed('google')}
-        disabled={isDisabled}>
-        구글 로그인
-      </HUButton>
+        disabled={isDisabled}
+      />
       <HUButton
         variant="apple"
+        text="애플 로그인"
         onPress={() => setLastPressed('apple')}
-        disabled={isDisabled}>
-        애플 로그인
-      </HUButton>
+        disabled={isDisabled}
+      />
       <View style={{ flexDirection: 'row', gap: 12, marginTop: 24 }}>
-        <HUButton variant="primary" onPress={() => setIsDisabled(!isDisabled)}>
-          {isDisabled ? '활성화' : '비활성화'}
-        </HUButton>
+        <HUButton
+          variant="primary"
+          onPress={() => setIsDisabled(!isDisabled)}
+          text={isDisabled ? '활성화' : '비활성화'}
+        />
       </View>
       <Text style={{ marginTop: 16, color: '#333', fontSize: 16 }}>
         마지막으로 누른 버튼: {lastPressed || '없음'}
