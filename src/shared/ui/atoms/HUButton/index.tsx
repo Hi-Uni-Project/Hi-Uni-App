@@ -11,7 +11,7 @@ import NaverIcon from '@/static/icons/naver.svg';
 
 interface Props extends PressableProps {
   variant?: 'primary' | 'kakao' | 'naver' | 'google' | 'apple';
-  children?: string;
+  text?: string;
 }
 
 const buttonVariants = cva(
@@ -52,7 +52,7 @@ const textVariants = cva('typo-main-button-16-semibold', {
 const HUButton = ({
   variant = 'primary',
   className,
-  children = '',
+  text = '',
   disabled = false,
   ...props
 }: Props) => {
@@ -93,7 +93,7 @@ const HUButton = ({
           height={21}
         />
       )}
-      <Text className={textVariants({ variant, disabled })}>{children}</Text>
+      <Text className={textVariants({ variant, disabled })}>{text}</Text>
     </Pressable>
   );
 };
