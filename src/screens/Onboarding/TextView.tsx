@@ -14,7 +14,7 @@ const TextView = ({ currentStep }: { currentStep: number }) => {
           <Animated.Text
             key={`TextView-${currentStep}-Title-${index}`}
             entering={FadeInDown.delay(300).duration(400 + index * 80)}
-            exiting={FadeOutUp.duration(500)}
+            exiting={FadeOutUp.duration(300)}
             className="text-center typo-title-26-bold">
             {line}
           </Animated.Text>
@@ -26,7 +26,7 @@ const TextView = ({ currentStep }: { currentStep: number }) => {
           <Animated.Text
             key={`TextView-${currentStep}-subTitle-${index}`}
             entering={FadeInDown.delay(300).duration(600 + index * 80)}
-            exiting={FadeOutUp.duration(500)}
+            exiting={FadeOutUp.duration(300)}
             className="text-center text-gray-600 typo-sub-title-18-medium">
             {line}
           </Animated.Text>
