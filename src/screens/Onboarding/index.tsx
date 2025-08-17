@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 
-import { Text, SafeAreaView, View, Pressable } from 'react-native';
+import { Text, View, Pressable } from 'react-native';
 import { useSharedValue, withSpring } from 'react-native-reanimated';
 
 import ButtonView from './ButtonView';
 import PaginationView from './PaginationView';
 import TextView from './TextView';
 
+import ScreenLayout from '@/shared/components/layouts/ScreenLayout';
 import ONBOARDING_PROVIDER from '@/shared/constants/onboardingProvider';
 
 const OnboardingScreen = () => {
@@ -26,7 +27,7 @@ const OnboardingScreen = () => {
   };
 
   return (
-    <SafeAreaView className="flex-1 items-center justify-center bg-[#F9F9F9]">
+    <ScreenLayout className="items-center justify-center">
       <TextView currentStep={currentStep} />
       <ButtonView
         currentStep={currentStep}
@@ -49,7 +50,7 @@ const OnboardingScreen = () => {
           <Text className="text-gray-500">건너뛰기</Text>
         </Pressable>
       </View>
-    </SafeAreaView>
+    </ScreenLayout>
   );
 };
 
