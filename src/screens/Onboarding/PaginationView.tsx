@@ -9,7 +9,7 @@ type Props = {
   data: any[];
 };
 
-const PaginationView: React.FC<Props> = ({ progress, data }) => {
+const PaginationView = ({ progress, data }: Props) => {
   return (
     <View>
       <Pagination.Custom

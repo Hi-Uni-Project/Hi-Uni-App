@@ -11,7 +11,7 @@ type Props = {
   onNext: () => void;
 };
 
-const ButtonView: React.FC<Props> = ({ currentStep, onNext }) => {
+const ButtonView = ({ currentStep, onNext }: Props) => {
   return (
     <View>
       <HUButton

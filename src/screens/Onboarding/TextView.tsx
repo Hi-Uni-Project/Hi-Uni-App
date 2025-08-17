@@ -5,7 +5,11 @@ import Animated, { FadeOutUp, FadeInDown } from 'react-native-reanimated';
 
 import TextProvider from './TextProvider';
 
-const TextView = ({ currentStep }: { currentStep: number }) => {
+interface Props {
+  currentStep: number;
+}
+
+const TextView = ({ currentStep }: Props) => {
   const textProvider = TextProvider;
   return (
     <View key={`TextView-${currentStep}`} className="flex-1">
