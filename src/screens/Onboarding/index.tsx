@@ -5,16 +5,17 @@ import { useSharedValue, withSpring } from 'react-native-reanimated';
 
 import ButtonView from './ButtonView';
 import PaginationView from './PaginationView';
-import TextProvider from './TextProvider';
 import TextView from './TextView';
+
+import ONBOARDING_PROVIDER from '@/shared/constants/onboardingProvider';
 
 const OnboardingScreen = () => {
   const [currentStep, setCurrentStep] = useState(0);
   const progress = useSharedValue<number>(0);
-  const textProvider = TextProvider;
+  const onboardingProvider = ONBOARDING_PROVIDER;
 
   const movePageByIndex = (index: number) => {
-    const length = textProvider.length;
+    const length = onboardingProvider.length;
 
     if (index < length) {
       setCurrentStep(index);
@@ -34,7 +35,7 @@ const OnboardingScreen = () => {
         }}
       />
       <View className="relative w-full items-center justify-center py-5">
-        <PaginationView progress={progress} data={textProvider} />
+        <PaginationView progress={progress} data={onboardingProvider} />
         <Pressable
           className="absolute right-5"
           onPress={() => {

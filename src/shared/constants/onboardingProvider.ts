@@ -1,4 +1,4 @@
-const TextProvider = [
+const ONBOARDING_PROVIDER = [
   {
     title: '하이유니는 대학생 커리어\n성장을 위한 커뮤니티에요.',
     subTitle:
@@ -24,4 +24,4 @@ const TextProvider = [
   },
 ];
 
-export default TextProvider;
+export default ONBOARDING_PROVIDER;

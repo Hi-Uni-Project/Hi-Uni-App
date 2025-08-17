@@ -2,8 +2,7 @@ import React from 'react';
 
 import { View } from 'react-native';
 
-import TextProvider from './TextProvider';
-
+import ONBOARDING_PROVIDER from '@/shared/constants/onboardingProvider';
 import HUButton from '@/shared/ui/atoms/HUButton';
 
 type Props = {
@@ -17,7 +16,7 @@ const ButtonView = ({ currentStep, onNext }: Props) => {
       <HUButton
         variant="primary"
         onPress={onNext}
-        text={TextProvider[currentStep]?.button ?? '다음'}
+        text={ONBOARDING_PROVIDER[currentStep]?.button ?? '다음'}
       />
     </View>
   );
