@@ -9,9 +9,6 @@ import com.facebook.react.ReactActivityDelegate
 import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint.fabricEnabled
 import com.facebook.react.defaults.DefaultReactActivityDelegate
 
-// react navigation
-import android.os.Bundle
-
 class MainActivity : ReactActivity() {
 
   /**
