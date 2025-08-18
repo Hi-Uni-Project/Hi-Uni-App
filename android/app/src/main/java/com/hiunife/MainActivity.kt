@@ -9,6 +9,9 @@ import com.facebook.react.ReactActivityDelegate
 import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint.fabricEnabled
 import com.facebook.react.defaults.DefaultReactActivityDelegate
 
+// react navigation
+import android.os.Bundle
+
 class MainActivity : ReactActivity() {
 
   /**
@@ -19,7 +22,8 @@ class MainActivity : ReactActivity() {
 
   override fun onCreate(savedInstanceState: Bundle?) {
     RNBootSplash.init(this, R.style.BootTheme) // ⬅️ initialize the splash screen
-    super.onCreate(savedInstanceState) // super.onCreate(null) with react-native-screens
+    // super.onCreate(savedInstanceState) super.onCreate(null) with react-native-screens
+    super.onCreate(null)
   }
 
   /**
