@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { NavigationProp } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import { Text, View, Pressable } from 'react-native';
 import { useSharedValue, withSpring } from 'react-native-reanimated';
 
@@ -8,18 +8,15 @@ import ButtonView from './ButtonView';
 import PaginationView from './PaginationView';
 import TextView from './TextView';
 
+import { HiUniNativeStackNavigationProp } from '@/navigation/navigationTypes';
 import ScreenLayout from '@/shared/components/layouts/ScreenLayout';
 import ONBOARDING_PROVIDER from '@/shared/constants/onboardingProvider';
-import SCREEN_NAME_PROVIDER from '@/shared/constants/screenNameProvider';
 
-const OnboardingScreen = ({
-  navigation,
-}: {
-  navigation: NavigationProp<any>;
-}) => {
+const OnboardingScreen = () => {
   const [currentStep, setCurrentStep] = useState(0);
   const progress = useSharedValue<number>(0);
   const onboardingProvider = ONBOARDING_PROVIDER;
+  const navigation = useNavigation<HiUniNativeStackNavigationProp>();
 
   const movePageByIndex = (index: number) => {
     const length = onboardingProvider.length;
@@ -28,7 +25,7 @@ const OnboardingScreen = ({
       setCurrentStep(index);
       progress.value = withSpring(index);
     } else {
-      navigation.navigate(SCREEN_NAME_PROVIDER.LOGIN);
+      navigation.navigate('Login');
     }
   };
 
@@ -46,7 +43,7 @@ const OnboardingScreen = ({
         <Pressable
           className="absolute right-5"
           onPress={() => {
-            navigation.navigate(SCREEN_NAME_PROVIDER.LOGIN);
+            navigation.navigate('Login');
           }}>
           <Text className="text-gray-500">건너뛰기</Text>
         </Pressable>

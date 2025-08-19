@@ -7,7 +7,7 @@ import BootSplash from 'react-native-bootsplash';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
-import Test from '@/screens/Test';
+import RootStack from '@/navigation/RootNavigator';
 
 const queryClient = new QueryClient();
 
@@ -27,7 +27,7 @@ function App() {
       <SafeAreaProvider>
         <GestureHandlerRootView>
           <NavigationContainer>
-            <Test />
+            <RootStack />
           </NavigationContainer>
         </GestureHandlerRootView>
       </SafeAreaProvider>
