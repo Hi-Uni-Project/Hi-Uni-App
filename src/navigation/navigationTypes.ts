@@ -1,14 +1,12 @@
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
-import SCREEN_NAME_PROVIDER from '@/shared/constants/screenNameProvider';
-
 export type HiUniStackParamList = {
-  [SCREEN_NAME_PROVIDER.LOGIN]: undefined;
-  [SCREEN_NAME_PROVIDER.ONBOARDING]: undefined;
-  [SCREEN_NAME_PROVIDER.TEST.BUTTON_TEST]: undefined;
-  [SCREEN_NAME_PROVIDER.TEST.FONT_TEST]: undefined;
-  [SCREEN_NAME_PROVIDER.TEST.ICON_TEST]: undefined;
-  [SCREEN_NAME_PROVIDER.TEST.INPUT_TEST]: undefined;
+  Login: undefined;
+  Onboarding: undefined;
+  ButtonTest: undefined;
+  FontTest: undefined;
+  IconTest: undefined;
+  InputTest: undefined;
 };
 
 export type HiUniNativeStackNavigationProp =
