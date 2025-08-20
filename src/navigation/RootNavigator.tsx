@@ -7,19 +7,15 @@ import OnboardingScreen from '@/screens/Onboarding';
 
 const Stack = createNativeStackNavigator();
 
-export default function RootStack() {
+const RootStack = () => {
   return (
-    <Stack.Navigator initialRouteName="Onboarding">
-      <Stack.Screen
-        name="Onboarding"
-        component={OnboardingScreen}
-        options={{ headerShown: false }}
-      />
-      <Stack.Screen
-        name="Login"
-        component={LoginScreen}
-        options={{ headerShown: false }}
-      />
+    <Stack.Navigator
+      initialRouteName="Onboarding"
+      screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="Onboarding" component={OnboardingScreen} />
+      <Stack.Screen name="Login" component={LoginScreen} />
     </Stack.Navigator>
   );
-}
+};
+
+export default RootStack;
