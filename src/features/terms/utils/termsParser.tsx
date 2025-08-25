@@ -2,10 +2,22 @@ import React from 'react';
 
 import { Text } from 'react-native';
 
-const getBoldText = (text: string, key: number) => {
+const getBoldText = (
+  text: string,
+  key: number,
+  isFirstBold: { value: boolean },
+) => {
+  let parsedText = text;
+
+  if (!isFirstBold.value) {
+    parsedText = '\n' + parsedText;
+  } else {
+    isFirstBold.value = false;
+  }
+
   return (
     <Text key={`line-${key}`} className="typo-body-14-semibold">
-      {text.replaceAll('*', '')}
+      {parsedText.replaceAll('*', '')}
     </Text>
   );
 };
@@ -23,6 +35,14 @@ const getDotStyle = (text: string, key: number) => {
   return getIndentStyle(content, key);
 };
 
+const getNormalStyle = (text: string, key: number) => {
+  return (
+    <Text key={`line-${key}`} className="typo-body-13-light">
+      {text}
+    </Text>
+  );
+};
+
 const getParsedNode = (
   text: string,
   isFirstBold: { value: boolean },
@@ -32,24 +52,23 @@ const getParsedNode = (
   const dotRegex = /^-/;
   const listRegex = /^\d\./;
 
-  if (boldRegex.test(text)) {
-    if (isFirstBold.value) {
-      isFirstBold.value = false;
-      return getBoldText(text, key);
-    } else {
-      return getBoldText('\n' + text, key);
-    }
-  } else if (dotRegex.test(text)) {
-    return getDotStyle(text, key);
-  } else if (listRegex.test(text)) {
-    return getIndentStyle(text, key);
-  } else {
-    return (
-      <Text key={`line-${key}`} className="typo-body-13-light">
-        {text}
-      </Text>
-    );
-  }
+  const rules = [
+    {
+      regex: boldRegex,
+      getStyle: () => getBoldText(text, key, isFirstBold),
+    },
+    {
+      regex: dotRegex,
+      getStyle: () => getDotStyle(text, key),
+    },
+    {
+      regex: listRegex,
+      getStyle: () => getIndentStyle(text, key),
+    },
+  ];
+
+  const textType = rules.find(rule => rule.regex.test(text));
+  return textType ? textType.getStyle() : getNormalStyle(text, key);
 };
 
 const getParsedComponents = (description: string): React.ReactNode[] => {
