@@ -3,11 +3,13 @@ import React from 'react';
 import { cva } from 'class-variance-authority';
 import { TextInput, View, TextInputProps } from 'react-native';
 
-import ActionIcons from '@/shared/icons/ActionIcons';
+import FindIcons from './FindIcons';
+
 import { cn } from '@/shared/lib/cn';
 
 interface Props extends TextInputProps {
   variant?: 'find' | 'submit';
+  onPress?: () => void;
 }
 
 const viewVariants = cva('w-full flex-row items-center', {
@@ -28,24 +30,16 @@ const inputVariants = cva('w-full font-normal text-[16px] text-[#1E2128]', {
   },
 });
 
-const HUInput = ({ variant = 'find', ...props }: Props) => {
+const HUInput = ({ variant = 'find', onPress, ...props }: Props) => {
   return (
     <View className={cn(viewVariants({ variant }))}>
-      {variant === 'find' && (
-        <View className="absolute left-[16px]">
-          <ActionIcons type="search" width={17} height={17} color={'#979797'} />
-        </View>
-      )}
       <TextInput
-        className={cn(
-          inputVariants({
-            variant,
-          }),
-        )}
+        className={cn(inputVariants({ variant }))}
         maxLength={18}
         placeholderTextColor="#979797"
         {...props}
       />
+      {variant === 'find' && <FindIcons onPress={onPress} />}
     </View>
   );
 };
