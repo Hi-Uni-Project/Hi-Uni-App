@@ -5,7 +5,10 @@ import { TermsKey, TermsType } from '../types/termsTypes';
 import TERMS_PROVIDER from '@/shared/constants/termsProvider';
 import { typedKeys } from '@/shared/lib/typedObject';
 
-type TermsState = Record<TermsKey, { type: TermsType; isAgreed: boolean }>;
+export type TermsState = Record<
+  TermsKey,
+  { type: TermsType; isAgreed: boolean }
+>;
 
 type Action =
   | { type: 'TOGGLE_TERM'; key: TermsKey }

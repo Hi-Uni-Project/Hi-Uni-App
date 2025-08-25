@@ -7,6 +7,7 @@ import Animated, {
   LinearTransition,
 } from 'react-native-reanimated';
 
+import { TermsState } from '../hooks/useTerms';
 import { TermsKey } from '../types/termsTypes';
 
 import TermsTextScroll from './TermsTextScroll';
@@ -15,7 +16,7 @@ import TERMS_PROVIDER from '@/shared/constants/termsProvider';
 import HUSelect from '@/shared/ui/atoms/HUSelect';
 
 interface TermsSectionProps {
-  state: any;
+  state: TermsState;
   toggle: (key: TermsKey) => void;
   agreeAll: () => void;
 }
