@@ -26,17 +26,19 @@ const TermsSection = ({ state, toggle, agreeAll }: TermsSectionProps) => {
   return (
     <View className="mt-10">
       {termsProvider.map(item => {
+        const isAll = item.key === 'all';
+        const showDescription =
+          item.key === 'identity' || (!isAll && !state[item.key].isAgreed);
+
         return (
           <Animated.View
-            key={`${item.key}-container`}
+            key={`${item.key}-terms-container`}
             className="mb-4"
             layout={LinearTransition}>
             <View className="flex-row items-center">
               <HUSelect
                 text={item.title}
-                onPressed={
-                  item.key === 'all' ? () => agreeAll() : () => toggle(item.key)
-                }
+                onPressed={isAll ? () => agreeAll() : () => toggle(item.key)}
                 isSelected={state[item.key].isAgreed}
               />
 
@@ -51,20 +53,7 @@ const TermsSection = ({ state, toggle, agreeAll }: TermsSectionProps) => {
               )}
             </View>
 
-            {item.key !== 'all' &&
-              item.key !== 'identity' &&
-              !state[item.key].isAgreed && (
-                <Animated.View
-                  key={`${item.key}-description`}
-                  className="mt-2 max-h-52"
-                  layout={LinearTransition}
-                  entering={FadeIn}
-                  exiting={FadeOut}>
-                  <TermsTextScroll description={item.description} />
-                </Animated.View>
-              )}
-
-            {item.key === 'identity' && (
+            {showDescription && (
               <Animated.View
                 key={`${item.key}-description`}
                 className="mt-2 max-h-52"
