@@ -3,6 +3,7 @@ import { useReducer } from 'react';
 import { TermsKey, TermsType } from '../types/termsTypes';
 
 import TERMS_PROVIDER from '@/shared/constants/termsProvider';
+import { typedKeys } from '@/shared/lib/typedObject';
 
 type TermsState = Record<TermsKey, { type: TermsType; isAgreed: boolean }>;
 
@@ -16,18 +17,18 @@ const initialState = TERMS_PROVIDER.reduce((acc, term) => {
 }, {} as TermsState);
 
 const checkAllAgreed = (state: TermsState): boolean => {
-  return Object.keys(state)
+  return typedKeys(state)
     .filter(key => key !== 'all')
-    .every(key => state[key as TermsKey].isAgreed);
+    .every(key => state[key].isAgreed);
 };
 
 const reducer = (state: TermsState, action: Action): TermsState => {
   switch (action.type) {
     case 'SET_ALL_TERMS': {
       const newObject: TermsState = {} as TermsState;
-      Object.keys(initialState).forEach(key => {
-        newObject[key as TermsKey] = {
-          ...initialState[key as TermsKey],
+      typedKeys(initialState).forEach(key => {
+        newObject[key] = {
+          ...initialState[key],
           isAgreed: !state.all.isAgreed,
         };
       });

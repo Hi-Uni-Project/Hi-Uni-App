@@ -9,10 +9,10 @@ type TermsKey =
 type TermsType = 'required' | 'optional' | 'none';
 
 interface TermsItem {
-  readonly key: TermsKey;
-  readonly type: TermsType;
-  readonly title: string;
-  readonly description: string | null;
+  key: TermsKey;
+  type: TermsType;
+  title: string;
+  description: string | null;
 }
 
 export type { TermsItem, TermsKey, TermsType };
