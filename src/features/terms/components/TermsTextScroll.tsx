@@ -12,7 +12,7 @@ const getDescriptionView = (description: string): React.ReactNode => {
   const parsedTextComponents = getParsedComponents(description);
 
   return (
-    <View key="description-container" style={{ padding: 12 }}>
+    <View key="description-container" className="p-3">
       {parsedTextComponents}
     </View>
   );
