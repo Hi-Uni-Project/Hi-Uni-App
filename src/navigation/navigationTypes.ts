@@ -7,6 +7,7 @@ export type HiUniStackParamList = {
   FontTest: undefined;
   IconTest: undefined;
   InputTest: undefined;
+  Term: undefined;
 };
 
 export type HiUniNativeStackNavigationProp =
