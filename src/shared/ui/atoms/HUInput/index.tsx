@@ -10,6 +10,7 @@ import { cn } from '@/shared/lib/cn';
 interface Props extends TextInputProps {
   variant?: 'find' | 'submit';
   onPress?: () => void;
+  length?: number;
 }
 
 const viewVariants = cva('w-full flex-row items-center', {
@@ -30,7 +31,7 @@ const inputVariants = cva('w-full font-normal text-[16px] text-[#1E2128]', {
   },
 });
 
-const HUInput = ({ variant = 'find', onPress, ...props }: Props) => {
+const HUInput = ({ variant = 'find', onPress, length, ...props }: Props) => {
   return (
     <View className={cn(viewVariants({ variant }))}>
       <TextInput
@@ -39,7 +40,7 @@ const HUInput = ({ variant = 'find', onPress, ...props }: Props) => {
         placeholderTextColor="#979797"
         {...props}
       />
-      {variant === 'find' && <FindIcons onPress={onPress} />}
+      {variant === 'find' && <FindIcons length={length} onPress={onPress} />}
     </View>
   );
 };
