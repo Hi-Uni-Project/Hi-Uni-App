@@ -10,20 +10,21 @@ import KakaoIcon from '@/static/icons/kakao.svg';
 import NaverIcon from '@/static/icons/naver.svg';
 
 interface Props extends PressableProps {
-  variant?: 'primary' | 'kakao' | 'naver' | 'google' | 'apple';
+  variant?: 'primary' | 'kakao' | 'naver' | 'google' | 'apple' | 'black';
   text?: string;
 }
 
 const buttonVariants = cva(
-  'flex justify-center items-center shrink-0 border-none',
+  'flex justify-center items-center shrink-0 border-none w-[350px] h-[68px]',
   {
     variants: {
       variant: {
-        primary: 'bg-primary-purple rounded-full w-[350px] h-[68px]',
-        kakao: 'bg-kakao rounded-[12px] w-[350px] h-[64px]',
-        naver: 'bg-naver rounded-[12px] w-[350px] h-[64px]',
-        google: 'bg-google rounded-[12px] w-[350px] h-[64px]',
-        apple: 'bg-apple rounded-[12px] w-[350px] h-[64px]',
+        primary: 'bg-primary-purple rounded-full ',
+        kakao: 'bg-kakao rounded-[12px]',
+        naver: 'bg-naver rounded-[12px]',
+        google: 'bg-google rounded-[12px]',
+        apple: 'bg-apple rounded-[12px]',
+        black: 'bg-secondary-black rounded-full',
       },
       disabled: {
         true: 'bg-gray-300 cursor-not-allowed',
@@ -41,6 +42,7 @@ const textVariants = cva('typo-main-button-16-semibold', {
       naver: 'text-white',
       google: 'text-[#101010]',
       apple: 'text-white',
+      black: 'text-white typo-main-button-18-semibold',
     },
     disabled: {
       true: 'text-white',
