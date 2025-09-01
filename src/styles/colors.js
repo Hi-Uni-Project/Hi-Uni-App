@@ -4,6 +4,7 @@ module.exports = {
     'secondary-black': '#1E2128',
     'tertiary-yellow': '#FFF06B',
     'error-red': '#FF4747',
+    'main-text': '#111111',
 
     kakao: '#FEE500',
     naver: '#22C73C',
