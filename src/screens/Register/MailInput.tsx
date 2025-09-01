@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { TextInput, View } from 'react-native';
 
 import ErrorTextArea from '@/features/register/inputMail/components/errorTextArea';
-import RegisterHeader from '@/features/register/shared/components/RegisterHeader';
+import RegisterHeader from '@/features/register/shared/components/layouts/RegisterHeader';
 import KeyboardAvoidingLayout from '@/shared/components/layouts/KeyboardAvoidingLayout';
 import ScreenLayout from '@/shared/components/layouts/ScreenLayout';
 import HUButton from '@/shared/ui/atoms/HUButton';

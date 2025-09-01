@@ -7,7 +7,7 @@ import SearchDeptsResultList from '@/features/register/searchDepartment/componen
 import SelectedDeptsList from '@/features/register/searchDepartment/components/SelectedDeptsList';
 import { useSearchDepartment } from '@/features/register/searchDepartment/hooks/useSearchDepartment';
 import RegisterDefaultLayout from '@/features/register/shared/components/layouts/RegisterDefaultLayout';
-import RegisterHeader from '@/features/register/shared/components/RegisterHeader';
+import RegisterHeader from '@/features/register/shared/components/layouts/RegisterHeader';
 import { SKIP_DEPARTMENT_MODAL } from '@/features/register/shared/constants/skipDeptModalText';
 import ScreenLayout from '@/shared/components/layouts/ScreenLayout';
 import HUButton from '@/shared/ui/atoms/HUButton';
