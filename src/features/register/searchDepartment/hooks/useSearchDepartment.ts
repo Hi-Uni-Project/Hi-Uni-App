@@ -33,7 +33,7 @@ const DEPARTMENT = [
   { major: '영어영문학과', college: '인문대학' },
 ];
 
-export const useSearchDepartment = () => {
+const useSearchDepartment = () => {
   const [inputValue, setInputValue] = useState('');
   const [selectedDepts, setSelectedDepts] = useState<string[]>([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -67,3 +67,5 @@ export const useSearchDepartment = () => {
     handleRemoveDept,
   };
 };
+
+export default useSearchDepartment;
