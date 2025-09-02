@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState } from 'react';
 
 const DEPARTMENT = [
   { major: '가정관리학과 (폐지)', college: '자연과학대학' },
@@ -38,13 +38,11 @@ export const useSearchDepartment = () => {
   const [selectedDepts, setSelectedDepts] = useState<string[]>([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
 
-  const filteredDepts = useMemo(
-    () =>
-      DEPARTMENT.filter(d =>
-        d.major.toLowerCase().includes(inputValue.toLowerCase()),
-      ),
-    [inputValue],
-  );
+  const filteredDepts = () => {
+    DEPARTMENT.filter(d =>
+      d.major.toLowerCase().includes(inputValue.toLowerCase()),
+    );
+  };
 
   const handleSelectDept = (major: string) => {
     if (selectedDepts.includes(major)) {
