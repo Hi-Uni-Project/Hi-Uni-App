@@ -3,6 +3,7 @@ import React from 'react';
 import { cva } from 'class-variance-authority';
 import { Pressable, PressableProps, Text } from 'react-native';
 
+import { BASE_COMMON } from '@/shared/constants/snsButtonBaseStyle';
 import { cn } from '@/shared/lib/cn';
 import AppleIcon from '@/static/icons/apple.svg';
 import GoogleIcon from '@/static/icons/google.svg';
@@ -20,10 +21,10 @@ const buttonVariants = cva(
     variants: {
       variant: {
         primary: 'bg-primary-purple rounded-full ',
-        kakao: 'bg-kakao rounded-[12px]',
-        naver: 'bg-naver rounded-[12px]',
-        google: 'bg-google rounded-[12px]',
-        apple: 'bg-apple rounded-[12px]',
+        kakao: `${BASE_COMMON} bg-kakao`,
+        naver: `${BASE_COMMON} bg-naver`,
+        google: `${BASE_COMMON} bg-google`,
+        apple: `${BASE_COMMON} bg-apple`,
         black: 'bg-secondary-black rounded-full',
       },
       disabled: {
