@@ -50,7 +50,11 @@ const MailCodeField = ({
                 styles.cellRoot,
                 hasValue ? styles.filledCell : isFocused && styles.focusCell,
               ]}>
-              {hasValue ? <View style={styles.dot} /> : isFocused && <Cursor />}
+              {hasValue ? (
+                <View style={styles.dot} />
+              ) : isFocused ? (
+                <Cursor />
+              ) : null}
             </View>
           );
         }}
