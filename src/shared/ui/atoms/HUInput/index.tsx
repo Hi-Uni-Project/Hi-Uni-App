@@ -1,80 +1,46 @@
 import React from 'react';
 
 import { cva } from 'class-variance-authority';
-import {
-  TextInputIOSProps,
-  TextInputAndroidProps,
-  TextInput,
-  View,
-  Platform,
-} from 'react-native';
+import { TextInput, View, TextInputProps } from 'react-native';
 
-import ActionIcons from '@/shared/icons/ActionIcons';
+import FindIcons from './FindIcons';
+
 import { cn } from '@/shared/lib/cn';
 
-interface Props extends TextInputIOSProps, TextInputAndroidProps {
-  placeholder?: string;
+interface Props extends TextInputProps {
   variant?: 'find' | 'submit';
-  value: string;
-  onChangeText: (text: string) => void;
+  onPress?: () => void;
+  length?: number;
 }
 
-const viewVariants = cva('relative flex flex-row items-center', {
+const viewVariants = cva('w-full flex-row items-center', {
   variants: {
     variant: {
-      find: 'w-[350px] h-[52px] bg-[#F2F2F2] rounded-full',
-      submit: 'w-[350px] h-[52px] border-b-[1px] border-gray-300',
+      find: 'h-[60px] bg-[#F2F2F2] rounded-full',
+      submit: 'h-[52px] border-b-[1px] border-gray-300',
     },
   },
 });
 
-const inputVariants = cva(
-  'outline-hidden typo-body-16-regular text-gray-500 text-base flex-1',
-  {
-    variants: {
-      variant: {
-        find: 'pl-11',
-        submit: 'pl-3 text-gray-400',
-      },
-      platform: {
-        ios: 'pb-2',
-        android: 'pt-0 pb-0',
-      },
+const inputVariants = cva('w-full font-normal text-[16px] text-[#1E2128]', {
+  variants: {
+    variant: {
+      find: 'pl-11',
+      submit: 'pl-3 text-gray-400',
     },
   },
-);
+});
 
-const HUInput = ({
-  placeholder = '',
-  variant = 'find',
-  value,
-  onChangeText,
-  ...props
-}: Props) => {
+const HUInput = ({ variant = 'find', onPress, length, ...props }: Props) => {
   return (
-    <View className={cn(viewVariants({ variant }), 'relative')}>
-      {variant === 'find' && (
-        <View className="absolute left-[16px]">
-          <ActionIcons type="search" width={17} height={17} color={'#979797'} />
-        </View>
-      )}
+    <View className={cn(viewVariants({ variant }))}>
       <TextInput
-        className={cn(
-          inputVariants({
-            variant,
-            platform:
-              Platform.OS === 'ios' || Platform.OS === 'android'
-                ? Platform.OS
-                : 'ios',
-          }),
-        )}
-        onChangeText={onChangeText}
-        maxLength={30}
-        value={value}
-        placeholder={placeholder}
+        className={cn(inputVariants({ variant }))}
+        maxLength={18}
         placeholderTextColor="#979797"
         {...props}
       />
+      {variant === 'find' && <FindIcons length={length} onPress={onPress} />}
     </View>
   );
 };

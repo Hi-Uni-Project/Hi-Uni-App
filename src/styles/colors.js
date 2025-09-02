@@ -1,9 +1,10 @@
 module.exports = {
   system: {
     'primary-purple': '#6568EA',
-    'secondary-black': '#1F2128',
+    'secondary-black': '#1E2128',
     'tertiary-yellow': '#FFF06B',
     'error-red': '#FF4747',
+    'main-text': '#111111',
 
     kakao: '#FEE500',
     naver: '#22C73C',
