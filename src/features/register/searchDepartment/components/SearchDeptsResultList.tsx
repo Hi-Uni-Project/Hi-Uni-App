@@ -23,9 +23,9 @@ const SearchDeptsResultList = ({
   selectedDepts,
 }: Props) => {
   return (
-    <View className="mt-[18px] px-8">
+    <View className="mt-[18px] flex-1 px-8">
       <FlatList
-        className="h-[455px]"
+        className="flex-1"
         data={filteredDepts}
         keyExtractor={(item, index) => `${item.major}-${index}`}
         renderItem={({ item }) => (
