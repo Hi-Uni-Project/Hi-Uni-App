@@ -2,7 +2,7 @@ import React from 'react';
 
 import MailCodeErrorText from '@/features/register/mailCode/components/MailCodeErrorText';
 import MailCodeField from '@/features/register/mailCode/components/MailCodeField';
-import { useMailCode } from '@/features/register/mailCode/hooks/useMailCode';
+import useMailCode from '@/features/register/mailCode/hooks/useMailCode';
 import RegisterHeader from '@/features/register/shared/components/layouts/RegisterHeader';
 import { CELL_COUNT } from '@/features/register/shared/constants/codeCell';
 import KeyboardAvoidingLayout from '@/shared/components/layouts/KeyboardAvoidingLayout';
