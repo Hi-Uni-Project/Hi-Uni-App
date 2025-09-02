@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 
 import { useClearByFocusCell } from 'react-native-confirmation-code-field';
 
-export const useMailCode = () => {
+const useMailCode = () => {
   const codeFieldRef = useRef(null);
   const [value, setValue] = useState('');
   const [props, getCellOnLayoutHandler] = useClearByFocusCell({
@@ -24,3 +24,5 @@ export const useMailCode = () => {
     getCellOnLayoutHandler,
   };
 };
+
+export default useMailCode;
