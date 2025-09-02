@@ -38,11 +38,9 @@ export const useSearchDepartment = () => {
   const [selectedDepts, setSelectedDepts] = useState<string[]>([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
 
-  const filteredDepts = () => {
-    DEPARTMENT.filter(d =>
-      d.major.toLowerCase().includes(inputValue.toLowerCase()),
-    );
-  };
+  const filteredDepts = DEPARTMENT.filter(d =>
+    d.major.toLowerCase().includes(inputValue.toLowerCase()),
+  );
 
   const handleSelectDept = (major: string) => {
     if (selectedDepts.includes(major)) {
