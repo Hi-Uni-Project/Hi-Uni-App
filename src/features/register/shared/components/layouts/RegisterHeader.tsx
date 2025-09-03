@@ -15,7 +15,7 @@ const RegisterHeader = ({
 }: RegisterHeaderProps) => {
   if (variant === 'code') {
     return (
-      <View className="mt-8 items-center space-y-2 px-8">
+      <View className="mt-3 items-center space-y-2 px-8">
         <Text className="text-main-text typo-title-26-bold">{main}</Text>
         <Text className="text-center text-surface-600 typo-body-16-regular">
           {sub}
