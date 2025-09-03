@@ -8,7 +8,7 @@ interface Props extends ViewProps {
 
 const RegisterDefaultLayout = ({ children, ...rest }: Props) => {
   return (
-    <View className="flex-1" {...rest}>
+    <View className="mt-[25px] flex-1" {...rest}>
       {children}
     </View>
   );

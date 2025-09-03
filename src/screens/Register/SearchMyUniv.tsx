@@ -6,6 +6,7 @@ import SearchUnivResultList from '@/features/register/searchUniv/components/Sear
 import { useSearchUniv } from '@/features/register/searchUniv/hooks/useSearchUniv';
 import RegisterDefaultLayout from '@/features/register/shared/components/layouts/RegisterDefaultLayout';
 import RegisterHeader from '@/features/register/shared/components/layouts/RegisterHeader';
+import HeaderWithBack from '@/shared/components/layouts/HeaderWithBack';
 import ScreenLayout from '@/shared/components/layouts/ScreenLayout';
 import HUButton from '@/shared/ui/atoms/HUButton';
 import HUInput from '@/shared/ui/atoms/HUInput';
@@ -22,7 +23,7 @@ const SearchMyUniv = () => {
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       <ScreenLayout>
-        {/* <HeaderWithBack /> */}
+        <HeaderWithBack flow screen="1" />
 
         <RegisterDefaultLayout>
           <RegisterHeader

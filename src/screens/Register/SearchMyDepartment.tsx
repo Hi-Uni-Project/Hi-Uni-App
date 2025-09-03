@@ -5,10 +5,11 @@ import { View, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import DepsNotFoundButton from '@/features/register/searchDepartment/components/DepsNotFoundButton';
 import SearchDeptsResultList from '@/features/register/searchDepartment/components/SearchDeptsResultList';
 import SelectedDeptsList from '@/features/register/searchDepartment/components/SelectedDeptsList';
-import { useSearchDepartment } from '@/features/register/searchDepartment/hooks/useSearchDepartment';
+import useSearchDepartment from '@/features/register/searchDepartment/hooks/useSearchDepartment';
 import RegisterDefaultLayout from '@/features/register/shared/components/layouts/RegisterDefaultLayout';
 import RegisterHeader from '@/features/register/shared/components/layouts/RegisterHeader';
 import { SKIP_DEPARTMENT_MODAL } from '@/features/register/shared/constants/skipDeptModalText';
+import HeaderWithBack from '@/shared/components/layouts/HeaderWithBack';
 import ScreenLayout from '@/shared/components/layouts/ScreenLayout';
 import HUButton from '@/shared/ui/atoms/HUButton';
 import HUInput from '@/shared/ui/atoms/HUInput';
@@ -29,7 +30,7 @@ const SearchMyDepartment = () => {
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       <ScreenLayout>
-        {/* <HeaderWithBack /> */}
+        <HeaderWithBack flow screen="2" />
 
         <RegisterDefaultLayout>
           <RegisterHeader

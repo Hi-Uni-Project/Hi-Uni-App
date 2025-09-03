@@ -1,9 +1,10 @@
 import React from 'react';
 
-import { ScrollView, Text, View } from 'react-native';
+import { ScrollView, Text } from 'react-native';
 
 import useTerms from '../../features/terms/hooks/useTerms';
 
+import RegisterDefaultLayout from '@/features/register/shared/components/layouts/RegisterDefaultLayout';
 import TermsSection from '@/features/terms/components/TermsSection';
 import HeaderWithBack from '@/shared/components/layouts/HeaderWithBack';
 import ScreenLayout from '@/shared/components/layouts/ScreenLayout';
@@ -15,7 +16,7 @@ const TermsScreen = () => {
   return (
     <ScreenLayout>
       <HeaderWithBack />
-      <View className="flex-1 items-center">
+      <RegisterDefaultLayout>
         <ScrollView className="w-full px-9">
           <Text className="typo-title-26-bold">
             {'계정을 만들기 위해\n약관에 동의해주세요.'}
@@ -26,14 +27,16 @@ const TermsScreen = () => {
 
           <TermsSection state={state} toggle={toggle} agreeAll={agreeAll} />
         </ScrollView>
+
         <HUButton
+          className="self-center"
           text="확인"
           disabled={!isValid}
           onPress={() => {
             // 네비게이션
           }}
         />
-      </View>
+      </RegisterDefaultLayout>
     </ScreenLayout>
   );
 };
