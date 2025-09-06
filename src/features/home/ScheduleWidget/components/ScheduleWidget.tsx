@@ -2,6 +2,8 @@ import React from 'react';
 
 import { Text, View, ViewProps } from 'react-native';
 
+import MiniCalendar from './MiniCalender';
+
 import Card from '@/shared/components/CardView';
 import DiaryIcon from '@/static/icons/diary.svg';
 
@@ -17,7 +19,7 @@ const ScheduleWidget = ({}: ScheduleWidgetProps) => {
         </View>
       </View>
       <View className="h-20 items-center justify-center border-b-[1px] border-gray-200">
-        <Text>오늘의 일정이 없습니다.</Text>
+        <MiniCalendar />
       </View>
       <View className="p-4">
         <Text className="typo-main-button-16-semibold">
