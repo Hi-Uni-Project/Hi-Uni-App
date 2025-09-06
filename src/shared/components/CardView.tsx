@@ -16,7 +16,7 @@ interface CardProps extends ViewProps {
 const CardView = ({ children, ...rest }: CardProps) => {
   return (
     <View
-      className="rounded-[15px] bg-white"
+      className="rounded-[15px] border-[1px] border-gray-200 bg-white"
       {...rest}
       style={[shadowStyleSheet.dropShadow, rest.style]}>
       {children}
