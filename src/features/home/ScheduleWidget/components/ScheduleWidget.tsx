@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import { Text, View, ViewProps } from 'react-native';
+
+import getWeeks from '../utils/getWeeks';
 
 import MiniCalendar from './MiniCalender';
 
@@ -10,20 +12,30 @@ import DiaryIcon from '@/static/icons/diary.svg';
 interface ScheduleWidgetProps extends ViewProps {}
 
 const ScheduleWidget = ({}: ScheduleWidgetProps) => {
+  const [weeks] = useState<Date[]>(getWeeks());
+  const [selectedDate, setSelectedDate] = useState<Date>(new Date());
+
   return (
     <Card className="mx-5 mt-[14px]">
-      <View className="flex-row items-center justify-between p-4">
-        <Text className="typo-main-button-16-semibold">내 일정</Text>
-        <View>
-          <DiaryIcon width={18} height={18} />
+      <View className="relative h-[146px] items-center justify-center border-b-[1px] border-gray-200">
+        <View className="absolute top-0 w-full flex-row items-center justify-between p-4">
+          <Text className="typo-main-button-16-semibold">내 일정</Text>
+          <View>
+            <DiaryIcon width={18} height={18} />
+          </View>
+        </View>
+        <View className="mt-5 items-center justify-center px-4">
+          <MiniCalendar
+            weeks={weeks}
+            selectedDate={selectedDate}
+            onDateSelect={setSelectedDate}
+          />
         </View>
       </View>
-      <View className="h-20 items-center justify-center border-b-[1px] border-gray-200">
-        <MiniCalendar />
-      </View>
+
       <View className="p-4">
         <Text className="typo-main-button-16-semibold">
-          2025년 8월 7일 (목)
+          {selectedDate.toLocaleDateString()}
         </Text>
       </View>
     </Card>
