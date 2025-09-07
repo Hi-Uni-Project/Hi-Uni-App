@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-import { Text, View, ViewProps } from 'react-native';
+import { Pressable, Text, View, ViewProps } from 'react-native';
 import { LinearTransition } from 'react-native-reanimated';
 
 import { mockSeptember2025ScheduleData } from '../mocks/scheduleMock';
@@ -38,9 +38,9 @@ const ScheduleWidget = ({}: ScheduleWidgetProps) => {
       <View className="relative h-[146px] items-center justify-center border-b-[1px] border-gray-200">
         <View className="absolute top-0 w-full flex-row items-center justify-between p-4">
           <Text className="typo-main-button-16-semibold">내 일정</Text>
-          <View>
+          <Pressable onPress={() => console.log('캘린더로 이동')}>
             <DiaryIcon width={18} height={18} />
-          </View>
+          </Pressable>
         </View>
         <View className="mt-5 items-center justify-center px-4">
           {isLoading ? (
