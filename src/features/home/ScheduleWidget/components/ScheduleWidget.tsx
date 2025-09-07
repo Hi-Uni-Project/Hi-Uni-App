@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
 
 import { Text, View, ViewProps } from 'react-native';
+import { LinearTransition } from 'react-native-reanimated';
 
 import { mockSeptember2025ScheduleData } from '../mocks/scheduleMock';
 import getWeeks from '../utils/getWeeks';
 
 import MiniCalendar from './MiniCalender';
+import ScheduleList from './ScheduleList';
 
-import Card from '@/shared/components/CardView';
+import AnimatedCardView from '@/shared/components/AnimatedCardView';
 import DiaryIcon from '@/static/icons/diary.svg';
 
 interface ScheduleWidgetProps extends ViewProps {}
@@ -20,7 +22,7 @@ const ScheduleWidget = ({}: ScheduleWidgetProps) => {
   const schedule = mockSeptember2025ScheduleData;
 
   return (
-    <Card className="mx-5 mt-[14px]">
+    <AnimatedCardView className="mx-5 mt-[14px]" layout={LinearTransition}>
       <View className="relative h-[146px] items-center justify-center border-b-[1px] border-gray-200">
         <View className="absolute top-0 w-full flex-row items-center justify-between p-4">
           <Text className="typo-main-button-16-semibold">내 일정</Text>
@@ -39,11 +41,9 @@ const ScheduleWidget = ({}: ScheduleWidgetProps) => {
       </View>
 
       <View className="p-4">
-        <Text className="typo-main-button-16-semibold">
-          {selectedDate.toLocaleDateString()}
-        </Text>
+        <ScheduleList selectedDate={selectedDate} schedule={schedule} />
       </View>
-    </Card>
+    </AnimatedCardView>
   );
 };
 
