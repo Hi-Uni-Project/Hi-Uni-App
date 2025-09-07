@@ -21,7 +21,7 @@ const generateMockSeptember2025Data = (): MockScheduleData[] => {
         { category: '회의', detail: '팀 미팅', time: '10:00' },
         { category: '스터디', detail: 'React Native 스터디', time: '14:00' },
       );
-    } else if (day === 7) {
+    } else if (day === 8) {
       schedule.push({
         category: '개인 일정',
         detail: '병원 예약',

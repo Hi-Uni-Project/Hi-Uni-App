@@ -1,12 +1,45 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import { View } from 'react-native';
 
-interface ScheduleDotProps {}
+import { MockScheduleData } from '../mocks/scheduleMock';
 
-const ScheduleDot = ({}: ScheduleDotProps) => {
+interface ScheduleDotProps {
+  weeks: Date[];
+  // mock data 추후 수정
+  schedule: MockScheduleData[];
+  positions: { [key: number]: number };
+}
+
+const ScheduleDot = ({ weeks, schedule, positions }: ScheduleDotProps) => {
+  useEffect(() => {
+    console.log('weeks', weeks);
+    console.log('schedule', schedule);
+    console.log('positions', positions);
+  }, [schedule, weeks, positions]);
+
+  // 로직은 추후 변경 가능. 데이터에서 일정을 찾는다는 개념만 동일
+  const getScheduledDays = weeks.map(week => {
+    return schedule[week.getDate() - 1].schedule.length !== 0;
+  });
+
   return (
-    <View className="absolute bottom-[-4px] h-[10px] w-[10px] rounded-2xl bg-primary-purple" />
+    <>
+      {getScheduledDays.map((hasSchedule, index) => {
+        if (hasSchedule) {
+          return (
+            <View
+              key={`schedule-dot-${index}`}
+              className="absolute bottom-[-12px] h-2 w-[41px] items-center"
+              style={{
+                left: positions[index] ?? 0,
+              }}>
+              <View className="h-[10px] w-[10px] items-center rounded-[10px] bg-[#E4E4F4]" />
+            </View>
+          );
+        }
+      })}
+    </>
   );
 };
 

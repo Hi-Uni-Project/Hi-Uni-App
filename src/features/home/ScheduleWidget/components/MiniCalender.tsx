@@ -4,6 +4,7 @@ import { View } from 'react-native';
 
 import useMiniCalendarAnimation from '../hooks/useMiniCalendarAnimation';
 import useMiniCalendarItemPosition from '../hooks/useMiniCalendarItemPosition';
+import { MockScheduleData } from '../mocks/scheduleMock';
 
 import CalendarItem from './CalendarItem';
 import ScheduleDot from './ScheduleDot';
@@ -13,12 +14,15 @@ interface MiniCalendarProps {
   weeks: Date[];
   selectedDate: Date;
   onDateSelect: (date: Date) => void;
+  // mock data 추후 수정
+  schedule: MockScheduleData[];
 }
 
 const MiniCalendar = ({
   weeks,
   selectedDate,
   onDateSelect,
+  schedule,
 }: MiniCalendarProps) => {
   const { indexPositions, checkItemLayout } = useMiniCalendarItemPosition();
   const { selectedPosition } = useMiniCalendarAnimation({
@@ -42,7 +46,11 @@ const MiniCalendar = ({
           );
         })}
       </View>
-      <ScheduleDot />
+      <ScheduleDot
+        weeks={weeks}
+        schedule={schedule}
+        positions={indexPositions}
+      />
     </View>
   );
 };

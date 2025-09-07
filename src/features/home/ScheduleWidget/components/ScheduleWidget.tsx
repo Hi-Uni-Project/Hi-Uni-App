@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 
 import { Text, View, ViewProps } from 'react-native';
 
+import { mockSeptember2025ScheduleData } from '../mocks/scheduleMock';
 import getWeeks from '../utils/getWeeks';
 
 import MiniCalendar from './MiniCalender';
@@ -14,6 +15,9 @@ interface ScheduleWidgetProps extends ViewProps {}
 const ScheduleWidget = ({}: ScheduleWidgetProps) => {
   const [weeks] = useState<Date[]>(getWeeks());
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
+
+  // 스케줄을 가져오는 로직 추후 구현
+  const schedule = mockSeptember2025ScheduleData;
 
   return (
     <Card className="mx-5 mt-[14px]">
@@ -29,6 +33,7 @@ const ScheduleWidget = ({}: ScheduleWidgetProps) => {
             weeks={weeks}
             selectedDate={selectedDate}
             onDateSelect={setSelectedDate}
+            schedule={schedule}
           />
         </View>
       </View>
