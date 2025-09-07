@@ -29,7 +29,9 @@ interface ScheduleListProps {
 const ScheduleList = ({ selectedDate, schedule }: ScheduleListProps) => {
   // 로직은 추후 변경 가능. 데이터에서 일정을 찾는다는 개념만 동일
   const scheduleItems = schedule[selectedDate.getDate() - 1]
-    ? schedule[selectedDate.getDate() - 1].schedule
+    ? schedule[selectedDate.getDate() - 1].schedule.filter(
+        (_, index) => index < 3,
+      )
     : [];
 
   return (
