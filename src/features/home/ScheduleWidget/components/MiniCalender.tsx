@@ -1,12 +1,13 @@
 import React from 'react';
 
 import { View } from 'react-native';
-import Animated from 'react-native-reanimated';
 
 import useMiniCalendarAnimation from '../hooks/useMiniCalendarAnimation';
+import useMiniCalendarItemPosition from '../hooks/useMiniCalendarItemPosition';
 
 import CalendarItem from './CalendarItem';
-import MiniCalendarAnimatedView from './MiniCalendarAnimatedView';
+import ScheduleDot from './ScheduleDot';
+import SelectionIndicator from './SelectionIndicator';
 
 interface MiniCalendarProps {
   weeks: Date[];
@@ -19,14 +20,15 @@ const MiniCalendar = ({
   selectedDate,
   onDateSelect,
 }: MiniCalendarProps) => {
-  const { checkItemLayout, selectedPosition } = useMiniCalendarAnimation({
+  const { indexPositions, checkItemLayout } = useMiniCalendarItemPosition();
+  const { selectedPosition } = useMiniCalendarAnimation({
     selectedDate,
+    indexPositions,
   });
 
   return (
     <View className="relative">
-      <MiniCalendarAnimatedView selectedPosition={selectedPosition} />
-      <Animated.View />
+      <SelectionIndicator selectedPosition={selectedPosition} />
       <View className="w-full flex-row items-center justify-between">
         {weeks.map(week => {
           return (
@@ -40,6 +42,7 @@ const MiniCalendar = ({
           );
         })}
       </View>
+      <ScheduleDot />
     </View>
   );
 };

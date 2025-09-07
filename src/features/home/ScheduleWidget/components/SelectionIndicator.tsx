@@ -5,13 +5,11 @@ import Animated, {
   withSpring,
 } from 'react-native-reanimated';
 
-interface MiniCalendarAnimatedViewProps {
+interface SelectionIndicatorProps {
   selectedPosition: number;
 }
 
-const MiniCalendarAnimatedView = ({
-  selectedPosition,
-}: MiniCalendarAnimatedViewProps) => {
+const SelectionIndicator = ({ selectedPosition }: SelectionIndicatorProps) => {
   const animationStyle = useAnimatedStyle(() => {
     return {
       width: 41,
@@ -34,4 +32,4 @@ const MiniCalendarAnimatedView = ({
   return <Animated.View style={animationStyle} />;
 };
 
-export default MiniCalendarAnimatedView;
+export default SelectionIndicator;
