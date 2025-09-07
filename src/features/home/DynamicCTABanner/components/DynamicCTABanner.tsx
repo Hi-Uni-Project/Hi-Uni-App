@@ -8,9 +8,9 @@ import {
   StyleSheet,
   Platform,
 } from 'react-native';
-import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
+import { FadeIn, FadeOut } from 'react-native-reanimated';
 
-import CardView from '@/shared/components/CardView';
+import AnimatedCardView from '@/shared/components/AnimatedCardView';
 import ActionIcons from '@/shared/icons/ActionIcons';
 import ChevronIcons from '@/shared/icons/ChevronIcons';
 
@@ -39,37 +39,36 @@ const DynamicCTABanner = ({
   }
 
   return (
-    <Animated.View
+    <AnimatedCardView
       entering={FadeIn.duration(500)}
-      exiting={FadeOut.duration(500)}>
-      <CardView className="relative mx-5 mt-4 h-[83px] justify-center">
-        <View className="mx-6">
-          <Text className="text-gray-500 typo-14-regular">
-            {'미혜님, 어제 본 면접 어떠셨나요?'}
+      exiting={FadeOut.duration(500)}
+      className="relative mx-5 mt-4 h-[83px] justify-center">
+      <View className="mx-6">
+        <Text className="text-gray-500 typo-14-regular">
+          {'미혜님, 어제 본 면접 어떠셨나요?'}
+        </Text>
+
+        <Pressable className="flex-row items-center" onPress={onSharedPress}>
+          <Text className="mr-2 text-main-text typo-sub-title-17-semibold">
+            {'면접 후기를 학우들에게 공유해주세요!'}
           </Text>
-
-          <Pressable className="flex-row items-center" onPress={onSharedPress}>
-            <Text className="mr-2 text-main-text typo-sub-title-17-semibold">
-              {'면접 후기를 학우들에게 공유해주세요!'}
-            </Text>
-            <View style={styles.icon}>
-              <ChevronIcons
-                direction="right"
-                width={7}
-                height={14}
-                color="#010101"
-              />
-            </View>
-          </Pressable>
-        </View>
-
-        <Pressable
-          className="absolute right-4 top-4"
-          onPress={() => setIsVisible(false)}>
-          <ActionIcons type="close" width={16} height={16} color="#DADADA" />
+          <View style={styles.icon}>
+            <ChevronIcons
+              direction="right"
+              width={7}
+              height={14}
+              color="#010101"
+            />
+          </View>
         </Pressable>
-      </CardView>
-    </Animated.View>
+      </View>
+
+      <Pressable
+        className="absolute right-4 top-4"
+        onPress={() => setIsVisible(false)}>
+        <ActionIcons type="close" width={16} height={16} color="#DADADA" />
+      </Pressable>
+    </AnimatedCardView>
   );
 };
 
