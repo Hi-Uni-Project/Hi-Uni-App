@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { Text, View, ViewProps } from 'react-native';
 import { LinearTransition } from 'react-native-reanimated';
@@ -8,6 +8,7 @@ import getWeeks from '../utils/getWeeks';
 
 import MiniCalendar from './MiniCalender';
 import ScheduleList from './ScheduleList';
+import { MiniCalendarSkeleton, ScheduleListSkeleton } from './Skeletons';
 
 import AnimatedCardView from '@/shared/components/AnimatedCardView';
 import DiaryIcon from '@/static/icons/diary.svg';
@@ -19,7 +20,18 @@ const ScheduleWidget = ({}: ScheduleWidgetProps) => {
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
 
   // 스케줄을 가져오는 로직 추후 구현
-  const schedule = mockSeptember2025ScheduleData;
+  const [schedule, setSchedule] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchSchedule = async () => {
+      setTimeout(() => {
+        setSchedule(mockSeptember2025ScheduleData);
+        setIsLoading(false);
+      }, 2000);
+    };
+    fetchSchedule();
+  }, []);
 
   return (
     <AnimatedCardView className="mx-5 mt-[14px]" layout={LinearTransition}>
@@ -31,17 +43,25 @@ const ScheduleWidget = ({}: ScheduleWidgetProps) => {
           </View>
         </View>
         <View className="mt-5 items-center justify-center px-4">
-          <MiniCalendar
-            weeks={weeks}
-            selectedDate={selectedDate}
-            onDateSelect={setSelectedDate}
-            schedule={schedule}
-          />
+          {isLoading ? (
+            <MiniCalendarSkeleton />
+          ) : (
+            <MiniCalendar
+              weeks={weeks}
+              selectedDate={selectedDate}
+              onDateSelect={setSelectedDate}
+              schedule={schedule}
+            />
+          )}
         </View>
       </View>
 
       <View className="p-4">
-        <ScheduleList selectedDate={selectedDate} schedule={schedule} />
+        {isLoading ? (
+          <ScheduleListSkeleton />
+        ) : (
+          <ScheduleList selectedDate={selectedDate} schedule={schedule} />
+        )}
       </View>
     </AnimatedCardView>
   );

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 
 import { View } from 'react-native';
 
@@ -12,12 +12,6 @@ interface ScheduleDotProps {
 }
 
 const ScheduleDot = ({ weeks, schedule, positions }: ScheduleDotProps) => {
-  useEffect(() => {
-    console.log('weeks', weeks);
-    console.log('schedule', schedule);
-    console.log('positions', positions);
-  }, [schedule, weeks, positions]);
-
   // 로직은 추후 변경 가능. 데이터에서 일정을 찾는다는 개념만 동일
   const getScheduledDays = weeks.map(week => {
     return schedule[week.getDate() - 1].schedule.length !== 0;
