@@ -6,7 +6,7 @@ import { LinearTransition } from 'react-native-reanimated';
 import { mockSeptember2025ScheduleData } from '../mocks/scheduleMock';
 import getWeeks from '../utils/getWeeks';
 
-import MiniCalendar from './MiniCalender';
+import MiniCalendar from './MiniCalendar';
 import ScheduleList from './ScheduleList';
 import { MiniCalendarSkeleton, ScheduleListSkeleton } from './Skeletons';
 

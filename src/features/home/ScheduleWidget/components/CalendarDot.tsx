@@ -4,16 +4,16 @@ import { View } from 'react-native';
 
 import { MockScheduleData } from '../mocks/scheduleMock';
 
-interface ScheduleDotProps {
+interface CalendarDotProps {
   weeks: Date[];
   // mock data 추후 수정
   schedule: MockScheduleData[];
   positions: { [key: number]: number };
 }
 
-const ScheduleDot = ({ weeks, schedule, positions }: ScheduleDotProps) => {
+const CalendarDot = ({ weeks, schedule, positions }: CalendarDotProps) => {
   // 로직은 추후 변경 가능. 데이터에서 일정을 찾는다는 개념만 동일
-  const getScheduledDays = weeks.map(week => {
+  const getScheduledDays: boolean[] = weeks.map(week => {
     return schedule[week.getDate() - 1].schedule.length !== 0;
   });
 
@@ -37,4 +37,4 @@ const ScheduleDot = ({ weeks, schedule, positions }: ScheduleDotProps) => {
   );
 };
 
-export default ScheduleDot;
+export default CalendarDot;

@@ -6,8 +6,8 @@ import useMiniCalendarAnimation from '../hooks/useMiniCalendarAnimation';
 import useMiniCalendarItemPosition from '../hooks/useMiniCalendarItemPosition';
 import { MockScheduleData } from '../mocks/scheduleMock';
 
+import CalendarDot from './CalendarDot';
 import CalendarItem from './CalendarItem';
-import ScheduleDot from './ScheduleDot';
 import SelectionIndicator from './SelectionIndicator';
 
 interface MiniCalendarProps {
@@ -46,7 +46,7 @@ const MiniCalendar = ({
           );
         })}
       </View>
-      <ScheduleDot
+      <CalendarDot
         weeks={weeks}
         schedule={schedule}
         positions={indexPositions}
