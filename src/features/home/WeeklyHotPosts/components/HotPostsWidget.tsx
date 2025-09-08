@@ -14,7 +14,7 @@ const Separator = () => <View className="h-[1px] bg-[#EAEAEA]" />;
 
 const HotPostsWidgetTitle = () => (
   <View className="flex-row items-center">
-    <Text className="typo-title-22-semibold">주간 HOT</Text>
+    <Text className="text-[#111111] typo-sub-title-22-bold">주간 HOT</Text>
     <FireIcon width={18} height={20} className="ml-[6px]" />
   </View>
 );

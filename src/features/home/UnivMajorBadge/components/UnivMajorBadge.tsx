@@ -10,7 +10,7 @@ interface UnivMajorBadgeProps extends ViewProps {
 const UnivMajorBadge = ({ univName, majorName }: UnivMajorBadgeProps) => {
   return (
     <View className="mx-5 mt-6 items-start">
-      <Text className="mb-1 font-bold text-main-text typo-title-22-semibold">
+      <Text className="mb-1 text-main-text typo-sub-title-22-bold">
         {univName}
       </Text>
       <Text className="text-gray-700 typo-body-16-regular">{majorName}</Text>

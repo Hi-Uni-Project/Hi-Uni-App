@@ -44,12 +44,12 @@ const CalendarItem = ({
         onPress={() => onDateSelect(week)}>
         <Animated.Text
           style={dateAnimatedStyle}
-          className="pb-2 typo-body-13-light">
+          className="pb-2 typo-caption-13-light">
           {dayNames[week.getDay()]}
         </Animated.Text>
         <Animated.Text
           style={dateAnimatedStyle}
-          className="typo-body-15-normal">
+          className="typo-body-15-medium">
           {week.getDate()}
         </Animated.Text>
       </Pressable>

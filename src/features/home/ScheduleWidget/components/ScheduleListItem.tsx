@@ -19,11 +19,13 @@ const ScheduleListItem = ({
       entering={FadeIn.delay(150)}>
       <View className="flex-row items-center space-x-2">
         <View className="rounded-full bg-[#979797] px-[11px] py-1">
-          <Text className="text-white typo-14-regular">{category}</Text>
+          <Text className="text-white typo-caption-14-light">{category}</Text>
         </View>
-        <Text className="text-[#1E2128] typo-body-14-semibold">{detail}</Text>
+        <Text className="text-[#1E2128] typo-caption-14-semibold">
+          {detail}
+        </Text>
       </View>
-      <Text className="text-[#979797] typo-body-13-light">{time}</Text>
+      <Text className="text-[#979797] typo-caption-13-light">{time}</Text>
     </Animated.View>
   );
 };

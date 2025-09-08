@@ -44,12 +44,12 @@ const DynamicCTABanner = ({
       exiting={FadeOut.duration(500)}
       className="relative mx-5 mt-4 h-[83px] justify-center">
       <View className="mx-6">
-        <Text className="text-gray-500 typo-14-regular">
+        <Text className="text-[#979797] typo-caption-14-light">
           {'미혜님, 어제 본 면접 어떠셨나요?'}
         </Text>
 
         <Pressable className="flex-row items-center" onPress={onSharedPress}>
-          <Text className="mr-2 text-main-text typo-sub-title-17-semibold">
+          <Text className="mr-2 text-main-text typo-body-17-semibold">
             {'면접 후기를 학우들에게 공유해주세요!'}
           </Text>
           <View style={styles.icon}>

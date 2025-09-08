@@ -19,22 +19,22 @@ const HotPostItem = ({ item }: HotPostItemProps) => {
         onPress={() => {
           console.log(`post ${item.id} pressed`);
         }}>
-        <Text className="text-[#1E2128] typo-body-16-regular">
-          {item.title}
-        </Text>
+        <Text className="text-[#1E2128] typo-body-16-medium">{item.title}</Text>
 
         <View className="flex-row items-center justify-between">
-          <Text className="ml-[2px] mt-[3px] text-sm text-gray-500">
+          <Text className="ml-[2px] text-gray-500 typo-caption-13-light">
             {item.date}
           </Text>
           <View className="flex-row items-center">
-            <View className="mr-[7px] w-[37apx] flex-row items-center">
+            <View className="mr-[7px] w-[37px] flex-row items-center">
               <ThumbsUpIcon width={16} height={16} />
-              <Text className="ml-1 text-sm text-[#FB6C6C]">{item.likes}</Text>
+              <Text className="ml-1 text-[#FB6C6C] typo-caption-13-medium">
+                {item.likes}
+              </Text>
             </View>
             <View className="w-[34px] flex-row items-center">
-              <CommentsIcon width={16} height={16} />
-              <Text className="ml-1 text-sm text-[#6568EB]">
+              <CommentsIcon width={15} height={15} />
+              <Text className="ml-1 text-[#6568EB] typo-caption-13-medium">
                 {item.comments}
               </Text>
             </View>

@@ -36,7 +36,7 @@ const ScheduleWidget = ({}: ScheduleWidgetProps) => {
     <AnimatedCardView className="mx-5 mt-[14px]" layout={LinearTransition}>
       <View className="relative h-[146px] items-center justify-center border-b-[1px] border-gray-200">
         <View className="absolute top-0 w-full flex-row items-center justify-between p-4">
-          <Text className="typo-main-button-16-semibold">내 일정</Text>
+          <Text className="typo-body-16-bold">내 일정</Text>
           <Pressable onPress={() => console.log('캘린더로 이동')}>
             <DiaryIcon width={18} height={18} />
           </Pressable>
