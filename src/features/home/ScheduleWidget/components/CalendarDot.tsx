@@ -8,7 +8,7 @@ interface CalendarDotProps {
   weeks: Date[];
   // mock data 추후 수정
   schedule: MockScheduleData[];
-  positions: { [key: number]: number };
+  positions: Record<number, number>;
 }
 
 const CalendarDot = ({ weeks, schedule, positions }: CalendarDotProps) => {

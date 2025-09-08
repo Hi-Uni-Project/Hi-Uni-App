@@ -6,7 +6,7 @@ import Animated, {
   withSpring,
 } from 'react-native-reanimated';
 
-const dayNames: { [key: number]: string } = {
+const dayNames: Record<number, string> = {
   0: '일',
   1: '월',
   2: '화',

@@ -1,6 +1,6 @@
 interface UseMiniCalendarAnimationProps {
   selectedDate: Date;
-  indexPositions: { [key: number]: number };
+  indexPositions: Record<number, number>;
 }
 
 const useMiniCalendarAnimation = ({

@@ -2,7 +2,7 @@ import { useState } from 'react';
 
 const useMiniCalendarItemPosition = () => {
   const [indexPositions, setIndexPositions] = useState(
-    {} as { [key: number]: number },
+    {} as Record<number, number>,
   );
 
   const checkItemLayout = (
