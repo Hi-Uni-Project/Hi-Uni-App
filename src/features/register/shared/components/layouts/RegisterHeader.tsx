@@ -5,12 +5,14 @@ import { View, Text } from 'react-native';
 interface RegisterHeaderProps {
   main: string;
   sub: string;
+  reverse?: boolean;
   variant?: 'default' | 'code';
 }
 
 const RegisterHeader = ({
   main,
   sub,
+  reverse = false,
   variant = 'default',
 }: RegisterHeaderProps) => {
   if (variant === 'code') {
@@ -24,10 +26,19 @@ const RegisterHeader = ({
     );
   }
 
+  const firstText = reverse ? sub : main;
+  const secondText = reverse ? main : sub;
+  const firstStyle = reverse
+    ? 'text-main-text typo-title-26-bold'
+    : 'text-surface-600 typo-sub-title-18-medium';
+  const secondStyle = reverse
+    ? 'text-surface-600 typo-sub-title-18-medium'
+    : 'text-main-text typo-title-26-bold';
+
   return (
     <View className="space-y-1 pl-[30px]">
-      <Text className="text-surface-600 typo-sub-title-18-medium">{main}</Text>
-      <Text className="text-main-text typo-title-26-bold">{sub}</Text>
+      <Text className={firstStyle}>{firstText}</Text>
+      <Text className={secondStyle}>{secondText}</Text>
     </View>
   );
 };
