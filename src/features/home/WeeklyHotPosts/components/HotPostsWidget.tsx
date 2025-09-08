@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { FlatList, Text, View } from 'react-native';
 import Animated, { LinearTransition } from 'react-native-reanimated';
@@ -20,6 +20,17 @@ const HotPostsWidgetTitle = () => (
 );
 
 const HotPostsWidget = () => {
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 2000);
+    };
+    fetchData();
+  }, []);
+
   return (
     <Animated.View layout={LinearTransition} className="mt-8">
       <SectionHeader
@@ -29,13 +40,17 @@ const HotPostsWidget = () => {
         }}
       />
       <CardView className="mx-5">
-        <FlatList
-          data={mockHotPosts.filter((_, index) => index < 4)}
-          renderItem={({ item }) => <HotPostItem item={item} />}
-          keyExtractor={item => item.id}
-          ItemSeparatorComponent={Separator}
-          scrollEnabled={false}
-        />
+        {isLoading ? (
+          <Text>로딩중..</Text>
+        ) : (
+          <FlatList
+            data={mockHotPosts.filter((_, index) => index < 4)}
+            renderItem={({ item }) => <HotPostItem item={item} />}
+            keyExtractor={item => item.id}
+            ItemSeparatorComponent={Separator}
+            scrollEnabled={false}
+          />
+        )}
       </CardView>
     </Animated.View>
   );

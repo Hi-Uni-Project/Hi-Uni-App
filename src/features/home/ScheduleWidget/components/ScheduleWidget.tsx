@@ -8,7 +8,6 @@ import getWeeks from '../utils/getWeeks';
 
 import MiniCalendar from './MiniCalendar';
 import ScheduleList from './ScheduleList';
-import { MiniCalendarSkeleton, ScheduleListSkeleton } from './Skeletons';
 
 import AnimatedCardView from '@/shared/components/AnimatedCardView';
 import DiaryIcon from '@/static/icons/diary.svg';
@@ -44,7 +43,7 @@ const ScheduleWidget = ({}: ScheduleWidgetProps) => {
         </View>
         <View className="mt-5 items-center justify-center px-4">
           {isLoading ? (
-            <MiniCalendarSkeleton />
+            <Text>로딩중..</Text>
           ) : (
             <MiniCalendar
               weeks={weeks}
@@ -58,7 +57,7 @@ const ScheduleWidget = ({}: ScheduleWidgetProps) => {
 
       <View className="p-4">
         {isLoading ? (
-          <ScheduleListSkeleton />
+          <Text>로딩중..</Text>
         ) : (
           <ScheduleList selectedDate={selectedDate} schedule={schedule} />
         )}
