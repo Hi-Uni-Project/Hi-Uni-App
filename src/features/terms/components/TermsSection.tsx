@@ -44,13 +44,15 @@ const TermsSection = ({ state, toggle, agreeAll }: TermsSectionProps) => {
               />
 
               {state[item.key]?.type === 'required' && (
-                <Text className="text-red-500 typo-body-14-semibold">
+                <Text className="text-secondary-black typo-caption-14-semibold">
                   {' (필수)'}
                 </Text>
               )}
 
               {state[item.key]?.type === 'optional' && (
-                <Text className="typo-body-14-semibold">{' (선택)'}</Text>
+                <Text className="text-secondary-black typo-caption-14-semibold">
+                  {' (선택)'}
+                </Text>
               )}
             </View>
 

@@ -22,14 +22,17 @@ const viewVariants = cva('w-full flex-row items-center', {
   },
 });
 
-const inputVariants = cva('w-full font-normal text-[16px] text-[#1E2128]', {
-  variants: {
-    variant: {
-      find: 'pl-11',
-      submit: 'pl-3 text-gray-400',
+const inputVariants = cva(
+  'w-full font-normal text-[16px] text-secondary-black',
+  {
+    variants: {
+      variant: {
+        find: 'pl-11',
+        submit: 'pl-3 text-gray-400',
+      },
     },
   },
-});
+);
 
 const HUInput = ({ variant = 'find', onPress, length, ...props }: Props) => {
   return (

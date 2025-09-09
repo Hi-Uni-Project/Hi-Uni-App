@@ -44,7 +44,7 @@ const DynamicCTABanner = ({
       exiting={FadeOut.duration(500)}
       className="relative mx-5 mt-4 h-[83px] justify-center">
       <View className="mx-6">
-        <Text className="text-[#979797] typo-caption-14-light">
+        <Text className="text-surface-500 typo-caption-14-light">
           {'미혜님, 어제 본 면접 어떠셨나요?'}
         </Text>
 

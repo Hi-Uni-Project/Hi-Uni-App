@@ -1,6 +1,21 @@
 import React from 'react';
 
-import { Text } from 'react-native';
+import { StyleSheet, Text } from 'react-native';
+
+const TextStyleSheet = StyleSheet.create({
+  bold: {
+    fontSize: 13,
+    lineHeight: 16,
+    fontWeight: '500',
+    letterSpacing: -0.64,
+  },
+  normal: {
+    fontSize: 13,
+    lineHeight: 16,
+    fontWeight: '300',
+    letterSpacing: -0.64,
+  },
+});
 
 const getBoldText = (
   text: string,
@@ -16,7 +31,7 @@ const getBoldText = (
   }
 
   return (
-    <Text key={`line-${key}`} className="typo-body-14-semibold">
+    <Text key={`line-${key}`} style={TextStyleSheet.bold}>
       {parsedText.replaceAll('*', '')}
     </Text>
   );
@@ -24,7 +39,7 @@ const getBoldText = (
 
 const getIndentStyle = (text: string, key: number) => {
   return (
-    <Text key={`line-${key}`} className="ml-4 typo-body-13-light">
+    <Text key={`line-${key}`} style={TextStyleSheet.normal}>
       {text}
     </Text>
   );
@@ -37,7 +52,7 @@ const getDotStyle = (text: string, key: number) => {
 
 const getNormalStyle = (text: string, key: number) => {
   return (
-    <Text key={`line-${key}`} className="typo-body-13-light">
+    <Text key={`line-${key}`} style={TextStyleSheet.normal}>
       {text}
     </Text>
   );

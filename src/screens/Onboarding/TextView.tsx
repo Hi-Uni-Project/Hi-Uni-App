@@ -21,12 +21,12 @@ const TextView = ({ currentStep }: Props) => {
               key={`TextView-${currentStep}-Title-${index}`}
               entering={FadeInDown.delay(300).duration(400 + index * 80)}
               exiting={FadeOutUp.duration(300)}
-              className="text-center typo-title-26-bold">
+              className="text-center text-main-text typo-title-28-bold">
               {line}
             </Animated.Text>
           ))}
 
-        <View className="mb-4" />
+        <View className="mb-3" />
 
         {onboardingProvider[currentStep].subTitle
           .split('\n')
@@ -35,7 +35,7 @@ const TextView = ({ currentStep }: Props) => {
               key={`TextView-${currentStep}-subTitle-${index}`}
               entering={FadeInDown.delay(300).duration(600 + index * 80)}
               exiting={FadeOutUp.duration(300)}
-              className="text-center text-gray-600 typo-sub-title-18-medium">
+              className="text-center text-surface-600 typo-sub-title-18-medium">
               {line}
             </Animated.Text>
           ))}

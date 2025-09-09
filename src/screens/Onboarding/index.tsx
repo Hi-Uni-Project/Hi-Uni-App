@@ -45,7 +45,7 @@ const OnboardingScreen = () => {
           onPress={() => {
             navigation.navigate('Login');
           }}>
-          <Text className="text-gray-500">건너뛰기</Text>
+          <Text className="text-surface-500 typo-body-15-medium">건너뛰기</Text>
         </Pressable>
       </View>
     </ScreenLayout>

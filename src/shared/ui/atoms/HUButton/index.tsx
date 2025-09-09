@@ -35,7 +35,7 @@ const buttonVariants = cva(
   },
 );
 
-const textVariants = cva('typo-main-button-16-semibold', {
+const textVariants = cva('typo-sub-button-16-semibold', {
   variants: {
     variant: {
       primary: 'text-white typo-main-button-18-semibold',
