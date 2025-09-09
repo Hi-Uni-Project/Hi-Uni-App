@@ -3,11 +3,11 @@ import React from 'react';
 import { ScrollView } from 'react-native';
 import Animated, { LinearTransition } from 'react-native-reanimated';
 
-import NextUpdateTemplate from '@/features/home/components/NextUpdateTemplate';
-import DynamicCTABanner from '@/features/home/DynamicCTABanner/components/DynamicCTABanner';
-import ScheduleWidget from '@/features/home/ScheduleWidget/components/ScheduleWidget';
-import UnivMajorBadge from '@/features/home/UnivMajorBadge/components/UnivMajorBadge';
-import HotPostsWidget from '@/features/home/WeeklyHotPosts/components/HotPostsWidget';
+import DynamicCTABanner from '@/features/home/dynamicCTABanner/components/DynamicCTABanner';
+import NextUpdateTemplate from '@/features/home/nextUpdateTemplate/components/NextUpdateTemplate';
+import ScheduleWidget from '@/features/home/scheduleWidget/components/ScheduleWidget';
+import UnivMajorBadge from '@/features/home/univMajorBadge/components/UnivMajorBadge';
+import HotPostsWidget from '@/features/home/weeklyHotPosts/components/HotPostsWidget';
 import ScreenLayout from '@/shared/components/layouts/ScreenLayout';
 
 const HomeScreen = () => {
