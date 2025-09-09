@@ -4,12 +4,12 @@ import { Pressable, Text, View, ViewProps } from 'react-native';
 import { LinearTransition } from 'react-native-reanimated';
 
 import { mockSeptember2025ScheduleData } from '../mocks/scheduleMock';
-import getWeeks from '../utils/getWeeks';
 
 import MiniCalendar from './MiniCalendar';
 import ScheduleList from './ScheduleList';
 
 import AnimatedCardView from '@/shared/components/AnimatedCardView';
+import getWeeks from '@/shared/utils/date/getWeeks';
 import DiaryIcon from '@/static/icons/diary.svg';
 
 interface ScheduleWidgetProps extends ViewProps {}

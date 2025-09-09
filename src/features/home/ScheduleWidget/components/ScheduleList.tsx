@@ -4,10 +4,10 @@ import { View, Text, FlatList, Pressable } from 'react-native';
 import Animated, { FadeIn } from 'react-native-reanimated';
 
 import { MockScheduleData } from '../mocks/scheduleMock';
-import formatKoreanDate from '../utils/formatKoreanDate';
 
 import ScheduleListItem from './ScheduleListItem';
 
+import dayjs from '@/shared/lib/dayjs';
 import AddIcons from '@/static/icons/add.svg';
 
 const ItemSeparator = () => <View className="h-[6px]" />;
@@ -37,7 +37,7 @@ const ScheduleList = ({ selectedDate, schedule }: ScheduleListProps) => {
   return (
     <View className="relative">
       <Text className="mb-[15px] text-[15px] typo-body-15-medium">
-        {formatKoreanDate(selectedDate)}
+        {dayjs(selectedDate).format('YYYY년 M월 D일 (ddd)')}
       </Text>
       <FlatList
         data={scheduleItems}

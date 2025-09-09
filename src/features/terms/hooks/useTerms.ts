@@ -3,7 +3,7 @@ import { useReducer } from 'react';
 import { TermsKey, TermsType } from '../types/termsTypes';
 
 import TERMS_PROVIDER from '@/shared/constants/termsProvider';
-import { typedKeys } from '@/shared/lib/typedObject';
+import { typedKeys } from '@/shared/utils/type/typedObject';
 
 export type TermsState = Record<
   TermsKey,
