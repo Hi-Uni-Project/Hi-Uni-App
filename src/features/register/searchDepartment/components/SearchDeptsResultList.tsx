@@ -47,7 +47,7 @@ const SearchDeptsResultList = ({
                 />
               </View>
             )}
-            <Text className="text-surface-500 typo-body-12-light">
+            <Text className="text-surface-500 typo-caption-12-light">
               {item.college}
             </Text>
           </Pressable>

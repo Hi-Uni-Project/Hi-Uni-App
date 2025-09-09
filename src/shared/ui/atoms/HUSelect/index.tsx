@@ -22,7 +22,9 @@ const HUSelect = ({ text, onPressed, isSelected }: HUSelectProps) => {
       ) : (
         <ToggleIcons type="nonCheck" color="#DADADA" width={18} height={18} />
       )}
-      <Text className="ml-2 typo-body-14-semibold">{text}</Text>
+      <Text className="ml-2 text-secondary-black typo-caption-14-semibold">
+        {text}
+      </Text>
     </Pressable>
   );
 };

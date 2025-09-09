@@ -14,7 +14,7 @@ const HighlightedText = ({ text, highlightText, selected }: Props) => {
   // 선택된 경우: 전체 black + bold
   if (selected) {
     return (
-      <Text className="text-secondary-black typo-main-button-16-semibold">
+      <Text className="text-secondary-black typo-sub-button-16-semibold">
         {text}
       </Text>
     );
@@ -40,7 +40,7 @@ const HighlightedText = ({ text, highlightText, selected }: Props) => {
             key={index}
             className={cn(
               isMatch
-                ? 'text-surface-700 typo-main-button-16-semibold'
+                ? 'text-surface-700 typo-sub-button-16-semibold'
                 : 'text-surface-700 typo-body-16-regular',
             )}>
             {part}

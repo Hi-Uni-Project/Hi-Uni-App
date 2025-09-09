@@ -16,7 +16,7 @@ const SelectedDeptsList = ({ selectedDepts, handleRemoveDept }: Props) => {
         <View
           key={major}
           className="flex-row items-center rounded-full border-[1.5px] border-[#D9D9D9] px-3 py-[6px]">
-          <Text className="mr-[7px] text-surface-700 typo-body-14-semibold">
+          <Text className="mr-[7px] text-surface-700 typo-caption-14-semibold">
             {major}
           </Text>
           <Pressable onPress={() => handleRemoveDept(major)}>

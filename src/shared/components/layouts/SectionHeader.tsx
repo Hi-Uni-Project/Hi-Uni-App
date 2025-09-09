@@ -14,7 +14,7 @@ const SectionHeader = ({ titleComponent, onPressMore }: SectionHeaderProps) => {
     <View className="mb-[13px] flex-row items-center justify-between px-5">
       {titleComponent}
       <Pressable onPress={onPressMore} className="flex-row items-center">
-        <Text className="mr-2 text-[#6E6E6E] typo-caption-14-regular">
+        <Text className="mr-2 text-surface-600 typo-caption-14-regular">
           더 보기
         </Text>
         <ChevronIcons direction="right" width={6} height={10} color="#B7B7B7" />

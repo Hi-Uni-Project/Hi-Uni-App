@@ -19,7 +19,9 @@ const HotPostItem = ({ item }: HotPostItemProps) => {
         onPress={() => {
           console.log(`post ${item.id} pressed`);
         }}>
-        <Text className="text-[#1E2128] typo-body-16-medium">{item.title}</Text>
+        <Text className="text-secondary-black typo-body-16-medium">
+          {item.title}
+        </Text>
 
         <View className="flex-row items-center justify-between">
           <Text className="ml-[2px] text-gray-500 typo-caption-13-light">

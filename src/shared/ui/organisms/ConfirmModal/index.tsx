@@ -46,13 +46,13 @@ const ConfirmModal = ({
           </View>
 
           <Text
-            className="mb-[11px] text-center text-main-text typo-title-22-semibold"
+            className="mb-[11px] text-center text-main-text typo-sub-title-22-semibold"
             style={{ lineHeight: 27.5 }}>
             {title}
           </Text>
 
           {description && (
-            <Text className="mb-6 text-center text-surface-600 typo-14-regular">
+            <Text className="mb-6 text-center text-surface-600 typo-caption-14-regular">
               {description}
             </Text>
           )}
