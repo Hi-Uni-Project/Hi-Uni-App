@@ -14,7 +14,7 @@ const ItemSeparator = () => <View className="h-[6px]" />;
 
 const ListEmptyComponent = () => (
   <Animated.View entering={FadeIn.delay(150)}>
-    <Text className="text-[#B7B7B7] typo-caption-14-regular">
+    <Text className="text-surface-400 typo-caption-14-regular">
       아직 등록한 일정이 없어요.
     </Text>
   </Animated.View>

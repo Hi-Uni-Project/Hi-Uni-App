@@ -18,14 +18,14 @@ const ScheduleListItem = ({
       className="flex-row items-center justify-between"
       entering={FadeIn.delay(150)}>
       <View className="flex-row items-center space-x-2">
-        <View className="rounded-full bg-[#979797] px-[11px] py-1">
+        <View className="rounded-full bg-surface-500 px-[11px] py-1">
           <Text className="text-white typo-caption-14-light">{category}</Text>
         </View>
-        <Text className="text-[#1E2128] typo-caption-14-semibold">
+        <Text className="text-secondary-black typo-caption-14-semibold">
           {detail}
         </Text>
       </View>
-      <Text className="text-[#979797] typo-caption-13-light">{time}</Text>
+      <Text className="text-surface-500 typo-caption-13-light">{time}</Text>
     </Animated.View>
   );
 };
