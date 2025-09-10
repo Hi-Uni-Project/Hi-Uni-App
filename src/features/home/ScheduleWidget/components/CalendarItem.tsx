@@ -6,15 +6,7 @@ import Animated, {
   withSpring,
 } from 'react-native-reanimated';
 
-const dayNames: Record<number, string> = {
-  0: '일',
-  1: '월',
-  2: '화',
-  3: '수',
-  4: '목',
-  5: '금',
-  6: '토',
-};
+import dayjs from '@/shared/lib/dayjs';
 
 interface CalendarItemProps {
   week: Date;
@@ -45,7 +37,7 @@ const CalendarItem = ({
         <Animated.Text
           style={dateAnimatedStyle}
           className="pb-2 typo-caption-13-light">
-          {dayNames[week.getDay()]}
+          {dayjs(week).format('ddd')}
         </Animated.Text>
         <Animated.Text
           style={dateAnimatedStyle}
