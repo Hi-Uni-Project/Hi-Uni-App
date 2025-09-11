@@ -1,0 +1,63 @@
+import React from 'react';
+
+import Animated from 'react-native-reanimated';
+import Svg, { Path } from 'react-native-svg';
+
+import useSvgAnimatedProps from '@/shared/hooks/useSvgAnimatedProps';
+
+interface TabChatIconProps {
+  width?: number;
+  height?: number;
+  isSelected?: boolean;
+}
+
+const AnimatedPath = Animated.createAnimatedComponent(Path);
+
+const TabChatIcon = ({
+  width = 44,
+  height = 60,
+  isSelected = false,
+}: TabChatIconProps) => {
+  const {
+    useAnimatedFillProps,
+    useAnimatedStrokeProps,
+    useAnimatedStrokeFillProps,
+  } = useSvgAnimatedProps(isSelected);
+
+  return (
+    <Animated.View>
+      <Svg width={width} height={height} viewBox="0 0 44 60" fill="none">
+        <AnimatedPath
+          d="M32 22C32 18.2615 32 16.3923 31.1962 15C30.6695 14.0879 29.9121 13.3305 29 12.8038C27.6077 12 25.7385 12 22 12V12C18.2615 12 16.3923 12 15 12.8038C14.0879 13.3305 13.3305 14.0879 12.8038 15C12 16.3923 12 18.2615 12 22V30C12 30.9428 12 31.4142 12.2929 31.7071C12.5858 32 13.0572 32 14 32H22C25.7385 32 27.6077 32 29 31.1962C29.9121 30.6695 30.6695 29.9121 31.1962 29C32 27.6077 32 25.7385 32 22V22Z"
+          strokeWidth="2"
+          animatedProps={useAnimatedStrokeFillProps(
+            '#6568EB',
+            '#ffffff',
+            '#6568EB',
+            '#B7B7B7',
+          )}
+        />
+        <AnimatedPath
+          d="M18 20L26 20"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          animatedProps={useAnimatedStrokeProps('#ffffff', '#B7B7B7')}
+        />
+        <AnimatedPath
+          d="M18 24H22"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          animatedProps={useAnimatedStrokeProps('#ffffff', '#B7B7B7')}
+        />
+        <AnimatedPath
+          d="M15.6013 42.7041V54.0791H14.4587V42.7041H15.6013ZM5.78783 50.791C8.19994 49.3564 9.35522 47.4458 9.56469 45.1035H6.32104V44.1133H10.7644C10.758 45.2241 10.6057 46.2842 10.2566 47.2744H12.0593V42.9961H13.2019V53.5205H12.0593V48.2393H9.83764C9.16479 49.5596 8.07934 50.7148 6.47338 51.6543L5.78783 50.791ZM20.978 45.5986C20.9653 47.6743 22.2222 49.769 23.9868 50.5498L23.2632 51.502C21.9556 50.8799 20.9209 49.604 20.3877 48.0488C19.8608 49.7183 18.8135 51.0894 17.4487 51.7559L16.7124 50.7402C18.5024 49.9468 19.7593 47.7695 19.7593 45.5986V43.6562H20.978V45.5986ZM25.0151 54.1045V42.7041H26.2212V54.1045H25.0151ZM34.2385 43.7324V44.71H33.1594V48.2773C33.699 48.2393 34.2258 48.1885 34.7337 48.125L34.8098 49.0264C32.5183 49.3882 29.865 49.439 27.9163 49.4453L27.7766 48.4551C28.2146 48.4551 28.6843 48.4487 29.1731 48.4424V44.71H28.094V43.7324H34.2385ZM29.5032 53.8379V50.2832H30.7092V52.8604H37.1965V53.8379H29.5032ZM30.3411 48.417C30.8806 48.3979 31.4265 48.3789 31.9788 48.3535V44.71H30.3411V48.417ZM35.5081 51.083V42.7168H36.7141V46.0811H38.3645V47.0967H36.7141V51.083H35.5081Z"
+          animatedProps={useAnimatedFillProps('#6568EB', '#B7B7B7')}
+        />
+      </Svg>
+    </Animated.View>
+  );
+};
+
+export default TabChatIcon;
