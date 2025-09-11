@@ -8,11 +8,11 @@ import NextUpdateTemplate from '@/features/home/nextUpdateTemplate/components/Ne
 import ScheduleWidget from '@/features/home/scheduleWidget/components/ScheduleWidget';
 import UnivMajorBadge from '@/features/home/univMajorBadge/components/UnivMajorBadge';
 import HotPostsWidget from '@/features/home/weeklyHotPosts/components/HotPostsWidget';
-import ScreenLayout from '@/shared/components/layouts/ScreenLayout';
+import HomeLayout from '@/shared/components/layouts/HomeLayout';
 
 const HomeScreen = () => {
   return (
-    <ScreenLayout className="bg-[#F9F9F9]">
+    <HomeLayout className="bg-surface-50">
       <ScrollView>
         <UnivMajorBadge
           univName="제주대학교"
@@ -36,7 +36,7 @@ const HomeScreen = () => {
           <NextUpdateTemplate title="채용공고" />
         </Animated.View>
       </ScrollView>
-    </ScreenLayout>
+    </HomeLayout>
   );
 };
 
