@@ -5,9 +5,9 @@ import Animated, { LinearTransition } from 'react-native-reanimated';
 import DynamicCTABanner from '@/features/home/dynamicCTABanner/components/DynamicCTABanner';
 import NextUpdateTemplate from '@/features/home/nextUpdateTemplate/components/NextUpdateTemplate';
 import ScheduleWidget from '@/features/home/scheduleWidget/components/ScheduleWidget';
+import HomeScrollLayout from '@/features/home/shared/layouts/HomeScrollLayout';
 import UnivMajorBadge from '@/features/home/univMajorBadge/components/UnivMajorBadge';
 import HotPostsWidget from '@/features/home/weeklyHotPosts/components/HotPostsWidget';
-import HomeScrollLayout from '@/shared/components/layouts/HomeScrollLayout';
 
 const HomeScreen = () => {
   return (
