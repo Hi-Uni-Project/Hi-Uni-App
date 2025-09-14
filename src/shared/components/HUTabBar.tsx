@@ -31,67 +31,26 @@ const IconComponents = [
 const HUTabBar = ({ state, navigation }: HUTabBarProps) => {
   const insets = useSafeAreaInsets();
 
-  const [selected, setSelected] = React.useState(false);
-
   return (
     <View
+      className="flex-row justify-between rounded-t-[20px] bg-white px-[12px] pt-[4px]"
       style={{
-        position: 'absolute',
-        left: 0,
-        right: 0,
-
-        height: insets.bottom + 68,
-        bottom: 0,
-
-        flexDirection: 'row',
-        justifyContent: 'space-between',
         paddingBottom: insets.bottom,
-
-        paddingTop: 4,
-        backgroundColor: 'white',
         boxShadow: '0px 1px 8px 0px #1111111A',
-
-        paddingHorizontal: 12,
-        borderTopLeftRadius: 20,
-        borderTopRightRadius: 20,
       }}>
       {state.routes.map((route, index) => {
-        const isFocused = state.index === index;
-
-        const onPress = () => {
-          const event = navigation.emit({
-            type: 'tabPress',
-            target: route.key,
-            canPreventDefault: true,
-          });
-
-          if (!isFocused && !event.defaultPrevented) {
-            navigation.navigate(route.name, route.params);
-          }
-        };
-
-        const onLongPress = () => {
-          navigation.emit({
-            type: 'tabLongPress',
-            target: route.key,
-          });
-        };
+        const isSelected = state.index === index;
 
         return (
           <Pressable
             key={route.key}
-            style={{
-              alignItems: 'center',
-              justifyContent: 'center',
-              height: 68,
-              paddingHorizontal: 12,
-            }}
+            className="h-[68px] items-center justify-center px-[12px]"
             onPress={() => {
-              setSelected(!selected);
-              onPress();
-            }}
-            onLongPress={onLongPress}>
-            {IconComponents[index] && IconComponents[index](isFocused)}
+              if (!isSelected) {
+                navigation.navigate(route.name, route.params);
+              }
+            }}>
+            {IconComponents[index] && IconComponents[index](isSelected)}
           </Pressable>
         );
       })}
