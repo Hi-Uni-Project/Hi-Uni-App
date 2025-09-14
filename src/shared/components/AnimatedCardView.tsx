@@ -4,7 +4,7 @@ import { StyleSheet, ViewProps } from 'react-native';
 import Animated, { AnimatedProps } from 'react-native-reanimated';
 
 // 안드로이드와 iOS에서 그림자 스타일을 통일하기 위해 boxShadow 사용
-const shadowStyleSheet = StyleSheet.create({
+export const shadowStyleSheet = StyleSheet.create({
   dropShadow: {
     boxShadow: '0 0 10px 0 rgba(0, 0, 0, 0.03)',
   },
