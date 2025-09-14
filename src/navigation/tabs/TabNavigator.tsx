@@ -3,7 +3,7 @@ import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Text, View } from 'react-native';
 
-import HomeStackNavigator from './HomeStackNavigator';
+import HomeStackNavigator from '../stacks/HomeStackNavigator';
 
 import HUTabBar, { HUTabBarProps } from '@/shared/components/HUTabBar';
 

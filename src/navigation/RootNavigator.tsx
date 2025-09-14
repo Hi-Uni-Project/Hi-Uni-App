@@ -2,7 +2,7 @@ import React from 'react';
 
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-import HomeTabScreens from './TabNavigator';
+import HomeTabScreens from './tabs/TabNavigator';
 
 import LoginScreen from '@/screens/Login';
 import OnboardingScreen from '@/screens/Onboarding';

@@ -22,7 +22,7 @@ const HomeScreen = () => {
       <ScheduleWidget />
       <HotPostsWidget />
       <Animated.View
-        style={{ rowGap: 38, marginTop: 38 }}
+        style={{ rowGap: 38, marginTop: 38, marginBottom: 20 }}
         layout={LinearTransition}>
         <NextUpdateTemplate title="대외활동" />
 
