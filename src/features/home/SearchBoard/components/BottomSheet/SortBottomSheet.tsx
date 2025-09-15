@@ -42,18 +42,15 @@ const SortBottomSheet = ({
   }, [sortSheetVisible]);
 
   return (
-    <Modal
-      transparent
-      visible={sortSheetVisible}
-      animationType="fade" // backdrop은 fade
-      onRequestClose={() => setSortSheetVisible(false)}>
-      <View className="flex-1 bg-black/40">
+    <Modal transparent visible={sortSheetVisible} animationType="fade">
+      <Pressable
+        className="flex-1 bg-black/40"
+        onPress={() => setSortSheetVisible(false)}>
         <Animated.View
           style={{
             transform: [{ translateY }],
           }}
           className="absolute bottom-0 w-full rounded-t-2xl bg-white p-5">
-          {/* header */}
           <View className="mb-[25px] mt-1 flex-row items-center justify-center">
             <Pressable
               onPress={() => setSortSheetVisible(false)}
@@ -101,7 +98,7 @@ const SortBottomSheet = ({
             </Pressable>
           ))}
         </Animated.View>
-      </View>
+      </Pressable>
     </Modal>
   );
 };
