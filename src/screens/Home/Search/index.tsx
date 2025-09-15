@@ -11,8 +11,8 @@ import {
 import SortBottomSheet from '@/features/home/SearchBoard/components/BottomSheet/SortBottomSheet';
 import RecentSearchList from '@/features/home/SearchBoard/components/RecentSearchList';
 import { MAX_ITEMS } from '@/features/home/SearchBoard/constants/lines';
-import { shadowStyleSheet } from '@/shared/components/AnimatedCardView';
 import ArrowIcons from '@/shared/icons/ArrowIcons';
+import { shadowStyleSheet } from '@/shared/styles/shadow';
 import HUInput from '@/shared/ui/atoms/HUInput';
 import ConfirmModal from '@/shared/ui/organisms/ConfirmModal';
 
