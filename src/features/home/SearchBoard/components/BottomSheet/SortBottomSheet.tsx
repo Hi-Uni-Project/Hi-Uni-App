@@ -1,6 +1,6 @@
-import React, { Dispatch, SetStateAction } from 'react';
+import React, { Dispatch, SetStateAction, useEffect, useRef } from 'react';
 
-import { View, Text, Modal, Pressable } from 'react-native';
+import { View, Text, Modal, Pressable, Animated, Easing } from 'react-native';
 
 import { SORT_OPTIONS } from '../../constants/sortOptions';
 
@@ -21,14 +21,39 @@ const SortBottomSheet = ({
   selectedSort,
   setSelectedSort,
 }: Props) => {
+  const translateY = useRef(new Animated.Value(300)).current;
+
+  useEffect(() => {
+    if (sortSheetVisible) {
+      Animated.timing(translateY, {
+        toValue: 0,
+        duration: 250,
+        easing: Easing.out(Easing.ease),
+        useNativeDriver: true,
+      }).start();
+    } else {
+      Animated.timing(translateY, {
+        toValue: 300,
+        duration: 200,
+        easing: Easing.in(Easing.ease),
+        useNativeDriver: true,
+      }).start();
+    }
+  }, [sortSheetVisible]);
+
   return (
     <Modal
       transparent
       visible={sortSheetVisible}
-      animationType="slide"
+      animationType="fade" // backdrop은 fade
       onRequestClose={() => setSortSheetVisible(false)}>
       <View className="flex-1 bg-black/40">
-        <View className="absolute bottom-0 w-full rounded-t-2xl bg-white p-5">
+        <Animated.View
+          style={{
+            transform: [{ translateY }],
+          }}
+          className="absolute bottom-0 w-full rounded-t-2xl bg-white p-5">
+          {/* header */}
           <View className="mb-[25px] mt-1 flex-row items-center justify-center">
             <Pressable
               onPress={() => setSortSheetVisible(false)}
@@ -75,7 +100,7 @@ const SortBottomSheet = ({
               </View>
             </Pressable>
           ))}
-        </View>
+        </Animated.View>
       </View>
     </Modal>
   );
