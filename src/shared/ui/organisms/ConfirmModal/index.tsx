@@ -3,11 +3,12 @@ import React from 'react';
 import { Modal, View, Text } from 'react-native';
 
 import StatusIcons from '@/shared/icons/StatusIcons';
+import { cn } from '@/shared/lib/cn';
 import HUModalButton from '@/shared/ui/atoms/HUModalButton';
 
 type Props = {
   visible: boolean;
-  onClose: () => void;
+  onClose?: () => void;
   title: string;
   description?: string;
   confirmText: string;
@@ -23,7 +24,7 @@ const ConfirmModal = ({
   title,
   description,
   confirmText,
-  cancelText = '취소',
+  cancelText,
   onConfirm,
   onCancel,
   status = 'caution',
@@ -39,14 +40,17 @@ const ConfirmModal = ({
           <View className="mb-3 items-center">
             <StatusIcons
               status={status}
-              width={28}
-              height={28}
+              width={30}
+              height={30}
               color="#5B5B5B"
             />
           </View>
 
           <Text
-            className="mb-[11px] text-center text-main-text typo-sub-title-22-semibold"
+            className={cn(
+              cancelText ? 'mb-[11px]' : 'mb-5',
+              'text-center text-main-text typo-sub-title-22-semibold',
+            )}
             style={{ lineHeight: 27.5 }}>
             {title}
           </Text>
@@ -61,7 +65,6 @@ const ConfirmModal = ({
             text={confirmText}
             onPress={() => {
               onConfirm();
-              onClose();
             }}
           />
 

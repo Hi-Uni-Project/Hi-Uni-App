@@ -81,7 +81,11 @@ const SearchMyDepartment = () => {
           confirmText={SKIP_DEPARTMENT_MODAL.confirmText}
           cancelText={SKIP_DEPARTMENT_MODAL.cancelText}
           status="caution"
-          onConfirm={() => console.log('학과 선택 건너뜀')}
+          onConfirm={() => (
+            console.log('학과 선택 건너뜀'),
+            setIsModalVisible(false)
+          )}
+          // 핸들링 함수 구현할 때 한번에 선언
         />
       </ScreenLayout>
     </TouchableWithoutFeedback>
