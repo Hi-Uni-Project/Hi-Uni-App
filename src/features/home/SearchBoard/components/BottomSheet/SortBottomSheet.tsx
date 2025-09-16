@@ -5,8 +5,8 @@ import { View, Text, Modal, Pressable, Animated, Easing } from 'react-native';
 import { SORT_OPTIONS } from '../../constants/sortOptions';
 
 import ActionIcons from '@/shared/icons/ActionIcons';
-import StatusIcons from '@/shared/icons/StatusIcons';
 import { cn } from '@/shared/lib/cn';
+import FilteredChecked from '@/static/icons/filtered-checked.svg';
 
 interface Props {
   sortSheetVisible: boolean;
@@ -91,9 +91,7 @@ const SortBottomSheet = ({
                   {option}
                 </Text>
 
-                {selectedSort === option && (
-                  <StatusIcons status="check" width={20} height={20} />
-                )}
+                {selectedSort === option && <FilteredChecked />}
               </View>
             </Pressable>
           ))}
