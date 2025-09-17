@@ -2,7 +2,7 @@ import React, { Dispatch, SetStateAction, useEffect, useRef } from 'react';
 
 import { View, Text, Modal, Pressable, Animated, Easing } from 'react-native';
 
-import { SORT_OPTIONS } from '../../constants/sortOptions';
+import { SORT_OPTIONS } from '../constants/sortOptions';
 
 import ActionIcons from '@/shared/icons/ActionIcons';
 import { cn } from '@/shared/lib/cn';
