@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
 
 import { cva } from 'class-variance-authority';
 import { TextInput, View, TextInputProps } from 'react-native';
@@ -34,18 +34,22 @@ const inputVariants = cva(
   },
 );
 
-const HUInput = ({ variant = 'find', onPress, length, ...props }: Props) => {
-  return (
-    <View className={cn(viewVariants({ variant }))}>
-      <TextInput
-        className={cn(inputVariants({ variant }))}
-        maxLength={18}
-        placeholderTextColor="#979797"
-        {...props}
-      />
-      {variant === 'find' && <FindIcons length={length} onPress={onPress} />}
-    </View>
-  );
-};
+const HUInput = forwardRef<TextInput, Props>(
+  ({ variant = 'find', onPress, length, ...props }, ref) => {
+    return (
+      <View className={cn(viewVariants({ variant }))}>
+        <TextInput
+          ref={ref} // ref 연결
+          className={cn(inputVariants({ variant }))}
+          maxLength={18}
+          placeholderTextColor="#979797"
+          {...props}
+        />
+        {variant === 'find' && <FindIcons length={length} onPress={onPress} />}
+      </View>
+    );
+  },
+);
 
+HUInput.displayName = 'HUInput';
 export default HUInput;
