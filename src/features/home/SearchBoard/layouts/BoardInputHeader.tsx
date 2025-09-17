@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { RefObject } from 'react';
 
 import { Pressable, TextInput, View } from 'react-native';
 
@@ -7,7 +7,7 @@ import { shadowStyleSheet } from '@/shared/styles/shadow';
 import HUInput from '@/shared/ui/atoms/HUInput';
 
 interface Props {
-  inputRef: React.RefObject<TextInput>;
+  inputRef: RefObject<TextInput>;
   searchText: string;
   onSearchTextChange: (text: string) => void;
   onSubmitEditing: () => void;
@@ -16,7 +16,7 @@ interface Props {
   onBackPress: () => void;
 }
 
-const BoardInput = ({
+const BoardInputHeader = ({
   inputRef,
   searchText,
   onSearchTextChange,
@@ -53,4 +53,4 @@ const BoardInput = ({
   );
 };
 
-export default BoardInput;
+export default BoardInputHeader;
