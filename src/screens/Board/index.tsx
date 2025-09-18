@@ -10,15 +10,14 @@ import { TabKey } from '@/features/board/shared/types/BoardUpperTab';
 
 const BoardScreen = () => {
   const insets = useSafeAreaInsets();
-  const [activeTab, setActiveTab] = useState<TabKey>('notice');
+  const [activeTab, setActiveTab] = useState<TabKey>('jobInfo');
 
-  // 탭 콘텐츠 렌더링
   const renderContent = () => {
     switch (activeTab) {
-      case 'notice':
+      case 'jobInfo':
         return <JobInformationScreen />;
       default:
-        return <Text>애옹..</Text>;
+        return <Text>..</Text>;
     }
   };
 
@@ -27,6 +26,7 @@ const BoardScreen = () => {
       <BoardHeader onTabPress={setActiveTab} />
       <ScrollView style={{ marginTop: insets.top + 110 }}>
         {renderContent()}
+        <View className="h-[1000px]" />
       </ScrollView>
     </View>
   );

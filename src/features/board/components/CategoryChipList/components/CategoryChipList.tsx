@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { View } from 'react-native';
+import { Platform, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 
 import CategoryChip from './CategoryChip';
@@ -22,6 +22,9 @@ const CategoryChipList = ({
         nestedScrollEnabled={true}
         horizontal={true}
         showsHorizontalScrollIndicator={false}
+        contentContainerStyle={
+          Platform.OS === 'android' ? { paddingRight: 20 } : {}
+        }
         className="flex-row px-5 py-[17px]">
         {categories.map((category, index) => (
           <CategoryChip

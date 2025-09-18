@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { View, Text, FlatList } from 'react-native';
+import { View, Text, FlatList, Platform } from 'react-native';
 import { Pressable } from 'react-native';
 
 import BoardPostCardMocks from '@/features/board/mocks/BoardPostCardMocks';
@@ -41,6 +41,9 @@ const PopularJobInfoReview = () => {
         nestedScrollEnabled={true}
         horizontal={true}
         showsHorizontalScrollIndicator={false}
+        contentContainerStyle={
+          Platform.OS === 'android' ? { paddingRight: 20 } : {}
+        }
         className="flex-row px-5"
         renderItem={({ item }) => (
           <View className="mr-4" key={item.id}>

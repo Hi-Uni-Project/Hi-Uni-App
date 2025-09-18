@@ -19,7 +19,7 @@ interface BoardUpperNavigatorProps {
 }
 
 const BoardUpperNavigator = ({ onTabPress }: BoardUpperNavigatorProps) => {
-  const [activeTab, setActiveTab] = useState<TabKey>('notice');
+  const [activeTab, setActiveTab] = useState<TabKey>('jobInfo');
   const tabs: Tab[] = tabItems;
 
   const handlePress = (tabKey: TabKey) => {

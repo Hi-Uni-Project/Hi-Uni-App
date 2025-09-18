@@ -1,4 +1,4 @@
-type TabKey = 'notice' | 'anyOtherTab';
+type TabKey = 'jobInfo' | 'anyOtherTab';
 
 type Tab = { key: TabKey; title: string };
 
