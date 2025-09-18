@@ -1,125 +1,94 @@
-import React, { useState } from 'react';
+import React from 'react';
 
-import {
-  Keyboard,
-  Pressable,
-  Text,
-  TouchableWithoutFeedback,
-  View,
-} from 'react-native';
+import { Keyboard, TouchableWithoutFeedback, View } from 'react-native';
 
-import SortBottomSheet from '@/features/home/SearchBoard/components/BottomSheet/SortBottomSheet';
-import RecentSearchList from '@/features/home/SearchBoard/components/RecentSearchList';
-import { MAX_ITEMS } from '@/features/home/SearchBoard/constants/lines';
-import ArrowIcons from '@/shared/icons/ArrowIcons';
-import { shadowStyleSheet } from '@/shared/styles/shadow';
-import HUInput from '@/shared/ui/atoms/HUInput';
-import ConfirmModal from '@/shared/ui/organisms/ConfirmModal';
+import SearchActionModal from '@/features/home/searchBoard/components/SearchActionModal';
+import SearchContent from '@/features/home/searchBoard/components/SearchContent';
+import { useSearchBoard } from '@/features/home/searchBoard/hooks/useSearchBoard';
+import BoardInputHeader from '@/features/home/searchBoard/layouts/BoardInputHeader';
+import BoardSectionHeader from '@/features/home/searchBoard/layouts/BoardSectionHeader';
+import BoardHeaderColorGround from '@/features/home/shared/layouts/BoardHeaderColorGround';
+import ScreenLayout from '@/shared/components/layouts/ScreenLayout';
 
 const HomeSearchScreen = () => {
-  const [searchText, setSearchText] = useState('');
-  const [recentSearches, setRecentSearches] = useState<string[]>([]);
-  const [modalVisible, setModalVisible] = useState(false);
-  const [sortSheetVisible, setSortSheetVisible] = useState(false);
-  const [selectedSort, setSelectedSort] = useState('최신순');
+  const {
+    // Refs
+    inputRef,
 
-  const handleSearch = () => {
-    const trimmedText = searchText.trim();
-    if (trimmedText.length <= 1) {
-      setModalVisible(true);
-      return;
-    }
+    // State
+    searchText,
+    setSearchText,
+    recentSearches,
+    modalVisible,
+    setModalVisible,
+    sortSheetVisible,
+    setSortSheetVisible,
+    selectedSort,
+    setSelectedSort,
+    filteredPosts,
+    hasSearched,
 
-    setRecentSearches(prev => {
-      const updated = [
-        trimmedText,
-        ...prev.filter(item => item !== trimmedText),
-      ];
-      if (updated.length > MAX_ITEMS) {
-        updated.pop();
-      }
-      return updated;
-    });
+    // Computed values
+    hasSearchResults,
+    hasRecentSearches,
 
-    setSearchText('');
-    Keyboard.dismiss();
-  };
-
-  const handleRemoveItem = (item: string) => {
-    setRecentSearches(prev => prev.filter(i => i !== item));
-  };
-
-  const handleClearAll = () => setRecentSearches([]);
+    // Handlers
+    handleSearch,
+    handleSelectRecentItem,
+    handleInputFocus,
+    handleRemoveItem,
+    handleClose,
+    handleClearAll,
+    handleBackPress,
+    handlePostPress,
+  } = useSearchBoard();
 
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-      <View className="h-full w-full flex-1 bg-surface-50">
-        {/* headers -> 주간 hot 페이지와 병합하여 하나의 컴포넌트로 정리 필요 */}
-        <View
-          className="h-[160px] justify-end bg-white"
-          style={shadowStyleSheet.dropShadow}>
-          <View className="mb-[10px] flex-row items-center justify-between px-5">
-            <Pressable onPress={() => console.log('back')}>
-              <ArrowIcons
-                direction="left"
-                width={24}
-                height={20}
-                color="#1E2128"
-              />
-            </Pressable>
-            <View className="w-[315px]">
-              <HUInput
-                placeholder="글 제목 혹은 내용을 입력하세요"
-                variant="find"
-                value={searchText}
-                onChangeText={setSearchText}
-                onSubmitEditing={handleSearch}
-                maxLength={15}
-              />
-            </View>
-          </View>
-        </View>
+      <View className="flex-1">
+        <BoardHeaderColorGround />
 
-        {/* wrapper -> 공통 레이아웃으로 구성 가능한 코드 */}
-        <View className="px-5 pt-6">
-          {/* header */}
-          <View className="mb-3 flex-row items-center justify-between">
-            <Pressable onPress={() => setSortSheetVisible(true)}>
-              <Text className="text-surface-500 typo-body-16-regular">
-                {selectedSort}
-              </Text>
-            </Pressable>
-            {recentSearches.length > 0 && (
-              <Pressable onPress={handleClearAll}>
-                <Text className="text-surface-500 typo-body-16-medium">
-                  전체삭제
-                </Text>
-              </Pressable>
-            )}
-          </View>
-
-          {/* 최근 검색어 리스트 */}
-          <RecentSearchList
-            handleRemoveItem={handleRemoveItem}
-            recentSearches={recentSearches}
-          />
-        </View>
-
-        {/* 두 글자 미만 모달 */}
-        <ConfirmModal
-          confirmText="네, 확인했어요"
-          title="두 글자 이상 입력해주세요."
-          visible={modalVisible}
-          onConfirm={() => setModalVisible(false)}
+        <BoardInputHeader
+          inputRef={inputRef}
+          searchText={searchText}
+          onSearchTextChange={setSearchText}
+          onSubmitEditing={handleSearch}
+          onFocus={handleInputFocus}
+          onClose={handleClose}
+          onBackPress={handleBackPress}
         />
 
-        {/* 정렬 기준 바텀시트 */}
-        <SortBottomSheet
-          selectedSort={selectedSort}
-          setSelectedSort={setSelectedSort}
-          sortSheetVisible={sortSheetVisible}
-          setSortSheetVisible={setSortSheetVisible}
-        />
+        <ScreenLayout edges={['bottom']}>
+          <View className="mt-5 flex-1 px-5">
+            <BoardSectionHeader
+              setSortSheetVisible={setSortSheetVisible}
+              hasSearchResults={hasSearchResults}
+              hasRecentSearches={hasRecentSearches}
+              hasSearched={hasSearched}
+              selectedSort={selectedSort}
+              onClearAll={handleClearAll}
+            />
+
+            <SearchContent
+              hasSearchResults={hasSearchResults}
+              hasSearched={hasSearched}
+              filteredPosts={filteredPosts}
+              recentSearches={recentSearches}
+              onSelectRecentItem={handleSelectRecentItem}
+              onRemoveItem={handleRemoveItem}
+              onPostPress={handlePostPress}
+            />
+
+            <SearchActionModal
+              modalVisible={modalVisible}
+              onModalConfirm={() => setModalVisible(false)}
+              selectedSort={selectedSort}
+              setSelectedSort={setSelectedSort}
+              sortSheetVisible={sortSheetVisible}
+              setSortSheetVisible={setSortSheetVisible}
+            />
+          </View>
+        </ScreenLayout>
       </View>
     </TouchableWithoutFeedback>
   );

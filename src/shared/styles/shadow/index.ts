@@ -5,4 +5,7 @@ export const shadowStyleSheet = StyleSheet.create({
   dropShadow: {
     boxShadow: '0 0 10px 0 rgba(0, 0, 0, 0.03)',
   },
+  dropShadowBottom: {
+    boxShadow: '0 7.6px 15.2px 0 rgba(0, 0, 0, 0.02)',
+  },
 });
