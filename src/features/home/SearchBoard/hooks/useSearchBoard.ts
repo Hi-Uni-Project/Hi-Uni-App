@@ -11,6 +11,7 @@ export const useSearchBoard = () => {
   const [recentSearches, setRecentSearches] = useState<string[]>([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [sortSheetVisible, setSortSheetVisible] = useState(false);
+  // 추추 API 연동하여 가능하여 enum으로 타입화
   const [selectedSort, setSelectedSort] = useState('최신순');
   const [filteredPosts, setFilteredPosts] = useState<typeof mockBoardPosts>([]);
   const [hasSearched, setHasSearched] = useState(false);
