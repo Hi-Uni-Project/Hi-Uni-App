@@ -9,16 +9,22 @@ import {
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import BoardUpperNavigator from '@/navigation/tabs/BoardUpperNavigator';
-import ProfileIcon from '@/static/icons/profile.svg';
+import { TabKey } from '../types/BoardUpperTab';
+
+import BoardUpperNavigator from '@/features/board/shared/components/BoardUpperNavigator';
+import MoreIcon from '@/static/icons/more.svg';
 import SearchIcon from '@/static/icons/search.svg';
 
-const BoardHeader = ({ onTabPress }) => {
+interface BoardHeaderProps {
+  onTabPress?: (tabKey: TabKey) => void;
+}
+
+const BoardHeader = ({ onTabPress }: BoardHeaderProps) => {
   const insets = useSafeAreaInsets();
 
   const styles = StyleSheet.create({
     headerHeight: {
-      height: insets.top + 124,
+      height: insets.top + 110,
     },
     headerShadow: {
       boxShadow: '0px 0px 15px 0px #00000005',
@@ -32,21 +38,21 @@ const BoardHeader = ({ onTabPress }) => {
       <StatusBar barStyle="dark-content" />
       <View style={{ height: insets.top }} />
 
-      <View className="flex-row items-center justify-between">
+      <View className="h-[70px] flex-row items-center justify-between">
         <Text className="ml-[21px] text-main-text typo-sub-title-20-medium">
           제주대학교
         </Text>
-        <View className="mr-[10px] h-[70px] flex-row items-center">
+        <View className="mr-[10px] flex-row items-center">
           <TouchableOpacity className="p-[10px]">
             <SearchIcon width={26} height={26} />
           </TouchableOpacity>
           <TouchableOpacity className="p-[10px]">
-            <ProfileIcon width={26} height={26} />
+            <MoreIcon width={26} height={26} />
           </TouchableOpacity>
         </View>
       </View>
 
-      <View className="h-[54px] bg-red-200">
+      <View className="h-[40px]">
         <BoardUpperNavigator onTabPress={onTabPress} />
       </View>
     </View>
