@@ -9,16 +9,24 @@ import ActionIcons from '@/shared/icons/ActionIcons';
 interface Props {
   recentSearches: string[];
   handleRemoveItem: (item: string) => void;
+  handleSelectItem: (item: string) => void;
 }
 
-const RecentSearchList = ({ recentSearches, handleRemoveItem }: Props) => {
+const RecentSearchList = ({
+  recentSearches,
+  handleRemoveItem,
+  handleSelectItem,
+}: Props) => {
   return (
-    <View className="flex-row flex-wrap gap-2 gap-y-3 pt-1">
+    <View
+      className="flex-row flex-wrap gap-2 gap-y-3 overflow-hidden pt-1"
+      style={{ maxHeight: 4 * 42 }}>
       {recentSearches.length === 0 ? (
         <NoRecent />
       ) : (
         recentSearches.map(item => (
-          <View
+          <Pressable
+            onPress={() => handleSelectItem(item)}
             key={item}
             className="flex-row items-center rounded-[20px] border border-surface-300 px-4 py-2">
             <Text className="mr-2 text-surface-600 typo-body-16-regular">
@@ -32,7 +40,7 @@ const RecentSearchList = ({ recentSearches, handleRemoveItem }: Props) => {
                 color="#6E6E6E"
               />
             </Pressable>
-          </View>
+          </Pressable>
         ))
       )}
     </View>
