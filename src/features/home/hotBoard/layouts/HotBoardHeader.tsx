@@ -9,7 +9,7 @@ import FireIcon from '@/static/icons/fire.svg';
 const HotBoardHeader = () => {
   return (
     <View
-      className="h-[10%] justify-end"
+      className="h-[10%] justify-end bg-white"
       style={shadowStyleSheet.dropShadowBottom}>
       <View className="mb-[28px] flex-row items-center justify-center px-5">
         <Pressable className="absolute left-5">

@@ -27,7 +27,7 @@ const BoardInputHeader = ({
 }: Props) => {
   return (
     <View
-      className="h-[10%] justify-end"
+      className="h-[10%] justify-end bg-white"
       style={shadowStyleSheet.dropShadowBottom}>
       <View className="mb-[10px] flex-row items-center justify-between px-5">
         <Pressable onPress={onBackPress}>
