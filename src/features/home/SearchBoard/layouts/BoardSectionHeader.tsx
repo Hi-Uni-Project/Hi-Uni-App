@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
 
 import { Pressable, Text, View } from 'react-native';
 
@@ -7,12 +7,14 @@ import Filtered from '@/static/icons/filtered.svg';
 interface Props {
   hasSearchResults: boolean;
   hasRecentSearches: boolean;
+  setSortSheetVisible: Dispatch<SetStateAction<boolean>>;
   hasSearched: boolean;
   selectedSort: string;
   onClearAll: () => void;
 }
 
 const BoardSectionHeader = ({
+  setSortSheetVisible,
   hasSearchResults,
   hasRecentSearches,
   hasSearched,
@@ -22,7 +24,9 @@ const BoardSectionHeader = ({
   return (
     <View className="mb-2 flex-row items-center justify-between">
       {hasSearchResults ? (
-        <Pressable className="flex-row items-center gap-1.5">
+        <Pressable
+          className="flex-row items-center gap-1.5"
+          onPress={() => setSortSheetVisible(true)}>
           <Filtered />
           <Text className="text-surface-500 typo-body-16-regular">
             {selectedSort}

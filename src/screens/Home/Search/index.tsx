@@ -61,6 +61,7 @@ const HomeSearchScreen = () => {
         <ScreenLayout edges={['bottom']}>
           <View className="mt-5 flex-1 px-5">
             <BoardSectionHeader
+              setSortSheetVisible={setSortSheetVisible}
               hasSearchResults={hasSearchResults}
               hasRecentSearches={hasRecentSearches}
               hasSearched={hasSearched}
