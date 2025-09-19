@@ -1,18 +1,11 @@
 import React, { useState } from 'react';
 
-import { View, Text, StyleSheet, Pressable } from 'react-native';
+import { View, Text, Pressable } from 'react-native';
 
+import NavIndicatorStyles from '../styles/navIndicator';
 import { Tab, TabKey } from '../types/BoardUpperTab';
 
 import tabItems from '@/features/board/shared/constants/tabItems';
-
-const styles = StyleSheet.create({
-  activeTabBorder: {
-    borderBottomWidth: 4,
-    borderBottomColor: '#1E2128',
-    borderRadius: 4,
-  },
-});
 
 interface BoardUpperNavigatorProps {
   onTabPress?: (tabKey: TabKey) => void;
@@ -32,7 +25,11 @@ const BoardUpperNavigator = ({ onTabPress }: BoardUpperNavigatorProps) => {
       {tabs.map(tab => (
         <Pressable key={tab.key} onPress={() => handlePress(tab.key)}>
           <Text className="mb-2 typo-sub-title-20-semibold">{tab.title}</Text>
-          <View style={[activeTab === tab.key && styles.activeTabBorder]} />
+          <View
+            style={[
+              activeTab === tab.key && NavIndicatorStyles.activeTabBorder,
+            ]}
+          />
         </Pressable>
       ))}
     </View>
