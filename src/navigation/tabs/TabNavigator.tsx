@@ -5,6 +5,7 @@ import { Text, View } from 'react-native';
 
 import HomeStackNavigator from '../stacks/HomeStackNavigator';
 
+import BoardScreen from '@/screens/Board';
 import HUTabBar, { HUTabBarProps } from '@/shared/components/HUTabBar';
 
 const Tab = createBottomTabNavigator();
@@ -25,7 +26,7 @@ function HomeTabScreens() {
         headerShown: false,
       }}>
       <Tab.Screen name="HomeTab" component={HomeStackNavigator} />
-      <Tab.Screen name="Second" component={SecondPage} />
+      <Tab.Screen name="Board" component={BoardScreen} />
       <Tab.Screen name="Search" component={SecondPage} />
       <Tab.Screen name="Record" component={SecondPage} />
       <Tab.Screen name="Calendar" component={SecondPage} />
