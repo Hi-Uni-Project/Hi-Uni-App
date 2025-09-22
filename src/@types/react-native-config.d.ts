@@ -1,8 +1,8 @@
 declare module 'react-native-config' {
   export interface NativeConfig {
-    // 카카오
-    // KAKAO_APP_KEY: string;
-    // KAKAO_SCHEME_KEY: string;
+    // KAKAO
+    KAKAO_APP_KEY: string;
+    KAKAO_SCHEME_KEY: string;
 
     // 네이버
     // NAVER_CLIENT_ID: string;
