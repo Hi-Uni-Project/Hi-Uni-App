@@ -5,10 +5,10 @@ declare module 'react-native-config' {
     KAKAO_SCHEME_KEY: string;
 
     // 네이버
-    // NAVER_CLIENT_ID: string;
-    // NAVER_CLIENT_SECRET: string;
-    // NAVER_APP_NAME: string;
-    // NAVER_SERVICE_SCHEME_IOS: string;
+    NAVER_CLIENT_ID: string;
+    NAVER_CLIENT_SECRET: string;
+    NAVER_APP_NAME: string;
+    NAVER_SERVICE_SCHEME_IOS: string;
 
     // 구글
     // GOOGLE_CLIENT_ID: string;
