@@ -7,6 +7,9 @@ import RNBootSplash
 // Kakao-Login
 import KakaoSDKAuth
 
+// Naver-Login
+import NaverThirdPartyLogin
+
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
   var window: UIWindow?
@@ -42,10 +45,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
       return AuthController.handleOpenUrl(url: url)
       }
 
+    // NAVER LOGIN
+    if url.scheme == "{{ CUSTOM URL SCHEME }}" {
+      return NaverThirdPartyLoginConnection.getSharedInstance().application(app, open: url, options: options)
+    }
+
+    // GOOGLE LOGIN
+    // var handled: Bool
+    // handled = GIDSignIn.sharedInstance.handle(url)
+    // if handled {
+    //   return true  
+    // }
+
     return false
 
     }
-}
+  }
 
 class ReactNativeDelegate: RCTDefaultReactNativeFactoryDelegate {
   override func sourceURL(for bridge: RCTBridge) -> URL? {
