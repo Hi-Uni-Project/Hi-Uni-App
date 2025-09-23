@@ -20,6 +20,8 @@
 	<string>$(MARKETING_VERSION)</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
+	<key>GIDClientID</key>
+	<string>$(GOOGLE_CLIENT_ID)</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
@@ -38,6 +40,14 @@
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>$(NAVER_SERVICE_SCHEME_IOS)</string>
+			</array>
+		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.googleusercontent.apps.342562344824-g530600j81h3dio9u25iu6ubiubs9mbb</string>
 			</array>
 		</dict>
 	</array>
