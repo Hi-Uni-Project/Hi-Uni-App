@@ -2,6 +2,7 @@
  * @format
  */
 
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { initializeKakaoSDK } from '@react-native-kakao/core';
 import NaverLogin from '@react-native-seoul/naver-login';
 import { AppRegistry } from 'react-native';
@@ -20,6 +21,12 @@ NaverLogin.initialize({
   consumerSecret: Config.NAVER_CLIENT_SECRET,
   serviceUrlSchemeIOS: Config.NAVER_SERVICE_SCHEME_IOS,
   disableNaverAppAuthIOS: true,
+});
+
+// 구글 SDK 초기화
+GoogleSignin.configure({
+  webClientId: Config.GOOGLE_WEB_CLIENT_ID,
+  iosClientId: Config.GOOGLE_CLIENT_ID,
 });
 
 AppRegistry.registerComponent(appName, () => App);
