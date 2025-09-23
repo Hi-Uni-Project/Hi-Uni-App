@@ -10,6 +10,9 @@ import KakaoSDKAuth
 // Naver-Login
 import NaverThirdPartyLogin
 
+// Google-Login
+import GoogleSignIn
+
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
   var window: UIWindow?
@@ -51,11 +54,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     // GOOGLE LOGIN
-    // var handled: Bool
-    // handled = GIDSignIn.sharedInstance.handle(url)
-    // if handled {
-    //   return true  
-    // }
+    var handled: Bool
+    handled = GIDSignIn.sharedInstance.handle(url)
+    if handled {
+      return true  
+    }
 
     return false
 
