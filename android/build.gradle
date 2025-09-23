@@ -16,6 +16,13 @@ buildscript {
         classpath("com.facebook.react:react-native-gradle-plugin")
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin")
     }
+    allprojects {
+    repositories {
+        maven {
+            url "https://devrepo.kakao.com/nexus/content/groups/public/"
+        }
+    }
+}
 }
 
 apply plugin: "com.facebook.react.rootproject"

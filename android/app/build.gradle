@@ -90,6 +90,9 @@ android {
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "1.0"
+        // env
+        resValue "string", "KAKAO_APP_KEY", project.env.get("KAKAO_APP_KEY")
+        resValue "string", "KAKAO_SCHEME_KEY", project.env.get("KAKAO_SCHEME_KEY")
     }
     signingConfigs {
         debug {
