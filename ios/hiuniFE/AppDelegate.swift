@@ -4,6 +4,15 @@ import React_RCTAppDelegate
 import ReactAppDependencyProvider
 import RNBootSplash
 
+// Kakao-Login
+import KakaoSDKAuth
+
+// Naver-Login
+import NaverThirdPartyLogin
+
+// Google-Login
+import GoogleSignIn
+
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
   var window: UIWindow?
@@ -32,7 +41,29 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     return true
   }
-}
+
+  func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
+    // KAKAO LOGIN
+    if (AuthApi.isKakaoTalkLoginUrl(url)) {
+      return AuthController.handleOpenUrl(url: url)
+      }
+
+    // NAVER LOGIN
+    if url.scheme == "{{ CUSTOM URL SCHEME }}" {
+      return NaverThirdPartyLoginConnection.getSharedInstance().application(app, open: url, options: options)
+    }
+
+    // GOOGLE LOGIN
+    var handled: Bool
+    handled = GIDSignIn.sharedInstance.handle(url)
+    if handled {
+      return true  
+    }
+
+    return false
+
+    }
+  }
 
 class ReactNativeDelegate: RCTDefaultReactNativeFactoryDelegate {
   override func sourceURL(for bridge: RCTBridge) -> URL? {

@@ -1,19 +1,19 @@
 declare module 'react-native-config' {
   export interface NativeConfig {
-    // 카카오
-    // KAKAO_APP_KEY: string;
-    // KAKAO_SCHEME_KEY: string;
+    // KAKAO
+    KAKAO_APP_KEY: string;
+    KAKAO_SCHEME_KEY: string;
 
     // 네이버
-    // NAVER_CLIENT_ID: string;
-    // NAVER_CLIENT_SECRET: string;
-    // NAVER_APP_NAME: string;
-    // NAVER_SERVICE_SCHEME_IOS: string;
+    NAVER_CLIENT_ID: string;
+    NAVER_CLIENT_SECRET: string;
+    NAVER_APP_NAME: string;
+    NAVER_SERVICE_SCHEME_IOS: string;
 
     // 구글
-    // GOOGLE_CLIENT_ID: string;
-    // GOOGLE_SERVICE_SCHEME_IOS: string;
-    // GOOGLE_WEB_CLIENT_ID: string;
+    GOOGLE_CLIENT_ID: string;
+    GOOGLE_SERVICE_SCHEME_IOS: string;
+    GOOGLE_WEB_CLIENT_ID: string;
 
     // API
     API_KEY: string;

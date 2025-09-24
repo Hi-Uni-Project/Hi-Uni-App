@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "android": "react-native run-android",
-    "ios": "react-native run-ios --udid C4CC9334-93A7-4034-A63E-FE9EA20AFD6D",
+    "ios": "react-native run-ios",
     "ios-hyeon": "react-native run-ios --udid C4CC9334-93A7-4034-A63E-FE9EA20AFD6D",
     "ios-device": "react-native run-ios --udid 00008110-000615091E3B801E --mode Debug",
     "lint": "eslint .",
@@ -19,6 +19,10 @@
     ]
   },
   "dependencies": {
+    "@react-native-google-signin/google-signin": "^13.2.0",
+    "@react-native-kakao/core": "^2.4.0",
+    "@react-native-kakao/user": "^2.4.0",
+    "@react-native-seoul/naver-login": "^4.2.2",
     "@react-navigation/bottom-tabs": "^6.6.1",
     "@react-navigation/native": "^6.1.18",
     "@react-navigation/native-stack": "^6.11.0",
