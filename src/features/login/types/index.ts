@@ -1,4 +1,4 @@
-import { ResponseType } from '@/shared/api/types';
+import { ResponseTypes } from '@/shared/api/types';
 
 export type SocialTypes = 'kakao' | 'naver' | 'google' | 'apple';
 export type SocialLoginFunction = () => Promise<string>;
@@ -14,4 +14,4 @@ export interface Login {
   isSignUp: boolean;
 }
 
-export type LoginResponse = ResponseType<Login>;
+export type LoginResponse = ResponseTypes<Login>;
