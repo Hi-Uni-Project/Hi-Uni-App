@@ -11,7 +11,7 @@ import ScreenLayout from '@/shared/components/layouts/ScreenLayout';
 import HUButton from '@/shared/ui/atoms/HUButton';
 import HUInput from '@/shared/ui/atoms/HUInput';
 
-const SearchMyUniv = () => {
+const SearchMyUnivScreen = () => {
   const {
     inputValue,
     setInputValue,
@@ -62,4 +62,4 @@ const SearchMyUniv = () => {
   );
 };
 
-export default SearchMyUniv;
+export default SearchMyUnivScreen;

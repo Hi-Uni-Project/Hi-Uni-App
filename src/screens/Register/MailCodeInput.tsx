@@ -11,7 +11,7 @@ import KeyboardAvoidingLayout from '@/shared/components/layouts/KeyboardAvoiding
 import ScreenLayout from '@/shared/components/layouts/ScreenLayout';
 import HUButton from '@/shared/ui/atoms/HUButton';
 
-const MailCodeInput = () => {
+const MailCodeInputScreen = () => {
   const { codeFieldRef, value, setValue, props, getCellOnLayoutHandler } =
     useMailCode();
 
@@ -49,4 +49,4 @@ const MailCodeInput = () => {
   );
 };
 
-export default MailCodeInput;
+export default MailCodeInputScreen;
