@@ -15,12 +15,12 @@ const HotBoardScreen = () => {
       <HotBoardHeader />
 
       <ScreenLayout edges={['bottom']}>
-        <View className="mt-5 flex-1 px-5">
+        <View className="flex-1 px-5">
           <FlatList
             data={mockBoardPosts}
             keyExtractor={(_, idx) => idx.toString()}
             renderItem={({ item }) => <BoardPostCardMD {...item} />}
-            contentContainerStyle={{ paddingVertical: 10, gap: 8 }}
+            contentContainerStyle={{ paddingVertical: 20, gap: 8 }}
             showsVerticalScrollIndicator={false}
           />
 
