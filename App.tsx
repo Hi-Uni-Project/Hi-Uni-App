@@ -1,6 +1,6 @@
 import React from 'react';
 
-import RootStack from '@/navigation/RootNavigator';
+import MainStack from '@/navigation/RootNavigator';
 import { AppProviders } from '@/providers/AppProviders';
 import { useBootSplash } from '@/shared/hooks/useBootSplash';
 
@@ -9,7 +9,7 @@ function App() {
 
   return (
     <AppProviders>
-      <RootStack />
+      <MainStack />
     </AppProviders>
   );
 }
