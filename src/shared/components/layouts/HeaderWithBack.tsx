@@ -3,7 +3,7 @@ import React, { ReactNode } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { Pressable, View } from 'react-native';
 
-import { HiUniNativeStackNavigationProp } from '@/navigation/navigationTypes';
+import { MainStackNavigationProp } from '@/navigation/types/navigationTypes';
 import ArrowIcons from '@/shared/icons/ArrowIcons';
 import FlowTooltip from '@/shared/icons/FlowTooltip';
 
@@ -20,7 +20,7 @@ const HeaderWithBack = ({
   flow = false,
   screen,
 }: HeaderWithBackProps) => {
-  const navigation = useNavigation<HiUniNativeStackNavigationProp>();
+  const navigation = useNavigation<MainStackNavigationProp>();
 
   return (
     <View className="mt-6 flex-row justify-between px-[22px]">
