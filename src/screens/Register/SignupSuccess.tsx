@@ -4,7 +4,7 @@ import WelcomeTextBox from '@/features/welcome/components/WelcomeTextBox';
 import ScreenLayout from '@/shared/components/layouts/ScreenLayout';
 import HUButton from '@/shared/ui/atoms/HUButton';
 
-const Welcome = () => {
+const SignupSuccessScreen = () => {
   return (
     <ScreenLayout className="items-center bg-primary-purple">
       <WelcomeTextBox
@@ -18,4 +18,4 @@ const Welcome = () => {
   );
 };
 
-export default Welcome;
+export default SignupSuccessScreen;
