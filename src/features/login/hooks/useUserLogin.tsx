@@ -12,6 +12,8 @@ export const useLoginService = (navigation: MainStackNavigationProp) => {
     try {
       const authToken = await loginStrategies[provider]();
 
+      // console.log(authToken);
+
       handleLogin({ authToken, provider });
     } catch (err) {
       console.error(`${provider} 로그인 실패:`, err);
@@ -25,6 +27,9 @@ export const useLoginService = (navigation: MainStackNavigationProp) => {
       if (response.data.isSignUp) {
         handleSuccessfulLogin(response);
       } else {
+        // console.log('accessToken', response);
+        // setAccessToken(response.data.accessToken);
+        // setRefreshToken(response.data.refreshToken);
         navigation.navigate('SignupRoute');
       }
     } catch (err) {
