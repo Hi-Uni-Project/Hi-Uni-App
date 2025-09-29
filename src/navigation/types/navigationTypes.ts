@@ -19,5 +19,5 @@ export type SignupNavigationProps = {
 export type MainStackNavigationProp =
   NativeStackNavigationProp<MainNavigationProps>;
 
-export type SignupNavigationProp =
+export type SignupStackNavigationProp =
   NativeStackNavigationProp<SignupNavigationProps>;
