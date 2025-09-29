@@ -15,7 +15,7 @@ import HUButton from '@/shared/ui/atoms/HUButton';
 import HUInput from '@/shared/ui/atoms/HUInput';
 import ConfirmModal from '@/shared/ui/organisms/ConfirmModal';
 
-const SearchMyDepartment = () => {
+const SearchMyDepartmentScreen = () => {
   const {
     inputValue,
     setInputValue,
@@ -92,4 +92,4 @@ const SearchMyDepartment = () => {
   );
 };
 
-export default SearchMyDepartment;
+export default SearchMyDepartmentScreen;

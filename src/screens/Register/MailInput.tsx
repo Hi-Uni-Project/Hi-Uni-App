@@ -10,7 +10,7 @@ import KeyboardAvoidingLayout from '@/shared/components/layouts/KeyboardAvoiding
 import ScreenLayout from '@/shared/components/layouts/ScreenLayout';
 import HUButton from '@/shared/ui/atoms/HUButton';
 
-const MailInput = () => {
+const MailInputScreen = () => {
   const [inputValue, setInputValue] = useState('');
   const [isFocused, setIsFocused] = useState(false);
 
@@ -57,4 +57,4 @@ const MailInput = () => {
   );
 };
 
-export default MailInput;
+export default MailInputScreen;

@@ -9,7 +9,7 @@ const ProfileScreen = () => <>3</>;
 
 const Stack = createNativeStackNavigator();
 
-const HomeStackNavigator = () => {
+const HomeRoute = () => {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="HomeMain" component={HomeScreen} />
@@ -19,4 +19,4 @@ const HomeStackNavigator = () => {
   );
 };
 
-export default HomeStackNavigator;
+export default HomeRoute;

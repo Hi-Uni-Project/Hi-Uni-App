@@ -1,3 +1,5 @@
+import { ResponseTypes } from '@/shared/api/types';
+
 export type SocialTypes = 'kakao' | 'naver' | 'google' | 'apple';
 export type SocialLoginFunction = () => Promise<string>;
 
@@ -6,14 +8,10 @@ export interface LoginRequest {
   authToken: string;
 }
 
-export interface LoginResponse {
-  localDateTime: string;
-  responseCode: number;
-  statusCode: string;
-  message: string;
-  data: {
-    accessToken: string;
-    refreshToken: string;
-    isSignUp: boolean;
-  };
+export interface Login {
+  accessToken: string;
+  refreshToken: string;
+  isSignUp: boolean;
 }
+
+export type LoginResponse = ResponseTypes<Login>;

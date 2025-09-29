@@ -3,7 +3,7 @@ import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Text, View } from 'react-native';
 
-import HomeStackNavigator from '../stacks/HomeStackNavigator';
+import HomeRoute from '../stacks/HomeStackNavigator';
 
 import BoardScreen from '@/screens/Board';
 import HUTabBar, { HUTabBarProps } from '@/shared/components/HUTabBar';
@@ -18,20 +18,20 @@ const SecondPage = () => (
 
 const tabBar = (props: HUTabBarProps) => <HUTabBar {...props} />;
 
-function HomeTabScreens() {
+const HomeTabScreens = () => {
   return (
     <Tab.Navigator
       tabBar={tabBar}
       screenOptions={{
         headerShown: false,
       }}>
-      <Tab.Screen name="HomeTab" component={HomeStackNavigator} />
+      <Tab.Screen name="HomeTab" component={HomeRoute} />
       <Tab.Screen name="Board" component={BoardScreen} />
       <Tab.Screen name="Search" component={SecondPage} />
       <Tab.Screen name="Record" component={SecondPage} />
       <Tab.Screen name="Calendar" component={SecondPage} />
     </Tab.Navigator>
   );
-}
+};
 
 export default HomeTabScreens;

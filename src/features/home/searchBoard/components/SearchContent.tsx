@@ -36,7 +36,7 @@ const SearchContent = ({
         renderItem={({ item }) => (
           <BoardPostCardMD {...item} onPress={() => onPostPress(item.title)} />
         )}
-        contentContainerStyle={{ paddingVertical: 10, gap: 8 }}
+        contentContainerStyle={{ paddingVertical: 20, gap: 8 }}
         showsVerticalScrollIndicator={false}
       />
     );
