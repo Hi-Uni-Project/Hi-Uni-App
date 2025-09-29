@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { useNavigation } from '@react-navigation/native';
 import { ScrollView } from 'react-native';
 
 import useTerms from '../../features/terms/hooks/useTerms';
@@ -7,12 +8,14 @@ import useTerms from '../../features/terms/hooks/useTerms';
 import RegisterDefaultLayout from '@/features/register/shared/components/layouts/RegisterDefaultLayout';
 import RegisterHeader from '@/features/register/shared/components/layouts/RegisterHeader';
 import TermsSection from '@/features/terms/components/TermsSection';
+import { SignupStackNavigationProp } from '@/navigation/types/navigationTypes';
 import HeaderWithBack from '@/shared/components/layouts/HeaderWithBack';
 import ScreenLayout from '@/shared/components/layouts/ScreenLayout';
 import HUButton from '@/shared/ui/atoms/HUButton';
 
 const TermsScreen = () => {
   const { state, toggle, agreeAll, isValid } = useTerms();
+  const navigation = useNavigation<SignupStackNavigationProp>();
 
   // const testApi = async () => {
   //   const response = await axiosInstance.post('/tos/agree', {
@@ -56,7 +59,7 @@ const TermsScreen = () => {
           text="확인"
           disabled={!isValid}
           onPress={() => {
-            // 네비게이션
+            navigation.navigate('Univ');
           }}
         />
       </RegisterDefaultLayout>
