@@ -6,12 +6,12 @@ import { MainStackNavigationProp } from '@/navigation/types/navigationTypes';
 import { useUserStore } from '@/shared/stores/user';
 
 export const useLoginService = (navigation: MainStackNavigationProp) => {
-  const { setAccessToken, setRefreshToken } = useUserStore();
+  const { setAccessToken, setRefreshToken, setAuthToken } = useUserStore();
 
   const handleSocialLogin = async (provider: SocialTypes) => {
     try {
       const authToken = await loginStrategies[provider]();
-
+      setAuthToken(authToken);
       // console.log(authToken);
 
       handleLogin({ authToken, provider });
