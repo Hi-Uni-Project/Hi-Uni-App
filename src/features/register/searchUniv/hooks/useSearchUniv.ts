@@ -1,27 +1,31 @@
-import { useState, useMemo } from 'react';
+import { useState } from 'react';
 
-const UNIVERSITIES = [
-  '제주관광대학교',
-  '제주국제대학교',
-  '제주대학교',
-  '제주한라대학교',
-];
+import { useUnivSearchQuery } from '../queries/univQueries';
+import { University } from '../types';
 
-export const useSearchUniv = () => {
+import { SignupStackNavigationProp } from '@/navigation/types/navigationTypes';
+
+export const useSearchUniv = (navigation: SignupStackNavigationProp) => {
   const [inputValue, setInputValue] = useState('');
   const [selectedUniv, setSelectedUniv] = useState<string | null>(null);
 
-  // 검색어 필터링 (추후 API 요청으로 교체 예정)
-  const filteredUnivs = useMemo(() => {
-    if (inputValue.length < 2) {
-      return [];
-    }
-    return UNIVERSITIES.filter(u => u.includes(inputValue));
-  }, [inputValue]);
+  const { data: univList } = useUnivSearchQuery(inputValue);
+
+  const filteredUnivs = (univList?.data ?? []) as University[];
 
   const handleUnivChange = (univ: string, isSelect = false) => {
     setInputValue(univ);
     setSelectedUniv(isSelect ? univ : null);
+  };
+
+  const handleEraseInput = () => {
+    setSelectedUniv('');
+    setInputValue('');
+  };
+
+  const handleNavigation = () => {
+    handleEraseInput();
+    navigation.navigate('Department');
   };
 
   return {
@@ -31,5 +35,7 @@ export const useSearchUniv = () => {
     setSelectedUniv,
     filteredUnivs,
     handleUnivChange,
+    handleEraseInput,
+    handleNavigation,
   };
 };
