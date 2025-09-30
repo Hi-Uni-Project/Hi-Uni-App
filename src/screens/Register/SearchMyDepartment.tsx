@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { useNavigation } from '@react-navigation/native';
 import { View, TouchableWithoutFeedback, Keyboard } from 'react-native';
 
 import DepsNotFoundButton from '@/features/register/searchDepartment/components/DepsNotFoundButton';
@@ -9,13 +10,17 @@ import useSearchDepartment from '@/features/register/searchDepartment/hooks/useS
 import RegisterDefaultLayout from '@/features/register/shared/components/layouts/RegisterDefaultLayout';
 import RegisterHeader from '@/features/register/shared/components/layouts/RegisterHeader';
 import { SKIP_DEPARTMENT_MODAL } from '@/features/register/shared/constants/skipDeptModalText';
+import { SignupStackNavigationProp } from '@/navigation/types/navigationTypes';
 import HeaderWithBack from '@/shared/components/layouts/HeaderWithBack';
 import ScreenLayout from '@/shared/components/layouts/ScreenLayout';
+import { useRegisterStore } from '@/shared/stores/register';
 import HUButton from '@/shared/ui/atoms/HUButton';
 import HUInput from '@/shared/ui/atoms/HUInput';
 import ConfirmModal from '@/shared/ui/organisms/ConfirmModal';
 
 const SearchMyDepartmentScreen = () => {
+  const navigation = useNavigation<SignupStackNavigationProp>();
+  const { univ } = useRegisterStore();
   const {
     inputValue,
     setInputValue,
@@ -25,7 +30,9 @@ const SearchMyDepartmentScreen = () => {
     filteredDepts,
     handleSelectDept,
     handleRemoveDept,
-  } = useSearchDepartment();
+    handleNavigation,
+    handleSkip,
+  } = useSearchDepartment(univ.univName, navigation);
 
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
@@ -70,7 +77,7 @@ const SearchMyDepartmentScreen = () => {
           text="다음으로"
           className="self-center"
           disabled={selectedDepts.length === 0}
-          onPress={() => console.log('선택된 학과:', selectedDepts)}
+          onPress={handleNavigation}
         />
 
         <ConfirmModal
@@ -81,11 +88,7 @@ const SearchMyDepartmentScreen = () => {
           confirmText={SKIP_DEPARTMENT_MODAL.confirmText}
           cancelText={SKIP_DEPARTMENT_MODAL.cancelText}
           status="caution"
-          onConfirm={() => (
-            console.log('학과 선택 건너뜀'),
-            setIsModalVisible(false)
-          )}
-          // 핸들링 함수 구현할 때 한번에 선언
+          onConfirm={handleSkip}
         />
       </ScreenLayout>
     </TouchableWithoutFeedback>

@@ -54,6 +54,12 @@ const useSearchDepartment = (
     setSelectedDepts([]);
   };
 
+  const handleSkip = () => {
+    setIsModalVisible(false);
+    navigation.navigate('InputEmail');
+    setSelectedDepts([]);
+  };
+
   return {
     inputValue,
     setInputValue,
@@ -65,6 +71,7 @@ const useSearchDepartment = (
     handleSelectDept,
     handleRemoveDept,
     handleNavigation,
+    handleSkip,
   };
 };
 
