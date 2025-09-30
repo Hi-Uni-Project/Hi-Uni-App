@@ -11,7 +11,8 @@ interface RegisterStore {
   setTos: (tos: Partial<TosData>) => void;
   setUniv: (univ: Partial<UnivData>) => void;
   setUnivName: (univName: string) => void;
-  setMajorName: (majorName: string) => void;
+  setFirstMajorName: (firstMajorName: string) => void;
+  setSecondMajorName: (secondMajorName: string) => void;
   setUnivEmail: (univEmail: string) => void;
 
   resetAll: () => void;
@@ -27,7 +28,8 @@ const initialState = {
   },
   univ: {
     univName: '',
-    majorName: '',
+    firstMajorName: '',
+    secondMajorName: '',
     univEmail: '',
   },
 };
@@ -52,9 +54,14 @@ export const useRegisterStore = create<RegisterStore>()(
           univ: { ...state.univ, univName },
         })),
 
-      setMajorName: majorName =>
+      setFirstMajorName: firstMajorName =>
         set(state => ({
-          univ: { ...state.univ, majorName },
+          univ: { ...state.univ, firstMajorName },
+        })),
+
+      setSecondMajorName: secondMajorName =>
+        set(state => ({
+          univ: { ...state.univ, secondMajorName },
         })),
 
       setUnivEmail: univEmail =>
