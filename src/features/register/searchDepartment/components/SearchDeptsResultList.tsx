@@ -3,14 +3,13 @@ import React from 'react';
 import { View, Text, Pressable } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 
+import { Department } from '../types';
+
 import HighlightedText from '@/features/register/shared/components/HighlightedText';
 import ToggleIcons from '@/shared/icons/ToggleIcons';
 
 interface Props {
-  filteredDepts: {
-    major: string;
-    college: string;
-  }[];
+  filteredDepts: Department[];
   handleSelectDept: (major: string) => void;
   inputValue: string;
   selectedDepts: string[];
@@ -27,17 +26,17 @@ const SearchDeptsResultList = ({
       <FlatList
         className="flex-1"
         data={filteredDepts}
-        keyExtractor={(item, index) => `${item.major}-${index}`}
+        keyExtractor={(item, index) => `${item.majorName}-${index}`}
         renderItem={({ item }) => (
           <Pressable
-            onPress={() => handleSelectDept(item.major)}
+            onPress={() => handleSelectDept(item.majorName)}
             className="py-[10px]">
             <HighlightedText
-              text={item.major}
+              text={item.majorName}
               highlightText={inputValue}
-              selected={selectedDepts.includes(item.major)}
+              selected={selectedDepts.includes(item.majorName)}
             />
-            {selectedDepts.includes(item.major) && (
+            {selectedDepts.includes(item.majorName) && (
               <View className="absolute right-[14px] top-1/2 -translate-y-1/2">
                 <ToggleIcons
                   type="check"
@@ -48,7 +47,7 @@ const SearchDeptsResultList = ({
               </View>
             )}
             <Text className="text-surface-500 typo-caption-12-light">
-              {item.college}
+              {item.collegeName}
             </Text>
           </Pressable>
         )}
