@@ -3,12 +3,18 @@ import { useState, useMemo } from 'react';
 import { useDepartmentListQuery } from '../querys/departmentQueries';
 import { Department } from '../types';
 
-const useSearchDepartment = (univName: string) => {
+import { SignupStackNavigationProp } from '@/navigation/types/navigationTypes';
+import { useRegisterStore } from '@/shared/stores/register';
+
+const useSearchDepartment = (
+  univName: string,
+  navigation: SignupStackNavigationProp,
+) => {
   const [inputValue, setInputValue] = useState('');
   const [selectedDepts, setSelectedDepts] = useState<string[]>([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
-
-  const { data: departmentList, isLoading } = useDepartmentListQuery(univName);
+  const { setFirstMajorName, setSecondMajorName } = useRegisterStore();
+  const { data: departmentList } = useDepartmentListQuery(univName);
 
   const allDepartments = (departmentList?.data ?? []) as Department[];
 
@@ -41,6 +47,13 @@ const useSearchDepartment = (univName: string) => {
     setSelectedDepts(prev => prev.filter(item => item !== majorName));
   };
 
+  const handleNavigation = () => {
+    navigation.navigate('InputEmail');
+    setFirstMajorName(selectedDepts[0]);
+    setSecondMajorName(selectedDepts[1]);
+    setSelectedDepts([]);
+  };
+
   return {
     inputValue,
     setInputValue,
@@ -51,7 +64,7 @@ const useSearchDepartment = (univName: string) => {
     filteredDepts,
     handleSelectDept,
     handleRemoveDept,
-    isLoading,
+    handleNavigation,
   };
 };
 
