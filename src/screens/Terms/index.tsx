@@ -14,32 +14,8 @@ import ScreenLayout from '@/shared/components/layouts/ScreenLayout';
 import HUButton from '@/shared/ui/atoms/HUButton';
 
 const TermsScreen = () => {
-  const { state, toggle, agreeAll, isValid } = useTerms();
   const navigation = useNavigation<SignupStackNavigationProp>();
-
-  // const testApi = async () => {
-  //   const response = await axiosInstance.post('/tos/agree', {
-  //     serviceTosIsAgreed: true,
-  //     personalInfoTosIsAgreed: true,
-  //     marketingTosIsAgreed: true,
-  //     serviceImprovementTosIsAgreed: true,
-  //     inPersonTosIsAgreed: false,
-  //   });
-
-  //   return response.data;
-  // };
-
-  // const handleTest = async () => {
-  //   try {
-  //     const response = await testApi();
-
-  //     console.log(response);
-  //   } catch (err) {
-  //     console.error('인증실패: ', err);
-  //   }
-  // };
-
-  // handleTest();
+  const { state, toggle, agreeAll, isValid } = useTerms();
 
   return (
     <ScreenLayout>
