@@ -1,8 +1,9 @@
-import { useReducer } from 'react';
+import { useEffect, useReducer } from 'react';
 
 import { TermsKey, TermsType } from '../types/termsTypes';
 
 import TERMS_PROVIDER from '@/shared/constants/termsProvider';
+import { useRegisterStore } from '@/shared/stores/register';
 import { typedKeys } from '@/shared/utils/type/typedObject';
 
 export type TermsState = Record<
@@ -60,6 +61,17 @@ const reducer = (state: TermsState, action: Action): TermsState => {
 
 const useTerms = (initial: TermsState = initialState) => {
   const [state, dispatch] = useReducer(reducer, initial);
+  const { setTos } = useRegisterStore();
+
+  useEffect(() => {
+    setTos({
+      inPersonTosIsAgreed: state.identity.isAgreed,
+      marketingTosIsAgreed: state.marketing.isAgreed,
+      personalInfoTosIsAgreed: state.privacy.isAgreed,
+      serviceImprovementTosIsAgreed: state.data.isAgreed,
+      serviceTosIsAgreed: state.service.isAgreed,
+    });
+  }, [state, setTos]);
 
   return {
     state,
