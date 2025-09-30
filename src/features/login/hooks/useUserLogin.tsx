@@ -6,13 +6,14 @@ import { MainStackNavigationProp } from '@/navigation/types/navigationTypes';
 import { useUserStore } from '@/shared/stores/user';
 
 export const useLoginService = (navigation: MainStackNavigationProp) => {
-  const { setAccessToken, setRefreshToken, setAuthToken } = useUserStore();
+  const { setAccessToken, setRefreshToken, setAuthToken, setUserSocialType } =
+    useUserStore();
 
   const handleSocialLogin = async (provider: SocialTypes) => {
     try {
       const authToken = await loginStrategies[provider]();
       setAuthToken(authToken);
-      // console.log(authToken);
+      setUserSocialType(provider);
 
       handleLogin({ authToken, provider });
     } catch (err) {
@@ -27,9 +28,8 @@ export const useLoginService = (navigation: MainStackNavigationProp) => {
       if (response.data.isSignUp) {
         handleSuccessfulLogin(response);
       } else {
-        // console.log('accessToken', response);
-        // setAccessToken(response.data.accessToken);
-        // setRefreshToken(response.data.refreshToken);
+        setAccessToken(response.data.accessToken);
+        setRefreshToken(response.data.refreshToken);
         navigation.navigate('SignupRoute');
       }
     } catch (err) {
