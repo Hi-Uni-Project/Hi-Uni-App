@@ -8,7 +8,8 @@ export interface TosData {
 
 export interface UnivData {
   univName: string;
-  majorName: string;
+  firstMajorName: string;
+  secondMajorName: string;
   univEmail: string;
 }
 
