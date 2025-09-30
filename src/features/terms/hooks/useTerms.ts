@@ -64,13 +64,15 @@ const useTerms = (initial: TermsState = initialState) => {
   const { setTos } = useRegisterStore();
 
   useEffect(() => {
-    setTos({
+    const tosData = {
       inPersonTosIsAgreed: state.identity.isAgreed,
       marketingTosIsAgreed: state.marketing.isAgreed,
       personalInfoTosIsAgreed: state.privacy.isAgreed,
       serviceImprovementTosIsAgreed: state.data.isAgreed,
       serviceTosIsAgreed: state.service.isAgreed,
-    });
+    };
+
+    setTos(tosData);
   }, [state, setTos]);
 
   return {
