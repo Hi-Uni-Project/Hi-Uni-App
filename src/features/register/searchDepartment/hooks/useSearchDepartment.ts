@@ -1,58 +1,63 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 
-const DEPARTMENT = [
-  { major: '가정관리학과 (폐지)', college: '자연과학대학' },
-  { major: '간호학과', college: '간호대학' },
-  { major: '건강뷰티행정학과', college: '미래융합대학' },
-  { major: '건축공학과 (폐지)', college: '공과대학' },
-  { major: '건축공학전공', college: '공과대학' },
-  { major: '경영정보학과', college: '경상대학' },
-  { major: '경영학과', college: '경상대학' },
-  { major: '경제학과', college: '경상대학' },
-  { major: '교육학과', college: '사범대학' },
-  { major: '국어국문학과', college: '인문대학' },
-  { major: '국제통상학과', college: '경상대학' },
-  { major: '기계공학과', college: '공과대학' },
-  { major: '데이터사이언스학과', college: 'AI융합대학' },
-  { major: '도시계획학과', college: '공과대학' },
-  { major: '디자인학과', college: '예술대학' },
-  { major: '무용학과', college: '예술대학' },
-  { major: '물리학과', college: '자연과학대학' },
-  { major: '미디어커뮤니케이션학과', college: '사회과학대학' },
-  { major: '바이오학과', college: '자연과학대학' },
-  { major: '법학과', college: '법과대학' },
-  { major: '불어불문학과', college: '인문대학' },
-  { major: '사회복지학과', college: '사회과학대학' },
-  { major: '산업공학과', college: '공과대학' },
-  { major: '생명과학과', college: '자연과학대학' },
-  { major: '소프트웨어학과', college: 'AI융합대학' },
-  { major: '수학과', college: '자연과학대학' },
-  { major: '스포츠과학과', college: '체육대학' },
-  { major: '심리학과', college: '사회과학대학' },
-  { major: '아동학과', college: '인문대학' },
-  { major: '영어영문학과', college: '인문대학' },
-];
+import { useDepartmentListQuery } from '../queries/departmentQueries';
+import { Department } from '../types';
 
-const useSearchDepartment = () => {
+import { SignupStackNavigationProp } from '@/navigation/types/navigationTypes';
+import { useRegisterStore } from '@/shared/stores/register';
+
+const useSearchDepartment = (
+  univName: string,
+  navigation: SignupStackNavigationProp,
+) => {
   const [inputValue, setInputValue] = useState('');
   const [selectedDepts, setSelectedDepts] = useState<string[]>([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const { setFirstMajorName, setSecondMajorName } = useRegisterStore();
+  const { data: departmentList } = useDepartmentListQuery(univName);
 
-  const filteredDepts = DEPARTMENT.filter(d =>
-    d.major.toLowerCase().includes(inputValue.toLowerCase()),
-  );
+  const allDepartments = (departmentList?.data ?? []) as Department[];
 
-  const handleSelectDept = (major: string) => {
-    if (selectedDepts.includes(major)) {
-      setSelectedDepts(prev => prev.filter(item => item !== major));
+  const filteredDepts = useMemo(() => {
+    if (inputValue.length === 0) {
+      return allDepartments;
+    }
+
+    const searchTerm = inputValue.toLowerCase().trim();
+    return allDepartments.filter(dept =>
+      dept.majorName.toLowerCase().includes(searchTerm),
+    );
+  }, [allDepartments, inputValue]);
+
+  const handleSelectDept = (majorName: string) => {
+    if (selectedDepts.includes(majorName)) {
+      // 이미 선택된 학과를 다시 클릭하면 제거
+      setSelectedDepts(prev => prev.filter(item => item !== majorName));
     } else if (selectedDepts.length < 2) {
-      setSelectedDepts(prev => [...prev, major]);
+      // 2개 미만이면 그냥 추가
+      setSelectedDepts(prev => [...prev, majorName]);
+    } else {
+      // 이미 2개가 선택된 경우, 마지막 요소 제거하고 새로운 학과 추가
+      setSelectedDepts(prev => [prev[0], majorName]);
     }
     setInputValue('');
   };
 
-  const handleRemoveDept = (major: string) => {
-    setSelectedDepts(prev => prev.filter(item => item !== major));
+  const handleRemoveDept = (majorName: string) => {
+    setSelectedDepts(prev => prev.filter(item => item !== majorName));
+  };
+
+  const handleNavigation = () => {
+    navigation.navigate('InputEmail');
+    setFirstMajorName(selectedDepts[0]);
+    setSecondMajorName(selectedDepts[1]);
+    setSelectedDepts([]);
+  };
+
+  const handleSkip = () => {
+    setIsModalVisible(false);
+    navigation.navigate('InputEmail');
+    setSelectedDepts([]);
   };
 
   return {
@@ -65,6 +70,8 @@ const useSearchDepartment = () => {
     filteredDepts,
     handleSelectDept,
     handleRemoveDept,
+    handleNavigation,
+    handleSkip,
   };
 };
 

@@ -1,24 +1,28 @@
 import React from 'react';
 
+import { useNavigation } from '@react-navigation/native';
 import { View, TouchableWithoutFeedback, Keyboard } from 'react-native';
 
 import SearchUnivResultList from '@/features/register/searchUniv/components/SearchUnivResultList';
 import { useSearchUniv } from '@/features/register/searchUniv/hooks/useSearchUniv';
 import RegisterDefaultLayout from '@/features/register/shared/components/layouts/RegisterDefaultLayout';
 import RegisterHeader from '@/features/register/shared/components/layouts/RegisterHeader';
+import { SignupStackNavigationProp } from '@/navigation/types/navigationTypes';
 import HeaderWithBack from '@/shared/components/layouts/HeaderWithBack';
 import ScreenLayout from '@/shared/components/layouts/ScreenLayout';
 import HUButton from '@/shared/ui/atoms/HUButton';
 import HUInput from '@/shared/ui/atoms/HUInput';
 
 const SearchMyUnivScreen = () => {
+  const navigation = useNavigation<SignupStackNavigationProp>();
   const {
     inputValue,
-    setInputValue,
     selectedUniv,
     filteredUnivs,
     handleUnivChange,
-  } = useSearchUniv();
+    handleEraseInput,
+    handleNavigation,
+  } = useSearchUniv(navigation);
 
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
@@ -35,7 +39,7 @@ const SearchMyUnivScreen = () => {
             <HUInput
               value={inputValue}
               onChangeText={text => handleUnivChange(text)}
-              onPress={() => setInputValue('')}
+              onPress={handleEraseInput}
               variant="find"
               length={inputValue.length}
               placeholder="최소 2글자 이상의 학교명을 입력해주세요"
@@ -55,7 +59,7 @@ const SearchMyUnivScreen = () => {
           text="다음으로"
           className="self-center"
           disabled={!selectedUniv}
-          onPress={() => console.log('선택된 학교:', selectedUniv)}
+          onPress={handleNavigation}
         />
       </ScreenLayout>
     </TouchableWithoutFeedback>

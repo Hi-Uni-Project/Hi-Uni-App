@@ -39,7 +39,7 @@ const HUInput = forwardRef<TextInput, Props>(
     return (
       <View className={cn(viewVariants({ variant }))}>
         <TextInput
-          ref={ref} // ref 연결
+          ref={ref}
           className={cn(inputVariants({ variant }))}
           maxLength={18}
           placeholderTextColor="#979797"

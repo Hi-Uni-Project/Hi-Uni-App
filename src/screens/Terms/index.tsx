@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { useNavigation } from '@react-navigation/native';
 import { ScrollView } from 'react-native';
 
 import useTerms from '../../features/terms/hooks/useTerms';
@@ -7,36 +8,14 @@ import useTerms from '../../features/terms/hooks/useTerms';
 import RegisterDefaultLayout from '@/features/register/shared/components/layouts/RegisterDefaultLayout';
 import RegisterHeader from '@/features/register/shared/components/layouts/RegisterHeader';
 import TermsSection from '@/features/terms/components/TermsSection';
+import { SignupStackNavigationProp } from '@/navigation/types/navigationTypes';
 import HeaderWithBack from '@/shared/components/layouts/HeaderWithBack';
 import ScreenLayout from '@/shared/components/layouts/ScreenLayout';
 import HUButton from '@/shared/ui/atoms/HUButton';
 
 const TermsScreen = () => {
+  const navigation = useNavigation<SignupStackNavigationProp>();
   const { state, toggle, agreeAll, isValid } = useTerms();
-
-  // const testApi = async () => {
-  //   const response = await axiosInstance.post('/tos/agree', {
-  //     serviceTosIsAgreed: true,
-  //     personalInfoTosIsAgreed: true,
-  //     marketingTosIsAgreed: true,
-  //     serviceImprovementTosIsAgreed: true,
-  //     inPersonTosIsAgreed: false,
-  //   });
-
-  //   return response.data;
-  // };
-
-  // const handleTest = async () => {
-  //   try {
-  //     const response = await testApi();
-
-  //     console.log(response);
-  //   } catch (err) {
-  //     console.error('인증실패: ', err);
-  //   }
-  // };
-
-  // handleTest();
 
   return (
     <ScreenLayout>
@@ -56,7 +35,7 @@ const TermsScreen = () => {
           text="확인"
           disabled={!isValid}
           onPress={() => {
-            // 네비게이션
+            navigation.navigate('Univ');
           }}
         />
       </RegisterDefaultLayout>
