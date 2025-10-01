@@ -1,6 +1,6 @@
 import { useState, useMemo } from 'react';
 
-import { useDepartmentListQuery } from '../querys/departmentQueries';
+import { useDepartmentListQuery } from '../queries/departmentQueries';
 import { Department } from '../types';
 
 import { SignupStackNavigationProp } from '@/navigation/types/navigationTypes';
