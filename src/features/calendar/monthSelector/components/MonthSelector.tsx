@@ -11,6 +11,7 @@ import {
   Animated,
   Easing,
   Platform,
+  LayoutChangeEvent,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -18,15 +19,15 @@ import HUModalButton from '@/shared/ui/atoms/HUModalButton';
 import SelectIcon from '@/static/icons/selector.svg';
 
 interface MonthSelectorProps {
-  setMainViewHeight: (height: number) => void;
-  selectedDate?: Dayjs;
-  setSelectedDate?: (date: Dayjs) => void;
+  selectedDate: Dayjs;
+  setSelectedDate: (date: Dayjs) => void;
+  onLayout?: (e: LayoutChangeEvent) => void;
 }
 
 const MonthSelector = ({
-  setMainViewHeight,
   selectedDate,
   setSelectedDate,
+  onLayout,
 }: MonthSelectorProps) => {
   const [isVisible, setIsVisible] = useState(false);
 
@@ -63,11 +64,8 @@ const MonthSelector = ({
   return (
     <>
       <View
-        onLayout={e => {
-          e.nativeEvent.layout.height &&
-            setMainViewHeight(e.nativeEvent.layout.height);
-        }}
-        className="mb-[19px] mt-5 flex-row items-center px-5">
+        onLayout={onLayout}
+        className="mb-[15px] mt-5 flex-row items-center px-5">
         <Pressable
           className="flex-row items-center"
           onPress={() => setIsVisible(true)}>
@@ -89,6 +87,7 @@ const MonthSelector = ({
               }}
               className="absolute bottom-0 left-0 right-0 w-full items-center rounded-t-2xl bg-white p-5">
               <DateTimePicker
+                themeVariant="light"
                 value={date}
                 mode="date"
                 display="spinner"
@@ -112,6 +111,7 @@ const MonthSelector = ({
       )}
       {Platform.OS === 'android' && isVisible && (
         <DateTimePicker
+          themeVariant="light"
           value={date}
           mode="date"
           display="spinner"
