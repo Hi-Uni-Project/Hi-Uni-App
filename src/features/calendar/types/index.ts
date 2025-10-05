@@ -19,19 +19,9 @@ export interface CalendarSchedule {
   category: string;
   detail: string;
   time: string;
-  color: string;
+  backgroundColor: string;
+  textColor: string;
   memo: string;
-}
-
-export interface CalendarScheduleUI {
-  startDate: Dayjs;
-  endDate: Dayjs;
-  category: string;
-  detail: string;
-  time: string;
-  color: string;
-  memo: string;
-  depth: number; // UI 렌더링을 위한 레벨 정보
 }
 
 export type CalendarScheduleResponse = ResponseTypes<CalendarSchedule[]>;
