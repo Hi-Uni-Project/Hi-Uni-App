@@ -10,6 +10,7 @@ import {
   LayoutChangeEvent,
   PanResponder,
 } from 'react-native';
+import Animated, { FadeIn } from 'react-native-reanimated';
 
 import getArrayOfMonth from '../../shared/utils/getArrayOfMonth';
 import { CalendarSchedule } from '../../types';
@@ -98,7 +99,8 @@ const DotCalendar = ({
                         alignItems: 'center',
                       }}>
                       {day.date.isSame(selectedDate, 'day') && (
-                        <View
+                        <Animated.View
+                          entering={FadeIn.delay(100).duration(200)}
                           style={{
                             position: 'absolute',
                             width: 22,
