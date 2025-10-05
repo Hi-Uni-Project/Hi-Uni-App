@@ -1,11 +1,8 @@
-import { useState } from 'react';
-
 import { useQuery } from '@tanstack/react-query';
 import { Dayjs } from 'dayjs';
 
-import { fetchCalendarSchedule } from '../api/calendarApi';
-
-import dayjs from '@/shared/lib/dayjs';
+import fetchCalendarSchedule from '../api/calendarApi';
+import getArrayOfMonth from '../utils/getArrayOfMonth';
 
 export const calendarKeys = {
   all: ['calendar'] as const,
@@ -13,9 +10,7 @@ export const calendarKeys = {
     [...calendarKeys.all, 'schedules', selectedDate.format('YYYY-MM')] as const,
 };
 
-const useScheduleQuery = () => {
-  const [selectedDate, setSelectedDate] = useState<Dayjs>(dayjs());
-
+const useScheduleQuery = (selectedDate: Dayjs) => {
   const {
     data: schedules = [],
     isLoading,
@@ -23,17 +18,20 @@ const useScheduleQuery = () => {
     refetch,
   } = useQuery({
     queryKey: calendarKeys.schedules(selectedDate),
-    queryFn: () =>
-      fetchCalendarSchedule({
-        startDate: selectedDate.startOf('month').format('YYYY-MM-DD'),
-        endDate: selectedDate.endOf('month').format('YYYY-MM-DD'),
-      }),
+    queryFn: () => {
+      const month = getArrayOfMonth({ date: selectedDate });
+      const firstDate = month[0].date;
+      const lastDate = month[month.length - 1].date;
+
+      return fetchCalendarSchedule({
+        startDate: firstDate.format('YYYY-MM-DD'),
+        endDate: lastDate.format('YYYY-MM-DD'),
+      });
+    },
     staleTime: 5 * 60 * 1000,
   });
 
   return {
-    selectedDate,
-    setSelectedDate,
     schedules,
     isLoading,
     error,
