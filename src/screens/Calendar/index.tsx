@@ -66,7 +66,8 @@ const CalendarScreen = () => {
           }}
         />
         <DotCalendar
-          date={selectedDate}
+          selectedDate={selectedDate}
+          setSelectedDate={setSelectedDate}
           scheduleMap={scheduleMap}
           onPressDate={setSelectedDate}
           onLayout={e => {

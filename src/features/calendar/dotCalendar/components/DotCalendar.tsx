@@ -8,6 +8,7 @@ import {
   Dimensions,
   Pressable,
   LayoutChangeEvent,
+  PanResponder,
 } from 'react-native';
 
 import getArrayOfMonth from '../../shared/utils/getArrayOfMonth';
@@ -16,14 +17,16 @@ import { CalendarSchedule } from '../../types';
 import MultiDot from './MultiDot';
 
 interface DotCalendarProps {
-  date: Dayjs;
+  selectedDate: Dayjs;
+  setSelectedDate: (date: Dayjs) => void;
   onPressDate?: (date: Dayjs) => void;
   onLayout?: (e: LayoutChangeEvent) => void;
   scheduleMap?: Record<string, CalendarSchedule[]>;
 }
 
 const DotCalendar = ({
-  date,
+  selectedDate,
+  setSelectedDate,
   onPressDate,
   onLayout,
   scheduleMap,
@@ -31,7 +34,19 @@ const DotCalendar = ({
   const screenWidth = Dimensions.get('window').width;
 
   const dates = getArrayOfMonth({
-    date: dayjs(date),
+    date: dayjs(selectedDate),
+  });
+
+  const panResponder = PanResponder.create({
+    onMoveShouldSetPanResponder: (_, gestureState) =>
+      Math.abs(gestureState.dx) > 20,
+    onPanResponderRelease: (_, gestureState) => {
+      if (gestureState.dx > 50) {
+        setSelectedDate(selectedDate.subtract(1, 'month'));
+      } else if (gestureState.dx < -50) {
+        setSelectedDate(selectedDate.add(1, 'month'));
+      }
+    },
   });
 
   // 셀 gap 4 * 6 = 24
@@ -43,6 +58,7 @@ const DotCalendar = ({
 
   return (
     <View
+      {...panResponder.panHandlers}
       onLayout={onLayout}
       className="mx-[14px] mb-[11px] items-center rounded-[10px] bg-white px-[1.5px]">
       <View>
@@ -81,7 +97,7 @@ const DotCalendar = ({
                         justifyContent: 'center',
                         alignItems: 'center',
                       }}>
-                      {day.date.isSame(date, 'day') && (
+                      {day.date.isSame(selectedDate, 'day') && (
                         <View
                           style={{
                             position: 'absolute',
@@ -97,7 +113,9 @@ const DotCalendar = ({
                           styles.dateText,
                           day.isSunday && styles.sundayText,
                           !day.isCurrentMonth && styles.nonCurrentMonthText,
-                          day.date.isSame(date, 'day') && { color: '#FFF' },
+                          day.date.isSame(selectedDate, 'day') && {
+                            color: '#FFF',
+                          },
                         ]}
                         className="typo-caption-13-medium">
                         {day.date.format('D')}
