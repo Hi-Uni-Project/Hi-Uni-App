@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo, useState } from 'react';
 
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Text, View } from 'react-native';
@@ -20,18 +20,60 @@ const SecondPage = () => (
 const tabBar = (props: HUTabBarProps) => <HUTabBar {...props} />;
 
 const HomeTabScreens = () => {
+  const [currentRouteName, setCurrentRouteName] = useState('HomeTab');
+
+  const backgroundColor = useMemo(() => {
+    switch (currentRouteName) {
+      case 'HomeTab':
+      case 'Board':
+      case 'Search':
+      case 'Record':
+        return '';
+      case 'Calendar':
+        return '#FFFFFF';
+      default:
+        return '#FFFFFF';
+    }
+  }, [currentRouteName]);
+
   return (
-    <Tab.Navigator
-      tabBar={tabBar}
-      screenOptions={{
-        headerShown: false,
+    <View
+      style={{
+        flex: 1,
+        backgroundColor: backgroundColor,
       }}>
-      <Tab.Screen name="HomeTab" component={HomeRoute} />
-      <Tab.Screen name="Board" component={BoardScreen} />
-      <Tab.Screen name="Search" component={SecondPage} />
-      <Tab.Screen name="Calendar" component={CalendarScreen} />
-      <Tab.Screen name="Record" component={SecondPage} />
-    </Tab.Navigator>
+      <Tab.Navigator
+        tabBar={tabBar}
+        screenOptions={{
+          headerShown: false,
+        }}>
+        <Tab.Screen
+          name="HomeTab"
+          component={HomeRoute}
+          listeners={{ focus: () => setCurrentRouteName('HomeTab') }}
+        />
+        <Tab.Screen
+          name="Search"
+          component={SecondPage}
+          listeners={{ focus: () => setCurrentRouteName('Search') }}
+        />
+        <Tab.Screen
+          name="Board"
+          component={BoardScreen}
+          listeners={{ focus: () => setCurrentRouteName('Board') }}
+        />
+        <Tab.Screen
+          name="Calendar"
+          component={CalendarScreen}
+          listeners={{ focus: () => setCurrentRouteName('Calendar') }}
+        />
+        <Tab.Screen
+          name="Record"
+          component={SecondPage}
+          listeners={{ focus: () => setCurrentRouteName('Record') }}
+        />
+      </Tab.Navigator>
+    </View>
   );
 };
 
