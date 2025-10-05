@@ -16,9 +16,8 @@ const MultiDot = ({
   spacing = 2,
 }: MultiDotProps) => {
   return (
-    <View
-      style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 2 }}>
-      {Array.from({ length: count }).map((_, index) => (
+    <View className="mt-[2px] flex-row justify-center">
+      {[...Array(count)].map((_, index) => (
         <View
           key={index}
           style={{

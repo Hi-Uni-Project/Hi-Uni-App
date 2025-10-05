@@ -38,6 +38,7 @@ const DotCalendar = ({
     date: dayjs(selectedDate),
   });
 
+  // 좌우 Swipe 감지
   const panResponder = PanResponder.create({
     onMoveShouldSetPanResponder: (_, gestureState) =>
       Math.abs(gestureState.dx) > 20,
@@ -64,7 +65,7 @@ const DotCalendar = ({
       className="mx-[14px] mb-[11px] items-center rounded-[10px] bg-white px-[1.5px]">
       <View>
         <View className="flex-row gap-[1.5px] px-[1.5px]">
-          {Array.from({ length: 7 }, (_, i) => i).map(day => (
+          {[...Array(7)].map((_, day) => (
             <Text
               key={day}
               style={{ width: cellSize }}
