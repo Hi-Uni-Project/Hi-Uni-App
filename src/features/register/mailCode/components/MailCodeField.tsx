@@ -1,7 +1,7 @@
 import React, { RefObject } from 'react';
 
-import { View } from 'react-native';
-import { CodeField, Cursor } from 'react-native-confirmation-code-field';
+import { View, Text } from 'react-native';
+import { CodeField } from 'react-native-confirmation-code-field';
 
 import { styles } from '../styles';
 
@@ -40,6 +40,7 @@ const MailCodeField = ({
         rootStyle={styles.codeFieldRoot}
         keyboardType="number-pad"
         textContentType="oneTimeCode"
+        textInputProps={{ caretHidden: true }}
         renderCell={({ index, symbol, isFocused }: RenderCellProps) => {
           const hasValue = Boolean(symbol);
           return (
@@ -53,7 +54,7 @@ const MailCodeField = ({
               {hasValue ? (
                 <View style={styles.dot} />
               ) : isFocused ? (
-                <Cursor />
+                <Text />
               ) : null}
             </View>
           );
