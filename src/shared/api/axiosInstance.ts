@@ -42,8 +42,6 @@ axiosInstance.interceptors.response.use(
 
     const code = error.response.data.responseCode;
 
-    console.log('axios: ', code);
-
     // 리프레시 토큰 만료 → 로그아웃 처리 -> MainStack에서 관리
     if (code === 1002) {
       logout();
