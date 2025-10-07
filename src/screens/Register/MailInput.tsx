@@ -13,6 +13,7 @@ import HUButton from '@/shared/ui/atoms/HUButton';
 
 const MailInputScreen = () => {
   const {
+    inputRef,
     inputValue,
     isFocused,
     validError,
@@ -35,6 +36,7 @@ const MailInputScreen = () => {
           <View className="items-center px-5">
             <View className="mt-12 w-full">
               <TextInput
+                ref={inputRef}
                 value={inputValue}
                 onChangeText={text => handleChangeEmail(text)}
                 className="w-full border-b-[1px] border-b-surface-300 pb-3 pl-3 text-surface-700 typo-body-16-regular"
