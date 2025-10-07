@@ -49,7 +49,7 @@ const MailInputScreen = () => {
               />
             </View>
 
-            {!!validError && <ErrorTextArea />}
+            {validError && <ErrorTextArea />}
           </View>
         </RegisterDefaultLayout>
       </ScreenLayout>

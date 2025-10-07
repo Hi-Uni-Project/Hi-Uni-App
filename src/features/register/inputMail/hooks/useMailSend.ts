@@ -4,7 +4,6 @@ import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import { TextInput } from 'react-native';
 
 import { sendMailApi } from '../api/sendMailApi';
-import { MailSendResponse } from '../types';
 
 import { SignupStackNavigationProp } from '@/navigation/types/navigationTypes';
 import { useRegisterStore } from '@/shared/stores/register';
@@ -35,7 +34,7 @@ export const useMailSend = () => {
 
   const handleSendMail = async () => {
     try {
-      const response: MailSendResponse = await sendMailApi({
+      const response = await sendMailApi({
         email: inputValue,
         univName: univ.univName,
       });
