@@ -11,7 +11,7 @@ export type SignupNavigationProps = {
   Univ: undefined;
   Department: undefined;
   InputEmail: undefined;
-  InputCode: undefined;
+  InputCode: { authMailId: string };
   SignupSuccess: undefined;
 };
 
