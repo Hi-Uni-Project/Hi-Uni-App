@@ -2,6 +2,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 
+import { useRegisterStore } from '../register';
+
 import { SocialTypes } from '@/features/login/types';
 
 interface UserState {
@@ -34,13 +36,16 @@ export const useUserStore = create<UserState>()(
         set({ refreshToken }),
       setAuthToken: (authToken: UserState['authToken']) => set({ authToken }),
 
-      logout: () =>
+      logout: () => {
+        const { resetAll } = useRegisterStore.getState();
         set({
           accessToken: null,
           refreshToken: null,
           authToken: null,
           userSocialType: null,
-        }),
+        });
+        resetAll();
+      },
     }),
     {
       name: 'auth-storage',
