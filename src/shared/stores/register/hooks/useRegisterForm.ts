@@ -1,5 +1,5 @@
-import { useRegisterStore } from '..';
 import { useUserStore } from '../../user';
+import { useRegisterStore } from '../index';
 import { RegisterFormData } from '../types';
 
 export const useRegisterForm = () => {
