@@ -1,6 +1,6 @@
 import React, { ReactNode } from 'react';
 
-import { KeyboardAvoidingView, Platform, ViewProps } from 'react-native';
+import { KeyboardAvoidingView, ViewProps } from 'react-native';
 
 interface Props extends ViewProps {
   children: ReactNode;
@@ -11,7 +11,7 @@ const KeyboardAvoidingLayout = ({ children }: Props) => {
     <KeyboardAvoidingView
       className="flex-1 bg-surface-50"
       keyboardVerticalOffset={17}
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+      behavior={'padding'}>
       {children}
     </KeyboardAvoidingView>
   );
