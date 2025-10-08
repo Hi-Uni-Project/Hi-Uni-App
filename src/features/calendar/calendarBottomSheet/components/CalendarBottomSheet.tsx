@@ -28,6 +28,18 @@ const backdropComponent = (props: BottomSheetBackdropProps) => (
   />
 );
 
+const shadowStyle = {
+  borderTopLeftRadius: 16,
+  borderTopRightRadius: 16,
+
+  shadowColor: '#000',
+  shadowOpacity: 0.03,
+  shadowOffset: { width: 0, height: 0 },
+  shadowRadius: 10,
+
+  elevation: 10,
+};
+
 const CalendarBottomSheet = ({
   ref,
   snapPoints,
@@ -40,17 +52,7 @@ const CalendarBottomSheet = ({
       ref={ref}
       index={0}
       backdropComponent={backdropComponent}
-      style={{
-        borderTopLeftRadius: 16,
-        borderTopRightRadius: 16,
-
-        shadowColor: '#000',
-        shadowOpacity: 0.03,
-        shadowOffset: { width: 0, height: 0 },
-        shadowRadius: 10,
-
-        elevation: 10,
-      }}
+      style={shadowStyle}
       snapPoints={snapPoints}
       onChange={sheetOnChange}
       enableDynamicSizing={false}
