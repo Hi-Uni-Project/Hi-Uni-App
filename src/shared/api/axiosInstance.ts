@@ -17,8 +17,6 @@ axiosInstance.interceptors.request.use(
   config => {
     const accessToken = useUserStore.getState().accessToken;
 
-    console.log(accessToken);
-
     if (accessToken) {
       config.headers.Authorization = `Bearer ${accessToken}`;
     }
@@ -42,13 +40,11 @@ axiosInstance.interceptors.response.use(
 
     const code = error.response.data.responseCode;
 
-    // 리프레시 토큰 만료 → 로그아웃 처리 -> MainStack에서 관리
     if (code === 1002) {
       logout();
       return Promise.reject(error);
     }
 
-    // 액세스 토큰 만료 → 재발급
     if (code === 1001) {
       try {
         const res = await axios.post<ResponseTypes<Refresh>>(
@@ -68,7 +64,6 @@ axiosInstance.interceptors.response.use(
 
         return axiosInstance.request(error.config);
       } catch (refreshError) {
-        // 재발급 실패 → 로그아웃 처리
         logout();
         return Promise.reject(refreshError);
       }
