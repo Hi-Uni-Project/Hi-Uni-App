@@ -39,6 +39,13 @@ const MonthSelector = ({
 
   const translateY = useRef(new Animated.Value(300)).current;
 
+  const handleTimePickedOnAndroid = (pickedDate: Date) => {
+    if (pickedDate) {
+      setDate(pickedDate);
+      setSelectedDate(dayjs(pickedDate));
+    }
+  };
+
   useEffect(() => {
     setDate(selectedDate.toDate());
   }, [selectedDate]);
@@ -98,7 +105,7 @@ const MonthSelector = ({
                   text="확인"
                   onPress={() => {
                     setIsVisible(false);
-                    setSelectedDate && setSelectedDate(dayjs(date));
+                    setSelectedDate(dayjs(date));
                   }}
                 />
               </View>
@@ -113,12 +120,9 @@ const MonthSelector = ({
           mode="date"
           display="spinner"
           locale="ko"
-          onChange={(_, choosedDate) => {
+          onChange={(_, pickedDate) => {
             setIsVisible(false);
-            if (choosedDate) {
-              setDate(choosedDate);
-              setSelectedDate && setSelectedDate(dayjs(choosedDate));
-            }
+            handleTimePickedOnAndroid(pickedDate);
           }}
         />
       )}
