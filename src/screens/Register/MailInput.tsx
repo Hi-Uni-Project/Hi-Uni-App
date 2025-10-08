@@ -46,6 +46,8 @@ const MailInputScreen = () => {
                 autoFocus={true}
                 onFocus={() => setIsFocused(true)}
                 onBlur={() => setIsFocused(false)}
+                submitBehavior="submit"
+                returnKeyType="done"
               />
             </View>
 
