@@ -44,21 +44,18 @@ const MonthSelector = ({
   }, [selectedDate]);
 
   useEffect(() => {
-    if (isVisible) {
-      Animated.timing(translateY, {
-        toValue: 0,
-        duration: 250,
-        easing: Easing.out(Easing.ease),
-        useNativeDriver: true,
-      }).start();
-    } else {
-      Animated.timing(translateY, {
-        toValue: 300,
-        duration: 200,
-        easing: Easing.in(Easing.ease),
-        useNativeDriver: true,
-      }).start();
-    }
+    const animation = Animated.timing(translateY, {
+      toValue: isVisible ? 0 : 300,
+      duration: isVisible ? 250 : 200,
+      easing: isVisible ? Easing.out(Easing.ease) : Easing.in(Easing.ease),
+      useNativeDriver: true,
+    });
+
+    animation.start();
+
+    return () => {
+      animation.stop();
+    };
   }, [isVisible]);
 
   return (
