@@ -1,14 +1,12 @@
 import React from 'react';
 
-import { useNavigation } from '@react-navigation/native';
-
+import { useUserRegister } from '@/features/register/hooks/useUserRegister';
 import WelcomeTextBox from '@/features/welcome/components/WelcomeTextBox';
-import { MainStackNavigationProp } from '@/navigation/types/navigationTypes';
 import ScreenLayout from '@/shared/components/layouts/ScreenLayout';
 import HUButton from '@/shared/ui/atoms/HUButton';
 
 const SignupSuccessScreen = () => {
-  const navigation = useNavigation<MainStackNavigationProp>();
+  const { handleRegister } = useUserRegister();
 
   return (
     <ScreenLayout className="items-center bg-primary-purple">
@@ -21,7 +19,7 @@ const SignupSuccessScreen = () => {
       <HUButton
         variant="black"
         text="커리어 성장하러가기"
-        onPress={() => navigation.navigate('HomeRoute')}
+        onPress={handleRegister}
       />
     </ScreenLayout>
   );
