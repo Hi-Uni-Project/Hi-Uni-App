@@ -19,6 +19,7 @@ export type OnboardNavigationProps = {
   Onboarding: undefined;
   Login: undefined;
   SignupRoute: undefined;
+  HomeRoute: undefined;
 };
 
 export type MainStackNavigationProp =
