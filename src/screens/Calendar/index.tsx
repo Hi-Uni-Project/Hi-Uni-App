@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 
 import BottomSheet from '@gorhom/bottom-sheet';
 import { useFocusEffect } from '@react-navigation/native';
-import { Dimensions, Text, View } from 'react-native';
+import { useWindowDimensions, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import CalendarBottomSheet from '@/features/calendar/calendarBottomSheet/components/CalendarBottomSheet';
@@ -13,7 +13,7 @@ import useSchedule from '@/features/calendar/shared/hooks/useSchedule';
 
 const CalendarScreen = () => {
   const insets = useSafeAreaInsets();
-  const dimensions = Dimensions.get('window');
+  const { height: screenHeight } = useWindowDimensions();
 
   const [headerHeight, setHeaderHeight] = useState<number | null>(null);
   const [dotCalendarHeight, setDotCalendarHeight] = useState<number | null>(
@@ -33,7 +33,7 @@ const CalendarScreen = () => {
   const snapPoints = useMemo(() => {
     // 바텀 시트 높이 = tabBar 높이(120) + insets + 요소들
     const calendarHeight =
-      dimensions.height -
+      screenHeight -
       (insets.top + headerHeight + dotCalendarHeight + 120 + insets.bottom);
 
     if (!dotCalendarHeight) {

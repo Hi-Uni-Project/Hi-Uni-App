@@ -5,10 +5,10 @@ import {
   View,
   Text,
   StyleSheet,
-  Dimensions,
   Pressable,
   LayoutChangeEvent,
   PanResponder,
+  useWindowDimensions,
 } from 'react-native';
 import Animated, { FadeIn } from 'react-native-reanimated';
 
@@ -32,7 +32,7 @@ const DotCalendar = ({
   onLayout,
   scheduleMap,
 }: DotCalendarProps) => {
-  const screenWidth = Dimensions.get('window').width;
+  const { width: screenWidth } = useWindowDimensions();
 
   const dates = getArrayOfMonth({
     date: dayjs(selectedDate),
