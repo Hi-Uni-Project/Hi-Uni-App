@@ -8,7 +8,7 @@ import ButtonView from './ButtonView';
 import PaginationView from './PaginationView';
 import TextView from './TextView';
 
-import { MainStackNavigationProp } from '@/navigation/types/navigationTypes';
+import { OnboardStackNavigationProp } from '@/navigation/types/navigationTypes';
 import ScreenLayout from '@/shared/components/layouts/ScreenLayout';
 import ONBOARDING_PROVIDER from '@/shared/constants/onboardingProvider';
 
@@ -16,7 +16,7 @@ const OnboardingScreen = () => {
   const [currentStep, setCurrentStep] = useState(0);
   const progress = useSharedValue<number>(0);
   const onboardingProvider = ONBOARDING_PROVIDER;
-  const navigation = useNavigation<MainStackNavigationProp>();
+  const navigation = useNavigation<OnboardStackNavigationProp>();
 
   const movePageByIndex = (index: number) => {
     const length = onboardingProvider.length;
