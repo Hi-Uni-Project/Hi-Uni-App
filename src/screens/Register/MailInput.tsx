@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import { TextInput, View } from 'react-native';
 
 import ErrorTextArea from '@/features/register/inputMail/components/ErrorTextArea';
+import { useMailSend } from '@/features/register/inputMail/hooks/useMailSend';
 import RegisterDefaultLayout from '@/features/register/shared/components/layouts/RegisterDefaultLayout';
 import RegisterHeader from '@/features/register/shared/components/layouts/RegisterHeader';
 import HeaderWithBack from '@/shared/components/layouts/HeaderWithBack';
@@ -11,8 +12,15 @@ import ScreenLayout from '@/shared/components/layouts/ScreenLayout';
 import HUButton from '@/shared/ui/atoms/HUButton';
 
 const MailInputScreen = () => {
-  const [inputValue, setInputValue] = useState('');
-  const [isFocused, setIsFocused] = useState(false);
+  const {
+    inputRef,
+    inputValue,
+    isFocused,
+    validError,
+    handleChangeEmail,
+    handleSendMail,
+    setIsFocused,
+  } = useMailSend();
 
   return (
     <KeyboardAvoidingLayout>
@@ -28,20 +36,22 @@ const MailInputScreen = () => {
           <View className="items-center px-5">
             <View className="mt-12 w-full">
               <TextInput
+                ref={inputRef}
                 value={inputValue}
-                onChangeText={text => setInputValue(text)}
+                onChangeText={text => handleChangeEmail(text)}
                 className="w-full border-b-[1px] border-b-surface-300 pb-3 pl-3 text-surface-700 typo-body-16-regular"
                 placeholder="학교 웹메일(ex : 20200525@knu.ac.kr)"
                 placeholderTextColor="#B7B7B7"
-                maxLength={30}
+                maxLength={40}
                 autoFocus={true}
                 onFocus={() => setIsFocused(true)}
                 onBlur={() => setIsFocused(false)}
+                submitBehavior="submit"
+                returnKeyType="done"
               />
             </View>
 
-            {/* 에러 분기처리 구현(예정) */}
-            <ErrorTextArea />
+            {validError && <ErrorTextArea />}
           </View>
         </RegisterDefaultLayout>
       </ScreenLayout>
@@ -51,6 +61,7 @@ const MailInputScreen = () => {
           text="다음으로"
           className="self-center"
           disabled={!inputValue.length}
+          onPress={handleSendMail}
         />
       </View>
     </KeyboardAvoidingLayout>

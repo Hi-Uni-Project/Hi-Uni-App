@@ -28,8 +28,6 @@ export const useLoginService = (navigation: MainStackNavigationProp) => {
       if (response.data.isSignUp) {
         handleSuccessfulLogin(response);
       } else {
-        setAccessToken(response.data.accessToken);
-        setRefreshToken(response.data.refreshToken);
         navigation.navigate('SignupRoute');
       }
     } catch (err) {

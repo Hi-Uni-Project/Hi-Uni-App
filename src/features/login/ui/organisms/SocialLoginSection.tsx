@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { useNavigation } from '@react-navigation/native';
-import { View } from 'react-native';
+import { View, Platform } from 'react-native';
 
 import { useLoginService } from '../../hooks/useUserLogin';
 
@@ -13,9 +13,13 @@ const SocialLoginSection = () => {
   const navigation = useNavigation<MainStackNavigationProp>();
   const { handleSocialLogin } = useLoginService(navigation);
 
+  const filteredProviders = SOCIAL_PROVIDERS.filter(
+    provider => Platform.OS === 'ios' || provider.id !== 'apple',
+  );
+
   return (
     <View className="w-full items-center gap-[7px] pb-11">
-      {SOCIAL_PROVIDERS.map(provider => (
+      {filteredProviders.map(provider => (
         <HUButton
           key={provider.id}
           variant={provider.id}
@@ -26,4 +30,5 @@ const SocialLoginSection = () => {
     </View>
   );
 };
+
 export default SocialLoginSection;

@@ -2,7 +2,7 @@ import React from 'react';
 
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-import OnboardRoute from './stacks/OnBoardStackNavigation.';
+import OnboardRoute from './stacks/OnboardStackNavigation';
 import HomeTabScreens from './tabs/TabNavigator';
 import { MainNavigationProps } from './types/navigationTypes';
 
