@@ -4,18 +4,18 @@ import { View } from 'react-native';
 
 import useMiniCalendarAnimation from '../hooks/useMiniCalendarAnimation';
 import useMiniCalendarItemPosition from '../hooks/useMiniCalendarItemPosition';
-import { MockScheduleData } from '../mocks/scheduleMock';
 
 import CalendarDot from './CalendarDot';
 import CalendarItem from './CalendarItem';
 import SelectionIndicator from './SelectionIndicator';
 
+import { CalendarSchedule } from '@/features/calendar/types';
+
 interface MiniCalendarProps {
   weeks: Date[];
   selectedDate: Date;
   onDateSelect: (date: Date) => void;
-  // mock data 추후 수정
-  schedule: MockScheduleData[];
+  schedule: CalendarSchedule[];
 }
 
 const MiniCalendar = ({

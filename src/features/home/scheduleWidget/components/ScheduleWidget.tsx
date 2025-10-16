@@ -4,14 +4,14 @@ import { useNavigation } from '@react-navigation/native';
 import { Pressable, Text, View, ViewProps } from 'react-native';
 import { LinearTransition } from 'react-native-reanimated';
 
-import { mockSeptember2025ScheduleData } from '../mocks/scheduleMock';
-
 import MiniCalendar from './MiniCalendar';
 import ScheduleList from './ScheduleList';
 
 import { calendarScheduleApi } from '@/features/calendar/api/calendarApi';
+import { CalendarSchedule } from '@/features/calendar/types';
 import { HomeTabNavigationProp } from '@/navigation/types/navigationTypes';
 import AnimatedCardView from '@/shared/components/AnimatedCardView';
+import dayjs from '@/shared/lib/dayjs';
 import getWeeks from '@/shared/utils/date/getWeeks';
 import DiaryIcon from '@/static/icons/diary.svg';
 
@@ -21,8 +21,7 @@ const ScheduleWidget = ({}: ScheduleWidgetProps) => {
   const [weeks] = useState<Date[]>(getWeeks());
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
 
-  // 스케줄을 가져오는 로직 추후 구현
-  const [schedule] = useState(mockSeptember2025ScheduleData);
+  const [schedule, setSchedule] = useState<CalendarSchedule[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   const navigation = useNavigation<HomeTabNavigationProp>();
@@ -30,11 +29,15 @@ const ScheduleWidget = ({}: ScheduleWidgetProps) => {
   useEffect(() => {
     const fetchSchedule = async () => {
       try {
+        const startOfWeek = dayjs().startOf('week');
+        const endOfWeek = dayjs().endOf('week');
+
         const response = await calendarScheduleApi({
-          startDate: '2025-01-01',
-          endDate: '2025-12-31',
+          startDate: startOfWeek.format('YYYY-MM-DD'),
+          endDate: endOfWeek.format('YYYY-MM-DD'),
         });
-        console.log(response);
+
+        setSchedule(response.data);
       } catch (error) {
         console.error('Error fetching schedule:', error);
       } finally {
