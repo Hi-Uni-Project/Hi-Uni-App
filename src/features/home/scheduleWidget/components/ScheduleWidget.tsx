@@ -7,7 +7,7 @@ import { LinearTransition } from 'react-native-reanimated';
 import MiniCalendar from './MiniCalendar';
 import ScheduleList from './ScheduleList';
 
-import { calendarScheduleApi } from '@/features/calendar/api/calendarApi';
+import { calendarScheduleApi } from '@/features/calendar/shared/api/calendarApi';
 import { CalendarSchedule } from '@/features/calendar/types';
 import { HomeTabNavigationProp } from '@/navigation/types/navigationTypes';
 import AnimatedCardView from '@/shared/components/AnimatedCardView';

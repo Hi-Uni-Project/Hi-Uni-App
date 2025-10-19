@@ -1,7 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
 import { Dayjs } from 'dayjs';
 
-import fetchCalendarSchedule from '../api/calendarApi';
+import { CalendarSchedule } from '../../types';
+import { calendarScheduleApi } from '../api/calendarApi';
 import getArrayOfMonth from '../utils/getArrayOfMonth';
 
 export const calendarKeys = {
@@ -16,17 +17,19 @@ const useScheduleQuery = (selectedDate: Dayjs) => {
     isLoading,
     error,
     refetch,
-  } = useQuery({
+  } = useQuery<CalendarSchedule[]>({
     queryKey: calendarKeys.schedules(selectedDate),
-    queryFn: () => {
+    queryFn: async () => {
       const month = getArrayOfMonth({ date: selectedDate });
       const firstDate = month[0].date;
       const lastDate = month[month.length - 1].date;
 
-      return fetchCalendarSchedule({
+      const response = await calendarScheduleApi({
         startDate: firstDate.format('YYYY-MM-DD'),
         endDate: lastDate.format('YYYY-MM-DD'),
       });
+
+      return response.data;
     },
     staleTime: 5 * 60 * 1000,
   });
