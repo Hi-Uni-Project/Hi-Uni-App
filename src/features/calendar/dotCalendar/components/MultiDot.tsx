@@ -2,29 +2,27 @@ import React from 'react';
 
 import { View } from 'react-native';
 
+import { CalendarSchedule } from '../../types';
+
 interface MultiDotProps {
-  count: number;
+  schedules: CalendarSchedule[];
   size?: number;
-  color?: string;
   spacing?: number;
 }
 
-const MultiDot = ({
-  count,
-  size = 5,
-  color = '#DADADA',
-  spacing = 2,
-}: MultiDotProps) => {
+const MultiDot = ({ schedules, size = 5, spacing = 2 }: MultiDotProps) => {
+  const displaySchedules = schedules.slice(0, 5);
+
   return (
     <View className="mt-[2px] flex-row justify-center">
-      {[...Array(count)].map((_, index) => (
+      {displaySchedules.map((schedule, index) => (
         <View
           key={index}
           style={{
             width: size,
             height: size,
             borderRadius: size / 2,
-            backgroundColor: color,
+            backgroundColor: schedule.backgroundColor,
             marginHorizontal: spacing / 2,
           }}
         />

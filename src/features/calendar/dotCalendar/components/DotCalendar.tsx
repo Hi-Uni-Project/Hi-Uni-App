@@ -126,11 +126,9 @@ const DotCalendar = ({
                     </View>
                     <View className="h-5">
                       <MultiDot
-                        count={Math.min(
-                          scheduleMap?.[day.date.format('YYYY-MM-DD')]
-                            ?.length ?? 0,
-                          5,
-                        )}
+                        schedules={
+                          scheduleMap?.[day.date.format('YYYY-MM-DD')] ?? []
+                        }
                         spacing={3}
                       />
                     </View>
