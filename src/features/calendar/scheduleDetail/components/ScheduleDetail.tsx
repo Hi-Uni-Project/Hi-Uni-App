@@ -66,7 +66,9 @@ const ScheduleDetail = ({
               <Text className="text-surface-500 typo-caption-9-light">
                 {dayjs(startDate).format('YYYY년 M월 D일')}
               </Text>
-              <Text className="mt-[-6px] text-surface-500 typo-caption-14-light">{`${startTime}`}</Text>
+              <Text className="mt-[-6px] text-surface-500 typo-caption-14-light">
+                {startTime}
+              </Text>
             </View>
 
             <View className="mb-[2px] h-auto justify-end">
@@ -77,7 +79,9 @@ const ScheduleDetail = ({
               <Text className="text-surface-500 typo-caption-9-light">
                 {dayjs(endDate).format('YYYY년 M월 D일')}
               </Text>
-              <Text className="mt-[-6px] text-surface-500 typo-caption-14-light">{`${endTime}`}</Text>
+              <Text className="mt-[-6px] text-surface-500 typo-caption-14-light">
+                {endTime}
+              </Text>
             </View>
           </View>
         ) : (
