@@ -97,6 +97,8 @@ const CalendarScreen = () => {
                   memo={schedule.memo}
                   backgroundColor={schedule.backgroundColor}
                   textColor={schedule.textColor}
+                  startDate={schedule.startDate}
+                  endDate={schedule.endDate}
                 />
               ))
             )}
