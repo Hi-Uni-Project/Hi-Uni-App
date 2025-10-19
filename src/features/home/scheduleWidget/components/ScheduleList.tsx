@@ -37,6 +37,9 @@ const ScheduleList = ({ selectedDate, schedule }: ScheduleListProps) => {
             category={item.category}
             detail={item.detail}
             time={item.time}
+            categoryBackgroundColor={item.backgroundColor}
+            categoryTextColor={item.textColor}
+            memo={item.memo}
             key={item.time}
           />
         )}
