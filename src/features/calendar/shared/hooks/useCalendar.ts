@@ -4,11 +4,11 @@ import { Dayjs } from 'dayjs';
 
 import buildScheduleMap from '../utils/buildScheduleMap';
 
-import useScheduleQuery from './useScheduleQuery';
+import useScheduleQuery from './scheduleQueries';
 
 import dayjs from '@/shared/lib/dayjs';
 
-const useSchedule = () => {
+const useCalendar = () => {
   const [selectedDate, setSelectedDate] = useState<Dayjs>(dayjs());
 
   const {
@@ -16,7 +16,7 @@ const useSchedule = () => {
     isLoading: isScheduleLoading,
     error: isScheduleError,
     refetch: scheduleRefetch,
-  } = useScheduleQuery(selectedDate);
+  } = useScheduleQuery({ selectedDate, mode: 'big' });
 
   const scheduleMap = useMemo(() => buildScheduleMap(schedules), [schedules]);
 
@@ -36,4 +36,4 @@ const useSchedule = () => {
   };
 };
 
-export default useSchedule;
+export default useCalendar;

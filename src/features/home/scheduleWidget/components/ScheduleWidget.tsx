@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 import { useNavigation } from '@react-navigation/native';
 import { Pressable, Text, View, ViewProps } from 'react-native';
@@ -7,8 +7,7 @@ import { LinearTransition } from 'react-native-reanimated';
 import MiniCalendar from './MiniCalendar';
 import ScheduleList from './ScheduleList';
 
-import { calendarScheduleApi } from '@/features/calendar/shared/api/calendarApi';
-import { CalendarSchedule } from '@/features/calendar/types';
+import useScheduleQuery from '@/features/calendar/shared/hooks/scheduleQueries';
 import { HomeTabNavigationProp } from '@/navigation/types/navigationTypes';
 import AnimatedCardView from '@/shared/components/AnimatedCardView';
 import dayjs from '@/shared/lib/dayjs';
@@ -21,31 +20,12 @@ const ScheduleWidget = ({}: ScheduleWidgetProps) => {
   const [weeks] = useState<Date[]>(getWeeks());
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
 
-  const [schedule, setSchedule] = useState<CalendarSchedule[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-
   const navigation = useNavigation<HomeTabNavigationProp>();
 
-  useEffect(() => {
-    const fetchSchedule = async () => {
-      try {
-        const startOfWeek = dayjs().startOf('week');
-        const endOfWeek = dayjs().endOf('week');
-
-        const response = await calendarScheduleApi({
-          startDate: startOfWeek.format('YYYY-MM-DD'),
-          endDate: endOfWeek.format('YYYY-MM-DD'),
-        });
-
-        setSchedule(response.data);
-      } catch (error) {
-        console.error('Error fetching schedule:', error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    fetchSchedule();
-  }, []);
+  const { schedules, isLoading } = useScheduleQuery({
+    selectedDate: dayjs(selectedDate),
+    mode: 'small',
+  });
 
   return (
     <AnimatedCardView className="mx-5 mt-[14px]" layout={LinearTransition}>
@@ -64,7 +44,7 @@ const ScheduleWidget = ({}: ScheduleWidgetProps) => {
               weeks={weeks}
               selectedDate={selectedDate}
               onDateSelect={setSelectedDate}
-              schedule={schedule}
+              schedule={schedules}
             />
           )}
         </View>
@@ -74,7 +54,7 @@ const ScheduleWidget = ({}: ScheduleWidgetProps) => {
         {isLoading ? (
           <Text>로딩중..</Text>
         ) : (
-          <ScheduleList selectedDate={selectedDate} schedule={schedule} />
+          <ScheduleList selectedDate={selectedDate} schedule={schedules} />
         )}
       </View>
     </AnimatedCardView>
