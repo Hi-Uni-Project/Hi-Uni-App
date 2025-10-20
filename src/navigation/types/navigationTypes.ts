@@ -1,3 +1,4 @@
+import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 export type MainNavigationProps = {
@@ -22,6 +23,14 @@ export type OnboardNavigationProps = {
   HomeRoute: undefined;
 };
 
+export type TabNavigationProps = {
+  HomeTab: undefined;
+  Search: undefined;
+  Board: undefined;
+  Calendar: undefined;
+  Record: undefined;
+};
+
 export type MainStackNavigationProp =
   NativeStackNavigationProp<MainNavigationProps>;
 
@@ -30,3 +39,5 @@ export type SignupStackNavigationProp =
 
 export type OnboardStackNavigationProp =
   NativeStackNavigationProp<OnboardNavigationProps>;
+
+export type HomeTabNavigationProp = BottomTabNavigationProp<TabNavigationProps>;

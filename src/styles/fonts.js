@@ -149,6 +149,13 @@ module.exports = function addFontsUtil({ addUtilities }) {
       letterSpacing: -0.22,
     },
 
+    '.typo-caption-9-light': {
+      fontWeight: 300,
+      fontSize: 9,
+      lineHeight: '24px',
+      letterSpacing: -0.18,
+    },
+
     // error
     '.typo-error-14-medium': {
       color: '#FB6C6C',

@@ -9,7 +9,7 @@ import CalendarBottomSheet from '@/features/calendar/calendarBottomSheet/compone
 import DotCalendar from '@/features/calendar/dotCalendar/components/DotCalendar';
 import MonthSelector from '@/features/calendar/monthSelector/components/MonthSelector';
 import ScheduleDetail from '@/features/calendar/scheduleDetail/components/ScheduleDetail';
-import useSchedule from '@/features/calendar/shared/hooks/useSchedule';
+import useCalendar from '@/features/calendar/shared/hooks/useCalendar';
 
 const CalendarScreen = () => {
   const insets = useSafeAreaInsets();
@@ -28,7 +28,7 @@ const CalendarScreen = () => {
     schedules,
     scheduleMap,
     schedulesForDay,
-  } = useSchedule();
+  } = useCalendar();
 
   const snapPoints = useMemo(() => {
     // 바텀 시트 높이 = tabBar 높이(120) + insets + 요소들
@@ -97,6 +97,8 @@ const CalendarScreen = () => {
                   memo={schedule.memo}
                   backgroundColor={schedule.backgroundColor}
                   textColor={schedule.textColor}
+                  startDate={schedule.startDate}
+                  endDate={schedule.endDate}
                 />
               ))
             )}

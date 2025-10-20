@@ -1,14 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
+import { useNavigation } from '@react-navigation/native';
 import { Pressable, Text, View, ViewProps } from 'react-native';
 import { LinearTransition } from 'react-native-reanimated';
-
-import { mockSeptember2025ScheduleData } from '../mocks/scheduleMock';
 
 import MiniCalendar from './MiniCalendar';
 import ScheduleList from './ScheduleList';
 
+import useScheduleQuery from '@/features/calendar/shared/hooks/scheduleQueries';
+import { HomeTabNavigationProp } from '@/navigation/types/navigationTypes';
 import AnimatedCardView from '@/shared/components/AnimatedCardView';
+import dayjs from '@/shared/lib/dayjs';
 import getWeeks from '@/shared/utils/date/getWeeks';
 import DiaryIcon from '@/static/icons/diary.svg';
 
@@ -18,26 +20,19 @@ const ScheduleWidget = ({}: ScheduleWidgetProps) => {
   const [weeks] = useState<Date[]>(getWeeks());
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
 
-  // 스케줄을 가져오는 로직 추후 구현
-  const [schedule, setSchedule] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const navigation = useNavigation<HomeTabNavigationProp>();
 
-  useEffect(() => {
-    const fetchSchedule = async () => {
-      setTimeout(() => {
-        setSchedule(mockSeptember2025ScheduleData);
-        setIsLoading(false);
-      }, 2000);
-    };
-    fetchSchedule();
-  }, []);
+  const { schedules, isLoading } = useScheduleQuery({
+    selectedDate: dayjs(selectedDate),
+    mode: 'small',
+  });
 
   return (
     <AnimatedCardView className="mx-5 mt-[14px]" layout={LinearTransition}>
       <View className="relative h-[146px] items-center justify-center border-b-[1px] border-gray-200">
         <View className="absolute top-0 w-full flex-row items-center justify-between p-4">
           <Text className="typo-body-16-bold">내 일정</Text>
-          <Pressable onPress={() => console.log('캘린더로 이동')}>
+          <Pressable onPress={() => navigation.navigate('Calendar')}>
             <DiaryIcon width={18} height={18} />
           </Pressable>
         </View>
@@ -49,7 +44,7 @@ const ScheduleWidget = ({}: ScheduleWidgetProps) => {
               weeks={weeks}
               selectedDate={selectedDate}
               onDateSelect={setSelectedDate}
-              schedule={schedule}
+              schedule={schedules}
             />
           )}
         </View>
@@ -59,7 +54,7 @@ const ScheduleWidget = ({}: ScheduleWidgetProps) => {
         {isLoading ? (
           <Text>로딩중..</Text>
         ) : (
-          <ScheduleList selectedDate={selectedDate} schedule={schedule} />
+          <ScheduleList selectedDate={selectedDate} schedule={schedules} />
         )}
       </View>
     </AnimatedCardView>
