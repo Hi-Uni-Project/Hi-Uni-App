@@ -24,6 +24,7 @@ export type OnboardNavigationProps = {
 
 export type HomeNavigationProps = {
   HomeMain: undefined;
+  HomeSearch: undefined;
   HotBoard: undefined;
   Detail: undefined;
   Profile: undefined;

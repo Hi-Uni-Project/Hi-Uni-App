@@ -1,13 +1,16 @@
 import React from 'react';
 
+import { useNavigation } from '@react-navigation/native';
 import { View, TouchableOpacity, StatusBar, StyleSheet } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { HomeStackNavigationProp } from '@/navigation/types/navigationTypes';
 import ProfileIcon from '@/static/icons/profile.svg';
 import SearchIcon from '@/static/icons/search.svg';
 
 const HomeHeader = () => {
   const insets = useSafeAreaInsets();
+  const navigation = useNavigation<HomeStackNavigationProp>();
 
   const styles = StyleSheet.create({
     headerHeight: {
@@ -25,7 +28,9 @@ const HomeHeader = () => {
       <StatusBar barStyle="dark-content" />
       <View style={{ height: insets.top }} />
       <View className="mr-[10px] h-[70px] flex-row items-center">
-        <TouchableOpacity className="p-[10px]">
+        <TouchableOpacity
+          className="p-[10px]"
+          onPress={() => navigation.navigate('HomeSearch')}>
           <SearchIcon width={26} height={26} />
         </TouchableOpacity>
         <TouchableOpacity className="p-[10px]">
