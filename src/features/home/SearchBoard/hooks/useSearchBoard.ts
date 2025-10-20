@@ -1,5 +1,6 @@
 import { useRef, useState } from 'react';
 
+import { useNavigation } from '@react-navigation/native';
 import { Keyboard, TextInput } from 'react-native';
 
 import { MAX_ITEMS } from '@/features/home/searchBoard/constants/lines';
@@ -7,6 +8,7 @@ import { mockBoardPosts } from '@/shared/constants/boardMockData';
 
 export const useSearchBoard = () => {
   const inputRef = useRef<TextInput>(null);
+  const navigation = useNavigation();
   const [searchText, setSearchText] = useState('');
   const [recentSearches, setRecentSearches] = useState<string[]>([]);
   const [modalVisible, setModalVisible] = useState(false);
@@ -80,7 +82,7 @@ export const useSearchBoard = () => {
   const handleClearAll = () => setRecentSearches([]);
 
   const handleBackPress = () => {
-    console.log('back');
+    navigation.goBack();
   };
 
   const handlePostPress = (title: string) => {
