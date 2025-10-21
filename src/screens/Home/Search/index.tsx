@@ -31,6 +31,7 @@ const HomeSearchScreen = () => {
     // Computed values
     hasSearchResults,
     hasRecentSearches,
+    isFetching,
 
     // Handlers
     handleSearch,
@@ -72,6 +73,7 @@ const HomeSearchScreen = () => {
             <SearchContent
               hasSearchResults={hasSearchResults}
               hasSearched={hasSearched}
+              isFetching={isFetching}
               filteredPosts={filteredPosts}
               recentSearches={recentSearches}
               onSelectRecentItem={handleSelectRecentItem}
