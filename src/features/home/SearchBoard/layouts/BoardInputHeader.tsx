@@ -45,6 +45,7 @@ const BoardInputHeader = ({
             onFocus={onFocus}
             onPress={onClose}
             maxLength={15}
+            returnKeyType="search"
             length={searchText.length}
           />
         </View>
