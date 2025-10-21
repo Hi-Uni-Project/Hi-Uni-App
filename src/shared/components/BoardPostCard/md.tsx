@@ -2,46 +2,39 @@ import React from 'react';
 
 import { View, Text, Pressable } from 'react-native';
 
+import { WeeklyHotPost } from '@/features/home/hotBoard/types';
 import BoardActionIcons from '@/shared/icons/BoardActionIcons';
+import { formatDateOrTime, formatMajor } from '@/shared/utils/formatter';
 
-interface Props {
-  category1: string;
-  category2: string;
-  title: string;
-  content: string;
-  author: string;
-  major: string;
-  time: string;
-  likes: number;
-  scrab?: number;
-  comments: number;
+interface Props extends WeeklyHotPost {
   onPress?: () => void;
 }
 
 const BoardPostCardMD = ({
-  category1,
-  category2,
-  title,
+  bookmarkCount,
+  category,
+  commentCount,
   content,
-  author,
-  major,
-  time,
-  likes,
-  comments,
+  createdAt,
+  firstMajorName,
+  id,
+  likeCount,
   onPress,
-  scrab,
+  secondMajorName,
+  title,
 }: Props) => {
   return (
     <Pressable
+      id={id.toString()}
       onPress={onPress}
       className="rounded-[15px] border border-surface-200 bg-white px-4 pb-2 pt-4 shadow-sm">
       {/* 카테고리 */}
       <View className="mb-2 flex-row gap-1.5">
         <Text className="rounded-[20px] bg-surface-200 px-[11px] py-[5px] text-surface-500 typo-caption-14-regular">
-          {category1}
+          {category}
         </Text>
         <Text className="rounded-[20px] bg-surface-200 px-[11px] py-[5px] text-surface-500 typo-caption-14-regular">
-          {category2}
+          {category}
         </Text>
       </View>
 
@@ -60,14 +53,12 @@ const BoardPostCardMD = ({
         {/* 작성자 + 학과 + 시간 / action */}
         <View className="flex-row items-center justify-between">
           <View className="flex-row space-x-1">
+            <Text className="text-surface-500 typo-caption-13-light">익명</Text>
             <Text className="text-surface-500 typo-caption-13-light">
-              {author}
+              · {formatMajor(firstMajorName, secondMajorName)}
             </Text>
             <Text className="text-surface-500 typo-caption-13-light">
-              · {major}
-            </Text>
-            <Text className="text-surface-500 typo-caption-13-light">
-              · {time}
+              · {formatDateOrTime(createdAt)}
             </Text>
           </View>
 
@@ -75,20 +66,20 @@ const BoardPostCardMD = ({
             <View className="flex-row items-center space-x-[2px]">
               <BoardActionIcons action="like" />
               <Text className="text-error-red typo-caption-13-medium">
-                {likes}
+                {likeCount}
               </Text>
             </View>
             <View className="flex-row items-center space-x-[2px]">
               <BoardActionIcons action="comment" />
               <Text className="text-primary-purple typo-caption-13-medium">
-                {comments}
+                {commentCount}
               </Text>
             </View>
-            {scrab && (
+            {bookmarkCount && (
               <View className="flex-row items-center space-x-[2px]">
                 <BoardActionIcons action="scrab" />
                 <Text className="text-tertiary-yellow typo-caption-13-medium">
-                  {scrab}
+                  {bookmarkCount}
                 </Text>
               </View>
             )}
