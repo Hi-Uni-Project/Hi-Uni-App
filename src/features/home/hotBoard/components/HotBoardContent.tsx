@@ -2,13 +2,13 @@ import React from 'react';
 
 import { FlatList } from 'react-native';
 
+import { Post } from '@/features/board/shared/types/DefaultPostType';
 import NoHotBoard from '@/features/home/hotBoard/components/NoHotBoard';
-import { WeeklyHotPost } from '@/features/home/hotBoard/types';
 import BoardPostCardMD from '@/shared/components/BoardPostCard/md';
 import Loading from '@/shared/ui/organisms/Loading';
 
 interface HotBoardContentProps {
-  data: WeeklyHotPost[] | undefined;
+  data: Post[] | undefined;
   isLoading: boolean;
 }
 
