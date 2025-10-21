@@ -1,11 +1,9 @@
-import { WeeklyHotPostResponse } from '../types';
-
+import { DefaultPostResponse } from '@/features/board/shared/types/DefaultPostType';
 import { axiosInstance } from '@/shared/api/axiosInstance';
 
-export const getWeeklyHotPostsApi =
-  async (): Promise<WeeklyHotPostResponse> => {
-    const response =
-      await axiosInstance.get<WeeklyHotPostResponse>('/posts/weekly-hot');
+export const getWeeklyHotPostsApi = async () => {
+  const response =
+    await axiosInstance.get<DefaultPostResponse>('/posts/weekly-hot');
 
-    return response.data;
-  };
+  return response.data.data ?? [];
+};
