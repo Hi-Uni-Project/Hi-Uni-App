@@ -2,11 +2,15 @@ import React from 'react';
 
 import { View, Text, Pressable } from 'react-native';
 
-import { WeeklyHotPost } from '@/features/home/hotBoard/types';
+import { Post } from '@/features/board/shared/types/DefaultPostType';
+import {
+  POST_CATEGORY_DISPLAY_NAME,
+  POST_TYPE_DISPLAY_NAME,
+} from '@/features/board/shared/types/enum/postEnum';
 import BoardActionIcons from '@/shared/icons/BoardActionIcons';
 import { formatDateOrTime, formatMajor } from '@/shared/utils/formatter';
 
-interface Props extends WeeklyHotPost {
+interface Props extends Post {
   onPress?: () => void;
 }
 
@@ -16,13 +20,13 @@ const BoardPostCardMD = ({ onPress, ...post }: Props) => {
       id={post.id.toString()}
       onPress={onPress}
       className="rounded-[15px] border border-surface-200 bg-white px-4 pb-2 pt-4 shadow-sm">
-      {/* 카테고리 */}
+      {/* 카테고리 + 타입 */}
       <View className="mb-2 flex-row gap-1.5">
         <Text className="rounded-[20px] bg-surface-200 px-[11px] py-[5px] text-surface-500 typo-caption-14-regular">
-          {post.category}
+          {POST_CATEGORY_DISPLAY_NAME[post.category]}
         </Text>
         <Text className="rounded-[20px] bg-surface-200 px-[11px] py-[5px] text-surface-500 typo-caption-14-regular">
-          {post.category}
+          {POST_TYPE_DISPLAY_NAME[post.type]}
         </Text>
       </View>
 
