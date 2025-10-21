@@ -39,7 +39,7 @@ const MailInputScreen = () => {
                 ref={inputRef}
                 value={inputValue}
                 onChangeText={text => handleChangeEmail(text)}
-                className="w-full border-b-[1px] border-b-surface-300 pb-3 pl-3 text-surface-700 typo-body-16-regular"
+                className="w-full border-b-[1px] border-b-surface-300 pb-2.5 pl-3 text-[16px] font-normal text-surface-700"
                 placeholder="학교 웹메일(ex : 20200525@knu.ac.kr)"
                 placeholderTextColor="#B7B7B7"
                 maxLength={40}
