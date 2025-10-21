@@ -2,19 +2,27 @@ import React from 'react';
 
 import { View } from 'react-native';
 
-import { MockScheduleData } from '../mocks/scheduleMock';
+import { CalendarSchedule } from '@/features/calendar/types';
+import dayjs from '@/shared/lib/dayjs';
 
 interface CalendarDotProps {
   weeks: Date[];
-  // mock data 추후 수정
-  schedule: MockScheduleData[];
+  schedule: CalendarSchedule[];
   positions: Record<number, number>;
 }
 
 const CalendarDot = ({ weeks, schedule, positions }: CalendarDotProps) => {
-  // 로직은 추후 변경 가능. 데이터에서 일정을 찾는다는 개념만 동일
   const getScheduledDays: boolean[] = weeks.map(week => {
-    return schedule[week.getDate() - 1].schedule.length !== 0;
+    const currentDay = dayjs(week);
+
+    const overlappingSchedules = schedule.filter(sched => {
+      const startDate = dayjs(sched.startDate);
+      const endDate = dayjs(sched.endDate);
+
+      return currentDay.isBetween(startDate, endDate, 'day', '[]');
+    });
+
+    return overlappingSchedules.length > 0;
   });
 
   return (
