@@ -10,44 +10,32 @@ interface Props extends WeeklyHotPost {
   onPress?: () => void;
 }
 
-const BoardPostCardMD = ({
-  bookmarkCount,
-  category,
-  commentCount,
-  content,
-  createdAt,
-  firstMajorName,
-  id,
-  likeCount,
-  onPress,
-  secondMajorName,
-  title,
-}: Props) => {
+const BoardPostCardMD = ({ onPress, ...post }: Props) => {
   return (
     <Pressable
-      id={id.toString()}
+      id={post.id.toString()}
       onPress={onPress}
       className="rounded-[15px] border border-surface-200 bg-white px-4 pb-2 pt-4 shadow-sm">
       {/* 카테고리 */}
       <View className="mb-2 flex-row gap-1.5">
         <Text className="rounded-[20px] bg-surface-200 px-[11px] py-[5px] text-surface-500 typo-caption-14-regular">
-          {category}
+          {post.category}
         </Text>
         <Text className="rounded-[20px] bg-surface-200 px-[11px] py-[5px] text-surface-500 typo-caption-14-regular">
-          {category}
+          {post.category}
         </Text>
       </View>
 
       {/* 제목 + 내용 */}
       <View className="mb-3 px-1">
         <Text className="mb-[6px] font-semibold text-surface-900 typo-body-16-bold">
-          {title}
+          {post.title}
         </Text>
         <Text
           className="mb-3.5 text-surface-600 typo-body-15-regular"
           numberOfLines={1}
           ellipsizeMode="tail">
-          {content}
+          {post.content}
         </Text>
 
         {/* 작성자 + 학과 + 시간 / action */}
@@ -55,10 +43,10 @@ const BoardPostCardMD = ({
           <View className="flex-row space-x-1">
             <Text className="text-surface-500 typo-caption-13-light">익명</Text>
             <Text className="text-surface-500 typo-caption-13-light">
-              · {formatMajor(firstMajorName, secondMajorName)}
+              · {formatMajor(post.firstMajorName, post.secondMajorName)}
             </Text>
             <Text className="text-surface-500 typo-caption-13-light">
-              · {formatDateOrTime(createdAt)}
+              · {formatDateOrTime(post.createdAt)}
             </Text>
           </View>
 
@@ -66,20 +54,20 @@ const BoardPostCardMD = ({
             <View className="flex-row items-center space-x-[2px]">
               <BoardActionIcons action="like" />
               <Text className="text-error-red typo-caption-13-medium">
-                {likeCount}
+                {post.likeCount}
               </Text>
             </View>
             <View className="flex-row items-center space-x-[2px]">
               <BoardActionIcons action="comment" />
               <Text className="text-primary-purple typo-caption-13-medium">
-                {commentCount}
+                {post.commentCount}
               </Text>
             </View>
-            {bookmarkCount && (
+            {post.bookmarkCount && (
               <View className="flex-row items-center space-x-[2px]">
                 <BoardActionIcons action="scrab" />
                 <Text className="text-tertiary-yellow typo-caption-13-medium">
-                  {bookmarkCount}
+                  {post.bookmarkCount}
                 </Text>
               </View>
             )}
