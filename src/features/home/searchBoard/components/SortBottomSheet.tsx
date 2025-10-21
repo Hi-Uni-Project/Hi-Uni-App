@@ -2,8 +2,7 @@ import React, { Dispatch, SetStateAction, useEffect, useRef } from 'react';
 
 import { View, Text, Modal, Pressable, Animated, Easing } from 'react-native';
 
-import { SORT_OPTIONS } from '../constants/sortOptions';
-
+import { SORT_OPTIONS } from '@/features/board/shared/types/enum/sortEnum';
 import ActionIcons from '@/shared/icons/ActionIcons';
 import { cn } from '@/shared/lib/cn';
 import FilteredChecked from '@/static/icons/filtered-checked.svg';
@@ -12,7 +11,7 @@ interface Props {
   sortSheetVisible: boolean;
   setSortSheetVisible: Dispatch<SetStateAction<boolean>>;
   selectedSort: string;
-  setSelectedSort: Dispatch<SetStateAction<string>>;
+  setSelectedSort: (displayName: string) => void;
 }
 
 const SortBottomSheet = ({
@@ -69,9 +68,9 @@ const SortBottomSheet = ({
 
           {SORT_OPTIONS.map((option, index) => (
             <Pressable
-              key={option}
+              key={option.value}
               onPress={() => {
-                setSelectedSort(option);
+                setSelectedSort(option.label);
                 setSortSheetVisible(false);
               }}
               className="py-4">
@@ -84,14 +83,14 @@ const SortBottomSheet = ({
                 <Text
                   className={cn(
                     'typo-body-17-medium',
-                    selectedSort === option
+                    selectedSort === option.label
                       ? 'text-main-text'
                       : 'text-surface-500',
                   )}>
-                  {option}
+                  {option.label}
                 </Text>
 
-                {selectedSort === option && <FilteredChecked />}
+                {selectedSort === option.label && <FilteredChecked />}
               </View>
             </Pressable>
           ))}
