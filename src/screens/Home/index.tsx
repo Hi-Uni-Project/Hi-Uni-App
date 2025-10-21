@@ -8,11 +8,14 @@ import ScheduleWidget from '@/features/home/scheduleWidget/components/ScheduleWi
 import HomeScrollLayout from '@/features/home/shared/layouts/HomeScrollLayout';
 import UnivMajorBadge from '@/features/home/univMajorBadge/components/UnivMajorBadge';
 import HotPostsWidget from '@/features/home/weeklyHotPosts/components/HotPostsWidget';
+import { useRegisterStore } from '@/shared/stores/register';
 
 const HomeScreen = () => {
+  const { univ } = useRegisterStore();
+
   return (
     <HomeScrollLayout>
-      <UnivMajorBadge univName="제주대학교" majorName="산업디자인학과 20학번" />
+      <UnivMajorBadge univ={univ} />
       <DynamicCTABanner
         visible
         onSharedPress={() => {
