@@ -45,7 +45,7 @@ const SearchContent = ({
   // 검색을 했지만 결과가 없는 경우
   if (hasSearched && filteredPosts.length === 0) {
     return (
-      <View className="mt-9 items-center space-y-[14px]">
+      <View className="flex-1 items-center justify-center space-y-[14px]">
         <StatusIcons status="caution" width={32} height={32} color="#979797" />
         <Text className="text-surface-500 typo-sub-title-18-medium">
           검색 결과가 없어요.
