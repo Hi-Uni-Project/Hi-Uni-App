@@ -3,10 +3,9 @@ import React, { useMemo, useState } from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Text, View } from 'react-native';
 
-import HomeRoute from '../stacks/HomeStackNavigator';
-
 import BoardScreen from '@/screens/Board';
 import CalendarScreen from '@/screens/Calendar';
+import HomeScreen from '@/screens/Home';
 import HUTabBar, { HUTabBarProps } from '@/shared/components/HUTabBar';
 
 const Tab = createBottomTabNavigator();
@@ -48,8 +47,8 @@ const HomeTabScreens = () => {
           headerShown: false,
         }}>
         <Tab.Screen
-          name="HomeTab"
-          component={HomeRoute}
+          name="Home"
+          component={HomeScreen}
           listeners={{ focus: () => setCurrentRouteName('HomeTab') }}
         />
         <Tab.Screen
