@@ -1,65 +1,80 @@
-import React from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
 
-import { Text, View } from 'react-native';
-import { FlatList } from 'react-native-gesture-handler';
+import { FlatList, Pressable, Text, View } from 'react-native';
 
+import NoSearchResult from './NoSearchResult';
+
+import { Post } from '@/features/board/shared/types/DefaultPostType';
 import RecentSearchList from '@/features/home/searchBoard/components/RecentSearchList';
 import BoardPostCardMD from '@/shared/components/BoardPostCard/md';
-import { mockBoardPosts } from '@/shared/constants/boardMockData';
-import StatusIcons from '@/shared/icons/StatusIcons';
+import Loading from '@/shared/ui/organisms/Loading';
+import Filtered from '@/static/icons/filtered.svg';
 
 interface Props {
   hasSearchResults: boolean;
   hasSearched: boolean;
-  filteredPosts: typeof mockBoardPosts;
+  isFetching: boolean;
+  filteredPosts: Post[];
   recentSearches: string[];
   onSelectRecentItem: (item: string) => void;
   onRemoveItem: (item: string) => void;
   onPostPress: (title: string) => void;
+  selectedSort: string;
+  setSortSheetVisible: Dispatch<SetStateAction<boolean>>;
 }
 
 const SearchContent = ({
   hasSearchResults,
   hasSearched,
+  isFetching,
   filteredPosts,
   recentSearches,
   onSelectRecentItem,
   onRemoveItem,
   onPostPress,
+  selectedSort,
+  setSortSheetVisible,
 }: Props) => {
-  // 검색 결과가 있는 경우
-  if (hasSearchResults) {
+  if (isFetching) {
+    return <Loading />;
+  }
+
+  if (hasSearched && !hasSearchResults) {
+    return <NoSearchResult />;
+  }
+
+  if (hasSearched && hasSearchResults) {
     return (
       <FlatList
+        className="-mt-6"
         data={filteredPosts}
-        keyExtractor={(_, idx) => idx.toString()}
+        keyExtractor={item => item.id.toString()}
         renderItem={({ item }) => (
           <BoardPostCardMD {...item} onPress={() => onPostPress(item.title)} />
         )}
+        ListHeaderComponent={
+          <View className="mb-3">
+            <Pressable
+              className="flex-row items-center gap-1.5"
+              onPress={() => setSortSheetVisible(true)}>
+              <Filtered />
+              <Text className="text-surface-500 typo-body-16-regular">
+                {selectedSort}
+              </Text>
+            </Pressable>
+          </View>
+        }
         contentContainerStyle={{ paddingVertical: 20, gap: 8 }}
         showsVerticalScrollIndicator={false}
       />
     );
   }
 
-  // 검색을 했지만 결과가 없는 경우
-  if (hasSearched && filteredPosts.length === 0) {
-    return (
-      <View className="mt-9 items-center space-y-[14px]">
-        <StatusIcons status="caution" width={32} height={32} color="#979797" />
-        <Text className="text-surface-500 typo-sub-title-18-medium">
-          검색 결과가 없어요.
-        </Text>
-      </View>
-    );
-  }
-
-  // 아직 검색하지 않은 경우 - 최근 검색어 리스트 표시
   return (
     <RecentSearchList
+      recentSearches={recentSearches}
       handleSelectItem={onSelectRecentItem}
       handleRemoveItem={onRemoveItem}
-      recentSearches={recentSearches}
     />
   );
 };

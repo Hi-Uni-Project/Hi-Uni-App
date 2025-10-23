@@ -8,7 +8,7 @@ interface Props {
   modalVisible: boolean;
   onModalConfirm: () => void;
   selectedSort: string;
-  setSelectedSort: Dispatch<SetStateAction<string>>;
+  setSelectedSort: (displayName: string) => void;
   sortSheetVisible: boolean;
   setSortSheetVisible: Dispatch<SetStateAction<boolean>>;
 }

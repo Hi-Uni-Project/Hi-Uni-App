@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
+import { useNavigation } from '@react-navigation/native';
 import { FlatList, Text, View } from 'react-native';
 import Animated, { LinearTransition } from 'react-native-reanimated';
 
@@ -7,6 +8,7 @@ import mockHotPosts from '../mocks/mockHotPosts';
 
 import HotPostItem from './HotPostItem';
 
+import { HomeStackNavigationProp } from '@/navigation/types/navigationTypes';
 import CardView from '@/shared/components/CardView';
 import SectionHeader from '@/shared/components/layouts/SectionHeader';
 import FireIcon from '@/static/icons/fire.svg';
@@ -22,6 +24,8 @@ const HotPostsWidgetTitle = () => (
 const HotPostsWidget = () => {
   const [isLoading, setIsLoading] = useState(true);
 
+  const navigation = useNavigation<HomeStackNavigationProp>();
+
   useEffect(() => {
     const fetchData = async () => {
       setTimeout(() => {
@@ -36,7 +40,7 @@ const HotPostsWidget = () => {
       <SectionHeader
         titleComponent={<HotPostsWidgetTitle />}
         onPressMore={() => {
-          console.log('더 보기 클릭됨');
+          navigation.navigate('HotBoard');
         }}
       />
       <CardView className="mx-5">

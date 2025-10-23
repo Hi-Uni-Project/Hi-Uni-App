@@ -17,7 +17,7 @@ const SearchUnivResultList = ({
   inputValue,
 }: Props) => {
   return (
-    <View className="mt-[18px] px-7">
+    <View className="mt-[18px] flex-1 px-8">
       <FlatList
         data={filteredUnivs}
         keyExtractor={(item, index) => `${item}-${index}`}

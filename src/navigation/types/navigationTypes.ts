@@ -23,6 +23,14 @@ export type OnboardNavigationProps = {
   HomeRoute: undefined;
 };
 
+export type HomeNavigationProps = {
+  HomeMain: undefined;
+  HomeSearch: undefined;
+  HotBoard: undefined;
+  Detail: undefined;
+  Profile: undefined;
+};
+
 export type TabNavigationProps = {
   HomeTab: undefined;
   Search: undefined;
@@ -39,5 +47,8 @@ export type SignupStackNavigationProp =
 
 export type OnboardStackNavigationProp =
   NativeStackNavigationProp<OnboardNavigationProps>;
+
+export type HomeStackNavigationProp =
+  NativeStackNavigationProp<HomeNavigationProps>;
 
 export type HomeTabNavigationProp = BottomTabNavigationProp<TabNavigationProps>;

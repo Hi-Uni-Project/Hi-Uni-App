@@ -1,25 +1,43 @@
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 
+import { useNavigation } from '@react-navigation/native';
 import { Keyboard, TextInput } from 'react-native';
 
+import {
+  getSortTypeByLabel,
+  SORT_DISPLAY_NAME,
+  SortType,
+} from '@/features/board/shared/types/enum/sortEnum';
 import { MAX_ITEMS } from '@/features/home/searchBoard/constants/lines';
-import { mockBoardPosts } from '@/shared/constants/boardMockData';
+import { useSearchBoardQuery } from '@/features/home/searchBoard/hooks/useSearchBoardQuery';
 
 export const useSearchBoard = () => {
   const inputRef = useRef<TextInput>(null);
+  const navigation = useNavigation();
   const [searchText, setSearchText] = useState('');
   const [recentSearches, setRecentSearches] = useState<string[]>([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [sortSheetVisible, setSortSheetVisible] = useState(false);
-  // 추추 API 연동하여 가능하여 enum으로 타입화
-  const [selectedSort, setSelectedSort] = useState('최신순');
-  const [filteredPosts, setFilteredPosts] = useState<typeof mockBoardPosts>([]);
+  const [selectedSort, setSelectedSort] = useState<SortType>(SortType.LATEST);
   const [hasSearched, setHasSearched] = useState(false);
+  const [enableQuery, setEnableQuery] = useState(false);
+
+  const {
+    data: filteredPosts = [],
+    refetch,
+    isFetching,
+  } = useSearchBoardQuery(searchText.trim(), selectedSort, enableQuery);
+
+  useEffect(() => {
+    if (enableQuery && hasSearched) {
+      refetch();
+    }
+  }, [selectedSort, enableQuery, hasSearched, refetch]);
 
   const hasSearchResults = filteredPosts.length > 0;
   const hasRecentSearches = recentSearches.length > 0;
 
-  const performSearch = (textToSearch: string) => {
+  const performSearch = async (textToSearch: string) => {
     const trimmedText = textToSearch.trim();
 
     if (trimmedText.length <= 1) {
@@ -28,33 +46,24 @@ export const useSearchBoard = () => {
     }
 
     setHasSearched(true);
-
-    const searchResults = mockBoardPosts.filter(
-      post =>
-        post.title.includes(trimmedText) || post.content.includes(trimmedText),
-    );
-
-    setFilteredPosts(searchResults);
+    setEnableQuery(true);
+    await refetch();
 
     setRecentSearches(prev => {
       const updated = [
         trimmedText,
         ...prev.filter(item => item !== trimmedText),
       ];
-
       if (updated.length > MAX_ITEMS) {
         updated.pop();
       }
-
       return updated;
     });
 
     Keyboard.dismiss();
   };
 
-  const handleSearch = () => {
-    performSearch(searchText);
-  };
+  const handleSearch = () => performSearch(searchText);
 
   const handleSelectRecentItem = (item: string) => {
     setSearchText(item);
@@ -62,7 +71,6 @@ export const useSearchBoard = () => {
   };
 
   const handleInputFocus = () => {
-    setFilteredPosts([]);
     setHasSearched(false);
   };
 
@@ -72,19 +80,19 @@ export const useSearchBoard = () => {
 
   const handleClose = () => {
     setSearchText('');
-    setFilteredPosts([]);
     setHasSearched(false);
+    setEnableQuery(false);
     inputRef.current?.focus();
   };
 
   const handleClearAll = () => setRecentSearches([]);
+  const handleBackPress = () => navigation.goBack();
+  const handlePostPress = (title: string) => console.log(`${title} 클릭됨`);
 
-  const handleBackPress = () => {
-    console.log('back');
-  };
-
-  const handlePostPress = (title: string) => {
-    console.log(`${title} 클릭됨`);
+  const handleSortChange = (displayName: string) => {
+    const sortType = getSortTypeByLabel(displayName);
+    setSelectedSort(sortType);
+    setSortSheetVisible(false);
   };
 
   return {
@@ -94,19 +102,20 @@ export const useSearchBoard = () => {
     // State
     searchText,
     setSearchText,
+    modalVisible,
     setModalVisible,
     recentSearches,
-    modalVisible,
     sortSheetVisible,
     setSortSheetVisible,
-    selectedSort,
-    setSelectedSort,
+    selectedSort: SORT_DISPLAY_NAME[selectedSort],
+    setSelectedSort: handleSortChange,
     filteredPosts,
     hasSearched,
 
     // Computed values
     hasSearchResults,
     hasRecentSearches,
+    isFetching,
 
     // Handlers
     handleSearch,
