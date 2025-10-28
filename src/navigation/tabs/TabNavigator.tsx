@@ -59,6 +59,9 @@ const HomeTabScreens = () => {
         />
         <Tab.Screen
           name="Board"
+          options={{
+            unmountOnBlur: true,
+          }}
           component={BoardRoute}
           listeners={{ focus: () => setCurrentRouteName('Board') }}
         />
