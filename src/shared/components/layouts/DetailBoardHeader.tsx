@@ -28,7 +28,7 @@ const DetailBoardHeader = ({ title, icon = false }: Props) => {
 
         <View className="flex-row items-center space-x-[6px]">
           <Text className="text-main-text typo-sub-title-22-bold">{title}</Text>
-          {icon && <FireIcon />}
+          {icon && <FireIcon color={'#1E2128'} />}
         </View>
       </View>
     </View>
