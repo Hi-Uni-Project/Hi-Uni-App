@@ -16,7 +16,7 @@ const SectionTitle = () => {
         <Text
           className="ml-2 text-white typo-sub-title-20-semibold"
           style={{ fontWeight: '700' }}>
-          전체 취업 정보 인기 후기
+          이번주 전체 취업 정보 인기글
         </Text>
       </View>
       <Pressable className="flex-row items-center">
