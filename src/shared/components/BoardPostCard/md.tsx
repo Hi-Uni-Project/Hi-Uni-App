@@ -36,14 +36,14 @@ const BoardPostCardMD = ({ onPress, ...post }: Props) => {
           {post.title}
         </Text>
         <Text
-          className="mb-3.5 text-surface-600 typo-body-15-regular"
+          className="mb-3 text-surface-600 typo-body-15-regular"
           numberOfLines={1}
           ellipsizeMode="tail">
           {post.content}
         </Text>
 
-        {/* 작성자 + 학과 + 시간 / action */}
-        <View className="flex-row items-center justify-between">
+        {/* 작성자 + 학과 + 시간 */}
+        <View className="flex-col justify-between">
           <View className="flex-row space-x-1">
             <Text className="text-surface-500 typo-caption-13-light">익명</Text>
             <Text className="text-surface-500 typo-caption-13-light">
@@ -54,7 +54,8 @@ const BoardPostCardMD = ({ onPress, ...post }: Props) => {
             </Text>
           </View>
 
-          <View className="mr-1.5 flex-row space-x-2.5">
+          {/* action */}
+          <View className="-mb-2 mr-1.5 mt-1.5 flex-row space-x-2.5">
             <View className="flex-row items-center space-x-[2px]">
               <BoardActionIcons action="like" />
               <Text className="text-error-red typo-caption-13-medium">
