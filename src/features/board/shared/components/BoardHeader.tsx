@@ -1,4 +1,3 @@
-// features/board/shared/layouts/BoardHeader.tsx
 import React, { useState } from 'react';
 
 import { useNavigation } from '@react-navigation/native';
@@ -9,7 +8,7 @@ import { TabKey } from '../types/BoardUpperTab';
 
 import BoardUpperNavigator from '@/features/board/shared/components/BoardUpperNavigator';
 import { BoardStackNavigationProp } from '@/navigation/types/navigationTypes';
-import OptionPopup, { OptionItem } from '@/shared/components/OptionPopup';
+import OptionPopup, { OptionItem } from '@/shared/components/Board/OptionPopup';
 import { useRegisterStore } from '@/shared/stores/register';
 import { shadowStyleSheet } from '@/shared/styles/shadow';
 import MoreIcon from '@/static/icons/more.svg';
