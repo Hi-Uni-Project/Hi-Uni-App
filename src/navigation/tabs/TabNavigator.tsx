@@ -8,6 +8,7 @@ import BoardRoute from '../stacks/BoardStackNavigation';
 import CalendarScreen from '@/screens/Calendar';
 import HomeScreen from '@/screens/Home';
 import HUTabBar, { HUTabBarProps } from '@/shared/components/HUTabBar';
+import { useTabBarStore } from '@/shared/stores/tabBar';
 
 const Tab = createBottomTabNavigator();
 
@@ -17,10 +18,9 @@ const SecondPage = () => (
   </View>
 );
 
-const tabBar = (props: HUTabBarProps) => <HUTabBar {...props} />;
-
 const HomeTabScreens = () => {
   const [currentRouteName, setCurrentRouteName] = useState('HomeTab');
+  const isTabBarVisible = useTabBarStore(state => state.isVisible);
 
   const backgroundColor = useMemo(() => {
     switch (currentRouteName) {
@@ -35,6 +35,13 @@ const HomeTabScreens = () => {
         return '#FFFFFF';
     }
   }, [currentRouteName]);
+
+  const tabBar = (props: HUTabBarProps) => {
+    if (!isTabBarVisible) {
+      return null;
+    }
+    return <HUTabBar {...props} />;
+  };
 
   return (
     <View
