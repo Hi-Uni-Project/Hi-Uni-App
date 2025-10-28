@@ -1,17 +1,15 @@
-import React from 'react';
+// features/board/shared/layouts/BoardHeader.tsx
+import React, { useState } from 'react';
 
-import {
-  View,
-  TouchableOpacity,
-  StatusBar,
-  StyleSheet,
-  Text,
-} from 'react-native';
+import { View, TouchableOpacity, StatusBar, Text } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { TabKey } from '../types/BoardUpperTab';
 
 import BoardUpperNavigator from '@/features/board/shared/components/BoardUpperNavigator';
+import OptionPopup, { OptionItem } from '@/shared/components/OptionPopup';
+import { useRegisterStore } from '@/shared/stores/register';
+import { shadowStyleSheet } from '@/shared/styles/shadow';
 import MoreIcon from '@/static/icons/more.svg';
 import SearchIcon from '@/static/icons/search.svg';
 
@@ -21,32 +19,43 @@ interface BoardHeaderProps {
 
 const BoardHeader = ({ onTabPress }: BoardHeaderProps) => {
   const insets = useSafeAreaInsets();
+  const { univ } = useRegisterStore();
+  const [isOptionVisible, setIsOptionVisible] = useState(false);
 
-  const styles = StyleSheet.create({
-    headerHeight: {
-      height: insets.top + 110,
+  const options: OptionItem[] = [
+    {
+      label: '내가 쓴 글 보기',
+      onPress: () => {
+        console.log('내가 쓴 글 보기');
+      },
     },
-    headerShadow: {
-      boxShadow: '0px 0px 15px 0px #00000005',
+    {
+      label: '내가 댓글 단 글 보기',
+      onPress: () => {
+        console.log('내가 댓글 단 글 보기');
+      },
     },
-  });
+  ];
 
   return (
     <View
       className="absolute left-0 right-0 top-0 z-10 bg-white"
-      style={[styles.headerHeight, styles.headerShadow]}>
+      style={[{ height: insets.top + 110 }, shadowStyleSheet.dropShadowMedium]}>
       <StatusBar barStyle="dark-content" />
       <View style={{ height: insets.top }} />
 
       <View className="h-[70px] flex-row items-center justify-between">
         <Text className="ml-[21px] text-main-text typo-sub-title-20-medium">
-          제주대학교
+          {univ.univName}
         </Text>
+
         <View className="mr-[10px] flex-row items-center">
           <TouchableOpacity className="p-[10px]">
             <SearchIcon width={26} height={26} />
           </TouchableOpacity>
-          <TouchableOpacity className="p-[10px]">
+          <TouchableOpacity
+            className="p-[10px]"
+            onPress={() => setIsOptionVisible(true)}>
             <MoreIcon width={26} height={26} />
           </TouchableOpacity>
         </View>
@@ -55,6 +64,13 @@ const BoardHeader = ({ onTabPress }: BoardHeaderProps) => {
       <View className="h-[40px]">
         <BoardUpperNavigator onTabPress={onTabPress} />
       </View>
+
+      <OptionPopup
+        visible={isOptionVisible}
+        onClose={() => setIsOptionVisible(false)}
+        options={options}
+        position={{ top: insets.top + 60, right: 25 }}
+      />
     </View>
   );
 };
