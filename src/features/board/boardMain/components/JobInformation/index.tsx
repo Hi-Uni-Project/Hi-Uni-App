@@ -3,8 +3,8 @@ import React, { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { View } from 'react-native';
 
-import CategoryChipList from '@/features/board/boardMain/components/components/CategoryChipList/CategoryChipList';
-import PopularJobInfoReview from '@/features/board/boardMain/components/PopularJobInfoReview/components/PopularJobInfoReview';
+import CategoryChipList from '@/features/board/boardMain/components/CategoryChipList/CategoryChipList';
+import PopularJobInfoReview from '@/features/board/boardMain/components/PopularJobInfoReview';
 import { BoardStackNavigationProp } from '@/navigation/types/navigationTypes';
 
 const JobInformationScreen = () => {
