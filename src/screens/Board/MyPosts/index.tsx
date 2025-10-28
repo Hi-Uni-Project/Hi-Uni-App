@@ -1,11 +1,30 @@
 import React from 'react';
 
-import { View, Text } from 'react-native';
+import { View } from 'react-native';
+
+import { useWeeklyHotPosts } from '@/features/home/hotBoard/hooks/useWeeklyHotPosts';
+import BoardHeaderColor from '@/features/home/shared/layouts/BoardHeaderColorGround';
+import BoardContentLayout from '@/shared/components/Board/layouts/BoardContentLayout';
+import DetailBoardHeader from '@/shared/components/Board/layouts/DetailBoardHeader';
+import ScreenLayout from '@/shared/components/layouts/ScreenLayout';
 
 const MyPosts = () => {
+  const { data: boardData, isLoading } = useWeeklyHotPosts();
+
   return (
-    <View>
-      <Text>MyPosts</Text>
+    <View className="flex-1">
+      <BoardHeaderColor />
+      <DetailBoardHeader title="내가 쓴 글" />
+
+      <ScreenLayout edges={['bottom']}>
+        <View className="flex-1 px-5">
+          <BoardContentLayout
+            des="작성한 글이"
+            data={boardData}
+            isLoading={isLoading}
+          />
+        </View>
+      </ScreenLayout>
     </View>
   );
 };

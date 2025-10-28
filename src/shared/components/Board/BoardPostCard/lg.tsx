@@ -72,7 +72,7 @@ const BoardPostCardLG = ({
       </Text>
 
       {/* 작성자 + 학과 + 시간 / action */}
-      <View className="absolute bottom-5 left-5 right-5 flex-row items-center justify-between">
+      <View className="flex-col justify-between">
         <View className="flex-row space-x-1">
           <Text className="text-surface-500 typo-caption-13-light">
             {author}

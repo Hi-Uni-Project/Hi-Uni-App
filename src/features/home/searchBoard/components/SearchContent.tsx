@@ -6,7 +6,7 @@ import NoSearchResult from './NoSearchResult';
 
 import { Post } from '@/features/board/shared/types/DefaultPostType';
 import RecentSearchList from '@/features/home/searchBoard/components/RecentSearchList';
-import BoardPostCardMD from '@/shared/components/BoardPostCard/md';
+import BoardPostCardMD from '@/shared/components/Board/BoardPostCard/md';
 import Loading from '@/shared/ui/organisms/Loading';
 import Filtered from '@/static/icons/filtered.svg';
 
