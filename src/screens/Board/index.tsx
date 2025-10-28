@@ -3,8 +3,7 @@ import React, { useState } from 'react';
 import { Text, View, ScrollView } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import JobInformationScreen from './JobInformation';
-
+import JobInformationScreen from '@/features/board/components/JobInformation';
 import BoardHeader from '@/features/board/shared/components/BoardHeader';
 import { TabKey } from '@/features/board/shared/types/BoardUpperTab';
 

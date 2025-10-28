@@ -1,40 +1,21 @@
 import React from 'react';
 
-import { View, Text, FlatList, Platform } from 'react-native';
-import { Pressable } from 'react-native';
+import { View, FlatList, Platform } from 'react-native';
 
 import BoardPostCardMocks from '@/features/board/mocks/BoardPostCardMocks';
+import SectionTitle from '@/features/board/shared/components/SectionTitle';
 import BoardPostCardLG from '@/shared/components/BoardPostCard/lg';
-import ChevronIcons from '@/shared/icons/ChevronIcons';
-import FireIcon from '@/static/icons/fire.svg';
 
-const SectionTitle = () => {
-  return (
-    <View className="mb-5 flex-row items-center justify-between px-5">
-      <View className="flex-row items-center">
-        <FireIcon width={18} height={20} color={'#ffffff'} />
-        <Text
-          className="ml-2 text-white typo-sub-title-20-semibold"
-          style={{ fontWeight: '700' }}>
-          이번주 전체 취업 정보 인기글
-        </Text>
-      </View>
-      <Pressable className="flex-row items-center">
-        <Text className="mr-2 text-surface-300 typo-caption-14-regular">
-          더 보기
-        </Text>
-        <ChevronIcons direction="right" width={6} height={10} color="#B7B7B7" />
-      </Pressable>
-    </View>
-  );
-};
+interface Props {
+  onPress?: () => void;
+}
 
-const PopularJobInfoReview = () => {
+const PopularJobInfoReview = ({ onPress }: Props) => {
   const mockData = BoardPostCardMocks;
 
   return (
     <View className="bg-primary-purple pb-5 pt-[23px]">
-      <SectionTitle />
+      <SectionTitle onPress={onPress} />
       <FlatList
         data={mockData}
         keyExtractor={item => item.id}

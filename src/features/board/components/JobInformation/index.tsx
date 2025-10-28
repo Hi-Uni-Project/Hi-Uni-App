@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
 
+import { useNavigation } from '@react-navigation/native';
 import { View } from 'react-native';
 
 import CategoryChipList from '@/features/board/components/CategoryChipList/components/CategoryChipList';
 import PopularJobInfoReview from '@/features/board/components/PopularJobInfoReview/components/PopularJobInfoReview';
+import { BoardStackNavigationProp } from '@/navigation/types/navigationTypes';
 
 const JobInformationScreen = () => {
+  const navigation = useNavigation<BoardStackNavigationProp>();
   const categories = [
     '전체',
     '취업',
@@ -23,8 +26,9 @@ const JobInformationScreen = () => {
         selectedCategoryIdx={selectedCategoryIdx}
         setSelectedCategoryIdx={setSelectedCategoryIdx}
       />
-
-      <PopularJobInfoReview />
+      <PopularJobInfoReview
+        onPress={() => navigation.navigate('PopularReviews')}
+      />
     </View>
   );
 };

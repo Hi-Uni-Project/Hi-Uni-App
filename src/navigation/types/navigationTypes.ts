@@ -31,6 +31,13 @@ export type HomeNavigationProps = {
   Profile: undefined;
 };
 
+export type BoardNavigationProps = {
+  Board: undefined;
+  MyComments: undefined;
+  MyPosts: undefined;
+  PopularReviews: undefined;
+};
+
 export type TabNavigationProps = {
   HomeTab: undefined;
   Search: undefined;
@@ -50,5 +57,8 @@ export type OnboardStackNavigationProp =
 
 export type HomeStackNavigationProp =
   NativeStackNavigationProp<HomeNavigationProps>;
+
+export type BoardStackNavigationProp =
+  NativeStackNavigationProp<BoardNavigationProps>;
 
 export type HomeTabNavigationProp = BottomTabNavigationProp<TabNavigationProps>;

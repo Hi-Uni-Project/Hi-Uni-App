@@ -1,12 +1,14 @@
 // features/board/shared/layouts/BoardHeader.tsx
 import React, { useState } from 'react';
 
+import { useNavigation } from '@react-navigation/native';
 import { View, TouchableOpacity, StatusBar, Text } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { TabKey } from '../types/BoardUpperTab';
 
 import BoardUpperNavigator from '@/features/board/shared/components/BoardUpperNavigator';
+import { BoardStackNavigationProp } from '@/navigation/types/navigationTypes';
 import OptionPopup, { OptionItem } from '@/shared/components/OptionPopup';
 import { useRegisterStore } from '@/shared/stores/register';
 import { shadowStyleSheet } from '@/shared/styles/shadow';
@@ -20,19 +22,20 @@ interface BoardHeaderProps {
 const BoardHeader = ({ onTabPress }: BoardHeaderProps) => {
   const insets = useSafeAreaInsets();
   const { univ } = useRegisterStore();
+  const navigation = useNavigation<BoardStackNavigationProp>();
   const [isOptionVisible, setIsOptionVisible] = useState(false);
 
   const options: OptionItem[] = [
     {
       label: '내가 쓴 글 보기',
       onPress: () => {
-        console.log('내가 쓴 글 보기');
+        navigation.navigate('MyPosts');
       },
     },
     {
       label: '내가 댓글 단 글 보기',
       onPress: () => {
-        console.log('내가 댓글 단 글 보기');
+        navigation.navigate('MyComments');
       },
     },
   ];
