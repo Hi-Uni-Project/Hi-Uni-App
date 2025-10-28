@@ -10,7 +10,7 @@ const NoBoardLayout = ({ des }: Props) => {
   return (
     <View className="h-[80%] items-center justify-center">
       <Text className="text-surface-400 typo-body-16-medium">
-        이번주 {des} 아직 없어요.
+        {des} 없어요.
       </Text>
     </View>
   );
