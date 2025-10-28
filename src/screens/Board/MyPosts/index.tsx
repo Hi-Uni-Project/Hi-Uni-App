@@ -7,8 +7,11 @@ import BoardHeaderColor from '@/features/home/shared/layouts/BoardHeaderColorGro
 import BoardContentLayout from '@/shared/components/Board/layouts/BoardContentLayout';
 import DetailBoardHeader from '@/shared/components/Board/layouts/DetailBoardHeader';
 import ScreenLayout from '@/shared/components/layouts/ScreenLayout';
+import { useHideTabBar } from '@/shared/hooks/useHideTabBar';
 
 const MyPosts = () => {
+  useHideTabBar();
+
   const { data: boardData, isLoading } = useWeeklyHotPosts();
 
   return (
@@ -19,7 +22,7 @@ const MyPosts = () => {
       <ScreenLayout edges={['bottom']}>
         <View className="flex-1 px-5">
           <BoardContentLayout
-            des="작성한 글이"
+            des="아직 작성한 글이"
             data={boardData}
             isLoading={isLoading}
           />

@@ -19,7 +19,7 @@ const HotBoardScreen = () => {
       <ScreenLayout edges={['bottom']}>
         <View className="flex-1 px-5">
           <BoardContentLayout
-            des="인기 게시물이"
+            des="이번주 인기 게시물이 아직"
             data={boardData}
             isLoading={isLoading}
           />
