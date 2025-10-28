@@ -2,8 +2,9 @@ import React from 'react';
 
 import { View, FlatList, Platform } from 'react-native';
 
-import BoardPostCardMocks from '@/features/board/mocks/BoardPostCardMocks';
-import SectionTitle from '@/features/board/shared/components/SectionTitle';
+import SectionTitle from '../../SectionTitle';
+
+import BoardPostCardMocks from '@/features/board/shared/mocks/BoardPostCardMocks';
 import BoardPostCardLG from '@/shared/components/Board/BoardPostCard/lg';
 
 interface Props {
