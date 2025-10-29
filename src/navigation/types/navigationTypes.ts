@@ -1,6 +1,8 @@
 import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
+import { CalendarSchedule } from '@/features/calendar/types';
+
 export type MainNavigationProps = {
   OnboardRoute: undefined;
   SignupRoute: undefined;
@@ -39,6 +41,12 @@ export type TabNavigationProps = {
   Record: undefined;
 };
 
+export type CalendarNavigationProps = {
+  CalendarMain: undefined;
+  EditSchedule: CalendarSchedule;
+  CreateSchedule: undefined;
+};
+
 export type MainStackNavigationProp =
   NativeStackNavigationProp<MainNavigationProps>;
 
@@ -50,5 +58,8 @@ export type OnboardStackNavigationProp =
 
 export type HomeStackNavigationProp =
   NativeStackNavigationProp<HomeNavigationProps>;
+
+export type CalendarStackNavigationProp =
+  NativeStackNavigationProp<CalendarNavigationProps>;
 
 export type HomeTabNavigationProp = BottomTabNavigationProp<TabNavigationProps>;

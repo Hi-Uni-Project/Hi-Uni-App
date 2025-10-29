@@ -1,8 +1,12 @@
 import React from 'react';
 
+import { useNavigation } from '@react-navigation/native';
 import { Pressable, Text, View } from 'react-native';
 import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
 
+import { CalendarSchedule } from '../../types';
+
+import { CalendarStackNavigationProp } from '@/navigation/types/navigationTypes';
 import dayjs from '@/shared/lib/dayjs';
 
 interface ScheduleSummaryProps {
@@ -28,6 +32,19 @@ const ScheduleSummary = ({
 }: ScheduleSummaryProps) => {
   const isScheduleLong = startDate !== endDate;
 
+  const navigation = useNavigation<CalendarStackNavigationProp>();
+
+  const schedule: CalendarSchedule = {
+    startDate,
+    endDate,
+    category,
+    detail,
+    time,
+    backgroundColor,
+    textColor,
+    memo,
+  };
+
   const { startTime, endTime } = time.split(' - ').reduce(
     (acc, cur, idx) => {
       if (idx === 0) {
@@ -41,7 +58,7 @@ const ScheduleSummary = ({
   );
 
   return (
-    <Pressable onPress={() => console.log('Navigate to schedule detail')}>
+    <Pressable onPress={() => navigation.navigate('EditSchedule', schedule)}>
       <Animated.View
         className="mb-[11px] w-full flex-row items-center justify-between rounded-[10px] bg-white"
         entering={FadeIn.duration(200)}
