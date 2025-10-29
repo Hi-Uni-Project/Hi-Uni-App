@@ -1,14 +1,11 @@
 import React, { Dispatch, SetStateAction } from 'react';
 
-import { FlatList, Pressable, Text, View } from 'react-native';
-
 import NoSearchResult from './NoSearchResult';
 
 import { Post } from '@/features/board/shared/types/DefaultPostType';
 import RecentSearchList from '@/features/home/searchBoard/components/RecentSearchList';
-import BoardPostCardMD from '@/shared/components/Board/BoardPostCard/md';
+import SortPostList from '@/shared/components/Board/SortPostList';
 import Loading from '@/shared/ui/organisms/Loading';
-import Filtered from '@/static/icons/filtered.svg';
 
 interface Props {
   hasSearchResults: boolean;
@@ -18,9 +15,11 @@ interface Props {
   recentSearches: string[];
   onSelectRecentItem: (item: string) => void;
   onRemoveItem: (item: string) => void;
-  onPostPress: (title: string) => void;
-  selectedSort: string;
+  onPostPress: (post: Post) => void;
+  selectedSortLabel: string;
+  sortSheetVisible: boolean;
   setSortSheetVisible: Dispatch<SetStateAction<boolean>>;
+  setSelectedSort: (displayName: string) => void;
 }
 
 const SearchContent = ({
@@ -32,8 +31,10 @@ const SearchContent = ({
   onSelectRecentItem,
   onRemoveItem,
   onPostPress,
-  selectedSort,
+  selectedSortLabel,
+  sortSheetVisible,
   setSortSheetVisible,
+  setSelectedSort,
 }: Props) => {
   if (isFetching) {
     return <Loading />;
@@ -45,27 +46,13 @@ const SearchContent = ({
 
   if (hasSearched && hasSearchResults) {
     return (
-      <FlatList
-        className="-mt-6"
+      <SortPostList
+        selectedSortLabel={selectedSortLabel}
+        setSelectedSort={setSelectedSort}
+        setSortSheetVisible={setSortSheetVisible}
+        sortSheetVisible={sortSheetVisible}
         data={filteredPosts}
-        keyExtractor={item => item.id.toString()}
-        renderItem={({ item }) => (
-          <BoardPostCardMD {...item} onPress={() => onPostPress(item.title)} />
-        )}
-        ListHeaderComponent={
-          <View className="mb-3">
-            <Pressable
-              className="flex-row items-center gap-1.5"
-              onPress={() => setSortSheetVisible(true)}>
-              <Filtered />
-              <Text className="text-surface-500 typo-body-16-regular">
-                {selectedSort}
-              </Text>
-            </Pressable>
-          </View>
-        }
-        contentContainerStyle={{ paddingVertical: 20, gap: 8 }}
-        showsVerticalScrollIndicator={false}
+        onPostPress={onPostPress}
       />
     );
   }
