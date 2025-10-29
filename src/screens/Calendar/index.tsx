@@ -8,7 +8,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import CalendarBottomSheet from '@/features/calendar/calendarBottomSheet/components/CalendarBottomSheet';
 import DotCalendar from '@/features/calendar/dotCalendar/components/DotCalendar';
 import MonthSelector from '@/features/calendar/monthSelector/components/MonthSelector';
-import ScheduleDetail from '@/features/calendar/scheduleDetail/components/ScheduleDetail';
+import ScheduleDetail from '@/features/calendar/scheduleSummary/components/ScheduleSummary';
 import useCalendar from '@/features/calendar/shared/hooks/useCalendar';
 
 const CalendarScreen = () => {

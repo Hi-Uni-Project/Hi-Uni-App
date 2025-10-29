@@ -1,11 +1,11 @@
 import React from 'react';
 
-import { Text, View } from 'react-native';
+import { Pressable, Text, View } from 'react-native';
 import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
 
 import dayjs from '@/shared/lib/dayjs';
 
-interface ScheduleDetailProps {
+interface ScheduleSummaryProps {
   category: string;
   detail: string;
   time: string;
@@ -16,7 +16,7 @@ interface ScheduleDetailProps {
   endDate: string;
 }
 
-const ScheduleDetail = ({
+const ScheduleSummary = ({
   category,
   detail,
   time,
@@ -25,7 +25,7 @@ const ScheduleDetail = ({
   textColor = '#FFFFFF',
   startDate,
   endDate,
-}: ScheduleDetailProps) => {
+}: ScheduleSummaryProps) => {
   const isScheduleLong = startDate !== endDate;
 
   const { startTime, endTime } = time.split(' - ').reduce(
@@ -41,11 +41,11 @@ const ScheduleDetail = ({
   );
 
   return (
-    <>
+    <Pressable onPress={() => console.log('Navigate to schedule detail')}>
       <Animated.View
+        className="mb-[11px] w-full flex-row items-center justify-between rounded-[10px] bg-white"
         entering={FadeIn.duration(200)}
-        exiting={FadeOut.duration(200)}
-        className="mb-[11px] w-full flex-row items-center justify-between rounded-[10px] bg-white">
+        exiting={FadeOut.duration(200)}>
         <View className="flex-1 flex-row items-center">
           <Text
             className="mr-2 rounded-full px-[13px] py-[3px] typo-body-16-regular"
@@ -92,10 +92,16 @@ const ScheduleDetail = ({
       </Animated.View>
       {memo && memo.length > 0 && (
         <View className="mb-[14px] rounded-[15px] bg-surface-100 px-4 py-3">
-          <Text className="text-main-text typo-caption-14-regular">{memo}</Text>
+          <Text
+            className="text-main-text typo-caption-14-regular"
+            numberOfLines={1}
+            ellipsizeMode="tail">
+            {memo}
+          </Text>
         </View>
       )}
-    </>
+    </Pressable>
   );
 };
-export default ScheduleDetail;
+
+export default ScheduleSummary;

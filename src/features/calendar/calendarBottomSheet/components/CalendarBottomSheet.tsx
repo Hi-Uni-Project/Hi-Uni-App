@@ -61,7 +61,10 @@ const CalendarBottomSheet = ({
         <Text className="typo-body-17-medium">
           {selectedDate.format('YYYY년 MM월 DD일 (dd)')}
         </Text>
-        <Pressable onPress={() => {}}>
+        <Pressable
+          onPress={() => {
+            console.log('Add Schedule');
+          }}>
           <AddIcon width={22} height={22} />
         </Pressable>
       </View>
