@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 
 import { useNavigation } from '@react-navigation/native';
-import { View } from 'react-native';
 
 import CategoryChipList from '@/features/board/boardMain/components/CategoryChipList/CategoryChipList';
 import PopularJobInfoReview from '@/features/board/boardMain/components/PopularJobInfoReview';
@@ -20,7 +19,7 @@ const JobInformationScreen = () => {
   const [selectedCategoryIdx, setSelectedCategoryIdx] = useState(0);
 
   return (
-    <View>
+    <>
       <CategoryChipList
         categories={categories}
         selectedCategoryIdx={selectedCategoryIdx}
@@ -29,7 +28,7 @@ const JobInformationScreen = () => {
       <PopularJobInfoReview
         onPress={() => navigation.navigate('PopularReviews')}
       />
-    </View>
+    </>
   );
 };
 
