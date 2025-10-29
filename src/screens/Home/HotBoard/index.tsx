@@ -1,6 +1,6 @@
 import React from 'react';
 
-import BoardListScreen from '@/shared/components/Board/BoardListScreen';
+import BoardListScreen from '@/shared/components/Board/BoardList';
 import { useWeeklyHotPosts } from '@/shared/hooks/useBoardQuery';
 
 const HotBoardScreen = () => {
