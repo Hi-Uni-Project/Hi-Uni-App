@@ -18,6 +18,7 @@ interface SortPostListProps {
   setSelectedSort: (displayName: string) => void;
   classname?: string;
   vertical?: boolean;
+  scrollEnabled?: boolean;
 }
 
 const SortPostList = ({
@@ -30,12 +31,14 @@ const SortPostList = ({
   setSortSheetVisible,
   setSelectedSort,
   vertical = false,
+  scrollEnabled = true,
 }: SortPostListProps) => {
   return (
     <>
       <FlatList
         className={classname}
         data={data}
+        scrollEnabled={scrollEnabled}
         keyExtractor={item => item.id.toString()}
         renderItem={({ item }) => (
           <BoardPostCardMD
