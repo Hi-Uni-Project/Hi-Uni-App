@@ -1,5 +1,6 @@
 import React, { useCallback } from 'react';
 
+import '../config/commonCalendarLocale';
 import dayjs from 'dayjs';
 import { View, Text } from 'react-native';
 import { Calendar } from 'react-native-calendars';
@@ -17,6 +18,7 @@ interface CommonCalendarProps {
   selectedMonth: string;
   setSelectedDate: (date: Date) => void;
   setSelectedMonth: (month: string) => void;
+  minDate?: Date;
 }
 
 const CommonCalendar = ({
@@ -24,9 +26,16 @@ const CommonCalendar = ({
   selectedMonth,
   setSelectedDate,
   setSelectedMonth,
+  minDate,
 }: CommonCalendarProps) => {
   const onChange = ({ dateString }: DateData) => {
+    const clonePrevious = new Date(selectedDate);
+
     const currentDate = new Date(dateString);
+
+    currentDate.setHours(clonePrevious.getHours());
+    currentDate.setMinutes(clonePrevious.getMinutes());
+
     setSelectedDate(currentDate);
   };
 
@@ -89,7 +98,8 @@ const CommonCalendar = ({
 
   return (
     <Calendar
-      firstDay={1}
+      minDate={minDate ? dayjs(minDate).format('YYYY-MM-DD') : undefined} // 오늘 이전 날짜 비활성화
+      firstDay={0}
       key={selectedMonth}
       monthFormat={'yyyy년 MM월'}
       hideExtraDays={true}

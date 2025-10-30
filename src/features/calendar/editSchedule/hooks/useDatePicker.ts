@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { dateToString } from '../../commonCalendar/utils/commonCalendarUtils';
 
@@ -34,6 +34,25 @@ const useDatePicker = ({
     useState<boolean>(false);
   const [isEndCalendarOpen, setIsEndCalendarOpen] = useState<boolean>(false);
 
+  const [isStartTimePickerOpen, setIsStartTimePickerOpen] =
+    useState<boolean>(false);
+  const [isEndTimePickerOpen, setIsEndTimePickerOpen] =
+    useState<boolean>(false);
+
+  const closeAllPickers = () => {
+    setIsStartCalendarOpen(false);
+    setIsEndCalendarOpen(false);
+    setIsStartTimePickerOpen(false);
+    setIsEndTimePickerOpen(false);
+  };
+
+  useEffect(() => {
+    if (endDate < startDate) {
+      setEndDate(startDate);
+      setCurrentEndMonth(dateToString(startDate));
+    }
+  }, [startDate]);
+
   return {
     startDate,
     setStartDate,
@@ -47,6 +66,11 @@ const useDatePicker = ({
     setIsStartCalendarOpen,
     isEndCalendarOpen,
     setIsEndCalendarOpen,
+    isStartTimePickerOpen,
+    setIsStartTimePickerOpen,
+    isEndTimePickerOpen,
+    setIsEndTimePickerOpen,
+    closeAllPickers,
   };
 };
 

@@ -1,5 +1,6 @@
 import React from 'react';
 
+import DateTimePicker from '@react-native-community/datetimepicker';
 import { Pressable, ScrollView, Text, TextInput, View } from 'react-native';
 import Animated, {
   FadeInUp,
@@ -13,7 +14,9 @@ import useDatePicker from '../hooks/useDatePicker';
 import CalendarDetailHeader from '../layouts/CalendarDetailHeader';
 
 import ScreenLayout from '@/shared/components/layouts/ScreenLayout';
+import { cn } from '@/shared/lib/cn';
 import dayjs from '@/shared/lib/dayjs';
+import { shadowStyleSheet } from '@/shared/styles/shadow';
 import HUInput from '@/shared/ui/atoms/HUInput';
 import ClockIcon from '@/static/icons/clock.svg';
 import MemoIcon from '@/static/icons/memo.svg';
@@ -34,6 +37,11 @@ const EditSchedule = () => {
     setIsStartCalendarOpen,
     isEndCalendarOpen,
     setIsEndCalendarOpen,
+    isStartTimePickerOpen,
+    setIsStartTimePickerOpen,
+    isEndTimePickerOpen,
+    setIsEndTimePickerOpen,
+    closeAllPickers,
   } = useDatePicker({});
 
   return (
@@ -61,18 +69,34 @@ const EditSchedule = () => {
             <View className="flex-row justify-between">
               <Pressable
                 onPress={() => {
+                  closeAllPickers();
                   setIsStartCalendarOpen(!isStartCalendarOpen);
-                  setIsEndCalendarOpen(false);
                 }}>
-                <Text className="mb-3 text-main-text typo-body-16-semibold">
+                <Text
+                  className={cn(
+                    'mb-3 typo-body-16-semibold',
+                    isStartCalendarOpen
+                      ? 'text-primary-purple'
+                      : 'text-main-text',
+                  )}>
                   {dayjs(startDate).format('YYYY. M. DD. dddd')}
                 </Text>
               </Pressable>
-              <Text
-                className="mb-3 text-main-text typo-body-16-semibold"
-                onPress={() => {}}>
-                오후 2:00
-              </Text>
+              <Pressable
+                onPress={() => {
+                  closeAllPickers();
+                  setIsStartTimePickerOpen(!isStartTimePickerOpen);
+                }}>
+                <Text
+                  className={cn(
+                    'mb-3 typo-body-16-semibold',
+                    isStartTimePickerOpen
+                      ? 'text-primary-purple'
+                      : 'text-main-text',
+                  )}>
+                  {dayjs(startDate).format('A h:mm')}
+                </Text>
+              </Pressable>
             </View>
             {isStartCalendarOpen && (
               <Animated.View
@@ -87,21 +111,60 @@ const EditSchedule = () => {
                 />
               </Animated.View>
             )}
+
+            {isStartTimePickerOpen && (
+              <Animated.View
+                className="mb-3 h-[145px] w-full items-center justify-center overflow-hidden rounded-[15px] bg-white"
+                style={shadowStyleSheet.dropShadow}
+                entering={FadeInUp}
+                exiting={FadeOutUp}
+                layout={LinearTransition}>
+                <DateTimePicker
+                  themeVariant="light"
+                  value={startDate}
+                  mode="time"
+                  display="spinner"
+                  locale="ko"
+                  onChange={(e, choosedDate) => {
+                    setStartDate(choosedDate || startDate);
+                  }}
+                />
+              </Animated.View>
+            )}
+
             <Animated.View
               layout={LinearTransition}
               className="flex-row justify-between">
               <Pressable
                 onPress={() => {
+                  closeAllPickers();
                   setIsEndCalendarOpen(!isEndCalendarOpen);
-                  setIsStartCalendarOpen(false);
                 }}>
-                <Text className="text-main-text typo-body-16-semibold">
+                <Text
+                  className={cn(
+                    'mb-3 typo-body-16-semibold',
+                    isEndCalendarOpen
+                      ? 'text-primary-purple'
+                      : 'text-main-text',
+                  )}>
                   {dayjs(endDate).format('YYYY. M. DD. dddd')}
                 </Text>
               </Pressable>
-              <Text className="mb-3 text-main-text typo-body-16-semibold">
-                오후 3:00
-              </Text>
+              <Pressable
+                onPress={() => {
+                  closeAllPickers();
+                  setIsEndTimePickerOpen(!isEndTimePickerOpen);
+                }}>
+                <Text
+                  className={cn(
+                    'mb-3 typo-body-16-semibold',
+                    isEndTimePickerOpen
+                      ? 'text-primary-purple'
+                      : 'text-main-text',
+                  )}>
+                  {dayjs(endDate).format('A h:mm')}
+                </Text>
+              </Pressable>
             </Animated.View>
             {isEndCalendarOpen && (
               <Animated.View
@@ -109,10 +172,30 @@ const EditSchedule = () => {
                 exiting={FadeOutUp}
                 layout={LinearTransition}>
                 <CommonCalendar
+                  minDate={startDate}
                   selectedDate={endDate}
                   setSelectedDate={setEndDate}
                   selectedMonth={currentEndMonth}
                   setSelectedMonth={setCurrentEndMonth}
+                />
+              </Animated.View>
+            )}
+            {isEndTimePickerOpen && (
+              <Animated.View
+                className="mb-3 h-[145px] w-full items-center justify-center overflow-hidden rounded-[15px] bg-white"
+                style={shadowStyleSheet.dropShadow}
+                entering={FadeInUp}
+                exiting={FadeOutUp}
+                layout={LinearTransition}>
+                <DateTimePicker
+                  themeVariant="light"
+                  value={endDate}
+                  mode="time"
+                  display="spinner"
+                  locale="ko"
+                  onChange={(e, choosedDate) => {
+                    setEndDate(choosedDate || endDate);
+                  }}
                 />
               </Animated.View>
             )}
