@@ -31,6 +31,9 @@ export type HomeNavigationProps = {
   HotBoard: undefined;
   Detail: undefined;
   Profile: undefined;
+
+  EditSchedule: CalendarSchedule;
+  CreateSchedule: undefined;
 };
 
 export type TabNavigationProps = {
@@ -43,8 +46,6 @@ export type TabNavigationProps = {
 
 export type CalendarNavigationProps = {
   CalendarMain: undefined;
-  EditSchedule: CalendarSchedule;
-  CreateSchedule: undefined;
 };
 
 export type MainStackNavigationProp =

@@ -1,15 +1,21 @@
 import React from 'react';
 
-import { View, Text } from 'react-native';
+import { Text, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import HeaderWithBack from '@/shared/components/layouts/HeaderWithBack';
+import CalendarDetailHeader from '../layouts/CalendarDetailHeader';
+
+import ScreenLayout from '@/shared/components/layouts/ScreenLayout';
 
 const EditSchedule = () => {
+  const insets = useSafeAreaInsets();
   return (
-    <View>
-      <HeaderWithBack />
-      <Text>Edit Schedule Screen</Text>
-    </View>
+    <ScreenLayout>
+      <CalendarDetailHeader />
+      <View style={{ marginTop: insets.top }}>
+        <Text>Edit Schedule Screen</Text>
+      </View>
+    </ScreenLayout>
   );
 };
 
