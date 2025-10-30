@@ -2,11 +2,12 @@ import React, { Dispatch, SetStateAction } from 'react';
 
 import { FlatList, FlatListProps } from 'react-native';
 
+import BoardPostCardMD from '../BoardPostCard/md';
+
 import SortBottomSheet from './SortBottomSheet';
 import SortHeader from './SortHeader';
 
 import { Post } from '@/features/board/shared/types/DefaultPostType';
-import BoardPostCardMD from '@/shared/components/Board/BoardPostCard/md';
 
 interface SortPostListProps {
   data: Post[];

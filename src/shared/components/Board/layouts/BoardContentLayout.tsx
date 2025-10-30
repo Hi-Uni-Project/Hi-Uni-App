@@ -2,8 +2,9 @@ import React from 'react';
 
 import { FlatList } from 'react-native';
 
+import BoardPostCardMD from '../BoardPostCard/md';
+
 import { Post } from '@/features/board/shared/types/DefaultPostType';
-import BoardPostCardMD from '@/shared/components/Board/BoardPostCard/md';
 import NoBoardLayout from '@/shared/components/Board/layouts/NoBoardLayout';
 import Loading from '@/shared/ui/organisms/Loading';
 
