@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { Pressable, ScrollView, Text, TextInput, View } from 'react-native';
@@ -10,9 +10,12 @@ import Animated, {
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import CategorySelector from '../../categorySelector/components/CategorySelector';
+import useCategorySelector from '../../categorySelector/hooks/useCategorySelector';
 import CommonCalendar from '../../commonCalendar/components/CommonCalendar';
+import { CalendarSchedule } from '../../types';
 import useDatePicker from '../hooks/useDatePicker';
 import CalendarDetailHeader from '../layouts/CalendarDetailHeader';
+import useCalendarScheduleStore from '../stores/useCalendarScheduleStore';
 
 import ScreenLayout from '@/shared/components/layouts/ScreenLayout';
 import { cn } from '@/shared/lib/cn';
@@ -22,8 +25,36 @@ import HUInput from '@/shared/ui/atoms/HUInput';
 import ClockIcon from '@/static/icons/clock.svg';
 import MemoIcon from '@/static/icons/memo.svg';
 
-const EditSchedule = () => {
+interface EditScheduleProps {
+  existData?: CalendarSchedule;
+}
+
+const EditSchedule = ({ existData }: EditScheduleProps) => {
   const insets = useSafeAreaInsets();
+
+  const storeInitialData = useCalendarScheduleStore(state => state.initialData);
+  const storeScheduleData = useCalendarScheduleStore(
+    state => state.scheduleData,
+  );
+  const storeUpdateScheduleField = useCalendarScheduleStore(
+    state => state.updateScheduleField,
+  );
+  const storeMemo = useCalendarScheduleStore(state => state.scheduleData.memo);
+
+  const storeDetail = useCalendarScheduleStore(
+    state => state.scheduleData.detail,
+  );
+
+  const storeIsValid = useCalendarScheduleStore(state => state.isValid);
+  const storeHasDataChanges = useCalendarScheduleStore(
+    state => state.hasDataChanges,
+  );
+
+  const storeInitialize = useCalendarScheduleStore(state => state.initialize);
+  const storeReset = useCalendarScheduleStore(state => state.reset);
+
+  const { currentCategory, setCurrentCategory, categories } =
+    useCategorySelector();
 
   const {
     startDate,
@@ -43,7 +74,29 @@ const EditSchedule = () => {
     isEndTimePickerOpen,
     setIsEndTimePickerOpen,
     closeAllPickers,
-  } = useDatePicker({});
+  } = useDatePicker();
+
+  useEffect(() => {
+    storeInitialize(existData);
+
+    return storeReset();
+  }, []);
+
+  useEffect(() => {
+    storeUpdateScheduleField(
+      'category',
+      currentCategory === null ? '' : currentCategory.categoryName,
+    );
+  }, [currentCategory]);
+
+  // TODO: 삭제해라
+  useEffect(() => {
+    console.log(storeInitialData);
+    console.log(storeScheduleData);
+
+    console.log('현재 카테고리:', currentCategory);
+    console.log('유효성', storeIsValid(), '변경여부', storeHasDataChanges());
+  }, [storeInitialData, storeScheduleData, currentCategory]);
 
   return (
     <ScreenLayout>
@@ -52,10 +105,18 @@ const EditSchedule = () => {
         <View style={{ marginTop: insets.top }}>
           <View className="flex-row pt-3">
             <HUInput
-              leftComponent={<CategorySelector />}
+              leftComponent={
+                <CategorySelector
+                  categories={categories}
+                  currentCategory={currentCategory}
+                  setCurrentCategory={setCurrentCategory}
+                />
+              }
+              value={storeDetail}
+              onChangeText={text => storeUpdateScheduleField('detail', text)}
               placeholder="일정명을 입력해주세요."
               variant="calendarSchedule"
-              className="text-surface-400 typo-sub-title-20-semibold"
+              className="text-main-text typo-sub-title-20-semibold"
             />
           </View>
         </View>
@@ -211,10 +272,12 @@ const EditSchedule = () => {
             </Text>
           </View>
           <TextInput
+            value={storeMemo}
+            onChangeText={text => storeUpdateScheduleField('memo', text)}
             placeholder="메모를 입력해주세요"
             onFocus={() => closeAllPickers()}
             multiline={true}
-            className="mt-[10px] rounded-[15px] bg-surface-100 px-[11px] py-[14px] text-surface-400 typo-body-15-regular"
+            className="mt-[10px] rounded-[15px] bg-surface-100 px-[11px] py-[14px] text-main-text typo-body-15-regular"
             style={{
               minHeight: 100,
               textAlignVertical: 'top',

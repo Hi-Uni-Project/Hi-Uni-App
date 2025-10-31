@@ -9,18 +9,25 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated';
 
-import useCategorySelector from '../hooks/useCategorySelector';
+import { Category } from '../types/categoryTypes';
 
 import HUBadge from '@/shared/ui/atoms/HUBadge';
 import ChevronDownIcon from '@/static/icons/down_chevron.svg';
 
-const CategorySelector = () => {
+interface CategorySelectorProps {
+  categories: Category[];
+  currentCategory: Category | null;
+  setCurrentCategory: (category: Category | null) => void;
+}
+
+const CategorySelector = ({
+  categories,
+  currentCategory,
+  setCurrentCategory,
+}: CategorySelectorProps) => {
   const titleRef = useRef(null);
 
   const [isTitleModalVisible, setIsTitleModalVisible] = React.useState(false);
-
-  const { categories, currentCategory, setCurrentCategory } =
-    useCategorySelector();
 
   const rotation = useSharedValue(0);
 

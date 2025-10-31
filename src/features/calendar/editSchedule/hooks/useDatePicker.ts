@@ -1,27 +1,29 @@
 import { useEffect, useState } from 'react';
 
 import { dateToString } from '../../commonCalendar/utils/commonCalendarUtils';
+import useCalendarScheduleStore from '../stores/useCalendarScheduleStore';
 
 import dayjs from '@/shared/lib/dayjs';
 
-// 이미 저장된 일정을 불러올때는 이걸 씁니다.
-interface useDatePickerProps {
-  startDateAlreadyExists?: Date;
-  endDateAlreadyExists?: Date;
-}
+const useDatePicker = () => {
+  const updateScheduleField = useCalendarScheduleStore(
+    state => state.updateScheduleField,
+  );
 
-const useDatePicker = ({
-  startDateAlreadyExists,
-  endDateAlreadyExists,
-}: useDatePickerProps) => {
+  const startDateAlreadyExists = useCalendarScheduleStore(state => {
+    return state.initialData.startDate;
+  });
+
+  const endDateAlreadyExists = useCalendarScheduleStore(state => {
+    return state.initialData.endDate;
+  });
+
   const [startDate, setStartDate] = useState<Date>(
-    startDateAlreadyExists || dayjs().toDate(),
+    new Date(startDateAlreadyExists),
   );
-  const [endDate, setEndDate] = useState<Date>(
-    endDateAlreadyExists || dayjs().add(1, 'hour').toDate(),
-  );
+  const [endDate, setEndDate] = useState<Date>(new Date(endDateAlreadyExists));
 
-  // 캘린더 UI에서 현재 표시되는 월 (더 직관적)
+  // 캘린더 UI에서 현재 표시되는 월
   const [currentStartMonth, setCurrentStartMonth] = useState<string>(
     dateToString(startDate),
   );
@@ -29,7 +31,7 @@ const useDatePicker = ({
     dateToString(endDate),
   );
 
-  // 캘린더 표시 여부 (더 직관적)
+  // 캘린더 표시 여부
   const [isStartCalendarOpen, setIsStartCalendarOpen] =
     useState<boolean>(false);
   const [isEndCalendarOpen, setIsEndCalendarOpen] = useState<boolean>(false);
@@ -52,6 +54,17 @@ const useDatePicker = ({
       setCurrentEndMonth(dateToString(startDate));
     }
   }, [startDate]);
+
+  useEffect(() => {
+    updateScheduleField(
+      'startDate',
+      dayjs(startDate).format('YYYY-MM-DDTHH:mm:ss'),
+    );
+    updateScheduleField(
+      'endDate',
+      dayjs(endDate).format('YYYY-MM-DDTHH:mm:ss'),
+    );
+  }, [startDate, endDate]);
 
   return {
     startDate,

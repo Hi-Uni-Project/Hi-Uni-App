@@ -24,4 +24,23 @@ export interface CalendarSchedule {
   memo: string;
 }
 
+export const toCalendaerScheduleEdit = (
+  data: CalendarSchedule,
+): CalendarScheduleEdit => {
+  const editData: CalendarScheduleEdit = {
+    startDate: data.startDate,
+    endDate: data.endDate,
+    category: data.category,
+    detail: data.detail,
+    memo: data.memo,
+  };
+
+  return editData;
+};
+
+export type CalendarScheduleEdit = Omit<
+  CalendarSchedule,
+  'time' | 'backgroundColor' | 'textColor'
+>;
+
 export type CalendarScheduleResponse = ResponseTypes<CalendarSchedule[]>;
