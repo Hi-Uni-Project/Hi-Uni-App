@@ -6,15 +6,13 @@ import BoardHeaderColorGround from '@/features/home/shared/layouts/BoardHeaderCo
 import DetailBoardHeader from '@/shared/components/Board/layouts/DetailBoardHeader';
 import NoBoardLayout from '@/shared/components/Board/layouts/NoBoardLayout';
 import SortPostList from '@/shared/components/Board/SortPostList';
-import { useHideTabBar } from '@/shared/hooks/useHideTabBar';
 import { useSortBoard } from '@/shared/hooks/useSortBoard';
 import { mockPosts } from '@/shared/lib/mock';
 import Loading from '@/shared/ui/organisms/Loading';
 
-const PopularReviews = () => {
-  const isLoading = false;
-  useHideTabBar();
+const isLoading = false;
 
+const PopularReviews = () => {
   const {
     selectedSortLabel,
     setSelectedSort,

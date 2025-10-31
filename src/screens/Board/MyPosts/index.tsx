@@ -2,11 +2,8 @@ import React from 'react';
 
 import BoardListScreen from '@/shared/components/Board/BoardList';
 import { useMyCommentsQuery } from '@/shared/hooks/useBoardQuery';
-import { useHideTabBar } from '@/shared/hooks/useHideTabBar';
 
 const MyPosts = () => {
-  useHideTabBar();
-
   return (
     <BoardListScreen
       title="내가 쓴 글"
