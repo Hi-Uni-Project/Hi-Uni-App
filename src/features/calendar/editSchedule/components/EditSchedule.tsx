@@ -9,6 +9,7 @@ import Animated, {
 } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import CategorySelector from '../../categorySelector/components/CategorySelector';
 import CommonCalendar from '../../commonCalendar/components/CommonCalendar';
 import useDatePicker from '../hooks/useDatePicker';
 import CalendarDetailHeader from '../layouts/CalendarDetailHeader';
@@ -51,7 +52,7 @@ const EditSchedule = () => {
         <View style={{ marginTop: insets.top }}>
           <View className="flex-row pt-3">
             <HUInput
-              leftComponent={<Text>제목</Text>}
+              leftComponent={<CategorySelector />}
               placeholder="일정명을 입력해주세요."
               variant="calendarSchedule"
               className="text-surface-400 typo-sub-title-20-semibold"
@@ -211,6 +212,7 @@ const EditSchedule = () => {
           </View>
           <TextInput
             placeholder="메모를 입력해주세요"
+            onFocus={() => closeAllPickers()}
             multiline={true}
             className="mt-[10px] rounded-[15px] bg-surface-100 px-[11px] py-[14px] text-surface-400 typo-body-15-regular"
             style={{
