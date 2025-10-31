@@ -26,7 +26,7 @@ const SortPostList = ({
   data,
   onPostPress,
   classname = '-mt-6',
-  contentContainerStyle = { paddingVertical: 20, gap: 8 },
+  contentContainerStyle = { paddingVertical: 20, paddingBottom: 50, gap: 8 },
   selectedSortLabel,
   sortSheetVisible,
   setSortSheetVisible,

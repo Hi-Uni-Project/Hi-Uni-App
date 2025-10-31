@@ -7,7 +7,6 @@ import { Post } from '@/features/board/shared/types/DefaultPostType';
 import BoardHeaderColorGround from '@/features/home/shared/layouts/BoardHeaderColorGround';
 import BoardContentLayout from '@/shared/components/Board/layouts/BoardContentLayout';
 import DetailBoardHeader from '@/shared/components/Board/layouts/DetailBoardHeader';
-import ScreenLayout from '@/shared/components/layouts/ScreenLayout';
 
 interface Props {
   title: string;
@@ -25,20 +24,20 @@ const BoardListScreen = ({
 }: Props) => {
   const { data, isLoading } = useQuery();
 
+  console.log('data:', data);
+
   return (
     <View className="flex-1">
       <BoardHeaderColorGround />
       <DetailBoardHeader title={title} icon={showHeaderIcon} />
 
-      <ScreenLayout edges={['bottom']}>
-        <View className="flex-1 px-5">
-          <BoardContentLayout
-            des={emptyDescription}
-            data={data}
-            isLoading={isLoading}
-          />
-        </View>
-      </ScreenLayout>
+      <View className="flex-1 bg-surface-50 px-5">
+        <BoardContentLayout
+          des={emptyDescription}
+          data={data}
+          isLoading={isLoading}
+        />
+      </View>
     </View>
   );
 };

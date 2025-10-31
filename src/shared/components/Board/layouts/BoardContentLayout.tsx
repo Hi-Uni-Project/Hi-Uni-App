@@ -28,7 +28,7 @@ const BoardContentLayout = ({ data, isLoading, des }: Props) => {
       data={data}
       keyExtractor={item => item.id.toString()}
       renderItem={({ item }) => <BoardPostCardMD {...item} />}
-      contentContainerStyle={{ paddingVertical: 20, gap: 8 }}
+      contentContainerStyle={{ paddingVertical: 20, gap: 8, paddingBottom: 50 }}
       showsVerticalScrollIndicator={false}
     />
   );
