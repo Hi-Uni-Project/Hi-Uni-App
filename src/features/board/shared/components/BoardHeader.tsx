@@ -1,7 +1,13 @@
 import React, { useState } from 'react';
 
 import { useNavigation } from '@react-navigation/native';
-import { View, TouchableOpacity, StatusBar, Text } from 'react-native';
+import {
+  View,
+  TouchableOpacity,
+  StatusBar,
+  Text,
+  Platform,
+} from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { TabKey } from '../types/BoardUpperTab';
@@ -71,7 +77,10 @@ const BoardHeader = ({ onTabPress }: BoardHeaderProps) => {
         visible={isOptionVisible}
         onClose={() => setIsOptionVisible(false)}
         options={options}
-        position={{ top: insets.top + 60, right: 25 }}
+        position={{
+          top: insets.top + Platform.OS === 'iOS' ? 60 : 60,
+          right: 25,
+        }}
       />
     </View>
   );

@@ -1,9 +1,19 @@
 import React from 'react';
 
-import { SafeAreaView } from 'react-native';
+import { Platform, SafeAreaView } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const BoardHeaderColorGround = () => {
-  return <SafeAreaView style={{ backgroundColor: 'white' }} />;
+  const insets = useSafeAreaInsets();
+
+  return (
+    <SafeAreaView
+      style={{
+        backgroundColor: 'white',
+        paddingTop: Platform.OS === 'android' ? insets.top : 0,
+      }}
+    />
+  );
 };
 
 export default BoardHeaderColorGround;
