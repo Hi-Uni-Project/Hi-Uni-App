@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 
-import { Text, View } from 'react-native';
+import { ScrollView, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import BoardFloatingButton from '@/features/board/boardMain/components/BoardFloatingButton';
 import JobInformationScreen from '@/features/board/boardMain/components/JobInformation';
 import BoardHeader from '@/features/board/shared/components/BoardHeader';
 import { TabKey } from '@/features/board/shared/types/BoardUpperTab';
@@ -33,20 +34,25 @@ const BoardScreen = () => {
   return (
     <View className="flex-1">
       <BoardHeader onTabPress={setActiveTab} />
-      <View style={{ marginTop: insets.top + 110 }}>{renderContent()}</View>
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <View style={{ marginTop: insets.top + 110 }}>{renderContent()}</View>
 
-      <View className="flex-1 px-4">
-        <SortPostList
-          classname=""
-          vertical
-          selectedSortLabel={selectedSortLabel}
-          setSelectedSort={setSelectedSort}
-          setSortSheetVisible={setSortSheetVisible}
-          sortSheetVisible={sortSheetVisible}
-          data={mockPosts}
-          onPostPress={() => console.log('ss')}
-        />
-      </View>
+        <View className="flex-1 px-5">
+          <SortPostList
+            classname=""
+            scrollEnabled={false}
+            vertical
+            selectedSortLabel={selectedSortLabel}
+            setSelectedSort={setSelectedSort}
+            setSortSheetVisible={setSortSheetVisible}
+            sortSheetVisible={sortSheetVisible}
+            data={mockPosts}
+            onPostPress={() => console.log('ss')}
+          />
+        </View>
+      </ScrollView>
+
+      <BoardFloatingButton insets={insets} />
     </View>
   );
 };
