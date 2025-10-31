@@ -4,10 +4,10 @@ import { useNavigation } from '@react-navigation/native';
 
 import CategoryChipList from '@/features/board/boardMain/components/CategoryChipList/CategoryChipList';
 import PopularJobInfoReview from '@/features/board/boardMain/components/PopularJobInfoReview';
-import { BoardStackNavigationProp } from '@/navigation/types/navigationTypes';
+import { MainStackNavigationProp } from '@/navigation/types/navigationTypes';
 
 const JobInformationScreen = () => {
-  const navigation = useNavigation<BoardStackNavigationProp>();
+  const navigation = useNavigation<MainStackNavigationProp>();
   const categories = [
     '전체',
     '취업',
@@ -26,7 +26,9 @@ const JobInformationScreen = () => {
         setSelectedCategoryIdx={setSelectedCategoryIdx}
       />
       <PopularJobInfoReview
-        onPress={() => navigation.navigate('PopularReviews')}
+        onPress={() =>
+          navigation.navigate('BoardRoute', { screen: 'PopularReviews' })
+        }
       />
     </>
   );

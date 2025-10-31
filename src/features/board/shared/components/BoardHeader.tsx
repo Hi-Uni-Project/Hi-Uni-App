@@ -7,7 +7,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { TabKey } from '../types/BoardUpperTab';
 
 import BoardUpperNavigator from '@/features/board/shared/components/BoardUpperNavigator';
-import { BoardStackNavigationProp } from '@/navigation/types/navigationTypes';
+import { MainStackNavigationProp } from '@/navigation/types/navigationTypes';
 import OptionPopup, { OptionItem } from '@/shared/components/Board/OptionPopup';
 import { useRegisterStore } from '@/shared/stores/register';
 import { shadowStyleSheet } from '@/shared/styles/shadow';
@@ -21,20 +21,20 @@ interface BoardHeaderProps {
 const BoardHeader = ({ onTabPress }: BoardHeaderProps) => {
   const insets = useSafeAreaInsets();
   const { univ } = useRegisterStore();
-  const navigation = useNavigation<BoardStackNavigationProp>();
+  const navigation = useNavigation<MainStackNavigationProp>();
   const [isOptionVisible, setIsOptionVisible] = useState(false);
 
   const options: OptionItem[] = [
     {
       label: '내가 쓴 글 보기',
       onPress: () => {
-        navigation.navigate('MyPosts');
+        navigation.navigate('BoardRoute', { screen: 'MyPosts' });
       },
     },
     {
       label: '내가 댓글 단 글 보기',
       onPress: () => {
-        navigation.navigate('MyComments');
+        navigation.navigate('BoardRoute', { screen: 'MyComments' });
       },
     },
   ];
@@ -53,12 +53,12 @@ const BoardHeader = ({ onTabPress }: BoardHeaderProps) => {
 
         <View className="mr-[10px] flex-row items-center">
           <TouchableOpacity className="p-[10px]">
-            <SearchIcon width={26} height={26} />
+            <SearchIcon width={26} height={26} color={'#1E2128'} />
           </TouchableOpacity>
           <TouchableOpacity
             className="p-[10px]"
             onPress={() => setIsOptionVisible(true)}>
-            <MoreIcon width={26} height={26} />
+            <MoreIcon width={26} height={26} color={'#1E2128'} />
           </TouchableOpacity>
         </View>
       </View>

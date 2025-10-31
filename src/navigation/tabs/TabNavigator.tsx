@@ -3,12 +3,10 @@ import React, { useMemo, useState } from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Text, View } from 'react-native';
 
-import BoardRoute from '../stacks/BoardStackNavigation';
-
+import BoardScreen from '@/screens/Board';
 import CalendarScreen from '@/screens/Calendar';
 import HomeScreen from '@/screens/Home';
 import HUTabBar, { HUTabBarProps } from '@/shared/components/HUTabBar';
-import { useTabBarStore } from '@/shared/stores/tabBar';
 
 const Tab = createBottomTabNavigator();
 
@@ -20,7 +18,6 @@ const SecondPage = () => (
 
 const HomeTabScreens = () => {
   const [currentRouteName, setCurrentRouteName] = useState('HomeTab');
-  const isTabBarVisible = useTabBarStore(state => state.isVisible);
 
   const backgroundColor = useMemo(() => {
     switch (currentRouteName) {
@@ -37,9 +34,6 @@ const HomeTabScreens = () => {
   }, [currentRouteName]);
 
   const tabBar = (props: HUTabBarProps) => {
-    if (!isTabBarVisible) {
-      return null;
-    }
     return <HUTabBar {...props} />;
   };
 
@@ -65,11 +59,8 @@ const HomeTabScreens = () => {
           listeners={{ focus: () => setCurrentRouteName('Search') }}
         />
         <Tab.Screen
-          name="BoardRoute"
-          options={{
-            unmountOnBlur: true,
-          }}
-          component={BoardRoute}
+          name="Board"
+          component={BoardScreen}
           listeners={{ focus: () => setCurrentRouteName('Board') }}
         />
         <Tab.Screen

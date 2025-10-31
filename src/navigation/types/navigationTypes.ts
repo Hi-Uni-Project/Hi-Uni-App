@@ -1,10 +1,12 @@
 import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
+import { NavigatorScreenParams } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 export type MainNavigationProps = {
   OnboardRoute: undefined;
   SignupRoute: undefined;
   HomeRoute: undefined;
+  BoardRoute: NavigatorScreenParams<BoardNavigationProps>;
 };
 
 export type SignupNavigationProps = {
@@ -32,7 +34,6 @@ export type HomeNavigationProps = {
 };
 
 export type BoardNavigationProps = {
-  Board: undefined;
   MyComments: undefined;
   MyPosts: undefined;
   PopularReviews: undefined;
