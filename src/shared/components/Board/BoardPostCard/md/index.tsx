@@ -18,7 +18,7 @@ const BoardPostCardMD = ({ vertical = false, onPress, ...post }: Props) => {
   return (
     <Pressable
       onPress={onPress}
-      className="rounded-[15px] border border-surface-200 bg-white px-4 pb-2 pt-4 shadow-sm">
+      className="rounded-[15px] border border-surface-200 bg-white px-5 pb-2 pt-4 shadow-sm">
       {!vertical && (
         <CategoryBadges category={post.category} type={post.type} />
       )}
