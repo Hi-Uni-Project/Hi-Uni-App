@@ -24,8 +24,6 @@ const BoardListScreen = ({
 }: Props) => {
   const { data, isLoading } = useQuery();
 
-  console.log('data:', data);
-
   return (
     <View className="flex-1">
       <BoardHeaderColorGround />
