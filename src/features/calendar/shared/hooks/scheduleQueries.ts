@@ -1,8 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
 import { Dayjs } from 'dayjs';
 
-import { CalendarSchedule } from '../../types';
 import { calendarScheduleApi } from '../api/calendarApi';
+import { CalendarSchedule } from '../types';
 import getArrayOfMonth from '../utils/getArrayOfMonth';
 
 export const calendarKeys = {

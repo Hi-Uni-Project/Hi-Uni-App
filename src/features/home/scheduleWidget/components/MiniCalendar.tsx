@@ -9,7 +9,7 @@ import CalendarDot from './CalendarDot';
 import CalendarItem from './CalendarItem';
 import SelectionIndicator from './SelectionIndicator';
 
-import { CalendarSchedule } from '@/features/calendar/types';
+import { CalendarSchedule } from '@/features/calendar/shared/types';
 
 interface MiniCalendarProps {
   weeks: Date[];

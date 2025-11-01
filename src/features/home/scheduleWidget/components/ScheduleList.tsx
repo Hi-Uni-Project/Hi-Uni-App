@@ -5,7 +5,7 @@ import Animated, { FadeIn } from 'react-native-reanimated';
 
 import ScheduleListItem from './ScheduleListItem';
 
-import { CalendarSchedule } from '@/features/calendar/types';
+import { CalendarSchedule } from '@/features/calendar/shared/types';
 import dayjs from '@/shared/lib/dayjs';
 import AddIcons from '@/static/icons/add.svg';
 

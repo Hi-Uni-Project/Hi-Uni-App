@@ -24,23 +24,18 @@ export interface CalendarSchedule {
   memo: string;
 }
 
-export const toCalendaerScheduleEdit = (
-  data: CalendarSchedule,
-): CalendarScheduleEdit => {
-  const editData: CalendarScheduleEdit = {
-    startDate: data.startDate,
-    endDate: data.endDate,
-    category: data.category,
-    detail: data.detail,
-    memo: data.memo,
-  };
+export interface ScheduleCategory {
+  categoryId: number;
+  categoryName: string;
+  categoryColor: string;
+}
 
-  return editData;
-};
-
-export type CalendarScheduleEdit = Omit<
-  CalendarSchedule,
-  'time' | 'backgroundColor' | 'textColor'
->;
+export interface CalendarScheduleEdit {
+  startDate: Date;
+  endDate: Date;
+  category: ScheduleCategory | null;
+  detail: string;
+  memo: string;
+}
 
 export type CalendarScheduleResponse = ResponseTypes<CalendarSchedule[]>;

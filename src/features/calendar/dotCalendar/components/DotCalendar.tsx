@@ -12,8 +12,8 @@ import {
 } from 'react-native';
 import Animated, { FadeIn } from 'react-native-reanimated';
 
+import { CalendarSchedule } from '../../shared/types';
 import getArrayOfMonth from '../../shared/utils/getArrayOfMonth';
-import { CalendarSchedule } from '../../types';
 
 import MultiDot from './MultiDot';
 

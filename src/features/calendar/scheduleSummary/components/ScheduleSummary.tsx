@@ -4,7 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 import { Pressable, Text, View } from 'react-native';
 import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
 
-import { CalendarSchedule } from '../../types';
+import { CalendarSchedule } from '../../shared/types';
 
 import { CalendarStackNavigationProp } from '@/navigation/types/navigationTypes';
 import dayjs from '@/shared/lib/dayjs';

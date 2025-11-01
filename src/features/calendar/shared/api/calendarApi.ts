@@ -1,4 +1,4 @@
-import { CalendarScheduleRequest, CalendarScheduleResponse } from '../../types';
+import { CalendarScheduleRequest, CalendarScheduleResponse } from '../types';
 
 import { axiosInstance } from '@/shared/api/axiosInstance';
 

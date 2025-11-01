@@ -6,7 +6,7 @@ import { ScrollView } from 'react-native';
 import EditSchedule from '@/features/calendar/editSchedule/components/EditSchedule';
 import CalendarDetailHeader from '@/features/calendar/editSchedule/layouts/CalendarDetailHeader';
 import useCalendarScheduleStore from '@/features/calendar/editSchedule/stores/useCalendarScheduleStore';
-import { CalendarSchedule } from '@/features/calendar/types';
+import { CalendarSchedule } from '@/features/calendar/shared/types';
 import ScreenLayout from '@/shared/components/layouts/ScreenLayout';
 
 type CalendarScheduleRouteProp = RouteProp<{

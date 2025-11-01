@@ -2,7 +2,7 @@ import React from 'react';
 
 import { View } from 'react-native';
 
-import { CalendarSchedule } from '@/features/calendar/types';
+import { CalendarSchedule } from '@/features/calendar/shared/types';
 import dayjs from '@/shared/lib/dayjs';
 
 interface CalendarDotProps {

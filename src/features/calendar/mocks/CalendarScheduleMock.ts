@@ -1,4 +1,4 @@
-import { CalendarScheduleResponse } from '../types';
+import { CalendarScheduleResponse } from '../shared/types';
 
 function formatTime(dateString: string): string {
   const date = new Date(dateString);

@@ -1,7 +1,7 @@
 import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
-import { CalendarSchedule } from '@/features/calendar/types';
+import { CalendarSchedule } from '@/features/calendar/shared/types';
 
 export type MainNavigationProps = {
   OnboardRoute: undefined;
