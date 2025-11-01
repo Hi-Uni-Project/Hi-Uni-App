@@ -21,8 +21,8 @@ const EditSchedule = () => {
   useEffect(() => {
     console.log(storeInitialData);
     console.log(storeScheduleData);
-    console.log('유효성', storeIsValid(), '변경여부', storeHasDataChanges());
-  }, [storeInitialData, storeScheduleData]);
+    console.log('유효성', storeIsValid, '변경여부', storeHasDataChanges);
+  }, [storeInitialData, storeScheduleData, storeIsValid, storeHasDataChanges]);
 
   return (
     <>

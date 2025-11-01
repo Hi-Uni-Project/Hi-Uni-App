@@ -8,14 +8,18 @@ interface CalendarScheduleStore {
   scheduleData: CalendarScheduleEdit;
   initialData: CalendarScheduleEdit;
 
+  isValid: boolean;
+  hasDataChanges: boolean;
+
   updateScheduleField: <K extends keyof CalendarScheduleEdit>(
     field: K,
     value: CalendarScheduleEdit[K],
   ) => void;
   setScheduleData: (data: CalendarScheduleEdit) => void;
   initialize: (data?: CalendarScheduleEdit) => void;
-  isValid: () => boolean;
-  hasDataChanges: () => boolean;
+
+  _validate: () => void;
+
   reset: () => void;
 }
 
@@ -33,18 +37,25 @@ const useCalendarScheduleStore = create<CalendarScheduleStore>()(
     scheduleData: defaultScheduleData,
     initialData: defaultScheduleData,
 
-    updateScheduleField: (field, value) =>
+    isValid: false,
+    hasDataChanges: false,
+
+    updateScheduleField: (field, value) => {
       set(state => ({
         scheduleData: {
           ...state.scheduleData,
           [field]: value,
         },
-      })),
+      }));
+      get()._validate();
+    },
 
-    setScheduleData: data =>
+    setScheduleData: data => {
       set({
         scheduleData: data,
-      }),
+      });
+      get()._validate();
+    },
 
     initialize: data =>
       set({
@@ -52,25 +63,29 @@ const useCalendarScheduleStore = create<CalendarScheduleStore>()(
         initialData: data || defaultScheduleData,
       }),
 
-    hasDataChanges: () => {
+    _validate: () => {
       const { scheduleData, initialData } = get();
-      return JSON.stringify(scheduleData) !== JSON.stringify(initialData);
-    },
 
-    isValid: () => {
-      const { scheduleData } = get();
+      const hasChanges =
+        JSON.stringify(scheduleData) !== JSON.stringify(initialData);
 
-      return (
+      const valid =
         scheduleData.memo.trim() !== '' &&
         scheduleData.detail.trim() !== '' &&
-        scheduleData.category !== null
-      );
+        scheduleData.category !== '';
+
+      set({
+        isValid: valid,
+        hasDataChanges: hasChanges,
+      });
     },
 
     reset: () =>
       set({
         scheduleData: defaultScheduleData,
         initialData: defaultScheduleData,
+        isValid: false,
+        hasDataChanges: false,
       }),
   }),
 );

@@ -9,19 +9,23 @@ import useCalendarScheduleStore from '@/features/calendar/editSchedule/stores/us
 import { CalendarSchedule } from '@/features/calendar/types';
 import ScreenLayout from '@/shared/components/layouts/ScreenLayout';
 
-// Route params 타입 정의
 type CalendarScheduleRouteProp = RouteProp<{
-  CalendarSchedule: {
-    existData?: CalendarSchedule;
-  };
+  EditSchedule: CalendarSchedule;
 }>;
 
 const CalendarScheduleScreen = () => {
   const route = useRoute<CalendarScheduleRouteProp>();
-  const existData = route.params?.existData;
+  const existData = route.params;
 
   const storeInitialize = useCalendarScheduleStore(state => state.initialize);
   const storeReset = useCalendarScheduleStore(state => state.reset);
+
+  const isValid = useCalendarScheduleStore(state => state.isValid);
+  const hasDataChanges = useCalendarScheduleStore(
+    state => state.hasDataChanges,
+  );
+
+  const isCompleteDisabled = !isValid || !hasDataChanges;
 
   useEffect(() => {
     storeInitialize(existData);
@@ -33,7 +37,10 @@ const CalendarScheduleScreen = () => {
 
   return (
     <ScreenLayout>
-      <CalendarDetailHeader />
+      <CalendarDetailHeader
+        onCompletePress={() => {}}
+        isCompleteDisabled={isCompleteDisabled}
+      />
       <ScrollView className="px-6">
         <EditSchedule />
       </ScrollView>

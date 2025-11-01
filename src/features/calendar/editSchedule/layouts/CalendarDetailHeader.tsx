@@ -6,8 +6,17 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { HomeStackNavigationProp } from '@/navigation/types/navigationTypes';
 import ArrowIcons from '@/shared/icons/ArrowIcons';
+import { cn } from '@/shared/lib/cn';
 
-const CalendarDetailHeader = () => {
+interface CalendarDetailHeaderProps {
+  isCompleteDisabled: boolean;
+  onCompletePress: () => void;
+}
+
+const CalendarDetailHeader = ({
+  onCompletePress,
+  isCompleteDisabled,
+}: CalendarDetailHeaderProps) => {
   const insets = useSafeAreaInsets();
   const navigation = useNavigation<HomeStackNavigationProp>();
 
@@ -41,11 +50,12 @@ const CalendarDetailHeader = () => {
             </Text>
           </View>
 
-          <Pressable
-            onPress={() => {
-              navigation.goBack();
-            }}>
-            <Text className="text-surface-300 typo-sub-title-18-medium">
+          <Pressable onPress={onCompletePress} disabled={isCompleteDisabled}>
+            <Text
+              className={cn(
+                'typo-sub-title-18-medium',
+                isCompleteDisabled ? 'text-surface-300' : 'text-primary-purple',
+              )}>
               완료
             </Text>
           </Pressable>
