@@ -3,9 +3,10 @@ import React, { useEffect } from 'react';
 import { View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import CategorySelector from '../../categorySelector/components/CategorySelector';
-import useCategorySelector from '../../categorySelector/hooks/useCategorySelector';
+import useCategorySelector from '../hooks/useCategorySelector';
 import useCalendarScheduleStore from '../stores/useCalendarScheduleStore';
+
+import CategorySelector from './CategorySelector';
 
 import HUInput from '@/shared/ui/atoms/HUInput';
 
