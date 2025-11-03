@@ -4,8 +4,8 @@ import { useNavigation } from '@react-navigation/native';
 import { Pressable, Text, View, ViewProps } from 'react-native';
 import { LinearTransition } from 'react-native-reanimated';
 
-import MiniCalendar from './MiniCalendar';
-import ScheduleList from './ScheduleList';
+import MiniCalendar from '../../../calendar/widgetCalendar/components/MiniCalendar';
+import ScheduleList from '../../../calendar/widgetCalendar/components/ScheduleList';
 
 import useScheduleQuery from '@/features/calendar/shared/hooks/scheduleQueries';
 import { HomeTabNavigationProp } from '@/navigation/types/navigationTypes';

@@ -5,7 +5,7 @@ import Animated, { FadeIn } from 'react-native-reanimated';
 
 import ScheduleListItem from './ScheduleListItem';
 
-import { CalendarSchedule } from '@/features/calendar/shared/types';
+import { Schedule } from '@/features/calendar/shared/types';
 import dayjs from '@/shared/lib/dayjs';
 import AddIcons from '@/static/icons/add.svg';
 
@@ -21,7 +21,7 @@ const ListEmptyComponent = () => (
 
 interface ScheduleListProps {
   selectedDate: Date;
-  schedule: CalendarSchedule[];
+  schedule: Schedule[];
 }
 
 const ScheduleList = ({ selectedDate, schedule }: ScheduleListProps) => {
@@ -37,8 +37,6 @@ const ScheduleList = ({ selectedDate, schedule }: ScheduleListProps) => {
             category={item.category}
             detail={item.detail}
             time={item.time}
-            categoryBackgroundColor={item.backgroundColor}
-            categoryTextColor={item.textColor}
             memo={item.memo}
             key={item.time}
           />
