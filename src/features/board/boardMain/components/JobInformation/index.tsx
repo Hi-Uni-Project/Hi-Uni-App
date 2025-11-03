@@ -8,6 +8,7 @@ import { MainStackNavigationProp } from '@/navigation/types/navigationTypes';
 
 const JobInformationScreen = () => {
   const navigation = useNavigation<MainStackNavigationProp>();
+  // enum
   const categories = [
     '전체',
     '취업',
@@ -26,8 +27,12 @@ const JobInformationScreen = () => {
         setSelectedCategoryIdx={setSelectedCategoryIdx}
       />
       <PopularJobInfoReview
+        title={categories[selectedCategoryIdx]}
         onPress={() =>
-          navigation.navigate('BoardRoute', { screen: 'PopularReviews' })
+          navigation.navigate('BoardRoute', {
+            screen: 'PopularReviews',
+            params: { title: categories[selectedCategoryIdx] },
+          })
         }
       />
     </>
