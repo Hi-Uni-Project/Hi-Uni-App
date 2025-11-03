@@ -24,6 +24,8 @@ interface BoardHeaderProps {
   onTabPress?: (tabKey: TabKey) => void;
 }
 
+const TOP_OFFSET = Platform.OS === 'ios' ? 60 : 10;
+
 const BoardHeader = ({ onTabPress }: BoardHeaderProps) => {
   const insets = useSafeAreaInsets();
   const { univ } = useRegisterStore();
@@ -78,7 +80,7 @@ const BoardHeader = ({ onTabPress }: BoardHeaderProps) => {
         onClose={() => setIsOptionVisible(false)}
         options={options}
         position={{
-          top: insets.top + Platform.OS === 'iOS' ? 60 : 60,
+          top: insets.top + TOP_OFFSET,
           right: 25,
         }}
       />
