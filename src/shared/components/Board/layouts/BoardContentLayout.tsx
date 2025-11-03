@@ -2,23 +2,25 @@ import React from 'react';
 
 import { FlatList } from 'react-native';
 
+import BoardPostCardMD from '../BoardPostCard/md';
+
 import { Post } from '@/features/board/shared/types/DefaultPostType';
-import NoHotBoard from '@/features/home/hotBoard/components/NoHotBoard';
-import BoardPostCardMD from '@/shared/components/BoardPostCard/md';
+import NoBoardLayout from '@/shared/components/Board/layouts/NoBoardLayout';
 import Loading from '@/shared/ui/organisms/Loading';
 
-interface HotBoardContentProps {
+interface Props {
   data: Post[] | undefined;
   isLoading: boolean;
+  des: string;
 }
 
-const HotBoardContent = ({ data, isLoading }: HotBoardContentProps) => {
+const BoardContentLayout = ({ data, isLoading, des }: Props) => {
   if (isLoading) {
     return <Loading />;
   }
 
   if (!data || data.length === 0) {
-    return <NoHotBoard />;
+    return <NoBoardLayout des={des} />;
   }
 
   return (
@@ -26,10 +28,10 @@ const HotBoardContent = ({ data, isLoading }: HotBoardContentProps) => {
       data={data}
       keyExtractor={item => item.id.toString()}
       renderItem={({ item }) => <BoardPostCardMD {...item} />}
-      contentContainerStyle={{ paddingVertical: 20, gap: 8 }}
+      contentContainerStyle={{ paddingVertical: 20, gap: 8, paddingBottom: 50 }}
       showsVerticalScrollIndicator={false}
     />
   );
 };
 
-export default HotBoardContent;
+export default BoardContentLayout;

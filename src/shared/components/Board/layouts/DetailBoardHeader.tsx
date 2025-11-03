@@ -7,7 +7,12 @@ import ArrowIcons from '@/shared/icons/ArrowIcons';
 import { shadowStyleSheet } from '@/shared/styles/shadow';
 import FireIcon from '@/static/icons/fire.svg';
 
-const HotBoardHeader = () => {
+interface Props {
+  title: string;
+  icon?: boolean;
+}
+
+const DetailBoardHeader = ({ title, icon = false }: Props) => {
   const navigation = useNavigation();
 
   return (
@@ -22,14 +27,12 @@ const HotBoardHeader = () => {
         </Pressable>
 
         <View className="flex-row items-center space-x-[6px]">
-          <Text className="text-main-text typo-sub-title-22-bold">
-            주간 HOT
-          </Text>
-          <FireIcon />
+          <Text className="text-main-text typo-sub-title-22-bold">{title}</Text>
+          {icon && <FireIcon color={'#1E2128'} />}
         </View>
       </View>
     </View>
   );
 };
 
-export default HotBoardHeader;
+export default DetailBoardHeader;

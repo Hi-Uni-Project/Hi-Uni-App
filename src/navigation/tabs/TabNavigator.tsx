@@ -16,8 +16,6 @@ const SecondPage = () => (
   </View>
 );
 
-const tabBar = (props: HUTabBarProps) => <HUTabBar {...props} />;
-
 const HomeTabScreens = () => {
   const [currentRouteName, setCurrentRouteName] = useState('HomeTab');
 
@@ -34,6 +32,10 @@ const HomeTabScreens = () => {
         return '#FFFFFF';
     }
   }, [currentRouteName]);
+
+  const tabBar = (props: HUTabBarProps) => {
+    return <HUTabBar {...props} />;
+  };
 
   return (
     <View
