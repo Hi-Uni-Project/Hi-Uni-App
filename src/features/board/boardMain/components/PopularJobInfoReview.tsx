@@ -9,14 +9,15 @@ import BoardPostCardLG from '@/shared/components/Board/BoardPostCard/lg';
 
 interface Props {
   onPress?: () => void;
+  title: string;
 }
 
-const PopularJobInfoReview = ({ onPress }: Props) => {
+const PopularJobInfoReview = ({ onPress, title }: Props) => {
   const mockData = BoardPostCardMocks;
 
   return (
     <View className="bg-primary-purple pb-5 pt-[23px]">
-      <SectionTitle onPress={onPress} />
+      <SectionTitle onPress={onPress} title={title} />
       <FlatList
         data={mockData}
         keyExtractor={item => item.id}
