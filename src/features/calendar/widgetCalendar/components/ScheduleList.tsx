@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 
 import { View, Text, FlatList, Pressable } from 'react-native';
 import Animated, { FadeIn } from 'react-native-reanimated';
@@ -25,20 +25,34 @@ interface ScheduleListProps {
 }
 
 const ScheduleList = ({ selectedDate, schedule }: ScheduleListProps) => {
+  const filteredSchedule = useMemo(() => {
+    return schedule.filter(item => {
+      return dayjs(selectedDate).isBetween(
+        dayjs(item.startDate).startOf('day'),
+        dayjs(item.endDate).endOf('day'),
+        null,
+        '[]',
+      );
+    });
+  }, [selectedDate, schedule]);
+
   return (
     <View className="relative">
       <Text className="mb-[15px] text-[15px] typo-body-15-medium">
         {dayjs(selectedDate).format('YYYY년 M월 D일 (ddd)')}
       </Text>
       <FlatList
-        data={schedule}
+        data={filteredSchedule}
         renderItem={({ item }) => (
           <ScheduleListItem
+            scheduleId={item.scheduleId}
+            startDate={item.startDate}
+            endDate={item.endDate}
             category={item.category}
             detail={item.detail}
             time={item.time}
             memo={item.memo}
-            key={item.time}
+            key={item.scheduleId}
           />
         )}
         scrollEnabled={false}
