@@ -56,14 +56,8 @@ const useDatePicker = () => {
   }, [startDate]);
 
   useEffect(() => {
-    updateScheduleField(
-      'startDate',
-      dayjs(startDate).format('YYYY-MM-DDTHH:mm:ss'),
-    );
-    updateScheduleField(
-      'endDate',
-      dayjs(endDate).format('YYYY-MM-DDTHH:mm:ss'),
-    );
+    updateScheduleField('startDate', dayjs(startDate).toDate());
+    updateScheduleField('endDate', dayjs(endDate).toDate());
   }, [startDate, endDate]);
 
   return {

@@ -1,7 +1,6 @@
-import { Category } from '../types/categoryTypes';
-
 import { axiosInstance } from '@/shared/api/axiosInstance';
 import { ResponseTypes } from '@/shared/api/types';
+import { Category } from '@/shared/types/categoryType';
 
 export type CategoryResponse = ResponseTypes<Category[]>;
 

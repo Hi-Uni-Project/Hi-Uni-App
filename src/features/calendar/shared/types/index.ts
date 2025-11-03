@@ -1,6 +1,7 @@
 import { Dayjs } from 'dayjs';
 
-import type { ResponseTypes } from '@/shared/api/types';
+import { ResponseTypes } from '@/shared/api/types';
+import { Category } from '@/shared/types/categoryType';
 
 export interface CalendarDayUI {
   date: Dayjs;
@@ -8,34 +9,19 @@ export interface CalendarDayUI {
   isSunday: boolean;
 }
 
-export interface CalendarScheduleRequest {
+export interface ScheduleListRequest {
   startDate: string;
   endDate: string;
 }
 
-export interface CalendarSchedule {
-  startDate: string;
-  endDate: string;
-  category: string;
-  detail: string;
-  time: string;
-  backgroundColor: string;
-  textColor: string;
-  memo: string;
-}
-
-export interface ScheduleCategory {
-  categoryId: number;
-  categoryName: string;
-  categoryColor: string;
-}
-
-export interface CalendarScheduleEdit {
+export interface Schedule {
+  scheduleId: number;
   startDate: Date;
   endDate: Date;
-  category: ScheduleCategory | null;
+  category: Category;
   detail: string;
+  time: string;
   memo: string;
 }
 
-export type CalendarScheduleResponse = ResponseTypes<CalendarSchedule[]>;
+export type ScheduleListResponse = ResponseTypes<Schedule[]>;

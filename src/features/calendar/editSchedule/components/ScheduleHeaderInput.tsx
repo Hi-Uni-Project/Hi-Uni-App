@@ -24,7 +24,7 @@ const ScheduleHeaderInput = () => {
     useCategorySelector();
 
   useEffect(() => {
-    storeUpdateScheduleField('category', currentCategory?.categoryName || '');
+    storeUpdateScheduleField('category', currentCategory);
   }, [currentCategory]);
 
   return (

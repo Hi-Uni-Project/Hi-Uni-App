@@ -1,22 +1,22 @@
 import { create } from 'zustand';
 
-import { CalendarScheduleEdit } from '../../types';
+import { ScheduleEditForm } from '../types';
 
 import dayjs from '@/shared/lib/dayjs';
 
 interface CalendarScheduleStore {
-  scheduleData: CalendarScheduleEdit;
-  initialData: CalendarScheduleEdit;
+  scheduleData: ScheduleEditForm;
+  initialData: ScheduleEditForm;
 
   isValid: boolean;
   hasDataChanges: boolean;
 
-  updateScheduleField: <K extends keyof CalendarScheduleEdit>(
+  updateScheduleField: <K extends keyof ScheduleEditForm>(
     field: K,
-    value: CalendarScheduleEdit[K],
+    value: ScheduleEditForm[K],
   ) => void;
-  setScheduleData: (data: CalendarScheduleEdit) => void;
-  initialize: (data?: CalendarScheduleEdit) => void;
+  setScheduleData: (data: ScheduleEditForm) => void;
+  initialize: (data?: ScheduleEditForm) => void;
 
   _validate: () => void;
 
@@ -24,10 +24,11 @@ interface CalendarScheduleStore {
 }
 
 // 아무것도 들어온 것이 없을 경우의 데이터
-const defaultScheduleData: CalendarScheduleEdit = {
-  startDate: dayjs().format('YYYY-MM-DDTHH:mm:ss'),
-  endDate: dayjs().add(1, 'hour').format('YYYY-MM-DDTHH:mm:ss'),
-  category: '',
+const defaultScheduleData: ScheduleEditForm = {
+  id: null,
+  startDate: dayjs().toDate(),
+  endDate: dayjs().add(1, 'hour').toDate(),
+  category: null,
   detail: '',
   memo: '',
 };
@@ -72,7 +73,7 @@ const useCalendarScheduleStore = create<CalendarScheduleStore>()(
       const valid =
         scheduleData.memo.trim() !== '' &&
         scheduleData.detail.trim() !== '' &&
-        scheduleData.category !== '';
+        scheduleData.category !== null;
 
       set({
         isValid: valid,

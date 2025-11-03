@@ -12,7 +12,7 @@ import {
 } from 'react-native';
 import Animated, { FadeIn } from 'react-native-reanimated';
 
-import { CalendarSchedule } from '../../shared/types';
+import { Schedule } from '../../shared/types';
 import getArrayOfMonth from '../../shared/utils/getArrayOfMonth';
 
 import MultiDot from './MultiDot';
@@ -22,7 +22,7 @@ interface DotCalendarProps {
   setSelectedDate: (date: Dayjs) => void;
   onPressDate?: (date: Dayjs) => void;
   onLayout?: (e: LayoutChangeEvent) => void;
-  scheduleMap?: Record<string, CalendarSchedule[]>;
+  scheduleMap?: Record<string, Schedule[]>;
 }
 
 const DotCalendar = ({

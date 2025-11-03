@@ -4,46 +4,25 @@ import { useNavigation } from '@react-navigation/native';
 import { Pressable, Text, View } from 'react-native';
 import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
 
-import { CalendarSchedule } from '../../shared/types';
+import { Schedule } from '../../shared/types';
 
 import { CalendarStackNavigationProp } from '@/navigation/types/navigationTypes';
 import dayjs from '@/shared/lib/dayjs';
 
-interface ScheduleSummaryProps {
-  category: string;
-  detail: string;
-  time: string;
-  memo: string;
-  backgroundColor: string;
-  textColor: string;
-  startDate: string;
-  endDate: string;
-}
+interface ScheduleSummaryProps extends Schedule {}
 
 const ScheduleSummary = ({
+  scheduleId,
+  startDate,
+  endDate,
   category,
   detail,
   time,
   memo,
-  backgroundColor = '#979797',
-  textColor = '#FFFFFF',
-  startDate,
-  endDate,
 }: ScheduleSummaryProps) => {
   const isScheduleLong = startDate !== endDate;
 
   const navigation = useNavigation<CalendarStackNavigationProp>();
-
-  const schedule: CalendarSchedule = {
-    startDate,
-    endDate,
-    category,
-    detail,
-    time,
-    backgroundColor,
-    textColor,
-    memo,
-  };
 
   const { startTime, endTime } = time.split(' - ').reduce(
     (acc, cur, idx) => {
@@ -58,7 +37,18 @@ const ScheduleSummary = ({
   );
 
   return (
-    <Pressable onPress={() => navigation.navigate('EditSchedule', schedule)}>
+    <Pressable
+      onPress={() =>
+        navigation.navigate('EditSchedule', {
+          scheduleId,
+          startDate,
+          endDate,
+          category,
+          detail,
+          time,
+          memo,
+        })
+      }>
       <Animated.View
         className="mb-[11px] w-full flex-row items-center justify-between rounded-[10px] bg-white"
         entering={FadeIn.duration(200)}
@@ -66,8 +56,11 @@ const ScheduleSummary = ({
         <View className="flex-1 flex-row items-center">
           <Text
             className="mr-2 rounded-full px-[13px] py-[3px] typo-body-16-regular"
-            style={{ backgroundColor, color: textColor }}>
-            {category}
+            style={{
+              backgroundColor: category.backgroundColor,
+              color: category.textColor,
+            }}>
+            {category.categoryName}
           </Text>
           <Text
             className="flex-1 text-main-text typo-body-16-semibold"

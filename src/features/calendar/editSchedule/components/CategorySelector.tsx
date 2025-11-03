@@ -9,8 +9,7 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated';
 
-import { Category } from '../types/categoryTypes';
-
+import { Category } from '@/shared/types/categoryType';
 import HUBadge from '@/shared/ui/atoms/HUBadge';
 import ChevronDownIcon from '@/static/icons/down_chevron.svg';
 
@@ -58,8 +57,8 @@ const CategorySelector = ({
         {currentCategory ? (
           <HUBadge
             text={currentCategory.categoryName}
-            backgroundColor={currentCategory.categoryColor}
-            textColor="#FFFFFF"
+            backgroundColor={currentCategory.backgroundColor}
+            textColor={currentCategory.textColor}
             RightSideComponent={
               <Animated.View style={animatedIconStyle}>
                 <ChevronDownIcon
@@ -116,7 +115,7 @@ const CategorySelector = ({
                 }}>
                 <View
                   className="mr-2 h-[19px] w-[19px] rounded-full"
-                  style={{ backgroundColor: category.categoryColor }}
+                  style={{ backgroundColor: category.backgroundColor }}
                 />
                 <Text className="text-start">{category.categoryName}</Text>
               </Pressable>

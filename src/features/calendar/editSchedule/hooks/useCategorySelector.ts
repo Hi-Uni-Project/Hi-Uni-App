@@ -1,8 +1,8 @@
 import { useState } from 'react';
 
-import { Category } from '../types/categoryTypes';
-
 import useCategoryQuery from './categoryQueries';
+
+import { Category } from '@/shared/types/categoryType';
 
 /**
  * 카테고리 선택 및 관리 훅
