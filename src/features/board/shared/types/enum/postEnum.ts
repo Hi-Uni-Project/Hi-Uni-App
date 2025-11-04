@@ -1,4 +1,4 @@
-// (추가로 나중에 대외활동에 대한 속성명이 추가될 예정입니다.)
+// (나중에 대외활동에 대한 속성명이 추가될 예정입니다.)
 
 export enum PostType {
   JOB = 'JOB',
@@ -14,12 +14,21 @@ export enum PostCategory {
 }
 
 export const POST_TYPE_DISPLAY_NAME: Record<PostType, string> = {
-  [PostType.JOB]: '취업',
+  [PostType.JOB]: '취업정보',
   [PostType.INTERNSHIP]: '인턴십',
   [PostType.INTERVIEW]: '면접',
   [PostType.EXPERIENCE]: '실무이야기',
   [PostType.LICENSE]: '자격증',
 };
+
+export const JOB_CATEGORY_CHIPS = [
+  '전체',
+  POST_TYPE_DISPLAY_NAME[PostType.JOB],
+  POST_TYPE_DISPLAY_NAME[PostType.INTERNSHIP],
+  POST_TYPE_DISPLAY_NAME[PostType.INTERVIEW],
+  POST_TYPE_DISPLAY_NAME[PostType.EXPERIENCE],
+  POST_TYPE_DISPLAY_NAME[PostType.LICENSE],
+] as const;
 
 export const POST_CATEGORY_DISPLAY_NAME: Record<PostCategory, string> = {
   [PostCategory.EXTERNAL_ACTIVITIES]: '대외활동',
@@ -68,4 +77,18 @@ export const getPostCategoryByLabel = (
     ([_, displayName]) => displayName === label,
   );
   return entry?.[0] as PostCategory | undefined;
+};
+
+export const getPostTypeByDisplayName = (
+  displayName: string,
+): PostType | null => {
+  if (displayName === '전체') {
+    return null;
+  }
+
+  const entry = Object.entries(POST_TYPE_DISPLAY_NAME).find(
+    ([_, name]) => name === displayName,
+  );
+
+  return entry?.[0] as PostType | null;
 };
