@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef, useLayoutEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import { dateToString } from '../../commonCalendar/utils/commonCalendarUtils';
 import useCalendarScheduleStore from '../stores/useCalendarScheduleStore';
@@ -18,15 +18,8 @@ const useDatePicker = () => {
     return state.initialData.endDate;
   });
 
-  const isUpdatingFromStore = useRef(false);
-
   const [startDate, setStartDate] = useState<Date>(new Date());
   const [endDate, setEndDate] = useState<Date>(new Date());
-
-  useLayoutEffect(() => {
-    setStartDate(new Date(startDateAlreadyExists));
-    setEndDate(new Date(endDateAlreadyExists));
-  }, [startDateAlreadyExists, endDateAlreadyExists]);
 
   const [currentStartMonth, setCurrentStartMonth] = useState<string>(
     dateToString(new Date()),
@@ -64,16 +57,15 @@ const useDatePicker = () => {
       setEndDate(startDate);
       setCurrentEndMonth(dateToString(startDate));
     }
-  }, [startDate, endDate]);
-
-  useEffect(() => {
-    if (isUpdatingFromStore.current) {
-      return;
-    }
 
     updateScheduleField('startDate', dayjs(startDate).toDate());
     updateScheduleField('endDate', dayjs(endDate).toDate());
-  }, [startDate, endDate, updateScheduleField]);
+  }, [startDate, endDate]);
+
+  useEffect(() => {
+    setStartDate(startDateAlreadyExists);
+    setEndDate(endDateAlreadyExists);
+  }, [startDateAlreadyExists, endDateAlreadyExists]);
 
   return {
     startDate,

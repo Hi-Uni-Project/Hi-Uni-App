@@ -45,7 +45,7 @@ const HUInput = forwardRef<TextInput, Props>(
         <TextInput
           ref={ref}
           className={cn(inputVariants({ variant }))}
-          maxLength={18}
+          maxLength={variant === 'calendarSchedule' ? undefined : 18}
           placeholderTextColor="#979797"
           {...props}
         />
