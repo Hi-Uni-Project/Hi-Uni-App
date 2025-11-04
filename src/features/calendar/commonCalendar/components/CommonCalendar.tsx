@@ -40,10 +40,9 @@ const CommonCalendar = ({
   };
 
   const onMonthChange = ({ dateString }: DateData) => {
-    setSelectedMonth(dateString); // 월 변경 시 업데이트
+    setSelectedMonth(dateString);
   };
 
-  // 월 변경 함수들
   const goToPreviousMonth = useCallback(
     (dateString: string) => {
       const current = dayjs(dateString);
@@ -81,41 +80,40 @@ const CommonCalendar = ({
               className="text-[#6568EB]"
               width={18}
               height={18}
-              onPress={() => goToPreviousMonth(dateString)} // 이전 월로 이동
+              onPress={() => goToPreviousMonth(dateString)}
             />
             <ChevronRightIcon
               className="text-[#6568EB]"
               width={18}
               height={18}
-              onPress={() => goToNextMonth(dateString)} // 다음 월로 이동
+              onPress={() => goToNextMonth(dateString)}
             />
           </View>
         </View>
       );
     },
-    [goToPreviousMonth, goToNextMonth], // 의존성 추가
+    [goToPreviousMonth, goToNextMonth],
   );
 
   return (
     <Calendar
-      minDate={minDate ? dayjs(minDate).format('YYYY-MM-DD') : undefined} // 오늘 이전 날짜 비활성화
+      minDate={minDate ? dayjs(minDate).format('YYYY-MM-DD') : undefined}
       firstDay={0}
       key={selectedMonth}
       monthFormat={'yyyy년 MM월'}
       hideExtraDays={true}
-      current={selectedMonth.toString()} // 동적 업데이트
+      current={selectedMonth.toString()}
       onDayPress={onChange}
-      onMonthChange={onMonthChange} // 월 변경 이벤트 추가
+      onMonthChange={onMonthChange}
       renderHeader={renderCustomHeader}
-      hideArrows={true} // 기본 화살표 숨김
+      hideArrows={true}
       className="mb-5 rounded-[15px] px-4 pb-4"
       style={shadowStyleSheet.dropShadow}
       markedDates={{
         [dateToString(selectedDate)]: {
           selected: true,
-          // selectedColor: 'rgba(101, 104, 235, 0.12)',
         },
-      }} // 선택된 날짜 표시
+      }}
       theme={
         {
           backgroundColor: '#2b2323',
