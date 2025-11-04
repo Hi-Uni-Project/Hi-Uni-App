@@ -41,7 +41,11 @@ const SortBottomSheet = ({
   }, [sortSheetVisible]);
 
   return (
-    <Modal transparent visible={sortSheetVisible} animationType="fade">
+    <Modal
+      transparent
+      statusBarTranslucent
+      visible={sortSheetVisible}
+      animationType="fade">
       <Pressable
         className="flex-1 bg-black/40"
         onPress={() => setSortSheetVisible(false)}>

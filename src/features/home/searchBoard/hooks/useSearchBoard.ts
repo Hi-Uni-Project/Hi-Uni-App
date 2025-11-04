@@ -1,24 +1,25 @@
-import { useRef, useState, useEffect } from 'react';
+import { useRef, useState } from 'react';
 
 import { useNavigation } from '@react-navigation/native';
 import { Keyboard, TextInput } from 'react-native';
 
-import {
-  getSortTypeByLabel,
-  SORT_DISPLAY_NAME,
-  SortType,
-} from '@/features/board/shared/types/enum/sortEnum';
+import { Post } from '@/features/board/shared/types/DefaultPostType';
+import { SortType } from '@/features/board/shared/types/enum/sortEnum';
 import { MAX_ITEMS } from '@/features/home/searchBoard/constants/lines';
 import { useSearchBoardQuery } from '@/features/home/searchBoard/hooks/useSearchBoardQuery';
 
-export const useSearchBoard = () => {
+interface Props {
+  sortType: SortType;
+  resetSort: () => void;
+}
+
+export const useSearchBoard = ({ sortType, resetSort }: Props) => {
   const inputRef = useRef<TextInput>(null);
   const navigation = useNavigation();
   const [searchText, setSearchText] = useState('');
+  const [submittedSearchText, setSubmittedSearchText] = useState('');
   const [recentSearches, setRecentSearches] = useState<string[]>([]);
   const [modalVisible, setModalVisible] = useState(false);
-  const [sortSheetVisible, setSortSheetVisible] = useState(false);
-  const [selectedSort, setSelectedSort] = useState<SortType>(SortType.LATEST);
   const [hasSearched, setHasSearched] = useState(false);
   const [enableQuery, setEnableQuery] = useState(false);
 
@@ -26,13 +27,7 @@ export const useSearchBoard = () => {
     data: filteredPosts = [],
     refetch,
     isFetching,
-  } = useSearchBoardQuery(searchText.trim(), selectedSort, enableQuery);
-
-  useEffect(() => {
-    if (enableQuery && hasSearched) {
-      refetch();
-    }
-  }, [selectedSort, enableQuery, hasSearched, refetch]);
+  } = useSearchBoardQuery(submittedSearchText, sortType, enableQuery);
 
   const hasSearchResults = filteredPosts.length > 0;
   const hasRecentSearches = recentSearches.length > 0;
@@ -45,6 +40,7 @@ export const useSearchBoard = () => {
       return;
     }
 
+    setSubmittedSearchText(trimmedText);
     setHasSearched(true);
     setEnableQuery(true);
     await refetch();
@@ -80,19 +76,19 @@ export const useSearchBoard = () => {
 
   const handleClose = () => {
     setSearchText('');
+    setSubmittedSearchText('');
     setHasSearched(false);
     setEnableQuery(false);
+    resetSort();
     inputRef.current?.focus();
   };
 
   const handleClearAll = () => setRecentSearches([]);
   const handleBackPress = () => navigation.goBack();
-  const handlePostPress = (title: string) => console.log(`${title} 클릭됨`);
 
-  const handleSortChange = (displayName: string) => {
-    const sortType = getSortTypeByLabel(displayName);
-    setSelectedSort(sortType);
-    setSortSheetVisible(false);
+  const handlePostPress = (post: Post) => {
+    console.log(`${post.title} 클릭됨`, post);
+    // navigation.navigate('PostDetail', { postId: post.id });
   };
 
   return {
@@ -105,10 +101,6 @@ export const useSearchBoard = () => {
     modalVisible,
     setModalVisible,
     recentSearches,
-    sortSheetVisible,
-    setSortSheetVisible,
-    selectedSort: SORT_DISPLAY_NAME[selectedSort],
-    setSelectedSort: handleSortChange,
     filteredPosts,
     hasSearched,
 

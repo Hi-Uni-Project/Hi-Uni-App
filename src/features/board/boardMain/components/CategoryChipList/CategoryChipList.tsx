@@ -25,7 +25,7 @@ const CategoryChipList = ({
         contentContainerStyle={
           Platform.OS === 'android' ? { paddingRight: 20 } : {}
         }
-        className="flex-row px-5 py-[17px]">
+        className="flex-row px-4 py-[17px]">
         {categories.map((category, index) => (
           <CategoryChip
             key={category}

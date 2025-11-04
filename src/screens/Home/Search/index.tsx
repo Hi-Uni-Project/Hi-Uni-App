@@ -9,31 +9,30 @@ import BoardInputHeader from '@/features/home/searchBoard/layouts/BoardInputHead
 import BoardSectionHeader from '@/features/home/searchBoard/layouts/BoardSectionHeader';
 import BoardHeaderColorGround from '@/features/home/shared/layouts/BoardHeaderColorGround';
 import ScreenLayout from '@/shared/components/layouts/ScreenLayout';
+import { useSortBoard } from '@/shared/hooks/useSortBoard';
 
 const HomeSearchScreen = () => {
   const {
-    // Refs
-    inputRef,
-
-    // State
-    searchText,
-    setSearchText,
-    recentSearches,
-    modalVisible,
-    setModalVisible,
+    selectedSort,
+    selectedSortLabel,
+    setSelectedSort,
     sortSheetVisible,
     setSortSheetVisible,
-    selectedSort,
-    setSelectedSort,
+    resetSort,
+  } = useSortBoard();
+
+  const {
+    inputRef,
+    searchText,
+    setSearchText,
+    modalVisible,
+    setModalVisible,
+    recentSearches,
     filteredPosts,
     hasSearched,
-
-    // Computed values
     hasSearchResults,
     hasRecentSearches,
     isFetching,
-
-    // Handlers
     handleSearch,
     handleSelectRecentItem,
     handleInputFocus,
@@ -42,7 +41,7 @@ const HomeSearchScreen = () => {
     handleClearAll,
     handleBackPress,
     handlePostPress,
-  } = useSearchBoard();
+  } = useSearchBoard({ sortType: selectedSort, resetSort });
 
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
@@ -68,8 +67,10 @@ const HomeSearchScreen = () => {
             />
 
             <SearchContent
+              selectedSortLabel={selectedSortLabel}
+              setSelectedSort={setSelectedSort}
               setSortSheetVisible={setSortSheetVisible}
-              selectedSort={selectedSort}
+              sortSheetVisible={sortSheetVisible}
               hasSearchResults={hasSearchResults}
               hasSearched={hasSearched}
               isFetching={isFetching}
@@ -83,10 +84,6 @@ const HomeSearchScreen = () => {
             <SearchActionModal
               modalVisible={modalVisible}
               onModalConfirm={() => setModalVisible(false)}
-              selectedSort={selectedSort}
-              setSelectedSort={setSelectedSort}
-              sortSheetVisible={sortSheetVisible}
-              setSortSheetVisible={setSortSheetVisible}
             />
           </View>
         </ScreenLayout>
