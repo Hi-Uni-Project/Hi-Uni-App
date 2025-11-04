@@ -28,14 +28,6 @@ const useDatePicker = () => {
     dateToString(new Date()),
   );
 
-  useEffect(() => {
-    setCurrentStartMonth(dateToString(startDate));
-  }, [startDate]);
-
-  useEffect(() => {
-    setCurrentEndMonth(dateToString(endDate));
-  }, [endDate]);
-
   const [isStartCalendarOpen, setIsStartCalendarOpen] =
     useState<boolean>(false);
   const [isEndCalendarOpen, setIsEndCalendarOpen] = useState<boolean>(false);
@@ -66,6 +58,14 @@ const useDatePicker = () => {
     setStartDate(startDateAlreadyExists);
     setEndDate(endDateAlreadyExists);
   }, [startDateAlreadyExists, endDateAlreadyExists]);
+
+  useEffect(() => {
+    setCurrentStartMonth(dateToString(startDate));
+  }, [startDate]);
+
+  useEffect(() => {
+    setCurrentEndMonth(dateToString(endDate));
+  }, [endDate]);
 
   return {
     startDate,
