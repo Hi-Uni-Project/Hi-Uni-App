@@ -57,14 +57,16 @@ const ScheduleListItem = ({
             {time}
           </Text>
         </View>
-        <View className="mt-[9px] rounded-[15px] bg-surface-100 px-[16px] py-[14px]">
-          <Text
-            className="text-main-text typo-caption-13-medium"
-            numberOfLines={1}
-            ellipsizeMode="tail">
-            {memo}
-          </Text>
-        </View>
+        {memo.trim().length > 0 && (
+          <View className="mt-[9px] rounded-[15px] bg-surface-100 px-[16px] py-[14px]">
+            <Text
+              className="text-main-text typo-caption-13-medium"
+              numberOfLines={1}
+              ellipsizeMode="tail">
+              {memo}
+            </Text>
+          </View>
+        )}
       </Pressable>
     </Animated.View>
   );
