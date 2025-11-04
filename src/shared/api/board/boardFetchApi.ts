@@ -1,3 +1,5 @@
+import { AxiosError } from 'axios';
+
 import { DefaultPostResponse } from '@/features/board/shared/types/DefaultPostType';
 import { axiosInstance } from '@/shared/api/axiosInstance';
 
@@ -6,9 +8,21 @@ import { axiosInstance } from '@/shared/api/axiosInstance';
  * @param endpoint - API 엔드포인트 경로
  * @returns Post 배열
  */
+
 export const fetchPosts = async (endpoint: string) => {
-  const response = await axiosInstance.get<DefaultPostResponse>(endpoint);
-  return response.data.data ?? [];
+  try {
+    const response = await axiosInstance.get<DefaultPostResponse>(endpoint);
+
+    return response.data.data ?? [];
+  } catch (error) {
+    const err = error as AxiosError;
+
+    console.error(
+      '❌ Failed to fetch posts:',
+      err.response?.data || err.message,
+    );
+    return [];
+  }
 };
 
 export const fetchWeeklyHotPosts = () => fetchPosts('/posts/weekly-hot');
