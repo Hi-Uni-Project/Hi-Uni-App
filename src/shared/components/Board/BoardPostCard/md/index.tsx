@@ -2,10 +2,10 @@ import React from 'react';
 
 import { Pressable, View } from 'react-native';
 
-import CategoryBadges from './CategoryBadges';
-import PostActions from './PostActions';
-import PostContent from './PostContent';
-import PostMetadata from './PostMetadata';
+import CategoryBadges from './atoms/CategoryBadges';
+import PostActions from './organisms/PostActions';
+import PostContent from './organisms/PostContent';
+import PostMetadata from './organisms/PostMetadata';
 
 import { Post } from '@/features/board/shared/types/DefaultPostType';
 

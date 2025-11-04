@@ -2,10 +2,10 @@ import React from 'react';
 
 import { View, Text } from 'react-native';
 
-import {
-  PostType,
-  POST_TYPE_DISPLAY_NAME,
-} from '@/features/board/shared/types/enum/postEnum';
+import TitleText from '../atoms/TitleText';
+import TypeChip from '../atoms/TypeChip';
+
+import { PostType } from '@/features/board/shared/types/enum/postEnum';
 
 interface Props {
   title: string;
@@ -16,20 +16,18 @@ interface Props {
 
 const PostContent = ({ title, content, type, vertical }: Props) => {
   return (
-    <>
+    <View>
       {vertical ? (
         <View className="mb-[6px] flex-row items-center space-x-2">
-          <Text className="rounded-[20px] bg-surface-200 px-[11px] py-[2px] text-surface-500 typo-caption-14-regular">
-            {POST_TYPE_DISPLAY_NAME[type]}
-          </Text>
-          <Text className="font-semibold text-surface-900 typo-body-16-bold">
-            {title}
-          </Text>
+          <TypeChip type={type} />
+          <View className="flex-1">
+            <TitleText title={title} />
+          </View>
         </View>
       ) : (
-        <Text className="mb-[6px] font-semibold text-surface-900 typo-body-16-bold">
-          {title}
-        </Text>
+        <View className="mb-[6px]">
+          <TitleText title={title} />
+        </View>
       )}
 
       <Text
@@ -38,7 +36,7 @@ const PostContent = ({ title, content, type, vertical }: Props) => {
         ellipsizeMode="tail">
         {content}
       </Text>
-    </>
+    </View>
   );
 };
 
