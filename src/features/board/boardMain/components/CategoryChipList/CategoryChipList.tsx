@@ -5,17 +5,26 @@ import { ScrollView } from 'react-native-gesture-handler';
 
 import CategoryChip from './CategoryChip';
 
-interface CategoryChipListProps {
-  categories: string[];
+import { JOB_CATEGORY_CHIPS } from '@/features/board/shared/types/enum/postEnum';
+
+interface Props {
+  categories: typeof JOB_CATEGORY_CHIPS;
   selectedCategoryIdx: number;
   setSelectedCategoryIdx: (index: number) => void;
+  resetSort: () => void;
 }
 
 const CategoryChipList = ({
   categories,
   selectedCategoryIdx,
   setSelectedCategoryIdx,
-}: CategoryChipListProps) => {
+  resetSort,
+}: Props) => {
+  const handlePressedChip = (index: number) => {
+    setSelectedCategoryIdx(index);
+    resetSort();
+  };
+
   return (
     <View>
       <ScrollView
@@ -31,7 +40,7 @@ const CategoryChipList = ({
             key={category}
             text={category}
             isSelected={selectedCategoryIdx === index}
-            onPress={() => setSelectedCategoryIdx(index)}
+            onPress={() => handlePressedChip(index)}
           />
         ))}
       </ScrollView>
