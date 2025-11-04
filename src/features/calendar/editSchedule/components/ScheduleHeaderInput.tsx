@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -8,6 +8,7 @@ import useCalendarScheduleStore from '../stores/useCalendarScheduleStore';
 
 import CategorySelector from './CategorySelector';
 
+import { Category } from '@/shared/types/categoryType';
 import HUInput from '@/shared/ui/atoms/HUInput';
 
 const ScheduleHeaderInput = () => {
@@ -19,13 +20,18 @@ const ScheduleHeaderInput = () => {
   const storeUpdateScheduleField = useCalendarScheduleStore(
     state => state.updateScheduleField,
   );
+  const storeInitialCategory = useCalendarScheduleStore(
+    state => state.initialData.category,
+  );
 
-  const { currentCategory, setCurrentCategory, categories } =
-    useCategorySelector();
+  const { categories } = useCategorySelector();
+
+  const [currentCategory, setCurrentCategory] = useState<Category | null>(null);
 
   useEffect(() => {
     storeUpdateScheduleField('category', currentCategory);
-  }, [currentCategory]);
+    storeInitialCategory && setCurrentCategory(storeInitialCategory);
+  }, [currentCategory, storeInitialCategory]);
 
   return (
     <View style={{ marginTop: insets.top }}>

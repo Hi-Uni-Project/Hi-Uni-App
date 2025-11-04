@@ -6,6 +6,7 @@ import { ScrollView } from 'react-native';
 import ScheduleDurationPicker from '@/features/calendar/editSchedule/components/ScheduleDurationPicker';
 import ScheduleHeaderInput from '@/features/calendar/editSchedule/components/ScheduleHeaderInput';
 import ScheduleMemoInput from '@/features/calendar/editSchedule/components/ScheduleMemoInput';
+import useScheduleEditQueries from '@/features/calendar/editSchedule/hooks/useScheduleEditQueries';
 import CalendarDetailHeader from '@/features/calendar/editSchedule/layouts/CalendarDetailHeader';
 import useCalendarScheduleStore from '@/features/calendar/editSchedule/stores/useCalendarScheduleStore';
 import { ScheduleEditForm } from '@/features/calendar/editSchedule/types';
@@ -22,11 +23,14 @@ const CalendarScheduleScreen = () => {
 
   const storeInitialize = useCalendarScheduleStore(state => state.initialize);
   const storeReset = useCalendarScheduleStore(state => state.reset);
+  const scheduleData = useCalendarScheduleStore(state => state.scheduleData);
 
   const isValid = useCalendarScheduleStore(state => state.isValid);
   const hasDataChanges = useCalendarScheduleStore(
     state => state.hasDataChanges,
   );
+
+  const { createSchedule, updateSchedule } = useScheduleEditQueries();
 
   const isCompleteDisabled = !isValid || !hasDataChanges;
 
@@ -59,7 +63,21 @@ const CalendarScheduleScreen = () => {
   return (
     <ScreenLayout>
       <CalendarDetailHeader
-        onCompletePress={() => {}}
+        onCompletePress={() => {
+          if (existData) {
+            updateSchedule(scheduleData, {
+              onSuccess: () => {
+                storeInitialize(scheduleData);
+              },
+            });
+          } else {
+            createSchedule(scheduleData, {
+              onSuccess: () => {
+                storeInitialize(scheduleData);
+              },
+            });
+          }
+        }}
         isCompleteDisabled={isCompleteDisabled}
       />
       <ScrollView className="px-6">
