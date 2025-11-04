@@ -1,11 +1,13 @@
 import React, { useMemo } from 'react';
 
+import { useNavigation } from '@react-navigation/native';
 import { View, Text, FlatList, Pressable } from 'react-native';
 import Animated, { FadeIn } from 'react-native-reanimated';
 
 import ScheduleListItem from './ScheduleListItem';
 
 import { Schedule } from '@/features/calendar/shared/types';
+import { CalendarStackNavigationProp } from '@/navigation/types/navigationTypes';
 import dayjs from '@/shared/lib/dayjs';
 import AddIcons from '@/static/icons/add.svg';
 
@@ -25,6 +27,8 @@ interface ScheduleListProps {
 }
 
 const ScheduleList = ({ selectedDate, schedule }: ScheduleListProps) => {
+  const navigation = useNavigation<CalendarStackNavigationProp>();
+
   const filteredSchedule = useMemo(() => {
     return schedule.filter(item => {
       return dayjs(selectedDate).isBetween(
@@ -63,7 +67,7 @@ const ScheduleList = ({ selectedDate, schedule }: ScheduleListProps) => {
         <Pressable
           className="absolute right-0 top-0"
           onPress={() => {
-            console.log('일정 추가하기');
+            navigation.navigate('CreateSchedule');
           }}>
           <Animated.View entering={FadeIn.delay(150)}>
             <AddIcons width={20} height={20} color={'#B7B7B7'} />

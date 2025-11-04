@@ -3,7 +3,9 @@ import React, { useEffect } from 'react';
 import { useRoute, RouteProp } from '@react-navigation/native';
 import { ScrollView } from 'react-native';
 
-import EditSchedule from '@/features/calendar/editSchedule/components/EditSchedule';
+import ScheduleDurationPicker from '@/features/calendar/editSchedule/components/ScheduleDurationPicker';
+import ScheduleHeaderInput from '@/features/calendar/editSchedule/components/ScheduleHeaderInput';
+import ScheduleMemoInput from '@/features/calendar/editSchedule/components/ScheduleMemoInput';
 import CalendarDetailHeader from '@/features/calendar/editSchedule/layouts/CalendarDetailHeader';
 import useCalendarScheduleStore from '@/features/calendar/editSchedule/stores/useCalendarScheduleStore';
 import { ScheduleEditForm } from '@/features/calendar/editSchedule/types';
@@ -29,14 +31,23 @@ const CalendarScheduleScreen = () => {
   const isCompleteDisabled = !isValid || !hasDataChanges;
 
   useEffect(() => {
-    const scheduleEditForm: ScheduleEditForm = {
-      id: existData.scheduleId,
-      startDate: new Date(existData.startDate),
-      endDate: new Date(existData.endDate),
-      category: existData.category,
-      detail: existData.detail,
-      memo: existData.memo,
-    };
+    const scheduleEditForm: ScheduleEditForm = existData
+      ? {
+          id: existData.scheduleId,
+          startDate: new Date(existData.startDate),
+          endDate: new Date(existData.endDate),
+          category: existData.category,
+          detail: existData.detail,
+          memo: existData.memo,
+        }
+      : {
+          id: null,
+          startDate: new Date(),
+          endDate: new Date(),
+          category: null,
+          detail: '',
+          memo: '',
+        };
 
     storeInitialize(scheduleEditForm);
 
@@ -52,7 +63,9 @@ const CalendarScheduleScreen = () => {
         isCompleteDisabled={isCompleteDisabled}
       />
       <ScrollView className="px-6">
-        <EditSchedule />
+        <ScheduleHeaderInput />
+        <ScheduleDurationPicker />
+        <ScheduleMemoInput />
       </ScrollView>
     </ScreenLayout>
   );

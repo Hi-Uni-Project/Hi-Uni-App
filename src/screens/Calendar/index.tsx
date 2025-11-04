@@ -90,13 +90,12 @@ const CalendarScreen = () => {
             ) : (
               schedulesForDay.map((schedule, index) => (
                 <ScheduleDetail
+                  scheduleId={schedule.scheduleId}
                   key={index}
                   category={schedule.category}
                   detail={schedule.detail}
                   time={schedule.time}
                   memo={schedule.memo}
-                  backgroundColor={schedule.backgroundColor}
-                  textColor={schedule.textColor}
                   startDate={schedule.startDate}
                   endDate={schedule.endDate}
                 />
