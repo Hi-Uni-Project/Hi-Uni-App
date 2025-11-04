@@ -72,9 +72,7 @@ const useCalendarScheduleStore = create<CalendarScheduleStore>()(
         JSON.stringify(scheduleData) !== JSON.stringify(initialData);
 
       const valid =
-        scheduleData.memo.trim() !== '' &&
-        scheduleData.detail.trim() !== '' &&
-        scheduleData.category !== null;
+        scheduleData.detail.trim() !== '' && scheduleData.category !== null;
 
       set({
         isValid: valid,
