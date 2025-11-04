@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 import { useNavigation } from '@react-navigation/native';
 import { Pressable, Text, View, ViewProps } from 'react-native';
@@ -26,11 +26,6 @@ const ScheduleWidget = ({}: ScheduleWidgetProps) => {
     selectedDate: dayjs(selectedDate),
     mode: 'small',
   });
-
-  useEffect(() => {
-    console.log('Selected date changed:', selectedDate.toLocaleString());
-    console.log('Schedules for selected date:', schedules);
-  }, [selectedDate]);
 
   return (
     <AnimatedCardView className="mx-5 mt-[14px]" layout={LinearTransition}>

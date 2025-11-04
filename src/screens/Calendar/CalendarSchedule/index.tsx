@@ -6,11 +6,12 @@ import { ScrollView } from 'react-native';
 import EditSchedule from '@/features/calendar/editSchedule/components/EditSchedule';
 import CalendarDetailHeader from '@/features/calendar/editSchedule/layouts/CalendarDetailHeader';
 import useCalendarScheduleStore from '@/features/calendar/editSchedule/stores/useCalendarScheduleStore';
-import { CalendarSchedule } from '@/features/calendar/shared/types';
+import { ScheduleEditForm } from '@/features/calendar/editSchedule/types';
+import { Schedule } from '@/features/calendar/shared/types';
 import ScreenLayout from '@/shared/components/layouts/ScreenLayout';
 
 type CalendarScheduleRouteProp = RouteProp<{
-  EditSchedule: CalendarSchedule;
+  EditSchedule: Schedule;
 }>;
 
 const CalendarScheduleScreen = () => {
@@ -28,7 +29,16 @@ const CalendarScheduleScreen = () => {
   const isCompleteDisabled = !isValid || !hasDataChanges;
 
   useEffect(() => {
-    storeInitialize(existData);
+    const scheduleEditForm: ScheduleEditForm = {
+      id: existData.scheduleId,
+      startDate: new Date(existData.startDate),
+      endDate: new Date(existData.endDate),
+      category: existData.category,
+      detail: existData.detail,
+      memo: existData.memo,
+    };
+
+    storeInitialize(scheduleEditForm);
 
     return () => {
       storeReset();

@@ -58,11 +58,12 @@ const useCalendarScheduleStore = create<CalendarScheduleStore>()(
       get()._validate();
     },
 
-    initialize: data =>
+    initialize: data => {
       set({
         scheduleData: data || defaultScheduleData,
         initialData: data || defaultScheduleData,
-      }),
+      });
+    },
 
     _validate: () => {
       const { scheduleData, initialData } = get();

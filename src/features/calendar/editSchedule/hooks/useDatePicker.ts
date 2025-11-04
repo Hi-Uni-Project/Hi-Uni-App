@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef, useLayoutEffect } from 'react';
 
 import { dateToString } from '../../commonCalendar/utils/commonCalendarUtils';
 import useCalendarScheduleStore from '../stores/useCalendarScheduleStore';
@@ -18,20 +18,31 @@ const useDatePicker = () => {
     return state.initialData.endDate;
   });
 
-  const [startDate, setStartDate] = useState<Date>(
-    new Date(startDateAlreadyExists),
-  );
-  const [endDate, setEndDate] = useState<Date>(new Date(endDateAlreadyExists));
+  const isUpdatingFromStore = useRef(false);
 
-  // 캘린더 UI에서 현재 표시되는 월
+  const [startDate, setStartDate] = useState<Date>(new Date());
+  const [endDate, setEndDate] = useState<Date>(new Date());
+
+  useLayoutEffect(() => {
+    setStartDate(new Date(startDateAlreadyExists));
+    setEndDate(new Date(endDateAlreadyExists));
+  }, [startDateAlreadyExists, endDateAlreadyExists]);
+
   const [currentStartMonth, setCurrentStartMonth] = useState<string>(
-    dateToString(startDate),
+    dateToString(new Date()),
   );
   const [currentEndMonth, setCurrentEndMonth] = useState<string>(
-    dateToString(endDate),
+    dateToString(new Date()),
   );
 
-  // 캘린더 표시 여부
+  useEffect(() => {
+    setCurrentStartMonth(dateToString(startDate));
+  }, [startDate]);
+
+  useEffect(() => {
+    setCurrentEndMonth(dateToString(endDate));
+  }, [endDate]);
+
   const [isStartCalendarOpen, setIsStartCalendarOpen] =
     useState<boolean>(false);
   const [isEndCalendarOpen, setIsEndCalendarOpen] = useState<boolean>(false);
@@ -53,12 +64,16 @@ const useDatePicker = () => {
       setEndDate(startDate);
       setCurrentEndMonth(dateToString(startDate));
     }
-  }, [startDate]);
+  }, [startDate, endDate]);
 
   useEffect(() => {
+    if (isUpdatingFromStore.current) {
+      return;
+    }
+
     updateScheduleField('startDate', dayjs(startDate).toDate());
     updateScheduleField('endDate', dayjs(endDate).toDate());
-  }, [startDate, endDate]);
+  }, [startDate, endDate, updateScheduleField]);
 
   return {
     startDate,
