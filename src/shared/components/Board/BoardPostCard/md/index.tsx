@@ -12,9 +12,10 @@ import { Post } from '@/features/board/shared/types/DefaultPostType';
 interface Props extends Post {
   onPress?: () => void;
   vertical?: boolean;
+  typeHide?: boolean;
 }
 
-const BoardPostCardMD = ({ vertical = false, onPress, ...post }: Props) => {
+const BoardPostCardMD = ({ vertical, typeHide, onPress, ...post }: Props) => {
   return (
     <Pressable
       onPress={onPress}
@@ -24,6 +25,7 @@ const BoardPostCardMD = ({ vertical = false, onPress, ...post }: Props) => {
       )}
       <View className="mb-3 px-1">
         <PostContent
+          typeHide={typeHide}
           title={post.title}
           content={post.content}
           type={post.type}

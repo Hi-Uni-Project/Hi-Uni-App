@@ -20,6 +20,7 @@ interface SortPostListProps {
   classname?: string;
   vertical?: boolean;
   scrollEnabled?: boolean;
+  typeHide?: boolean;
 }
 
 const SortPostList = ({
@@ -33,6 +34,7 @@ const SortPostList = ({
   setSelectedSort,
   vertical = false,
   scrollEnabled = true,
+  typeHide = false,
 }: SortPostListProps) => {
   return (
     <>
@@ -46,6 +48,7 @@ const SortPostList = ({
             {...item}
             onPress={() => onPostPress?.(item)}
             vertical={vertical}
+            typeHide={typeHide}
           />
         )}
         ListHeaderComponent={

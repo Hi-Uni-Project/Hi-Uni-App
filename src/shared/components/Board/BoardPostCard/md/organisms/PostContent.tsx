@@ -11,13 +11,14 @@ interface Props {
   title: string;
   content: string;
   type: PostType;
-  vertical: boolean;
+  vertical?: boolean;
+  typeHide?: boolean;
 }
 
-const PostContent = ({ title, content, type, vertical }: Props) => {
+const PostContent = ({ title, content, type, vertical, typeHide }: Props) => {
   return (
     <View>
-      {vertical ? (
+      {vertical && typeHide ? (
         <View className="mb-[6px] flex-row items-center space-x-2">
           <TypeChip type={type} />
           <View className="flex-1">
