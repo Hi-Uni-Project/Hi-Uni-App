@@ -14,7 +14,7 @@ export enum PostCategory {
 }
 
 export const POST_TYPE_DISPLAY_NAME: Record<PostType, string> = {
-  [PostType.JOB]: '취업정보',
+  [PostType.JOB]: '취업',
   [PostType.INTERNSHIP]: '인턴십',
   [PostType.INTERVIEW]: '면접',
   [PostType.EXPERIENCE]: '실무이야기',
