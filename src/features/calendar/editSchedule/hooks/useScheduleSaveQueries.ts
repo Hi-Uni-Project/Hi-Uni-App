@@ -1,11 +1,11 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-import { createSchedule, updateSchedule } from '../api/scheduleApi';
+import { saveSchedule } from '../api/scheduleApi';
 import { ScheduleEditForm } from '../types';
 
 import dayjs from '@/shared/lib/dayjs';
 
-const useScheduleEditQueries = () => {
+const useScheduleSaveQueries = () => {
   const queryClient = useQueryClient();
 
   const createScheduleMutation = useMutation({
@@ -14,7 +14,8 @@ const useScheduleEditQueries = () => {
         throw new Error('카테고리를 선택해주세요.');
       }
 
-      return createSchedule({
+      return saveSchedule({
+        id: null,
         startDate: dayjs(scheduleData.startDate).format('YYYY-MM-DDTHH:mm:ss'),
         endDate: dayjs(scheduleData.endDate).format('YYYY-MM-DDTHH:mm:ss'),
         categoryId: scheduleData.category.categoryId,
@@ -41,7 +42,8 @@ const useScheduleEditQueries = () => {
         throw new Error('카테고리를 선택해주세요.');
       }
 
-      return updateSchedule(scheduleData.id, {
+      return saveSchedule({
+        id: scheduleData.id,
         startDate: dayjs(scheduleData.startDate).format('YYYY-MM-DDTHH:mm:ss'),
         endDate: dayjs(scheduleData.endDate).format('YYYY-MM-DDTHH:mm:ss'),
         categoryId: scheduleData.category.categoryId,
@@ -70,4 +72,4 @@ const useScheduleEditQueries = () => {
   };
 };
 
-export default useScheduleEditQueries;
+export default useScheduleSaveQueries;

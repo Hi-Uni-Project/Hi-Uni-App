@@ -1,14 +1,13 @@
 import { Category } from '@/shared/types/categoryType';
 
-export interface ScheduleUpdateRequest {
+export interface ScheduleSaveRequest {
+  id: number | null;
   startDate: string;
   endDate: string;
   categoryId: number;
   detail: string;
   memo: string;
 }
-
-export interface ScheduleCreateRequest extends ScheduleUpdateRequest {}
 
 export interface ScheduleEditForm {
   id: number | null;

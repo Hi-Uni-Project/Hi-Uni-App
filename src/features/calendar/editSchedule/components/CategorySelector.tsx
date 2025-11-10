@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import { Pressable, ScrollView, Text, View } from 'react-native';
 import Popover, { PopoverPlacement } from 'react-native-popover-view';
@@ -26,7 +26,7 @@ const CategorySelector = ({
 }: CategorySelectorProps) => {
   const titleRef = useRef(null);
 
-  const [isTitleModalVisible, setIsTitleModalVisible] = React.useState(false);
+  const [isTitleModalVisible, setIsTitleModalVisible] = useState(false);
 
   const rotation = useSharedValue(0);
 

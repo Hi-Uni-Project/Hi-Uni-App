@@ -1,27 +1,19 @@
 import { Schedule } from '../../shared/types';
-import { ScheduleCreateRequest, ScheduleUpdateRequest } from '../types';
+import { ScheduleSaveRequest } from '../types';
 
 import { axiosInstance } from '@/shared/api/axiosInstance';
 
-const createSchedule = async (scheduleData: ScheduleCreateRequest) => {
-  const response = await axiosInstance.post<Schedule>(
-    '/schedules',
-    scheduleData,
-  );
+export const saveSchedule = async (scheduleData: ScheduleSaveRequest) => {
+  const { id, ...data } = scheduleData;
 
-  return response.data;
+  if (id) {
+    const response = await axiosInstance.put<Schedule>(
+      `/schedules/${id}`,
+      data,
+    );
+    return response.data;
+  } else {
+    const response = await axiosInstance.post<Schedule>('/schedules', data);
+    return response.data;
+  }
 };
-
-const updateSchedule = async (
-  scheduleId: number,
-  scheduleData: ScheduleUpdateRequest,
-) => {
-  const response = await axiosInstance.put<Schedule>(
-    `/schedules/${scheduleId}`,
-    scheduleData,
-  );
-
-  return response.data;
-};
-
-export { createSchedule, updateSchedule };
