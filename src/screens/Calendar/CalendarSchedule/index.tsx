@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 
-import { useRoute, RouteProp } from '@react-navigation/native';
+import { useRoute, RouteProp, useNavigation } from '@react-navigation/native';
 import { ScrollView } from 'react-native';
 
 import ScheduleDurationPicker from '@/features/calendar/editSchedule/components/ScheduleDurationPicker';
@@ -18,6 +18,8 @@ type CalendarScheduleRouteProp = RouteProp<{
 }>;
 
 const CalendarScheduleScreen = () => {
+  const navigation = useNavigation();
+
   const route = useRoute<CalendarScheduleRouteProp>();
   const existData = route.params;
 
@@ -68,12 +70,14 @@ const CalendarScheduleScreen = () => {
             updateSchedule(scheduleData, {
               onSuccess: () => {
                 storeInitialize(scheduleData);
+                navigation.goBack();
               },
             });
           } else {
             createSchedule(scheduleData, {
               onSuccess: () => {
                 storeInitialize(scheduleData);
+                navigation.goBack();
               },
             });
           }

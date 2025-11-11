@@ -69,7 +69,12 @@ const useCalendarScheduleStore = create<CalendarScheduleStore>()(
       const { scheduleData, initialData } = get();
 
       const hasChanges =
-        JSON.stringify(scheduleData) !== JSON.stringify(initialData);
+        scheduleData.startDate.getTime() !== initialData.startDate.getTime() ||
+        scheduleData.endDate.getTime() !== initialData.endDate.getTime() ||
+        scheduleData.category?.categoryId !==
+          initialData.category?.categoryId ||
+        scheduleData.detail.trim() !== initialData.detail.trim() ||
+        scheduleData.memo.trim() !== initialData.memo.trim();
 
       const valid =
         scheduleData.detail.trim() !== '' && scheduleData.category !== null;

@@ -27,7 +27,7 @@ const ScheduleMemoInput: React.FC<ScheduleMemoInputProps> = ({ onFocus }) => {
       </View>
       <TextInput
         value={storeMemo}
-        onChangeText={text => storeUpdateScheduleField('memo', text.trim())}
+        onChangeText={text => storeUpdateScheduleField('memo', text)}
         placeholder="메모를 입력해주세요"
         onFocus={onFocus}
         multiline={true}
