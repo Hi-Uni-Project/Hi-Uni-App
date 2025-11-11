@@ -17,3 +17,8 @@ export const saveSchedule = async (scheduleData: ScheduleSaveRequest) => {
     return response.data;
   }
 };
+
+export const deleteSchedule = async (scheduleId: number) => {
+  const response = await axiosInstance.delete(`/schedules/${scheduleId}`);
+  return response.data;
+};
