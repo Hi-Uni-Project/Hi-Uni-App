@@ -1,15 +1,18 @@
 import React from 'react';
 
-import BoardListScreen from '@/shared/components/Board/BoardList';
+import SortBoardContentLayout from '@/shared/components/Board/layouts/SortBoardContentLayout';
 import { useWeeklyHotPosts } from '@/shared/hooks/useBoardQuery';
 
 const HotBoardScreen = () => {
+  const { data: posts = [], isLoading } = useWeeklyHotPosts();
+
   return (
-    <BoardListScreen
-      emptyDescription="이번 주 인기 게시물이"
+    <SortBoardContentLayout
       title="주간 HOT"
-      showHeaderIcon
-      useQuery={useWeeklyHotPosts}
+      description="이번 주 인기 게시물이"
+      posts={posts}
+      isLoading={isLoading}
+      onPostPress={() => console.log('post clicked')}
     />
   );
 };
