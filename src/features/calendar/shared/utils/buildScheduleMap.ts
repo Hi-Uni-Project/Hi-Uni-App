@@ -1,4 +1,4 @@
-import { CalendarSchedule } from '../../types';
+import { CalendarSchedule } from '../types';
 
 import dayjs from '@/shared/lib/dayjs';
 

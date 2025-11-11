@@ -6,9 +6,11 @@ import BottomSheet, {
   BottomSheetScrollView,
 } from '@gorhom/bottom-sheet';
 import { BottomSheetMethods } from '@gorhom/bottom-sheet/lib/typescript/types';
+import { useNavigation } from '@react-navigation/native';
 import { Dayjs } from 'dayjs';
 import { View, Pressable, Text } from 'react-native';
 
+import { CalendarStackNavigationProp } from '@/navigation/types/navigationTypes';
 import AddIcon from '@/static/icons/add.svg';
 
 interface CalendarBottomSheetProps {
@@ -47,6 +49,8 @@ const CalendarBottomSheet = ({
   sheetOnChange,
   children,
 }: CalendarBottomSheetProps) => {
+  const navigation = useNavigation<CalendarStackNavigationProp>();
+
   return (
     <BottomSheet
       ref={ref}
@@ -61,7 +65,10 @@ const CalendarBottomSheet = ({
         <Text className="typo-body-17-medium">
           {selectedDate.format('YYYY년 MM월 DD일 (dd)')}
         </Text>
-        <Pressable onPress={() => {}}>
+        <Pressable
+          onPress={() => {
+            navigation.navigate('CreateSchedule');
+          }}>
           <AddIcon width={22} height={22} />
         </Pressable>
       </View>

@@ -1,8 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
 import { Dayjs } from 'dayjs';
 
-import { CalendarSchedule } from '../../types';
 import { calendarScheduleApi } from '../api/calendarApi';
+import { Schedule } from '../types';
 import getArrayOfMonth from '../utils/getArrayOfMonth';
 
 export const calendarKeys = {
@@ -52,7 +52,7 @@ const useScheduleQuery = ({
     isLoading,
     error,
     refetch,
-  } = useQuery<CalendarSchedule[]>({
+  } = useQuery<Schedule[]>({
     queryKey: calendarKeys[mode](selectedDate),
     queryFn: async () => {
       const { startDate, endDate } = getDateRange(selectedDate, mode);

@@ -9,13 +9,13 @@ import CalendarDot from './CalendarDot';
 import CalendarItem from './CalendarItem';
 import SelectionIndicator from './SelectionIndicator';
 
-import { CalendarSchedule } from '@/features/calendar/types';
+import { Schedule } from '@/features/calendar/shared/types';
 
 interface MiniCalendarProps {
   weeks: Date[];
   selectedDate: Date;
   onDateSelect: (date: Date) => void;
-  schedule: CalendarSchedule[];
+  schedule: Schedule[];
 }
 
 const MiniCalendar = ({

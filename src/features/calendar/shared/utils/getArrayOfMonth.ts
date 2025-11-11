@@ -1,6 +1,6 @@
 import { Dayjs } from 'dayjs';
 
-import { CalendarDayUI } from '../../types';
+import { CalendarDayUI } from '../types';
 
 const getArrayOfMonth = ({ date }: { date: Dayjs }): CalendarDayUI[] => {
   // 이번 달 시작/끝

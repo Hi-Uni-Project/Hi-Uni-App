@@ -5,6 +5,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import HomeTabScreens from '../tabs/TabNavigator';
 import { HomeNavigationProps } from '../types/navigationTypes';
 
+import CalendarScheduleScreen from '@/screens/Calendar/CalendarSchedule';
 import HotBoardScreen from '@/screens/Home/HotBoard';
 import HomeSearchScreen from '@/screens/Home/Search';
 
@@ -21,6 +22,9 @@ const HomeRoute = () => {
       <Stack.Screen name="HotBoard" component={HotBoardScreen} />
       <Stack.Screen name="Detail" component={DetailScreen} />
       <Stack.Screen name="Profile" component={ProfileScreen} />
+
+      <Stack.Screen name="EditSchedule" component={CalendarScheduleScreen} />
+      <Stack.Screen name="CreateSchedule" component={CalendarScheduleScreen} />
     </Stack.Navigator>
   );
 };

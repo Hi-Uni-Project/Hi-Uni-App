@@ -1,32 +1,28 @@
 import React from 'react';
 
-import { Text, View } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { Pressable, Text, View } from 'react-native';
 import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
 
+import { Schedule } from '../../shared/types';
+
+import { CalendarStackNavigationProp } from '@/navigation/types/navigationTypes';
 import dayjs from '@/shared/lib/dayjs';
 
-interface ScheduleDetailProps {
-  category: string;
-  detail: string;
-  time: string;
-  memo: string;
-  backgroundColor: string;
-  textColor: string;
-  startDate: string;
-  endDate: string;
-}
+interface ScheduleSummaryProps extends Schedule {}
 
-const ScheduleDetail = ({
+const ScheduleSummary = ({
+  scheduleId,
+  startDate,
+  endDate,
   category,
   detail,
   time,
   memo,
-  backgroundColor = '#979797',
-  textColor = '#FFFFFF',
-  startDate,
-  endDate,
-}: ScheduleDetailProps) => {
+}: ScheduleSummaryProps) => {
   const isScheduleLong = startDate !== endDate;
+
+  const navigation = useNavigation<CalendarStackNavigationProp>();
 
   const { startTime, endTime } = time.split(' - ').reduce(
     (acc, cur, idx) => {
@@ -41,16 +37,30 @@ const ScheduleDetail = ({
   );
 
   return (
-    <>
+    <Pressable
+      onPress={() =>
+        navigation.navigate('EditSchedule', {
+          scheduleId,
+          startDate,
+          endDate,
+          category,
+          detail,
+          time,
+          memo,
+        })
+      }>
       <Animated.View
+        className="mb-[11px] w-full flex-row items-center justify-between rounded-[10px] bg-white"
         entering={FadeIn.duration(200)}
-        exiting={FadeOut.duration(200)}
-        className="mb-[11px] w-full flex-row items-center justify-between rounded-[10px] bg-white">
+        exiting={FadeOut.duration(200)}>
         <View className="flex-1 flex-row items-center">
           <Text
             className="mr-2 rounded-full px-[13px] py-[3px] typo-body-16-regular"
-            style={{ backgroundColor, color: textColor }}>
-            {category}
+            style={{
+              backgroundColor: category.backgroundColor,
+              color: category.textColor,
+            }}>
+            {category.categoryName}
           </Text>
           <Text
             className="flex-1 text-main-text typo-body-16-semibold"
@@ -92,10 +102,16 @@ const ScheduleDetail = ({
       </Animated.View>
       {memo && memo.length > 0 && (
         <View className="mb-[14px] rounded-[15px] bg-surface-100 px-4 py-3">
-          <Text className="text-main-text typo-caption-14-regular">{memo}</Text>
+          <Text
+            className="text-main-text typo-caption-14-regular"
+            numberOfLines={1}
+            ellipsizeMode="tail">
+            {memo}
+          </Text>
         </View>
       )}
-    </>
+    </Pressable>
   );
 };
-export default ScheduleDetail;
+
+export default ScheduleSummary;

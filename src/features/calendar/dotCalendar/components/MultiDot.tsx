@@ -2,10 +2,10 @@ import React from 'react';
 
 import { View } from 'react-native';
 
-import { CalendarSchedule } from '../../types';
+import { Schedule } from '../../shared/types';
 
 interface MultiDotProps {
-  schedules: CalendarSchedule[];
+  schedules: Schedule[];
   size?: number;
   spacing?: number;
 }
@@ -22,7 +22,7 @@ const MultiDot = ({ schedules, size = 5, spacing = 2 }: MultiDotProps) => {
             width: size,
             height: size,
             borderRadius: size / 2,
-            backgroundColor: schedule.backgroundColor,
+            backgroundColor: schedule.category.backgroundColor,
             marginHorizontal: spacing / 2,
           }}
         />

@@ -2,12 +2,12 @@ import React from 'react';
 
 import { View } from 'react-native';
 
-import { CalendarSchedule } from '@/features/calendar/types';
+import { Schedule } from '@/features/calendar/shared/types';
 import dayjs from '@/shared/lib/dayjs';
 
 interface CalendarDotProps {
   weeks: Date[];
-  schedule: CalendarSchedule[];
+  schedule: Schedule[];
   positions: Record<number, number>;
 }
 
