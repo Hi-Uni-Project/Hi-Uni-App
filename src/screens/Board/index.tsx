@@ -5,42 +5,61 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import BoardFloatingButton from '@/features/board/boardMain/components/BoardFloatingButton';
 import JobInformationScreen from '@/features/board/boardMain/components/JobInformation';
+import { useBoardCategory } from '@/features/board/boardMain/hooks/useBoardCategory';
 import BoardHeader from '@/features/board/shared/components/BoardHeader';
 import SortPostList from '@/shared/components/Board/SortPostList';
 import { useSortBoard } from '@/shared/hooks/useSortBoard';
-import { mockPosts } from '@/shared/lib/mock';
+import Loading from '@/shared/ui/organisms/Loading';
 
 const BoardScreen = () => {
   const insets = useSafeAreaInsets();
 
   const {
+    selectedSort,
     selectedSortLabel,
     setSelectedSort,
     sortSheetVisible,
     setSortSheetVisible,
+    resetSort,
   } = useSortBoard();
+
+  const { posts, isLoading, selectedCategoryIdx, setSelectedCategoryIdx } =
+    useBoardCategory({
+      selectedSort,
+    });
 
   return (
     <View className="flex-1">
       <BoardHeader />
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={{ marginTop: insets.top + 110 }}>
-          <JobInformationScreen />
-        </View>
-
-        <View className="flex-1 px-5">
-          <SortPostList
-            classname=""
-            scrollEnabled={false}
-            vertical
-            selectedSortLabel={selectedSortLabel}
-            setSelectedSort={setSelectedSort}
-            setSortSheetVisible={setSortSheetVisible}
-            sortSheetVisible={sortSheetVisible}
-            data={mockPosts}
-            onPostPress={() => console.log('ss')}
+          <JobInformationScreen
+            resetSort={resetSort}
+            selectedCategoryIdx={selectedCategoryIdx}
+            setSelectedCategoryIdx={setSelectedCategoryIdx}
           />
         </View>
+
+        {isLoading ? (
+          <View className="mt-12">
+            <Loading />
+          </View>
+        ) : (
+          <View className="flex-1 px-5">
+            <SortPostList
+              scrollEnabled={false}
+              vertical
+              typeHide={selectedCategoryIdx === 0}
+              classname=""
+              selectedSortLabel={selectedSortLabel}
+              setSelectedSort={setSelectedSort}
+              setSortSheetVisible={setSortSheetVisible}
+              sortSheetVisible={sortSheetVisible}
+              data={posts}
+              onPostPress={post => console.log('Post clicked:', post.title)}
+            />
+          </View>
+        )}
       </ScrollView>
 
       <BoardFloatingButton insets={insets} />
