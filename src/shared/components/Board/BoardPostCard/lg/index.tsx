@@ -38,7 +38,7 @@ const BoardPostCardLG = ({ onPress, ...post }: Props) => {
         </Text>
       </View>
 
-      <View>
+      <View className="mb-1">
         <PostMetadata
           firstMajorName={post.firstMajorName}
           secondMajorName={post.secondMajorName}
