@@ -13,7 +13,6 @@ import TabCalendarIcon from '@/shared/icons/tabBarIcons/TabCalendarIcon';
 import TabChatIcon from '@/shared/icons/tabBarIcons/TabChatIcon';
 import TabHomeIcon from '@/shared/icons/tabBarIcons/TabHomeIcon';
 import TabRecordIcon from '@/shared/icons/tabBarIcons/TabRecordIcon';
-import TabSearchIcon from '@/shared/icons/tabBarIcons/TabSearchIcon';
 
 export interface HUTabBarProps {
   state: TabNavigationState<ParamListBase>;
@@ -22,7 +21,6 @@ export interface HUTabBarProps {
 
 const IconComponents = [
   (isSelected: boolean) => <TabHomeIcon isSelected={isSelected} />,
-  (isSelected: boolean) => <TabSearchIcon isSelected={isSelected} />,
   (isSelected: boolean) => <TabChatIcon isSelected={isSelected} />,
   (isSelected: boolean) => <TabCalendarIcon isSelected={isSelected} />,
   (isSelected: boolean) => <TabRecordIcon isSelected={isSelected} />,
@@ -33,7 +31,7 @@ const HUTabBar = ({ state, navigation }: HUTabBarProps) => {
 
   return (
     <View
-      className="flex-row justify-between rounded-t-[20px] bg-white px-[12px] pt-[4px]"
+      className="flex-row justify-between rounded-t-[20px] bg-white px-[40px] pt-[4px]"
       style={{
         paddingBottom: insets.bottom,
         boxShadow: '0px 1px 8px 0px #1111111A',

@@ -23,7 +23,6 @@ const HomeTabScreens = () => {
     switch (currentRouteName) {
       case 'HomeTab':
       case 'Board':
-      case 'Search':
       case 'Record':
         return '';
       case 'Calendar':
@@ -52,11 +51,6 @@ const HomeTabScreens = () => {
           name="Home"
           component={HomeScreen}
           listeners={{ focus: () => setCurrentRouteName('HomeTab') }}
-        />
-        <Tab.Screen
-          name="Search"
-          component={SecondPage}
-          listeners={{ focus: () => setCurrentRouteName('Search') }}
         />
         <Tab.Screen
           name="Board"
