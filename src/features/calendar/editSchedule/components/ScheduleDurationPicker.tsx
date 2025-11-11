@@ -9,34 +9,51 @@ import Animated, {
 } from 'react-native-reanimated';
 
 import CommonCalendar from '../../commonCalendar/components/CommonCalendar';
-import useDatePicker from '../hooks/useDatePicker';
 
 import { cn } from '@/shared/lib/cn';
 import dayjs from '@/shared/lib/dayjs';
 import { shadowStyleSheet } from '@/shared/styles/shadow';
 import ClockIcon from '@/static/icons/clock.svg';
 
-const ScheduleDurationPicker = () => {
-  const {
-    startDate,
-    setStartDate,
-    endDate,
-    setEndDate,
-    currentStartMonth,
-    setCurrentStartMonth,
-    currentEndMonth,
-    setCurrentEndMonth,
-    isStartCalendarOpen,
-    setIsStartCalendarOpen,
-    isEndCalendarOpen,
-    setIsEndCalendarOpen,
-    isStartTimePickerOpen,
-    setIsStartTimePickerOpen,
-    isEndTimePickerOpen,
-    setIsEndTimePickerOpen,
-    closeAllPickers,
-  } = useDatePicker();
+interface ScheduleDurationPickerProps {
+  startDate: Date;
+  setStartDate: (date: Date) => void;
+  endDate: Date;
+  setEndDate: (date: Date) => void;
+  currentStartMonth: string;
+  setCurrentStartMonth: (month: string) => void;
+  currentEndMonth: string;
+  setCurrentEndMonth: (month: string) => void;
+  isStartCalendarOpen: boolean;
+  setIsStartCalendarOpen: (open: boolean) => void;
+  isEndCalendarOpen: boolean;
+  setIsEndCalendarOpen: (open: boolean) => void;
+  isStartTimePickerOpen: boolean;
+  setIsStartTimePickerOpen: (open: boolean) => void;
+  isEndTimePickerOpen: boolean;
+  setIsEndTimePickerOpen: (open: boolean) => void;
+  closeAllPickers: () => void;
+}
 
+const ScheduleDurationPicker = ({
+  startDate,
+  setStartDate,
+  endDate,
+  setEndDate,
+  currentStartMonth,
+  setCurrentStartMonth,
+  currentEndMonth,
+  setCurrentEndMonth,
+  isStartCalendarOpen,
+  setIsStartCalendarOpen,
+  isEndCalendarOpen,
+  setIsEndCalendarOpen,
+  isStartTimePickerOpen,
+  setIsStartTimePickerOpen,
+  isEndTimePickerOpen,
+  setIsEndTimePickerOpen,
+  closeAllPickers,
+}: ScheduleDurationPickerProps) => {
   return (
     <View className="mt-5 flex-row">
       <ClockIcon className="mt-[2px] text-surface-500" width={20} height={20} />

@@ -7,6 +7,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import ScheduleDurationPicker from '@/features/calendar/editSchedule/components/ScheduleDurationPicker';
 import ScheduleHeaderInput from '@/features/calendar/editSchedule/components/ScheduleHeaderInput';
 import ScheduleMemoInput from '@/features/calendar/editSchedule/components/ScheduleMemoInput';
+import useDatePicker from '@/features/calendar/editSchedule/hooks/useDatePicker';
 import useScheduleDeleteQueries from '@/features/calendar/editSchedule/hooks/useScheduleDeleteQueries';
 import useScheduleEditQueries from '@/features/calendar/editSchedule/hooks/useScheduleSaveQueries';
 import CalendarDetailHeader from '@/features/calendar/editSchedule/layouts/CalendarDetailHeader';
@@ -39,6 +40,8 @@ const CalendarScheduleScreen = () => {
 
   const { createSchedule, updateSchedule } = useScheduleEditQueries();
   const { deleteSchedule } = useScheduleDeleteQueries();
+
+  const datePickerData = useDatePicker();
 
   const isCompleteDisabled = !isValid || !hasDataChanges;
 
@@ -94,8 +97,12 @@ const CalendarScheduleScreen = () => {
       />
       <ScrollView className="px-6">
         <ScheduleHeaderInput />
-        <ScheduleDurationPicker />
-        <ScheduleMemoInput />
+        <ScheduleDurationPicker {...datePickerData} />
+        <ScheduleMemoInput
+          onFocus={() => {
+            datePickerData.closeAllPickers();
+          }}
+        />
       </ScrollView>
       <Pressable
         className="absolute w-full flex-row items-center justify-center"
