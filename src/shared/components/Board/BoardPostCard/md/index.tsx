@@ -2,19 +2,20 @@ import React from 'react';
 
 import { Pressable, View } from 'react-native';
 
-import CategoryBadges from './CategoryBadges';
-import PostActions from './PostActions';
-import PostContent from './PostContent';
-import PostMetadata from './PostMetadata';
+import CategoryBadges from '../ui/atoms/CategoryBadges';
+import PostActions from '../ui/organisms/PostActions';
+import PostContent from '../ui/organisms/PostContent';
+import PostMetadata from '../ui/organisms/PostMetadata';
 
 import { Post } from '@/features/board/shared/types/DefaultPostType';
 
 interface Props extends Post {
   onPress?: () => void;
   vertical?: boolean;
+  typeHide?: boolean;
 }
 
-const BoardPostCardMD = ({ vertical = false, onPress, ...post }: Props) => {
+const BoardPostCardMD = ({ vertical, typeHide, onPress, ...post }: Props) => {
   return (
     <Pressable
       onPress={onPress}
@@ -24,6 +25,7 @@ const BoardPostCardMD = ({ vertical = false, onPress, ...post }: Props) => {
       )}
       <View className="mb-3 px-1">
         <PostContent
+          typeHide={typeHide}
           title={post.title}
           content={post.content}
           type={post.type}

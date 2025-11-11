@@ -1,36 +1,47 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import { useNavigation } from '@react-navigation/native';
+import { View } from 'react-native';
 
 import CategoryChipList from '@/features/board/boardMain/components/CategoryChipList/CategoryChipList';
 import PopularJobInfoReview from '@/features/board/boardMain/components/PopularJobInfoReview';
+import { JOB_CATEGORY_CHIPS } from '@/features/board/shared/types/enum/postEnum';
 import { MainStackNavigationProp } from '@/navigation/types/navigationTypes';
 
-const JobInformationScreen = () => {
+interface Props {
+  selectedCategoryIdx: number;
+  setSelectedCategoryIdx: (index: number) => void;
+  resetSort: () => void;
+}
+
+const JobInformationScreen = ({
+  selectedCategoryIdx,
+  setSelectedCategoryIdx,
+  resetSort,
+}: Props) => {
   const navigation = useNavigation<MainStackNavigationProp>();
-  const categories = [
-    '전체',
-    '취업',
-    '인턴십',
-    '면접',
-    '실무이야기',
-    '자격증 후기',
-  ];
-  const [selectedCategoryIdx, setSelectedCategoryIdx] = useState(0);
 
   return (
-    <>
+    <View>
       <CategoryChipList
-        categories={categories}
+        resetSort={resetSort}
+        categories={JOB_CATEGORY_CHIPS}
         selectedCategoryIdx={selectedCategoryIdx}
         setSelectedCategoryIdx={setSelectedCategoryIdx}
       />
+
       <PopularJobInfoReview
+        title={JOB_CATEGORY_CHIPS[selectedCategoryIdx]}
         onPress={() =>
-          navigation.navigate('BoardRoute', { screen: 'PopularReviews' })
+          navigation.navigate('BoardRoute', {
+            screen: 'PopularReviews',
+            params: {
+              title: JOB_CATEGORY_CHIPS[selectedCategoryIdx],
+            },
+          })
         }
       />
-    </>
+    </View>
   );
 };
 

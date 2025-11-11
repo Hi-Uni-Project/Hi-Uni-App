@@ -5,19 +5,25 @@ import {
   fetchWeeklyHotPosts,
   fetchMyPosts,
   fetchMyComments,
-} from '@/shared/api/boardFetchApi';
+} from '@/shared/api/board/boardFetchApi';
 
-const useBoardQuery = (queryKey: string[], queryFn: () => Promise<Post[]>) => {
+const useBoardQuery = (
+  queryKey: string[],
+  queryFn: () => Promise<Post[]>,
+  staleTime: number,
+) => {
   return useQuery<Post[]>({
     queryKey,
     queryFn,
+    staleTime,
   });
 };
 
 export const useWeeklyHotPosts = () =>
-  useBoardQuery(['weeklyHotPosts'], fetchWeeklyHotPosts);
+  useBoardQuery(['weeklyHotPosts'], fetchWeeklyHotPosts, 1000 * 60);
 
-export const useMyPostsQuery = () => useBoardQuery(['myPosts'], fetchMyPosts);
+export const useMyPostsQuery = () =>
+  useBoardQuery(['myPosts'], fetchMyPosts, 1000 * 60);
 
 export const useMyCommentsQuery = () =>
-  useBoardQuery(['myComments'], fetchMyComments);
+  useBoardQuery(['myComments'], fetchMyComments, 1000 * 60);

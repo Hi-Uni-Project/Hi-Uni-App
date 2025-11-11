@@ -1,51 +1,40 @@
 import React from 'react';
 
-import { View } from 'react-native';
+import { RouteProp } from '@react-navigation/native';
 
-import BoardHeaderColorGround from '@/features/home/shared/layouts/BoardHeaderColorGround';
-import DetailBoardHeader from '@/shared/components/Board/layouts/DetailBoardHeader';
-import NoBoardLayout from '@/shared/components/Board/layouts/NoBoardLayout';
-import SortPostList from '@/shared/components/Board/SortPostList';
-import { useSortBoard } from '@/shared/hooks/useSortBoard';
-import { mockPosts } from '@/shared/lib/mock';
-import Loading from '@/shared/ui/organisms/Loading';
+import { useCategoryWeeklyHotQuery } from '@/features/board/boardMain/hooks/useWeeklyHotQuery';
+import {
+  getPostTypeByDisplayName,
+  PostCategory,
+} from '@/features/board/shared/types/enum/postEnum';
+import { BoardNavigationProps } from '@/navigation/types/navigationTypes';
+import SortBoardContentLayout from '@/shared/components/Board/layouts/SortBoardContentLayout';
 
-const isLoading = false;
+type PopularReviewsRouteProp = RouteProp<
+  BoardNavigationProps,
+  'PopularReviews'
+>;
+interface Props {
+  route: PopularReviewsRouteProp;
+}
 
-const PopularReviews = () => {
-  const {
-    selectedSortLabel,
-    setSelectedSort,
-    sortSheetVisible,
-    setSortSheetVisible,
-  } = useSortBoard();
+const PopularReviews = ({ route }: Props) => {
+  const { title } = route.params;
+  const selectedPostType = getPostTypeByDisplayName(title);
 
-  if (isLoading) {
-    return <Loading />;
-  }
-
-  if (!mockPosts || mockPosts.length === 0) {
-    return <NoBoardLayout des={'아직 취업 정보 인기글이'} />;
-  }
+  const { data: posts = [], isLoading } = useCategoryWeeklyHotQuery(
+    PostCategory.JOB_INFORMATION,
+    selectedPostType,
+  );
 
   return (
-    <View className="flex-1">
-      <BoardHeaderColorGround />
-      <DetailBoardHeader title={'취업 정보 인기 후기'} icon={true} />
-
-      <View className="flex-1 bg-surface-50 px-5">
-        <SortPostList
-          classname=""
-          vertical
-          selectedSortLabel={selectedSortLabel}
-          setSelectedSort={setSelectedSort}
-          setSortSheetVisible={setSortSheetVisible}
-          sortSheetVisible={sortSheetVisible}
-          data={mockPosts}
-          onPostPress={() => console.log('ss')}
-        />
-      </View>
-    </View>
+    <SortBoardContentLayout
+      title={`${title === '전체' ? '취업 정보' : title} 인기 후기`}
+      description={`아직 ${title} 인기글이`}
+      posts={posts}
+      isLoading={isLoading}
+      onPostPress={() => console.log('post clicked')}
+    />
   );
 };
 

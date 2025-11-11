@@ -8,9 +8,10 @@ import FireIcon from '@/static/icons/fire.svg';
 
 interface Props {
   onPress?: () => void;
+  title: string;
 }
 
-const SectionTitle = ({ onPress }: Props) => {
+const SectionTitle = ({ onPress, title }: Props) => {
   return (
     <View className="mb-5 flex-row items-center justify-between px-5">
       <View className="flex-row items-center">
@@ -18,9 +19,10 @@ const SectionTitle = ({ onPress }: Props) => {
         <Text
           className="ml-2 text-white typo-sub-title-20-semibold"
           style={{ fontWeight: '700' }}>
-          이번주 전체 취업 정보 인기글
+          이번주 {title === '전체' ? '전체 취업 정보' : title} 인기글
         </Text>
       </View>
+
       <Pressable className="flex-row items-center" onPress={onPress}>
         <Text className="mr-2 text-surface-300 typo-caption-14-regular">
           더 보기

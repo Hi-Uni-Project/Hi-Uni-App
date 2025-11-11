@@ -36,7 +36,7 @@ export type HomeNavigationProps = {
 export type BoardNavigationProps = {
   MyComments: undefined;
   MyPosts: undefined;
-  PopularReviews: undefined;
+  PopularReviews: { title: string };
 };
 
 export type TabNavigationProps = {
