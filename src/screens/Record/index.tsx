@@ -1,18 +1,28 @@
-import React from 'react';
+import React, { useEffect, useMemo } from 'react';
 
 import { Pressable, Text, View } from 'react-native';
 
+import CoverLetterList from '@/features/record/coverLetterList/components/CoverLetterList';
+import useRecordQueries from '@/features/record/recordMain/hooks/useRecordQueries';
 import ScreenLayout from '@/shared/components/layouts/ScreenLayout';
 import PlusIcon from '@/static/icons/add.svg';
 import ChevronRightIcon from '@/static/icons/right_chevron.svg';
 
 const RecordScreen = () => {
+  const { data: records } = useRecordQueries();
+
   const isResumeExist = false;
-  const isCoverLetterExist = false;
+  const isCoverLetterExist = useMemo(() => {
+    return (records?.data.coverLetters.length ?? 0) > 0;
+  }, [records]);
+
+  useEffect(() => {
+    console.log('record data : ', records);
+  }, [records]);
 
   return (
-    <ScreenLayout className="items-start px-5">
-      <View className="mt-[50px] flex-row items-center">
+    <ScreenLayout className="items-start">
+      <View className="mt-[50px] flex-row items-center px-5">
         <Text className="text-main-text typo-sub-title-22-bold">내 이력서</Text>
         {isResumeExist && (
           <ChevronRightIcon height={14} color="#B7B7B7" className="ml-3" />
@@ -20,7 +30,7 @@ const RecordScreen = () => {
       </View>
 
       {!isResumeExist && (
-        <>
+        <View className="px-5">
           <Text className="mt-[18px] text-surface-400 typo-body-16-medium">
             아직 작성한 이력서가 없어요.
           </Text>
@@ -31,10 +41,10 @@ const RecordScreen = () => {
               새 이력서 작성하기
             </Text>
           </Pressable>
-        </>
+        </View>
       )}
 
-      <View className="mt-[42px] flex-row items-center">
+      <View className="mt-[42px] flex-row items-center px-5">
         <Text className="text-main-text typo-sub-title-22-bold">
           내 자기소개서
         </Text>
@@ -44,7 +54,7 @@ const RecordScreen = () => {
       </View>
 
       {!isCoverLetterExist && (
-        <>
+        <View className="px-5">
           <Text className="mt-[18px] text-surface-400 typo-body-16-medium">
             아직 작성한 자기소개서가 없어요.
           </Text>
@@ -55,8 +65,12 @@ const RecordScreen = () => {
               새 자기소개서 작성하기
             </Text>
           </Pressable>
-        </>
+        </View>
       )}
+
+      <View className="mt-[18px]">
+        <CoverLetterList coverLetters={records?.data.coverLetters ?? []} />
+      </View>
     </ScreenLayout>
   );
 };
