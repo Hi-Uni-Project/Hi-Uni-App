@@ -56,11 +56,11 @@ const CoverLetterList = ({ coverLetters }: CoverLetterListProps) => {
 
   const panResponder = PanResponder.create({
     onMoveShouldSetPanResponder: (_, gestureState) =>
-      Math.abs(gestureState.dx) > 20,
+      Math.abs(gestureState.dx) > 10,
     onPanResponderRelease: (_, gestureState) => {
-      if (gestureState.dx > 50) {
+      if (gestureState.dx > 30) {
         moveToPage(page.value - 1);
-      } else if (gestureState.dx < -50) {
+      } else if (gestureState.dx < -30) {
         moveToPage(page.value + 1);
       }
     },
