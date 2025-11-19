@@ -20,7 +20,12 @@ const CoverLetterSection = ({ coverLetters, isExist }: Props) => {
         </Text>
 
         {isExist && (
-          <ChevronRightIcon height={14} color="#B7B7B7" className="ml-3" />
+          <ChevronRightIcon
+            height={14}
+            width={8}
+            color="#B7B7B7"
+            className="ml-3"
+          />
         )}
       </View>
 
