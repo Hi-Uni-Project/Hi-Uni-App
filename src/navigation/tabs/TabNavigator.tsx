@@ -1,20 +1,15 @@
 import React, { useMemo, useState } from 'react';
 
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { Text, View } from 'react-native';
+import { View } from 'react-native';
 
 import BoardScreen from '@/screens/Board';
 import CalendarScreen from '@/screens/Calendar';
 import HomeScreen from '@/screens/Home';
+import RecordScreen from '@/screens/Record';
 import HUTabBar, { HUTabBarProps } from '@/shared/components/HUTabBar';
 
 const Tab = createBottomTabNavigator();
-
-const SecondPage = () => (
-  <View>
-    <Text>Second Page</Text>
-  </View>
-);
 
 const HomeTabScreens = () => {
   const [currentRouteName, setCurrentRouteName] = useState('HomeTab');
@@ -64,7 +59,7 @@ const HomeTabScreens = () => {
         />
         <Tab.Screen
           name="Record"
-          component={SecondPage}
+          component={RecordScreen}
           listeners={{ focus: () => setCurrentRouteName('Record') }}
         />
       </Tab.Navigator>

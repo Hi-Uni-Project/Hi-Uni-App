@@ -19,6 +19,8 @@ const MainStack = () => {
       <Stack.Screen name="HomeRoute" component={HomeRoute} />
 
       <Stack.Screen name="BoardRoute" component={BoardRoute} />
+
+      {/* <Stack.Screen name="RecordRoute" component={RecordRoute} /> */}
     </Stack.Navigator>
   );
 };
