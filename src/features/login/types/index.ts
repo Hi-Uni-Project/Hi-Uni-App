@@ -23,6 +23,15 @@ export interface UnivInfo {
 export interface User {
   social: SocialInfo;
   univ: UnivInfo;
+  tos: TosInfo;
+}
+
+export interface TosInfo {
+  inPersonTosIsAgreed: boolean;
+  marketingTosIsAgreed: boolean;
+  personalInfoTosIsAgreed: boolean;
+  serviceImprovementTosIsAgreed: boolean;
+  serviceTosIsAgreed: boolean;
 }
 
 export interface Login {
