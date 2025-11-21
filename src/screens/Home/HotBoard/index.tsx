@@ -2,9 +2,11 @@ import React from 'react';
 
 import SortBoardContentLayout from '@/shared/components/Board/layouts/SortBoardContentLayout';
 import { useWeeklyHotPosts } from '@/shared/hooks/useBoardQuery';
+import { useSortBoard } from '@/shared/hooks/useSortBoard';
 
 const HotBoardScreen = () => {
-  const { data: posts = [], isLoading } = useWeeklyHotPosts();
+  const { selectedSort } = useSortBoard();
+  const { data: posts = [], isLoading } = useWeeklyHotPosts(selectedSort);
 
   return (
     <SortBoardContentLayout
