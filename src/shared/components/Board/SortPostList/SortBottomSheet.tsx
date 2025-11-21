@@ -80,17 +80,11 @@ const SortBottomSheet = ({
               className="py-4">
               <View
                 className={cn(
-                  'flex-row items-center justify-between pb-5',
+                  'flex-row items-center justify-between pb-6',
                   index !== SORT_OPTIONS.length - 1 &&
                     'border-b-[1.5px] border-b-surface-200',
                 )}>
-                <Text
-                  className={cn(
-                    'typo-body-17-medium',
-                    selectedSort === option.label
-                      ? 'text-main-text'
-                      : 'text-surface-500',
-                  )}>
+                <Text className="text-main-text typo-body-17-medium">
                   {option.label}
                 </Text>
 
