@@ -6,8 +6,8 @@ export enum SortType {
 
 export const SORT_DISPLAY_NAME: Record<SortType, string> = {
   [SortType.LATEST]: '최신순',
-  [SortType.LIKE]: '좋아요 순',
-  [SortType.COMMENT]: '댓글 순',
+  [SortType.LIKE]: '인기순',
+  [SortType.COMMENT]: '댓글순',
 };
 
 export const SORT_OPTIONS = [
