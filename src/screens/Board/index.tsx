@@ -5,6 +5,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import BoardFloatingButton from '@/features/board/boardMain/components/BoardFloatingButton';
 import JobInformationScreen from '@/features/board/boardMain/components/JobInformation';
+import NoPosts from '@/features/board/boardMain/components/NoPost';
 import { useBoardCategory } from '@/features/board/boardMain/hooks/useBoardCategory';
 import BoardHeader from '@/features/board/shared/components/BoardHeader';
 import SortPostList from '@/shared/components/Board/SortPostList';
@@ -41,10 +42,10 @@ const BoardScreen = () => {
         </View>
 
         {isLoading ? (
-          <View className="mt-12">
+          <View className="min-h-[400px]">
             <Loading />
           </View>
-        ) : (
+        ) : posts.length > 0 ? (
           <View className="flex-1 px-5">
             <SortPostList
               scrollEnabled={false}
@@ -59,6 +60,8 @@ const BoardScreen = () => {
               onPostPress={post => console.log('Post clicked:', post.title)}
             />
           </View>
+        ) : (
+          <NoPosts />
         )}
       </ScrollView>
 
