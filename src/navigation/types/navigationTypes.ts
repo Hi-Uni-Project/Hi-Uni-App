@@ -9,6 +9,7 @@ export type MainNavigationProps = {
   SignupRoute: undefined;
   HomeRoute: undefined;
   BoardRoute: NavigatorScreenParams<BoardNavigationProps>;
+  RecordRoute: NavigatorScreenParams<RecordNavigationProps>;
 };
 
 export type SignupNavigationProps = {
@@ -58,6 +59,10 @@ export type CalendarNavigationProps = {
   CreateSchedule: undefined;
 };
 
+export type RecordNavigationProps = {
+  ResumeSection: undefined;
+};
+
 export type MainStackNavigationProp =
   NativeStackNavigationProp<MainNavigationProps>;
 
@@ -75,5 +80,8 @@ export type CalendarStackNavigationProp =
 
 export type BoardStackNavigationProp =
   NativeStackNavigationProp<BoardNavigationProps>;
+
+export type RecordStackNavigationProp =
+  NativeStackNavigationProp<RecordNavigationProps>;
 
 export type HomeTabNavigationProp = BottomTabNavigationProp<TabNavigationProps>;
