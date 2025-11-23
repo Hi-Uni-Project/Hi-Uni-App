@@ -40,7 +40,7 @@ const ResumeSection = ({ title, imageUrl, isExist }: Props) => {
           <Pressable
             className="mt-[15px] flex-row items-center rounded-full bg-primary-purple px-[27px] py-[14px]"
             onPress={() =>
-              navigation.navigate('RecordRoute', { screen: 'ResumeSection' })
+              navigation.navigate('RecordRoute', { screen: 'ResumeEdit' })
             }>
             <PlusIcon width={16} height={16} color="#DADADA" />
             <Text className="ml-[7px] text-surface-200 typo-body-17-semibold">
@@ -54,7 +54,7 @@ const ResumeSection = ({ title, imageUrl, isExist }: Props) => {
         <Pressable
           className="relative mt-[18px] w-full px-5"
           onPress={() =>
-            navigation.navigate('RecordRoute', { screen: 'ResumeSection' })
+            navigation.navigate('RecordRoute', { screen: 'ResumeEdit' })
           }>
           <View className="rounded-full bg-[#E4E4F4]">
             <Text className="my-[19px] ml-6 text-primary-purple typo-body-17-semibold">

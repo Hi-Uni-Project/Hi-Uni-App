@@ -60,7 +60,7 @@ export type CalendarNavigationProps = {
 };
 
 export type RecordNavigationProps = {
-  ResumeSection: undefined;
+  ResumeEdit: undefined;
 };
 
 export type MainStackNavigationProp =
