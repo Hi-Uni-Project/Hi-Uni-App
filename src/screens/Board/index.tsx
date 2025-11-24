@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { useNavigation } from '@react-navigation/native';
 import { ScrollView, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -8,12 +9,18 @@ import JobInformationScreen from '@/features/board/boardMain/components/JobInfor
 import NoPosts from '@/features/board/boardMain/components/NoPost';
 import { useBoardCategory } from '@/features/board/boardMain/hooks/useBoardCategory';
 import BoardHeader from '@/features/board/shared/components/BoardHeader';
+import { MainStackNavigationProp } from '@/navigation/types/navigationTypes';
 import SortPostList from '@/shared/components/Board/SortPostList';
 import { useSortBoard } from '@/shared/hooks/useSortBoard';
 import Loading from '@/shared/ui/organisms/Loading';
 
 const BoardScreen = () => {
   const insets = useSafeAreaInsets();
+  const navigation = useNavigation<MainStackNavigationProp>();
+
+  const handleNavigation = () => {
+    navigation.navigate('BoardRoute', { screen: 'BoardWrite' });
+  };
 
   const {
     selectedSort,
@@ -65,7 +72,7 @@ const BoardScreen = () => {
         )}
       </ScrollView>
 
-      <BoardFloatingButton insets={insets} />
+      <BoardFloatingButton insets={insets} onPress={handleNavigation} />
     </View>
   );
 };
