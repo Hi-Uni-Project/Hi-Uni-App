@@ -35,7 +35,7 @@ const ScheduleHeaderInput = ({
           leftComponent={
             <CategorySelector
               categories={categories}
-              currentCategory={category}
+              currentCategory={category ? { ...category } : null}
               setCurrentCategory={updateCategory}
             />
           }

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 import { useRoute, RouteProp, useNavigation } from '@react-navigation/native';
 import { Platform, Pressable, ScrollView, Text } from 'react-native';
@@ -36,10 +36,6 @@ const CalendarScheduleScreen = () => {
 
   const [showDeleteModal, setShowDeleteModal] = useState(false);
 
-  useEffect(() => {
-    console.log('route.params:', route.params);
-  }, []);
-
   return (
     <ScreenLayout className="relative" pointerEvents="box-none">
       <CalendarDetailHeader
@@ -57,7 +53,7 @@ const CalendarScheduleScreen = () => {
         }}>
         <ScheduleHeaderInput
           category={scheduleData?.category}
-          updateCategory={category => updateField('category', category)}
+          updateCategory={category => updateField('category', { ...category })}
           detail={scheduleData?.detail || ''}
           updateDetail={detail => updateField('detail', detail)}
         />

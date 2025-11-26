@@ -11,12 +11,6 @@ interface UseEditScheduleProps {
   initialData: Schedule | null;
 }
 
-/**
- * 이 훅은 일정 수정, 생성을 담당합니다.
- * - 일정의 초기 상태를 로딩합니다. *
- * - 처음 진입한 시점과 다르게 일정이 수정된 경우 이를 감지하여 사용자에게 알립니다. *
- * - 일정이 성공적으로 수정 또는 생성된 후, 관련 데이터를 갱신합니다. *
- */
 const useEditSchedule = ({ initialData }: UseEditScheduleProps) => {
   const { createSchedule, updateSchedule } = useScheduleSaveQueries();
   const { deleteSchedule } = useScheduleDeleteQueries();
@@ -38,26 +32,29 @@ const useEditSchedule = ({ initialData }: UseEditScheduleProps) => {
     },
   );
 
-  const datePickerController = useDatePicker({
-    startDate: scheduleData?.startDate || new Date(),
-    endDate:
-      scheduleData?.endDate || new Date(new Date().getTime() + 60 * 60 * 1000),
-  });
-
   const updateField = useCallback(
     <Key extends keyof ScheduleEditForm>(
       field: Key,
       value: ScheduleEditForm[Key],
     ) => {
       setScheduleData(prev => {
-        if (!prev) {
-          return null;
-        }
         return { ...prev, [field]: value };
       });
     },
     [],
   );
+
+  const datePickerController = useDatePicker({
+    startDate: scheduleData?.startDate || new Date(),
+    endDate:
+      scheduleData?.endDate || new Date(new Date().getTime() + 60 * 60 * 1000),
+    onStartDateChange: (date: Date) => {
+      updateField('startDate', date);
+    },
+    onEndDateChange: (date: Date) => {
+      updateField('endDate', date);
+    },
+  });
 
   const editSchedule = (onSuccess: () => void) => {
     if (initialData) {
@@ -78,9 +75,6 @@ const useEditSchedule = ({ initialData }: UseEditScheduleProps) => {
   };
 
   useEffect(() => {
-    console.log('initialData stringify:', JSON.stringify(initialData));
-    console.log('scheduleData stringify:', JSON.stringify(scheduleData));
-
     const hasChanged =
       JSON.stringify(scheduleData) !== JSON.stringify(initialData);
     setIsChanged(hasChanged);

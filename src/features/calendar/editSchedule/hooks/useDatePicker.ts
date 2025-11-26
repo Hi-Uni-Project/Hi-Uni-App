@@ -5,11 +5,15 @@ import { dateToString } from '../../commonCalendar/utils/commonCalendarUtils';
 interface UseDatePickerProps {
   startDate: Date;
   endDate: Date;
+  onStartDateChange?: (date: Date) => void;
+  onEndDateChange?: (date: Date) => void;
 }
 
 const useDatePicker = ({
   startDate: startDateProps,
   endDate: endDateProps,
+  onStartDateChange,
+  onEndDateChange,
 }: UseDatePickerProps) => {
   const [startDate, setStartDate] = useState<Date>(startDateProps);
   const [endDate, setEndDate] = useState<Date>(endDateProps);
@@ -46,10 +50,12 @@ const useDatePicker = ({
 
   useEffect(() => {
     setCurrentStartMonth(dateToString(startDate));
+    onStartDateChange?.(startDate);
   }, [startDate]);
 
   useEffect(() => {
     setCurrentEndMonth(dateToString(endDate));
+    onEndDateChange?.(endDate);
   }, [endDate]);
 
   return {
