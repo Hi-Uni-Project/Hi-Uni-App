@@ -8,11 +8,8 @@ import ScheduleDurationPicker from '@/features/calendar/editSchedule/components/
 import ScheduleHeaderInput from '@/features/calendar/editSchedule/components/ScheduleHeaderInput';
 import ScheduleMemoInput from '@/features/calendar/editSchedule/components/ScheduleMemoInput';
 import useDatePicker from '@/features/calendar/editSchedule/hooks/useDatePicker';
-import useScheduleDeleteQueries from '@/features/calendar/editSchedule/hooks/useScheduleDeleteQueries';
-import useScheduleEditQueries from '@/features/calendar/editSchedule/hooks/useScheduleSaveQueries';
+import useEditSchedule from '@/features/calendar/editSchedule/hooks/useEditSchedule';
 import CalendarDetailHeader from '@/features/calendar/editSchedule/layouts/CalendarDetailHeader';
-import useCalendarScheduleStore from '@/features/calendar/editSchedule/stores/useCalendarScheduleStore';
-import { ScheduleEditForm } from '@/features/calendar/editSchedule/types';
 import { Schedule } from '@/features/calendar/shared/types';
 import ScreenLayout from '@/shared/components/layouts/ScreenLayout';
 import ConfirmModal from '@/shared/ui/organisms/ConfirmModal';
@@ -29,78 +26,38 @@ const CalendarScheduleScreen = () => {
   const route = useRoute<CalendarScheduleRouteProp>();
   const existData = route.params;
 
-  const storeInitialize = useCalendarScheduleStore(state => state.initialize);
-  const storeReset = useCalendarScheduleStore(state => state.reset);
-  const scheduleData = useCalendarScheduleStore(state => state.scheduleData);
-
-  const isValid = useCalendarScheduleStore(state => state.isValid);
-  const hasDataChanges = useCalendarScheduleStore(
-    state => state.hasDataChanges,
-  );
-
-  const { createSchedule, updateSchedule } = useScheduleEditQueries();
-  const { deleteSchedule } = useScheduleDeleteQueries();
-
   const datePickerData = useDatePicker();
 
-  const isCompleteDisabled = !isValid || !hasDataChanges;
+  const { isChanged, scheduleData, updateField, editSchedule, removeSchedule } =
+    useEditSchedule({ initialData: existData });
 
   const [showDeleteModal, setShowDeleteModal] = useState(false);
 
   useEffect(() => {
-    const scheduleEditForm: ScheduleEditForm = existData
-      ? {
-          id: existData.scheduleId,
-          startDate: new Date(existData.startDate),
-          endDate: new Date(existData.endDate),
-          category: existData.category,
-          detail: existData.detail,
-          memo: existData.memo,
-        }
-      : {
-          id: null,
-          startDate: new Date(),
-          endDate: new Date(),
-          category: null,
-          detail: '',
-          memo: '',
-        };
-
-    storeInitialize(scheduleEditForm);
-
-    return () => {
-      storeReset();
-    };
-  }, [existData, storeInitialize, storeReset]);
+    console.log('route.params:', route.params);
+  }, []);
 
   return (
-    <ScreenLayout className="relative">
+    <ScreenLayout className="relative" pointerEvents="box-none">
       <CalendarDetailHeader
         onCompletePress={() => {
-          if (existData) {
-            updateSchedule(scheduleData, {
-              onSuccess: () => {
-                storeInitialize(scheduleData);
-                navigation.goBack();
-              },
-            });
-          } else {
-            createSchedule(scheduleData, {
-              onSuccess: () => {
-                storeInitialize(scheduleData);
-                navigation.goBack();
-              },
-            });
-          }
+          editSchedule(() => {
+            navigation.goBack();
+          });
         }}
-        isCompleteDisabled={isCompleteDisabled}
+        isCompleteDisabled={!isChanged}
       />
       <ScrollView
         className="px-6"
         style={{
           marginTop: Platform.OS === 'ios' ? 0 : insets.top + 10,
         }}>
-        <ScheduleHeaderInput />
+        <ScheduleHeaderInput
+          category={scheduleData?.category}
+          updateCategory={category => updateField('category', category)}
+          detail={scheduleData?.detail || ''}
+          updateDetail={detail => updateField('detail', detail)}
+        />
         <ScheduleDurationPicker {...datePickerData} />
         <ScheduleMemoInput
           onFocus={() => {
@@ -127,11 +84,8 @@ const CalendarScheduleScreen = () => {
         confirmText="네, 삭제할래요."
         cancelText="아니요, 그대로 둘게요."
         onConfirm={() =>
-          deleteSchedule(scheduleData.id, {
-            onSuccess: () => {
-              storeInitialize(scheduleData);
-              navigation.goBack();
-            },
+          removeSchedule(() => {
+            navigation.goBack();
           })
         }
         onClose={() => setShowDeleteModal(false)}

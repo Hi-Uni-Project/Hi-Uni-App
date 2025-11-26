@@ -1,37 +1,32 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
 import { View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import useCategorySelector from '../hooks/useCategorySelector';
-import useCalendarScheduleStore from '../stores/useCalendarScheduleStore';
 
 import CategorySelector from './CategorySelector';
 
 import { Category } from '@/shared/types/categoryType';
 import HUInput from '@/shared/ui/atoms/HUInput';
 
-const ScheduleHeaderInput = () => {
+interface ScheduleHeaderProps {
+  category: Category | null;
+  updateCategory: (category: Category) => void;
+
+  detail: string;
+  updateDetail: (detail: string) => void;
+}
+
+const ScheduleHeaderInput = ({
+  category,
+  updateCategory,
+  detail,
+  updateDetail,
+}: ScheduleHeaderProps) => {
   const insets = useSafeAreaInsets();
 
-  const storeDetail = useCalendarScheduleStore(
-    state => state.scheduleData.detail,
-  );
-  const storeUpdateScheduleField = useCalendarScheduleStore(
-    state => state.updateScheduleField,
-  );
-  const storeInitialCategory = useCalendarScheduleStore(
-    state => state.initialData.category,
-  );
-
   const { categories } = useCategorySelector();
-
-  const [currentCategory, setCurrentCategory] = useState<Category | null>(null);
-
-  useEffect(() => {
-    storeUpdateScheduleField('category', currentCategory);
-    storeInitialCategory && setCurrentCategory(storeInitialCategory);
-  }, [currentCategory, storeInitialCategory]);
 
   return (
     <View style={{ marginTop: insets.top }}>
@@ -40,12 +35,12 @@ const ScheduleHeaderInput = () => {
           leftComponent={
             <CategorySelector
               categories={categories}
-              currentCategory={currentCategory}
-              setCurrentCategory={setCurrentCategory}
+              currentCategory={category}
+              setCurrentCategory={updateCategory}
             />
           }
-          value={storeDetail}
-          onChangeText={text => storeUpdateScheduleField('detail', text)}
+          value={detail}
+          onChangeText={text => updateDetail(text)}
           placeholder="일정명을 입력해주세요."
           variant="calendarSchedule"
           className="text-main-text typo-sub-title-20-semibold"
