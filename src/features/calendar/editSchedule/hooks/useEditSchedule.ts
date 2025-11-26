@@ -3,6 +3,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { Schedule } from '../../shared/types';
 import { ScheduleEditForm } from '../types';
 
+import useDatePicker from './useDatePicker';
 import useScheduleDeleteQueries from './useScheduleDeleteQueries';
 import useScheduleSaveQueries from './useScheduleSaveQueries';
 
@@ -36,6 +37,12 @@ const useEditSchedule = ({ initialData }: UseEditScheduleProps) => {
       return null;
     },
   );
+
+  const datePickerController = useDatePicker({
+    startDate: scheduleData?.startDate || new Date(),
+    endDate:
+      scheduleData?.endDate || new Date(new Date().getTime() + 60 * 60 * 1000),
+  });
 
   const updateField = useCallback(
     <Key extends keyof ScheduleEditForm>(
@@ -77,7 +84,7 @@ const useEditSchedule = ({ initialData }: UseEditScheduleProps) => {
     const hasChanged =
       JSON.stringify(scheduleData) !== JSON.stringify(initialData);
     setIsChanged(hasChanged);
-  }, [scheduleData]);
+  }, [scheduleData, initialData]);
 
   return {
     isChanged,
@@ -85,6 +92,7 @@ const useEditSchedule = ({ initialData }: UseEditScheduleProps) => {
     updateField,
     editSchedule,
     removeSchedule,
+    datePickerController,
   };
 };
 

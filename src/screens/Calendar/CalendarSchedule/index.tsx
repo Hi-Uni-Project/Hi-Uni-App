@@ -7,7 +7,6 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import ScheduleDurationPicker from '@/features/calendar/editSchedule/components/ScheduleDurationPicker';
 import ScheduleHeaderInput from '@/features/calendar/editSchedule/components/ScheduleHeaderInput';
 import ScheduleMemoInput from '@/features/calendar/editSchedule/components/ScheduleMemoInput';
-import useDatePicker from '@/features/calendar/editSchedule/hooks/useDatePicker';
 import useEditSchedule from '@/features/calendar/editSchedule/hooks/useEditSchedule';
 import CalendarDetailHeader from '@/features/calendar/editSchedule/layouts/CalendarDetailHeader';
 import { Schedule } from '@/features/calendar/shared/types';
@@ -26,10 +25,14 @@ const CalendarScheduleScreen = () => {
   const route = useRoute<CalendarScheduleRouteProp>();
   const existData = route.params;
 
-  const datePickerData = useDatePicker();
-
-  const { isChanged, scheduleData, updateField, editSchedule, removeSchedule } =
-    useEditSchedule({ initialData: existData });
+  const {
+    isChanged,
+    scheduleData,
+    updateField,
+    editSchedule,
+    removeSchedule,
+    datePickerController,
+  } = useEditSchedule({ initialData: existData });
 
   const [showDeleteModal, setShowDeleteModal] = useState(false);
 
@@ -58,10 +61,10 @@ const CalendarScheduleScreen = () => {
           detail={scheduleData?.detail || ''}
           updateDetail={detail => updateField('detail', detail)}
         />
-        <ScheduleDurationPicker {...datePickerData} />
+        <ScheduleDurationPicker {...datePickerController} />
         <ScheduleMemoInput
           onFocus={() => {
-            datePickerData.closeAllPickers();
+            datePickerController.closeAllPickers();
           }}
         />
       </ScrollView>

@@ -1,31 +1,24 @@
 import { useEffect, useState } from 'react';
 
 import { dateToString } from '../../commonCalendar/utils/commonCalendarUtils';
-import useCalendarScheduleStore from '../stores/useCalendarScheduleStore';
 
-import dayjs from '@/shared/lib/dayjs';
+interface UseDatePickerProps {
+  startDate: Date;
+  endDate: Date;
+}
 
-const useDatePicker = () => {
-  const updateScheduleField = useCalendarScheduleStore(
-    state => state.updateScheduleField,
-  );
-
-  const startDateAlreadyExists = useCalendarScheduleStore(state => {
-    return state.initialData.startDate;
-  });
-
-  const endDateAlreadyExists = useCalendarScheduleStore(state => {
-    return state.initialData.endDate;
-  });
-
-  const [startDate, setStartDate] = useState<Date>(new Date());
-  const [endDate, setEndDate] = useState<Date>(new Date());
+const useDatePicker = ({
+  startDate: startDateProps,
+  endDate: endDateProps,
+}: UseDatePickerProps) => {
+  const [startDate, setStartDate] = useState<Date>(startDateProps);
+  const [endDate, setEndDate] = useState<Date>(endDateProps);
 
   const [currentStartMonth, setCurrentStartMonth] = useState<string>(
-    dateToString(new Date()),
+    dateToString(startDate),
   );
   const [currentEndMonth, setCurrentEndMonth] = useState<string>(
-    dateToString(new Date()),
+    dateToString(endDate),
   );
 
   const [isStartCalendarOpen, setIsStartCalendarOpen] =
@@ -49,15 +42,7 @@ const useDatePicker = () => {
       setEndDate(startDate);
       setCurrentEndMonth(dateToString(startDate));
     }
-
-    updateScheduleField('startDate', dayjs(startDate).toDate());
-    updateScheduleField('endDate', dayjs(endDate).toDate());
   }, [startDate, endDate]);
-
-  useEffect(() => {
-    setStartDate(startDateAlreadyExists);
-    setEndDate(endDateAlreadyExists);
-  }, [startDateAlreadyExists, endDateAlreadyExists]);
 
   useEffect(() => {
     setCurrentStartMonth(dateToString(startDate));
