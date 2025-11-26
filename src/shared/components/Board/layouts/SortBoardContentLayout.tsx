@@ -17,6 +17,7 @@ interface Props {
   posts: Post[] | undefined;
   isLoading: boolean;
   onPostPress: (post: Post) => void;
+  sortBoardState: ReturnType<typeof useSortBoard>;
 }
 
 const SortBoardContentLayout = ({
@@ -26,13 +27,14 @@ const SortBoardContentLayout = ({
   posts,
   isLoading,
   onPostPress,
+  sortBoardState,
 }: Props) => {
   const {
     selectedSortLabel,
     setSelectedSort,
     sortSheetVisible,
     setSortSheetVisible,
-  } = useSortBoard();
+  } = sortBoardState;
 
   if (isLoading) {
     return <Loading />;

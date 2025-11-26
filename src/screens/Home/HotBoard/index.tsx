@@ -5,8 +5,10 @@ import { useWeeklyHotPosts } from '@/shared/hooks/useBoardQuery';
 import { useSortBoard } from '@/shared/hooks/useSortBoard';
 
 const HotBoardScreen = () => {
-  const { selectedSort } = useSortBoard();
-  const { data: posts = [], isLoading } = useWeeklyHotPosts(selectedSort);
+  const sortBoardState = useSortBoard();
+  const { data: posts = [], isLoading } = useWeeklyHotPosts(
+    sortBoardState.selectedSort,
+  );
 
   return (
     <SortBoardContentLayout
@@ -15,6 +17,7 @@ const HotBoardScreen = () => {
       posts={posts}
       isLoading={isLoading}
       onPostPress={() => console.log('post clicked')}
+      sortBoardState={sortBoardState}
     />
   );
 };
