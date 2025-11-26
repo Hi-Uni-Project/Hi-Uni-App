@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 import { useRoute, RouteProp, useNavigation } from '@react-navigation/native';
-import { Pressable, ScrollView, Text } from 'react-native';
+import { Platform, Pressable, ScrollView, Text } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import ScheduleDurationPicker from '@/features/calendar/editSchedule/components/ScheduleDurationPicker';
@@ -95,7 +95,11 @@ const CalendarScheduleScreen = () => {
         }}
         isCompleteDisabled={isCompleteDisabled}
       />
-      <ScrollView className="px-6">
+      <ScrollView
+        className="px-6"
+        style={{
+          marginTop: Platform.OS === 'ios' ? 0 : insets.top + 10,
+        }}>
         <ScheduleHeaderInput />
         <ScheduleDurationPicker {...datePickerData} />
         <ScheduleMemoInput
@@ -108,7 +112,8 @@ const CalendarScheduleScreen = () => {
         className="absolute w-full flex-row items-center justify-center"
         onPress={() => setShowDeleteModal(true)}
         style={{
-          bottom: insets.bottom,
+          bottom:
+            Platform.OS === 'ios' ? insets.bottom + 10 : insets.bottom + 20,
         }}>
         <TrashIcon width={20} height={20} color="#B7B7B7" />
         <Text className="ml-2 text-surface-400 typo-body-15-medium">
