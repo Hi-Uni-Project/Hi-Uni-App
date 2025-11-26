@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 
-import { Schedule } from '../../shared/types';
+import { Schedule, ScheduleDatePayload } from '../../shared/types';
 import { ScheduleEditForm } from '../types';
 
 import useDatePicker from './useDatePicker';
@@ -8,9 +8,15 @@ import useScheduleDeleteQueries from './useScheduleDeleteQueries';
 import useScheduleSaveQueries from './useScheduleSaveQueries';
 
 interface UseEditScheduleProps {
-  initialData: Schedule | null;
+  initialData: Schedule | ScheduleDatePayload;
 }
 
+/**
+ * 이 훅은 일정 수정, 생성을 담당합니다.
+ * - 일정의 초기 상태를 로딩합니다. *
+ * - 처음 진입한 시점과 다르게 일정이 수정된 경우 이를 감지하여 사용자에게 알립니다. *
+ * - 일정이 성공적으로 수정 또는 생성된 후, 관련 데이터를 갱신합니다. *
+ */
 const useEditSchedule = ({ initialData }: UseEditScheduleProps) => {
   const { createSchedule, updateSchedule } = useScheduleSaveQueries();
   const { deleteSchedule } = useScheduleDeleteQueries();
@@ -18,7 +24,7 @@ const useEditSchedule = ({ initialData }: UseEditScheduleProps) => {
   const [isChanged, setIsChanged] = useState<boolean>(false);
   const [scheduleData, setScheduleData] = useState<ScheduleEditForm | null>(
     () => {
-      if (initialData) {
+      if ('scheduleId' in initialData) {
         return {
           id: initialData.scheduleId,
           startDate: new Date(initialData.startDate),
@@ -27,8 +33,16 @@ const useEditSchedule = ({ initialData }: UseEditScheduleProps) => {
           detail: initialData.detail,
           memo: initialData.memo,
         };
+      } else {
+        return {
+          id: null,
+          startDate: new Date(initialData.date),
+          endDate: new Date(initialData.date.getTime() + 60 * 60 * 1000),
+          category: null,
+          detail: '',
+          memo: '',
+        };
       }
-      return null;
     },
   );
 

@@ -24,4 +24,8 @@ export interface Schedule {
   memo: string;
 }
 
+export interface ScheduleDatePayload {
+  date: Date;
+}
+
 export type ScheduleListResponse = ResponseTypes<Schedule[]>;
