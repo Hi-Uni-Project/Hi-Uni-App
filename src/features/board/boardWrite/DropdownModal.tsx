@@ -13,7 +13,6 @@ interface DropdownModalProps {
   options: DropdownOption[];
   onSelect: (value: string) => void;
   position: { top: number; left: number };
-  triggerButton?: React.ReactNode; // 트리거 버튼 추가
 }
 
 const DropdownModal = ({
@@ -22,7 +21,6 @@ const DropdownModal = ({
   options,
   onSelect,
   position,
-  triggerButton,
 }: DropdownModalProps) => {
   const handleSelect = (value: string) => {
     onSelect(value);
@@ -35,21 +33,7 @@ const DropdownModal = ({
       transparent
       animationType="fade"
       onRequestClose={onClose}>
-      {/* Backdrop */}
       <Pressable className="flex-1 bg-black/40" onPress={onClose}>
-        {/* Trigger Button - 백드롭 위에 렌더링 */}
-        {triggerButton && (
-          <View
-            className="absolute"
-            style={{
-              top: position.top - 42, // 드롭다운 위치에서 버튼 높이만큼 위
-              left: position.left,
-            }}>
-            {triggerButton}
-          </View>
-        )}
-
-        {/* Dropdown Menu */}
         <View
           className="absolute space-y-2.5 rounded-[15px] bg-white p-2.5 shadow-lg"
           style={{
