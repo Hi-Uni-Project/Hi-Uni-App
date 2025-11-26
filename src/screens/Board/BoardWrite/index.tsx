@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 
 import { useNavigation } from '@react-navigation/native';
-import { View, Pressable, TextInput, Text } from 'react-native';
+import { View, Pressable, TextInput, Text, ScrollView } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+
+import ReviewTemplate from './ReviewTemplate';
 
 import DropdownModal from '@/features/board/boardWrite/DropdownModal';
 import {
@@ -42,7 +44,6 @@ const BoardWrite = () => {
 
   const handlePostTypeChange = (newType: PostType) => {
     setSelectedPostType(newType);
-    // setDropdownOpen(false) 제거 - 모달이 자동 처리
   };
 
   const handleReviewToggle = () => {
@@ -120,76 +121,128 @@ const BoardWrite = () => {
       </View>
 
       {/* Body */}
-      <View className="flex-1 px-5 pt-7">
-        {/* Category Selector */}
-        <View className="border-b-[1.5px] border-b-surface-300">
-          <View className="flex-row pb-3">
-            <Pressable
-              className={`flex-row items-center justify-center rounded-[20px] ${selectedPostType ? 'bg-primary-purple' : 'border border-surface-300'} px-3 py-0.5`}
-              onPress={() => setDropdownOpen(prev => !prev)}>
-              <Text
-                className={`mr-2 ${selectedPostType ? 'text-white' : 'text-surface-600'} typo-body-16-regular`}>
-                {POST_TYPE_DISPLAY_NAME[selectedPostType] ?? '선택'}
-              </Text>
+      {isReview ? (
+        <ScrollView
+          className="flex-1 px-5 pt-7"
+          contentContainerStyle={{ paddingBottom: 40 }}
+          showsVerticalScrollIndicator={false}>
+          <View className="border-b-[1.5px] border-b-surface-300">
+            <View className="flex-row pb-3">
+              <Pressable
+                className={`flex-row items-center justify-center rounded-[20px] ${selectedPostType ? 'bg-primary-purple' : 'border border-surface-300'} px-3 py-0.5`}
+                onPress={() => setDropdownOpen(prev => !prev)}>
+                <Text
+                  className={`mr-2 ${selectedPostType ? 'text-white' : 'text-surface-600'} typo-body-16-regular`}>
+                  {POST_TYPE_DISPLAY_NAME[selectedPostType] ?? '선택'}
+                </Text>
 
-              <ChevronIcons
-                direction={isDropdownOpen ? 'top' : 'bottom'}
-                width={11}
-                height={9}
-                color={selectedPostType ? '#ffffff' : '#b7b7b7'}
+                <ChevronIcons
+                  direction={isDropdownOpen ? 'top' : 'bottom'}
+                  width={11}
+                  height={9}
+                  color={selectedPostType ? '#ffffff' : '#b7b7b7'}
+                />
+              </Pressable>
+
+              <TextInput
+                placeholder="제목을 입력해주세요."
+                placeholderTextColor="#979797"
+                value={title}
+                onChangeText={setTitle}
+                className="pl-4 text-main-text typo-sub-title-20-semibold"
               />
+            </View>
+          </View>
+
+          <View className="flex-row items-start justify-start pt-5">
+            <Pressable className="mt-[3px]" onPress={handleReviewToggle}>
+              {isReview ? (
+                <Checked color="#6568ea" />
+              ) : (
+                <NonChecked color="#DADADA" />
+              )}
             </Pressable>
 
-            {/* Title Input */}
-            <TextInput
-              placeholder="제목을 입력해주세요."
-              placeholderTextColor="#979797"
-              value={title}
-              onChangeText={setTitle}
-              className="pl-4 text-main-text typo-sub-title-20-semibold"
-            />
+            <View className="pl-3">
+              <Text className="text-surface-700 typo-body-17-semibold">
+                후기로 작성할게요.
+              </Text>
+
+              <Text className="pt-1 text-surface-500 typo-body-16-regular">
+                후기 글의 경우 기록에 자동 저장되어 포트폴리오,{'\n'}이력서,
+                자기소개서가 자동으로 작성돼요.
+              </Text>
+            </View>
           </View>
-        </View>
 
-        {/* Review Checkbox */}
-        <View className="flex-row items-start justify-start pt-5">
-          <Pressable className="mt-[3px]" onPress={handleReviewToggle}>
-            {isReview ? (
-              <Checked color="#6568ea" />
-            ) : (
-              <NonChecked color="#DADADA" />
-            )}
-          </Pressable>
+          <ReviewTemplate />
+        </ScrollView>
+      ) : (
+        <View className="flex-1 px-5 pt-7">
+          <View className="border-b-[1.5px] border-b-surface-300">
+            <View className="flex-row pb-3">
+              <Pressable
+                className={`flex-row items-center justify-center rounded-[20px] ${selectedPostType ? 'bg-primary-purple' : 'border border-surface-300'} px-3 py-0.5`}
+                onPress={() => setDropdownOpen(prev => !prev)}>
+                <Text
+                  className={`mr-2 ${selectedPostType ? 'text-white' : 'text-surface-600'} typo-body-16-regular`}>
+                  {POST_TYPE_DISPLAY_NAME[selectedPostType] ?? '선택'}
+                </Text>
 
-          <View className="pl-3">
-            <Text className="text-surface-700 typo-body-17-semibold">
-              후기로 작성할게요.
-            </Text>
+                <ChevronIcons
+                  direction={isDropdownOpen ? 'top' : 'bottom'}
+                  width={11}
+                  height={9}
+                  color={selectedPostType ? '#ffffff' : '#b7b7b7'}
+                />
+              </Pressable>
 
-            <Text className="pt-1 text-surface-500 typo-body-16-regular">
-              {selectedPostType
-                ? '후기 글의 경우 기록에 자동 저장되어 포트폴리오,\n이력서, 자기소개서가 자동으로 작성돼요.'
-                : '후기 글의 경우 기록에 자동 저장되어 자기소개서가 \n자동으로 작성돼요.'}
-            </Text>
+              <TextInput
+                placeholder="제목을 입력해주세요."
+                placeholderTextColor="#979797"
+                value={title}
+                onChangeText={setTitle}
+                className="pl-4 text-main-text typo-sub-title-20-semibold"
+              />
+            </View>
           </View>
+
+          <View className="flex-row items-start justify-start pt-5">
+            <Pressable className="mt-[3px]" onPress={handleReviewToggle}>
+              {isReview ? (
+                <Checked color="#6568ea" />
+              ) : (
+                <NonChecked color="#DADADA" />
+              )}
+            </Pressable>
+
+            <View className="pl-3">
+              <Text className="text-surface-700 typo-body-17-semibold">
+                후기로 작성할게요.
+              </Text>
+
+              <Text className="pt-1 text-surface-500 typo-body-16-regular">
+                후기 글의 경우 기록에 자동 저장되어 자기소개서가 {'\n'}자동으로
+                작성돼요.
+              </Text>
+            </View>
+          </View>
+
+          <TextInput
+            multiline
+            value={content}
+            onChangeText={setContent}
+            placeholder={
+              selectedPostType
+                ? `자유롭게 ${POST_TYPE_DISPLAY_NAME[selectedPostType]} 경험을 공유해주세요.`
+                : '자유롭게 취업 정보에 대한 내용을 작성해주세요.'
+            }
+            placeholderTextColor="#b7b7b7"
+            className="mt-5 h-[420px] rounded-[15px] border border-surface-200 bg-white p-4 py-5 text-main-text typo-body-15-regular"
+          />
         </View>
+      )}
 
-        {/* Content Input */}
-        <TextInput
-          multiline
-          value={content}
-          onChangeText={setContent}
-          placeholder={
-            selectedPostType
-              ? `자유롭게 ${POST_TYPE_DISPLAY_NAME[selectedPostType]} 경험을 공유해주세요.`
-              : '자유롭게 취업 정보에 대한 내용을 작성해주세요.'
-          }
-          placeholderTextColor="#b7b7b7"
-          className="mt-5 h-[420px] rounded-[15px] border border-surface-200 bg-white p-4 py-5 text-main-text typo-body-15-regular"
-        />
-      </View>
-
-      {/* Dropdown Modal - 여기를 변경 */}
       <DropdownModal
         visible={isDropdownOpen}
         onClose={() => setDropdownOpen(false)}
@@ -199,23 +252,6 @@ const BoardWrite = () => {
           top: insets.top + 70 + 28 + 42,
           left: 20,
         }}
-        triggerButton={
-          <Pressable
-            className={`flex-row items-center justify-center rounded-[20px] ${selectedPostType ? 'bg-primary-purple' : 'border border-surface-300'} px-3 py-0.5`}
-            onPress={() => setDropdownOpen(prev => !prev)}>
-            <Text
-              className={`mr-2 ${selectedPostType ? 'text-white' : 'text-surface-600'} typo-body-16-regular`}>
-              {POST_TYPE_DISPLAY_NAME[selectedPostType] ?? '선택'}
-            </Text>
-
-            <ChevronIcons
-              direction="top"
-              width={11}
-              height={9}
-              color={selectedPostType ? '#ffffff' : '#b7b7b7'}
-            />
-          </Pressable>
-        }
       />
 
       {modalType !== null && modalContent && (
