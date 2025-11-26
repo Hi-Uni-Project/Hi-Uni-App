@@ -13,10 +13,12 @@ import {
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import AddButton from '@/features/record/editResume/components/AddButton';
 import ImagePicker from '@/features/record/editResume/components/ImagePicker';
 import ResumeEditHeader from '@/features/record/editResume/components/ResumeEditHeader';
 import HUDropdown from '@/shared/ui/atoms/HUDropdown';
 import HUInput from '@/shared/ui/atoms/HUInput';
+import InfoIcon from '@/static/icons/info.svg';
 
 const ResumeEditView = () => {
   const insets = useSafeAreaInsets();
@@ -101,9 +103,15 @@ const ResumeEditView = () => {
                 <View className="flex-row items-center justify-between">
                   <Text className="typo-body-17-semibold">내 소개</Text>
                   <View className="flex-row items-center">
-                    <Text>아이콘</Text>
                     <Pressable>
-                      <Text>ai 어쩌구</Text>
+                      <InfoIcon color="#B7B7B7" width={26} height={26} />
+                    </Pressable>
+                    <Pressable className="ml-[5px]">
+                      <View className="flex-row items-center rounded-full bg-primary-purple px-4 py-2">
+                        <Text className="text-surface-200 typo-body-15-medium">
+                          AI 내 소개 생성 (5/5)
+                        </Text>
+                      </View>
                     </Pressable>
                   </View>
                 </View>
@@ -124,9 +132,7 @@ const ResumeEditView = () => {
                     경력 사항 혹은 프로젝트 사항
                   </Text>
                   <View className="flex-row items-center">
-                    <Pressable>
-                      <Text>추가 어쩌구</Text>
-                    </Pressable>
+                    <AddButton />
                   </View>
                 </View>
               </View>
@@ -136,9 +142,7 @@ const ResumeEditView = () => {
                 <View className="flex-row items-center justify-between">
                   <Text className="typo-body-17-semibold">학력 사항</Text>
                   <View className="flex-row items-center">
-                    <Pressable>
-                      <Text>추가 어쩌구</Text>
-                    </Pressable>
+                    <AddButton />
                   </View>
                 </View>
               </View>
@@ -159,9 +163,7 @@ const ResumeEditView = () => {
                 <View className="flex-row items-center justify-between">
                   <Text className="typo-body-17-semibold">어학</Text>
                   <View className="flex-row items-center">
-                    <Pressable>
-                      <Text>추가 어쩌구</Text>
-                    </Pressable>
+                    <AddButton />
                   </View>
                 </View>
               </View>
@@ -173,9 +175,7 @@ const ResumeEditView = () => {
                     수상/자격증/교육
                   </Text>
                   <View className="flex-row items-center">
-                    <Pressable>
-                      <Text>추가 어쩌구</Text>
-                    </Pressable>
+                    <AddButton />
                   </View>
                 </View>
               </View>
@@ -185,9 +185,7 @@ const ResumeEditView = () => {
                 <View className="flex-row items-center justify-between">
                   <Text className="typo-body-17-semibold">링크</Text>
                   <View className="flex-row items-center">
-                    <Pressable>
-                      <Text>추가 어쩌구</Text>
-                    </Pressable>
+                    <AddButton />
                   </View>
                 </View>
 
