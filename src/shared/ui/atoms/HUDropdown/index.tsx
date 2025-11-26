@@ -18,6 +18,8 @@ interface HUCategoryDropdownProps {
 
   // selected 값이 있을 경우 보여질 컴포넌트
   selectedComponentStyle?: StyleProp<ViewStyle>;
+
+  containerStyle?: StyleProp<ViewStyle>;
 }
 
 const HUDropdown = ({
@@ -25,6 +27,7 @@ const HUDropdown = ({
   dropdownItems,
   onSelectItem,
   categoryName = '선택',
+  containerStyle,
 }: HUCategoryDropdownProps) => {
   const [selectedItem, setSelectedItem] = useState<string | null>(null);
 
@@ -38,7 +41,7 @@ const HUDropdown = ({
           ref,
           <View className="items-start">
             <Animated.View
-              className="mb-5 flex-row items-center rounded-full border-[1px] border-primary-purple bg-[#f9f9f9] px-[15px] py-[12px]"
+              className="mb-5 flex-row items-center rounded-full border-[1px] border-primary-purple bg-[#f9f9f9] px-[15px] py-[10px]"
               style={{ zIndex: 900 }}>
               <Text className="pr-2 text-surface-500 typo-body-16-regular">
                 {selectedItem || categoryName}
@@ -81,8 +84,8 @@ const HUDropdown = ({
       }}>
       <View
         ref={ref}
-        className="flex-row items-center rounded-full border-[1px] border-surface-300 px-[15px] py-[12px]"
-        style={[{ zIndex: 900 }, isVisible && { opacity: 1 }]}>
+        className="flex-row items-center rounded-full border-[1px] border-surface-300 px-[15px] py-[10px]"
+        style={[{ zIndex: 900 }, isVisible && { opacity: 1 }, containerStyle]}>
         <Text className="pr-2 text-surface-500 typo-body-16-regular">
           {selectedItem || categoryName}
         </Text>
