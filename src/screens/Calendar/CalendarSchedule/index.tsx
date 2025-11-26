@@ -63,6 +63,8 @@ const CalendarScheduleScreen = () => {
         />
         <ScheduleDurationPicker {...datePickerController} />
         <ScheduleMemoInput
+          memo={scheduleData?.memo || ''}
+          updateMemo={memo => updateField('memo', memo)}
           onFocus={() => {
             datePickerController.closeAllPickers();
           }}

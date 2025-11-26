@@ -3,20 +3,19 @@ import React from 'react';
 import { Text, TextInput, View } from 'react-native';
 import Animated, { LinearTransition } from 'react-native-reanimated';
 
-import useCalendarScheduleStore from '../stores/useCalendarScheduleStore';
-
 import MemoIcon from '@/static/icons/memo.svg';
 
 interface ScheduleMemoInputProps {
+  memo: string;
+  updateMemo: (text: string) => void;
   onFocus?: () => void;
 }
 
-const ScheduleMemoInput: React.FC<ScheduleMemoInputProps> = ({ onFocus }) => {
-  const storeMemo = useCalendarScheduleStore(state => state.scheduleData.memo);
-  const storeUpdateScheduleField = useCalendarScheduleStore(
-    state => state.updateScheduleField,
-  );
-
+const ScheduleMemoInput = ({
+  memo,
+  updateMemo,
+  onFocus,
+}: ScheduleMemoInputProps) => {
   return (
     <Animated.View className="mt-5" layout={LinearTransition}>
       <View className="flex-row items-center">
@@ -26,8 +25,8 @@ const ScheduleMemoInput: React.FC<ScheduleMemoInputProps> = ({ onFocus }) => {
         </Text>
       </View>
       <TextInput
-        value={storeMemo}
-        onChangeText={text => storeUpdateScheduleField('memo', text)}
+        value={memo}
+        onChangeText={text => updateMemo(text)}
         placeholder="메모를 입력해주세요"
         onFocus={onFocus}
         multiline={true}
