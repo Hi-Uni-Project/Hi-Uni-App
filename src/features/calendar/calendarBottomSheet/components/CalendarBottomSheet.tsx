@@ -68,7 +68,7 @@ const CalendarBottomSheet = ({
         <Pressable
           onPress={() => {
             navigation.navigate('CreateSchedule', {
-              date: selectedDate.toDate(),
+              ISODateString: selectedDate.toISOString(),
             });
           }}>
           <AddIcon width={22} height={22} />

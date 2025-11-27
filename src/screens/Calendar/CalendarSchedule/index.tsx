@@ -27,6 +27,7 @@ const CalendarScheduleScreen = () => {
 
   const {
     isChanged,
+    isValidate,
     scheduleData,
     updateField,
     editSchedule,
@@ -44,7 +45,7 @@ const CalendarScheduleScreen = () => {
             navigation.goBack();
           });
         }}
-        isCompleteDisabled={!isChanged}
+        isCompleteDisabled={!(isChanged && isValidate)}
       />
       <ScrollView
         className="px-6"
@@ -66,18 +67,21 @@ const CalendarScheduleScreen = () => {
           }}
         />
       </ScrollView>
-      <Pressable
-        className="absolute w-full flex-row items-center justify-center"
-        onPress={() => setShowDeleteModal(true)}
-        style={{
-          bottom:
-            Platform.OS === 'ios' ? insets.bottom + 10 : insets.bottom + 20,
-        }}>
-        <TrashIcon width={20} height={20} color="#B7B7B7" />
-        <Text className="ml-2 text-surface-400 typo-body-15-medium">
-          일정 삭제하기
-        </Text>
-      </Pressable>
+
+      {'scheduleId' in existData && (
+        <Pressable
+          className="absolute w-full flex-row items-center justify-center"
+          onPress={() => setShowDeleteModal(true)}
+          style={{
+            bottom:
+              Platform.OS === 'ios' ? insets.bottom + 10 : insets.bottom + 20,
+          }}>
+          <TrashIcon width={20} height={20} color="#B7B7B7" />
+          <Text className="ml-2 text-surface-400 typo-body-15-medium">
+            일정 삭제하기
+          </Text>
+        </Pressable>
+      )}
 
       <ConfirmModal
         visible={showDeleteModal}

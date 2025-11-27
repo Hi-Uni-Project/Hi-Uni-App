@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useMemo, useRef, useState } from 'react';
 
 import { Schedule, ScheduleDatePayload } from '../../shared/types';
 import { ScheduleEditForm } from '../types';
@@ -21,7 +21,6 @@ const useEditSchedule = ({ initialData }: UseEditScheduleProps) => {
   const { createSchedule, updateSchedule } = useScheduleSaveQueries();
   const { deleteSchedule } = useScheduleDeleteQueries();
 
-  const [isChanged, setIsChanged] = useState<boolean>(false);
   const [scheduleData, setScheduleData] = useState<ScheduleEditForm | null>(
     () => {
       if ('scheduleId' in initialData) {
@@ -36,8 +35,10 @@ const useEditSchedule = ({ initialData }: UseEditScheduleProps) => {
       } else {
         return {
           id: null,
-          startDate: new Date(initialData.date),
-          endDate: new Date(initialData.date.getTime() + 60 * 60 * 1000),
+          startDate: new Date(initialData.ISODateString),
+          endDate: new Date(
+            new Date(initialData.ISODateString).getTime() + 60 * 60 * 1000,
+          ),
           category: null,
           detail: '',
           memo: '',
@@ -45,6 +46,56 @@ const useEditSchedule = ({ initialData }: UseEditScheduleProps) => {
       }
     },
   );
+
+  const initialSnapshot = useRef<ScheduleEditForm>(scheduleData);
+
+  const isValidate = useMemo(() => {
+    if (!scheduleData) {
+      return false;
+    }
+
+    if (scheduleData.category === null) {
+      return false;
+    }
+
+    if (!scheduleData.detail || scheduleData.detail.trim() === '') {
+      return false;
+    }
+
+    return true;
+  }, [scheduleData]);
+
+  const isChanged = useMemo(() => {
+    if (!scheduleData || !initialSnapshot.current) {
+      return false;
+    }
+
+    const initial = initialSnapshot.current;
+    const current = scheduleData;
+
+    if (initial.startDate.getTime() !== current.startDate.getTime()) {
+      return true;
+    }
+    if (initial.endDate.getTime() !== current.endDate.getTime()) {
+      return true;
+    }
+
+    if (
+      (initial.category?.categoryId || null) !==
+      (current.category?.categoryId || null)
+    ) {
+      return true;
+    }
+
+    if (initial.detail !== current.detail) {
+      return true;
+    }
+    if (initial.memo !== current.memo) {
+      return true;
+    }
+
+    return false;
+  }, [scheduleData]);
 
   const updateField = useCallback(
     <Key extends keyof ScheduleEditForm>(
@@ -88,14 +139,9 @@ const useEditSchedule = ({ initialData }: UseEditScheduleProps) => {
     });
   };
 
-  useEffect(() => {
-    const hasChanged =
-      JSON.stringify(scheduleData) !== JSON.stringify(initialData);
-    setIsChanged(hasChanged);
-  }, [scheduleData, initialData]);
-
   return {
     isChanged,
+    isValidate,
     scheduleData,
     updateField,
     editSchedule,

@@ -25,7 +25,7 @@ export interface Schedule {
 }
 
 export interface ScheduleDatePayload {
-  date: Date;
+  ISODateString: string;
 }
 
 export type ScheduleListResponse = ResponseTypes<Schedule[]>;
