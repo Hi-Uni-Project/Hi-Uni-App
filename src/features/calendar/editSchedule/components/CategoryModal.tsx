@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import { Portal } from '@gorhom/portal';
 import { Modal, View, Text, Pressable, Platform, Animated } from 'react-native';
@@ -13,6 +13,60 @@ interface CategoryModalProps {
   position: { top: number; left: number };
 }
 
+const CategoryList = ({
+  options,
+  onSelect,
+}: {
+  options: Category[];
+  onSelect: (id: number) => void;
+}) => (
+  <>
+    {options.map((option, index) => (
+      <Pressable
+        key={option.categoryId}
+        className="w-[123px]"
+        onPress={() => onSelect(option.categoryId)}>
+        <View
+          className={`flex-row items-center pb-[14px] pt-[15px] ${
+            index !== options.length - 1 ? 'border-b-[1px]' : ''
+          } border-b-surface-200`}>
+          <View
+            className="h-[19px] w-[19px] rounded-full"
+            style={{ backgroundColor: option.backgroundColor }}
+          />
+          <Text className="ml-[7px] text-main-text typo-body-16-regular">
+            {option.categoryName}
+          </Text>
+        </View>
+      </Pressable>
+    ))}
+  </>
+);
+
+const PopoverContainer = ({
+  top,
+  left,
+  children,
+  style,
+}: {
+  top: number;
+  left: number;
+  children: React.ReactNode;
+  style?: any;
+}) => (
+  <Animated.View
+    className="absolute rounded-[15px] bg-white px-[10px]"
+    style={[
+      {
+        top,
+        left,
+      },
+      style,
+    ]}>
+    {children}
+  </Animated.View>
+);
+
 const CategoryModal = ({
   visible,
   onClose,
@@ -25,26 +79,9 @@ const CategoryModal = ({
     onClose();
   };
 
-  const backdropOpacity = React.useRef(new Animated.Value(0)).current;
-  const listOpacity = React.useRef(new Animated.Value(0)).current;
-
-  const [showList, setShowList] = React.useState(false);
-
-  React.useEffect(() => {
-    if (visible && Platform.OS === 'android') {
-      const timer = setTimeout(() => {
-        setShowList(true);
-        Animated.timing(listOpacity, {
-          toValue: 1,
-          duration: 100,
-          useNativeDriver: true,
-        }).start();
-      }, 100);
-      return () => clearTimeout(timer);
-    }
-    setShowList(false);
-    listOpacity.setValue(0);
-  }, [visible]);
+  const backdropOpacity = useRef(new Animated.Value(0)).current;
+  const listOpacity = useRef(new Animated.Value(0)).current;
+  const [showList, setShowList] = useState(false);
 
   useEffect(() => {
     if (visible && Platform.OS === 'android') {
@@ -58,102 +95,87 @@ const CategoryModal = ({
     }
   }, [visible]);
 
+  useEffect(() => {
+    if (visible && Platform.OS === 'android') {
+      const timer = setTimeout(() => {
+        setShowList(true);
+        Animated.timing(listOpacity, {
+          toValue: 1,
+          duration: 150,
+          useNativeDriver: true,
+        }).start();
+      }, 120);
+
+      return () => clearTimeout(timer);
+    }
+
+    setShowList(false);
+    listOpacity.setValue(0);
+  }, [visible]);
+
   if (Platform.OS === 'ios') {
     return (
       <Modal
         visible={visible}
-        animationType="fade"
         transparent
+        animationType="fade"
         onRequestClose={onClose}>
-        <Pressable className="flex-1 bg-black/40" onPress={onClose}>
+        <Pressable
+          onPress={onClose}
+          style={{
+            flex: 1,
+            backgroundColor: 'rgba(0,0,0,0.4)',
+          }}>
           <View
             className="absolute rounded-[15px] bg-white px-[10px]"
             style={{
               top: position.top,
               left: position.left,
             }}>
-            {options.map((option, index) => (
-              <Pressable
-                key={option.categoryId}
-                className={'w-[123px]'}
-                onPress={() => handleSelect(option.categoryId)}>
-                <View
-                  className={`flex-row items-center pb-[14px] pt-[15px] ${
-                    index !== options.length - 1 ? 'border-b-[1px]' : ''
-                  } border-b-surface-200`}>
-                  <View
-                    className="h-[19px] w-[19px] rounded-full"
-                    style={{ backgroundColor: option.backgroundColor }}
-                  />
-                  <Text className="ml-[7px] text-main-text typo-body-16-regular">
-                    {option.categoryName}
-                  </Text>
-                </View>
-              </Pressable>
-            ))}
+            <CategoryList options={options} onSelect={handleSelect} />
           </View>
         </Pressable>
       </Modal>
     );
-  } else {
-    return (
-      <Portal>
-        {visible && (
-          <>
-            <Animated.View
-              style={{
-                position: 'absolute',
-                top: 0,
-                left: 0,
-                right: 0,
-                bottom: 0,
-                backgroundColor: 'rgba(0, 0, 0, 0.2)',
-                opacity: backdropOpacity,
-              }}
-            />
-            <Pressable
-              onPress={onClose}
-              style={{
-                position: 'absolute',
-                top: 0,
-                left: 0,
-                right: 0,
-                bottom: 0,
-              }}>
-              <Animated.View
-                className="absolute rounded-[15px] bg-white px-[10px]"
-                style={{
-                  top: position.top,
-                  left: position.left,
-                  opacity: listOpacity,
-                }}>
-                {showList &&
-                  options.map((option, index) => (
-                    <Pressable
-                      key={option.categoryId}
-                      className={'w-[123px]'}
-                      onPress={() => handleSelect(option.categoryId)}>
-                      <View
-                        className={`flex-row items-center pb-[14px] pt-[15px] ${
-                          index !== options.length - 1 ? 'border-b-[1px]' : ''
-                        } border-b-surface-200`}>
-                        <View
-                          className="h-[19px] w-[19px] rounded-full"
-                          style={{ backgroundColor: option.backgroundColor }}
-                        />
-                        <Text className="ml-[7px] text-main-text typo-body-16-regular">
-                          {option.categoryName}
-                        </Text>
-                      </View>
-                    </Pressable>
-                  ))}
-              </Animated.View>
-            </Pressable>
-          </>
-        )}
-      </Portal>
-    );
   }
+
+  return (
+    <Portal>
+      {visible && (
+        <>
+          <Animated.View
+            style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              backgroundColor: 'rgba(0,0,0,0.2)',
+              opacity: backdropOpacity,
+            }}
+          />
+          <Pressable
+            onPress={onClose}
+            style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+            }}>
+            <PopoverContainer
+              top={position.top}
+              left={position.left}
+              style={{ opacity: listOpacity }}>
+              {showList && (
+                <CategoryList options={options} onSelect={handleSelect} />
+              )}
+            </PopoverContainer>
+          </Pressable>
+        </>
+      )}
+    </Portal>
+  );
 };
 
 export default CategoryModal;

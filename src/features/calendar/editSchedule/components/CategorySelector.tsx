@@ -103,7 +103,6 @@ const CategorySelector = ({
             category => category.categoryId === categoryId,
           );
 
-          console.log('Selected categoryId:', categoryId);
           setCurrentCategory(foundCategory ? { ...foundCategory } : null);
         }}
         position={{
