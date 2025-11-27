@@ -11,7 +11,7 @@ interface MultiDotProps {
 }
 
 const MultiDot = ({ schedules, size = 5, spacing = 2 }: MultiDotProps) => {
-  const displaySchedules = schedules.slice(0, 5);
+  const displaySchedules = schedules.slice(0, 3);
 
   return (
     <View className="mt-[2px] flex-row justify-center">

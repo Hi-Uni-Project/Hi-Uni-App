@@ -71,7 +71,7 @@ const useEditSchedule = ({ initialData }: UseEditScheduleProps) => {
   });
 
   const editSchedule = (onSuccess: () => void) => {
-    if (initialData) {
+    if ('scheduleId' in initialData) {
       updateSchedule(scheduleData, {
         onSuccess,
       });

@@ -24,7 +24,7 @@ interface CalendarBottomSheetProps {
 const backdropComponent = (props: BottomSheetBackdropProps) => (
   <BottomSheetBackdrop
     disappearsOnIndex={0}
-    pressBehavior={null}
+    pressBehavior="collapse"
     enableTouchThrough={true}
     {...props}
   />
