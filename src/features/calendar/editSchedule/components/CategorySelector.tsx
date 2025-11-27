@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
 
-import { Portal } from '@gorhom/portal';
 import { Pressable, View } from 'react-native';
 import Animated, {
   interpolate,
@@ -95,24 +94,23 @@ const CategorySelector = ({
         )}
       </Pressable>
 
-      <Portal>
-        <CategoryModal
-          visible={isTitleModalVisible}
-          onClose={() => setIsTitleModalVisible(false)}
-          options={categories}
-          onSelect={categoryId => {
-            const foundCategory = categories.find(
-              category => category.categoryId === categoryId,
-            );
+      <CategoryModal
+        visible={isTitleModalVisible}
+        onClose={() => setIsTitleModalVisible(false)}
+        options={categories}
+        onSelect={categoryId => {
+          const foundCategory = categories.find(
+            category => category.categoryId === categoryId,
+          );
 
-            setCurrentCategory(foundCategory ? { ...foundCategory } : null);
-          }}
-          position={{
-            top: position.top,
-            left: position.left,
-          }}
-        />
-      </Portal>
+          console.log('Selected categoryId:', categoryId);
+          setCurrentCategory(foundCategory ? { ...foundCategory } : null);
+        }}
+        position={{
+          top: position.top,
+          left: position.left,
+        }}
+      />
     </>
   );
 };
