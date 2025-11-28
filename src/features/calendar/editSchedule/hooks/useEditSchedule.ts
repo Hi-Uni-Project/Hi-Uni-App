@@ -73,28 +73,16 @@ const useEditSchedule = ({ initialData }: UseEditScheduleProps) => {
     const initial = initialSnapshot.current;
     const current = scheduleData;
 
-    if (initial.startDate.getTime() !== current.startDate.getTime()) {
-      return true;
-    }
-    if (initial.endDate.getTime() !== current.endDate.getTime()) {
-      return true;
-    }
+    const checks = [
+      initial.startDate.getTime() !== current.startDate.getTime(),
+      initial.endDate.getTime() !== current.endDate.getTime(),
+      (initial.category?.categoryId ?? null) !==
+        (current.category?.categoryId ?? null),
+      initial.detail !== current.detail,
+      initial.memo !== current.memo,
+    ];
 
-    if (
-      (initial.category?.categoryId || null) !==
-      (current.category?.categoryId || null)
-    ) {
-      return true;
-    }
-
-    if (initial.detail !== current.detail) {
-      return true;
-    }
-    if (initial.memo !== current.memo) {
-      return true;
-    }
-
-    return false;
+    return checks.some(Boolean);
   }, [scheduleData]);
 
   const updateField = useCallback(

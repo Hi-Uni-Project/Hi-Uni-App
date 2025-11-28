@@ -3,6 +3,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Portal } from '@gorhom/portal';
 import { Modal, View, Text, Pressable, Platform, Animated } from 'react-native';
 
+import { cn } from '@/shared/lib/cn';
 import { Category } from '@/shared/types/categoryType';
 
 interface CategoryModalProps {
@@ -27,9 +28,10 @@ const CategoryList = ({
         className="w-[123px]"
         onPress={() => onSelect(option.categoryId)}>
         <View
-          className={`flex-row items-center pb-[14px] pt-[15px] ${
-            index !== options.length - 1 ? 'border-b-[1px]' : ''
-          } border-b-surface-200`}>
+          className={cn(
+            'flex-row items-center border-b-surface-200 pb-[14px] pt-[15px]',
+            index !== options.length - 1 ? 'border-b-[1px]' : '',
+          )}>
           <View
             className="h-[19px] w-[19px] rounded-full"
             style={{ backgroundColor: option.backgroundColor }}
