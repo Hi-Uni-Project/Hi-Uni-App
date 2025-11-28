@@ -5,6 +5,8 @@ import { View, Text, TextInput } from 'react-native';
 interface Props {
   label: string;
   placeholder: string;
+  value: string;
+  onChangeText: (text: string) => void;
   multiline?: boolean;
   required?: boolean;
   height?: string;
@@ -13,6 +15,8 @@ interface Props {
 export const FormField = ({
   label,
   placeholder,
+  value,
+  onChangeText,
   multiline = false,
   required = false,
   height,
@@ -36,6 +40,8 @@ export const FormField = ({
         <TextInput
           placeholder={placeholder}
           placeholderTextColor="#B7B7B7"
+          value={value}
+          onChangeText={onChangeText}
           className={inputClassName}
           multiline={multiline}
         />
