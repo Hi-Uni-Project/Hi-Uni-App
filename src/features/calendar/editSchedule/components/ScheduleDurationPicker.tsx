@@ -1,7 +1,7 @@
 import React from 'react';
 
 import DateTimePicker from '@react-native-community/datetimepicker';
-import { Pressable, Text, View } from 'react-native';
+import { Platform, Pressable, Text, View } from 'react-native';
 import Animated, {
   FadeInUp,
   FadeOutUp,
@@ -102,7 +102,7 @@ const ScheduleDurationPicker = ({
           </Animated.View>
         )}
 
-        {isStartTimePickerOpen && (
+        {isStartTimePickerOpen && Platform.OS === 'ios' && (
           <Animated.View
             className="mb-3 h-[145px] w-full items-center justify-center overflow-hidden rounded-[15px] bg-white"
             style={shadowStyleSheet.dropShadow}
@@ -120,6 +120,20 @@ const ScheduleDurationPicker = ({
               }}
             />
           </Animated.View>
+        )}
+
+        {isStartTimePickerOpen && Platform.OS === 'android' && (
+          <DateTimePicker
+            themeVariant="light"
+            value={startDate}
+            mode="time"
+            display="spinner"
+            locale="ko"
+            onChange={(e, choosedDate) => {
+              setStartDate(choosedDate || startDate);
+              setIsStartTimePickerOpen(false);
+            }}
+          />
         )}
 
         <Animated.View
@@ -166,7 +180,8 @@ const ScheduleDurationPicker = ({
             />
           </Animated.View>
         )}
-        {isEndTimePickerOpen && (
+
+        {isEndTimePickerOpen && Platform.OS === 'ios' && (
           <Animated.View
             className="mb-3 h-[145px] w-full items-center justify-center overflow-hidden rounded-[15px] bg-white"
             style={shadowStyleSheet.dropShadow}
@@ -184,6 +199,20 @@ const ScheduleDurationPicker = ({
               }}
             />
           </Animated.View>
+        )}
+
+        {isEndTimePickerOpen && Platform.OS === 'android' && (
+          <DateTimePicker
+            themeVariant="light"
+            value={endDate}
+            mode="time"
+            display="spinner"
+            locale="ko"
+            onChange={(e, choosedDate) => {
+              setEndDate(choosedDate || endDate);
+              setIsEndTimePickerOpen(false);
+            }}
+          />
         )}
       </View>
     </View>
