@@ -2,6 +2,8 @@ import { useState } from 'react';
 
 import { useNavigation } from '@react-navigation/native';
 
+import { useReviewTemplate } from './useReviewTemplate';
+
 import { PostType } from '@/features/board/shared/types/enum/postEnum';
 
 type ModalState =
@@ -21,11 +23,12 @@ export const useBoardWrite = () => {
   const [isReview, setIsReview] = useState(false);
   const [content, setContent] = useState('');
   const [modalState, setModalState] = useState<ModalState>({ type: 'none' });
+  const { formData } = useReviewTemplate();
 
   const hasContent = () => content.trim() !== '' || title.trim() !== '';
 
   const handlePressedClosed = () => {
-    if (hasContent()) {
+    if (hasContent() || formData) {
       setModalState({ type: 'exit' });
     } else {
       navigation.goBack();
