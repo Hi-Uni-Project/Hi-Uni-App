@@ -48,7 +48,6 @@ export const useReviewTemplate = () => {
     additionalExperience: '',
   });
 
-  // 개별 필드 업데이트 함수
   const updateField = <K extends keyof ReviewFormData>(
     field: K,
     value: ReviewFormData[K],
