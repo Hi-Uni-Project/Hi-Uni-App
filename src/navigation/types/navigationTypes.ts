@@ -6,6 +6,14 @@ import {
   Schedule,
   ScheduleDatePayload,
 } from '@/features/calendar/shared/types';
+import {
+  Education,
+  Link,
+  Achievement,
+  Language,
+  Career,
+  Project,
+} from '@/features/record/editResume/types/domainType';
 
 export type MainNavigationProps = {
   OnboardRoute: undefined;
@@ -64,6 +72,18 @@ export type CalendarNavigationProps = {
 
 export type RecordNavigationProps = {
   ResumeEdit: undefined;
+  CreateEducation: undefined;
+  EditEducation: Education;
+  CreateLink: undefined;
+  EditLink: Link;
+  CreateAchievement: undefined;
+  EditAchievement: Achievement;
+  CreateLanguage: undefined;
+  EditLanguage: Language;
+  CreateCareer: undefined;
+  EditCareer: Career;
+  CreateProject: undefined;
+  EditProject: Project;
 };
 
 export type MainStackNavigationProp =

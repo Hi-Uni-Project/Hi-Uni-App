@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { useNavigation } from '@react-navigation/native';
 import {
   Keyboard,
   KeyboardAvoidingView,
@@ -21,12 +22,14 @@ import {
   GenderEnumToLabel,
   GenderLabelToEnum,
 } from '@/features/record/editResume/utils/labelMapper';
+import { RecordStackNavigationProp } from '@/navigation/types/navigationTypes';
 import HUDropdown from '@/shared/ui/atoms/HUDropdown';
 import HUInput from '@/shared/ui/atoms/HUInput';
 import InfoIcon from '@/static/icons/info.svg';
 
 const ResumeEditView = () => {
   const insets = useSafeAreaInsets();
+  const navigation = useNavigation<RecordStackNavigationProp>();
 
   const sexRef = React.useRef<View>(null);
   const ageRef = React.useRef<View>(null);
@@ -151,7 +154,18 @@ const ResumeEditView = () => {
                     경력 사항 혹은 프로젝트 사항
                   </Text>
                   <View className="flex-row items-center">
-                    <AddButton />
+                    <AddButton
+                      onPress={() => {
+                        navigation.navigate('CreateCareer');
+                      }}
+                    />
+                  </View>
+                  <View className="flex-row items-center">
+                    <AddButton
+                      onPress={() => {
+                        navigation.navigate('CreateProject');
+                      }}
+                    />
                   </View>
                 </View>
               </View>
@@ -161,7 +175,11 @@ const ResumeEditView = () => {
                 <View className="flex-row items-center justify-between">
                   <Text className="typo-body-17-semibold">학력 사항</Text>
                   <View className="flex-row items-center">
-                    <AddButton />
+                    <AddButton
+                      onPress={() => {
+                        navigation.navigate('CreateEducation');
+                      }}
+                    />
                   </View>
                 </View>
               </View>
@@ -182,7 +200,11 @@ const ResumeEditView = () => {
                 <View className="flex-row items-center justify-between">
                   <Text className="typo-body-17-semibold">어학</Text>
                   <View className="flex-row items-center">
-                    <AddButton />
+                    <AddButton
+                      onPress={() => {
+                        navigation.navigate('CreateLanguage');
+                      }}
+                    />
                   </View>
                 </View>
               </View>
@@ -194,7 +216,11 @@ const ResumeEditView = () => {
                     수상/자격증/교육
                   </Text>
                   <View className="flex-row items-center">
-                    <AddButton />
+                    <AddButton
+                      onPress={() => {
+                        navigation.navigate('CreateAchievement');
+                      }}
+                    />
                   </View>
                 </View>
               </View>
@@ -204,7 +230,11 @@ const ResumeEditView = () => {
                 <View className="flex-row items-center justify-between">
                   <Text className="typo-body-17-semibold">링크</Text>
                   <View className="flex-row items-center">
-                    <AddButton />
+                    <AddButton
+                      onPress={() => {
+                        navigation.navigate('CreateLink');
+                      }}
+                    />
                   </View>
                 </View>
 
