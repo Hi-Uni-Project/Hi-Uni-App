@@ -16,6 +16,11 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import AddButton from '@/features/record/editResume/components/AddButton';
 import ImagePicker from '@/features/record/editResume/components/ImagePicker';
 import ResumeEditHeader from '@/features/record/editResume/components/ResumeEditHeader';
+import useResumeEdit from '@/features/record/editResume/hooks/useResumeEdit';
+import {
+  GenderEnumToLabel,
+  GenderLabelToEnum,
+} from '@/features/record/editResume/utils/labelMapper';
 import HUDropdown from '@/shared/ui/atoms/HUDropdown';
 import HUInput from '@/shared/ui/atoms/HUInput';
 import InfoIcon from '@/static/icons/info.svg';
@@ -25,6 +30,8 @@ const ResumeEditView = () => {
 
   const sexRef = React.useRef<View>(null);
   const ageRef = React.useRef<View>(null);
+
+  const { resumeData, updateField } = useResumeEdit();
 
   return (
     <View className="flex-1 bg-surface-50">
@@ -51,6 +58,8 @@ const ResumeEditView = () => {
                   <TextInput
                     className="w-[140px] rounded-[15px] border-[1px] border-gray-200 bg-white pb-[11px] pl-[14px] pt-[12px] typo-body-15-regular"
                     placeholder="이름"
+                    value={resumeData?.name || ''}
+                    onChangeText={text => updateField('name', text)}
                     placeholderTextColor={'#B7B7B7'}
                   />
 
@@ -58,9 +67,9 @@ const ResumeEditView = () => {
                     <HUDropdown
                       ref={sexRef}
                       categoryName="성별"
-                      dropdownItems={['남성', '여성', '선택안함']}
+                      dropdownItems={Object.values(GenderEnumToLabel)}
                       onSelectItem={item => {
-                        console.log(item);
+                        updateField('gender', GenderLabelToEnum[item]);
                       }}
                       containerStyle={{ marginRight: 8 }}
                     />
@@ -68,15 +77,17 @@ const ResumeEditView = () => {
                     <HUDropdown
                       ref={ageRef}
                       categoryName="출생년도"
-                      dropdownItems={[
-                        '10대',
-                        '20대',
-                        '30대',
-                        '40대',
-                        '50대 이상',
-                      ]}
+                      dropdownItems={Array.from(
+                        {
+                          length: 2005 - 1990 + 1,
+                        },
+                        (_, i) => `${2005 - i}년`,
+                      )}
                       onSelectItem={item => {
-                        console.log(item);
+                        updateField(
+                          'birthYear',
+                          Number(item.replace('년', '')),
+                        );
                       }}
                     />
                   </View>

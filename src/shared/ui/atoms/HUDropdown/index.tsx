@@ -85,7 +85,11 @@ const HUDropdown = ({
       <View
         ref={ref}
         className="flex-row items-center rounded-full border-[1px] border-surface-300 px-[15px] py-[10px]"
-        style={[{ zIndex: 900 }, isVisible && { opacity: 1 }, containerStyle]}>
+        style={[
+          { zIndex: 900 },
+          isVisible ? { opacity: 1 } : undefined,
+          containerStyle,
+        ]}>
         <Text className="pr-2 text-surface-500 typo-body-16-regular">
           {selectedItem || categoryName}
         </Text>

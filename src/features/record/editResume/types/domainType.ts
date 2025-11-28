@@ -1,4 +1,9 @@
-export type Gender = 'MALE' | 'FEMALE';
+import { Asset } from 'react-native-image-picker';
+
+export enum Gender {
+  MALE = 'MALE',
+  FEMALE = 'FEMALE',
+}
 
 /**
  * 졸업 상태 응답 타입
@@ -10,13 +15,14 @@ export type Gender = 'MALE' | 'FEMALE';
  * - COMPLETED(수료)
  * - LEAVE(휴학 중)
  */
-export type GraduationStatus =
-  | 'GRADUATED'
-  | 'EXPECTED'
-  | 'ENROLLED'
-  | 'DROPOUT'
-  | 'COMPLETED'
-  | 'LEAVE';
+export enum GraduationStatus {
+  GRADUATED = 'GRADUATED',
+  EXPECTED = 'EXPECTED',
+  ENROLLED = 'ENROLLED',
+  DROPOUT = 'DROPOUT',
+  COMPLETED = 'COMPLETED',
+  LEAVE = 'LEAVE',
+}
 
 /**
  * 언어 능력 응답 타입
@@ -26,7 +32,12 @@ export type GraduationStatus =
  * - PROFESSIONAL(고급 비즈니스 레벨)
  * - FLUENT(유창함)
  */
-export type LanguageLevel = 'BASIC' | 'BUSINESS' | 'PROFESSIONAL' | 'FLUENT';
+export enum LanguageLevel {
+  BASIC = 'BASIC',
+  BUSINESS = 'BUSINESS',
+  PROFESSIONAL = 'PROFESSIONAL',
+  FLUENT = 'FLUENT',
+}
 
 /**
  * 수상 및 자격증 유형 응답 타입
@@ -36,7 +47,12 @@ export type LanguageLevel = 'BASIC' | 'BUSINESS' | 'PROFESSIONAL' | 'FLUENT';
  * - TRAINING(교육)
  * - OTHER(기타)
  */
-export type AchievementType = 'AWARD' | 'CERTIFICATE' | 'TRAINING' | 'OTHER';
+export enum AchievementType {
+  AWARD = 'AWARD',
+  CERTIFICATE = 'CERTIFICATE',
+  TRAINING = 'TRAINING',
+  OTHER = 'OTHER',
+}
 
 export interface Career {
   careerId: number;
@@ -113,4 +129,24 @@ export interface Resume {
   linksSize: number;
   skillsSize: number;
   careersSize: number;
+}
+
+export interface ResumeEditForm {
+  photo: Asset | null;
+
+  name: string;
+  gender: Gender | null;
+  birthYear: number;
+
+  title: string;
+
+  aboutMe: string;
+
+  careers: Career[];
+  projects: Project[];
+  educations: Education[];
+  skills: Skill[];
+  languages: Language[];
+  achievements: Achievement[];
+  links: Link[];
 }
