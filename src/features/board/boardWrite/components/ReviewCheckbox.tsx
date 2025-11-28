@@ -12,10 +12,6 @@ interface Props {
 }
 
 const ReviewCheckbox = ({ isReview, onPress, description }: Props) => {
-  const defaultDescription = isReview
-    ? '후기 글의 경우 기록에 자동 저장되어 포트폴리오,\n이력서, 자기소개서가 자동으로 작성돼요.'
-    : '후기 글의 경우 기록에 자동 저장되어 자기소개서가 \n자동으로 작성돼요.';
-
   return (
     <View className="flex-row items-start justify-start pt-5">
       <Pressable className="mt-[3px]" onPress={onPress}>
@@ -32,7 +28,7 @@ const ReviewCheckbox = ({ isReview, onPress, description }: Props) => {
         </Text>
 
         <Text className="pt-1 text-surface-500 typo-body-16-regular">
-          {description || defaultDescription}
+          {description}
         </Text>
       </View>
     </View>

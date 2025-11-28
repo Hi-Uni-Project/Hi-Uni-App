@@ -64,7 +64,9 @@ const NormalWriteView = ({
         <ReviewCheckbox
           isReview={isReview}
           onPress={onReviewToggle}
-          description="후기 글의 경우 기록에 자동 저장되어 자기소개서가 \n자동으로 작성돼요."
+          description={
+            '후기 글의 경우 기록에 자동 저장되어 자기소개서가 \n자동으로 작성돼요.'
+          }
         />
 
         <TextInput
