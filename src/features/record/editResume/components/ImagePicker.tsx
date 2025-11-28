@@ -1,13 +1,17 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import { Image, Pressable, View } from 'react-native';
 import { Asset, launchImageLibrary } from 'react-native-image-picker';
 
 import CameraIcon from '@/static/icons/camera.svg';
 import EmptyPhotoIcon from '@/static/icons/empty_photo.svg';
-const ImagePicker = () => {
-  const [photo, setPhoto] = useState<Asset | null>(null);
 
+interface ImagePickerProps {
+  photo: Asset | null;
+  onPhotoChange: (photo: Asset | null) => void;
+}
+
+const ImagePicker = ({ photo, onPhotoChange }: ImagePickerProps) => {
   const pickImage = async (): Promise<void> => {
     const result = await launchImageLibrary({
       mediaType: 'photo',
@@ -24,7 +28,7 @@ const ImagePicker = () => {
 
     const asset = result.assets?.[0];
     if (asset) {
-      setPhoto(asset);
+      onPhotoChange(asset);
     }
   };
 

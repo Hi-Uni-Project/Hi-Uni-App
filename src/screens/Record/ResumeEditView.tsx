@@ -51,7 +51,10 @@ const ResumeEditView = () => {
           <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
             <View>
               <View className="mt-[23px] flex-row px-5">
-                <ImagePicker />
+                <ImagePicker
+                  photo={resumeData?.photo || null}
+                  onPhotoChange={photo => updateField('photo', photo)}
+                />
 
                 {/* 이름, 사진, 생년월일 */}
                 <View className="ml-[25px] items-start justify-center">
@@ -97,7 +100,7 @@ const ResumeEditView = () => {
               {/* 이력서 제목 */}
               <View className="mt-6 px-5">
                 <Text className="typo-body-17-semibold">
-                  이력서 제목{' '}
+                  이력서 제목
                   <Text className="text-primary-purple typo-body-17-semibold">
                     *
                   </Text>
@@ -105,6 +108,8 @@ const ResumeEditView = () => {
                 <TextInput
                   className="mt-[9px] rounded-[15px] border-[1px] border-gray-200 bg-white pb-[11px] pl-[14px] pt-[12px] typo-body-15-regular"
                   placeholder="이력서 제목을 입력해주세요"
+                  onChangeText={text => updateField('title', text)}
+                  value={resumeData?.title || ''}
                   placeholderTextColor={'#B7B7B7'}
                 />
               </View>
@@ -130,7 +135,10 @@ const ResumeEditView = () => {
                   className="mt-[9px] min-h-[120px] rounded-[15px] border-[1px] border-gray-200 bg-white pb-[11px] pl-[14px] pt-[12px] typo-body-15-regular"
                   placeholder="나를 어필할 수 있는 소개를 작성해보세요! (최대 800자)"
                   placeholderTextColor={'#B7B7B7'}
+                  value={resumeData?.aboutMe || ''}
                   textAlignVertical="top"
+                  onChangeText={text => updateField('aboutMe', text)}
+                  maxLength={800}
                   multiline={true}
                   numberOfLines={4}
                 />
