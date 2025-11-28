@@ -2,7 +2,7 @@ import React from 'react';
 
 import { View, Text, TextInput } from 'react-native';
 
-import TemplateCalendar from '../../../features/board/boardWrite/components/TemplateCalendar';
+import TemplateCalendar from '../TemplateCalendar';
 
 import { DateSelector } from '@/features/board/boardWrite/components/DateSelector';
 import { FormField } from '@/features/board/boardWrite/components/FormField';

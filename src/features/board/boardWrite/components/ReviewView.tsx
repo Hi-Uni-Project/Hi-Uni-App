@@ -2,11 +2,11 @@ import React from 'react';
 
 import { View, TextInput, ScrollView } from 'react-native';
 
+import ReviewTemplate from './layouts/ReviewTemplate';
 import PostTypeSelector from './PostTypeSelector';
 import ReviewCheckbox from './ReviewCheckbox';
 
 import { PostType } from '@/features/board/shared/types/enum/postEnum';
-import ReviewTemplate from '@/screens/Board/BoardWrite/ReviewTemplate';
 
 interface Props {
   selectedPostType: PostType | null;
