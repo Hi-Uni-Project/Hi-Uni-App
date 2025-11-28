@@ -1,6 +1,6 @@
 import React, { ComponentProps, ReactNode } from 'react';
 
-import { View, Text } from 'react-native';
+import { View, Text, Platform } from 'react-native';
 
 interface HUBadgeProps extends ComponentProps<typeof View> {
   text: string;
@@ -23,7 +23,7 @@ const HUBadge = ({
 }: HUBadgeProps) => {
   return (
     <View
-      className="mb-[10px] flex-row items-center justify-center rounded-[20px] px-2"
+      className="mb-[10px] flex-row items-center justify-center rounded-full px-2"
       style={{
         backgroundColor,
         borderColor,
@@ -32,7 +32,10 @@ const HUBadge = ({
       {LeftSideComponent}
       <Text
         className="typo-caption-12-regular px-[3px] py-2"
-        style={{ color: textColor }}
+        style={{
+          color: textColor,
+          lineHeight: Platform.OS === 'android' ? 13 : undefined,
+        }}
         numberOfLines={1}>
         {text}
       </Text>

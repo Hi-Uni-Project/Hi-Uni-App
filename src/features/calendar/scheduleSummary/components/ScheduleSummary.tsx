@@ -20,7 +20,7 @@ const ScheduleSummary = ({
   time,
   memo,
 }: ScheduleSummaryProps) => {
-  const isScheduleLong = startDate !== endDate;
+  const isScheduleLong = !dayjs(startDate).isSame(dayjs(endDate), 'day');
 
   const navigation = useNavigation<CalendarStackNavigationProp>();
 

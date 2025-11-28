@@ -67,7 +67,9 @@ const ScheduleList = ({ selectedDate, schedule }: ScheduleListProps) => {
         <Pressable
           className="absolute right-0 top-0"
           onPress={() => {
-            navigation.navigate('CreateSchedule');
+            navigation.navigate('CreateSchedule', {
+              ISODateString: dayjs(selectedDate).toISOString(),
+            });
           }}>
           <Animated.View entering={FadeIn.delay(150)}>
             <AddIcons width={20} height={20} color={'#B7B7B7'} />
