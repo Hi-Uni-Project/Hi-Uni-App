@@ -1,13 +1,14 @@
 import React, { useEffect, useRef, useState } from 'react';
 
-import { Pressable, ScrollView, Text, View } from 'react-native';
-import Popover, { PopoverPlacement } from 'react-native-popover-view';
+import { Pressable, View } from 'react-native';
 import Animated, {
   interpolate,
   useAnimatedStyle,
   useSharedValue,
   withTiming,
 } from 'react-native-reanimated';
+
+import CategoryModal from './CategoryModal';
 
 import { Category } from '@/shared/types/categoryType';
 import HUBadge from '@/shared/ui/atoms/HUBadge';
@@ -24,9 +25,10 @@ const CategorySelector = ({
   currentCategory,
   setCurrentCategory,
 }: CategorySelectorProps) => {
-  const titleRef = useRef(null);
+  const titleRef = useRef<View>(null);
 
   const [isTitleModalVisible, setIsTitleModalVisible] = useState(false);
+  const [position, setPosition] = useState({ top: 0, left: 0 });
 
   const rotation = useSharedValue(0);
 
@@ -34,6 +36,12 @@ const CategorySelector = ({
     rotation.value = withTiming(isTitleModalVisible ? 1 : 0, {
       duration: 300,
     });
+
+    if (isTitleModalVisible && titleRef.current) {
+      titleRef.current.measure((x, y, width, height, pageX, pageY) => {
+        setPosition({ top: pageY + height, left: pageX });
+      });
+    }
   }, [isTitleModalVisible]);
 
   const animatedIconStyle = useAnimatedStyle(() => {
@@ -86,43 +94,22 @@ const CategorySelector = ({
         )}
       </Pressable>
 
-      <Popover
-        from={titleRef}
-        arrowShift={0.8}
-        placement={PopoverPlacement.BOTTOM}
-        offset={8}
-        arrowSize={{ width: -10, height: 0 }}
-        isVisible={isTitleModalVisible}
-        popoverStyle={{
-          borderRadius: 15,
-          width: 122,
-          backgroundColor: 'hidden',
+      <CategoryModal
+        visible={isTitleModalVisible}
+        onClose={() => setIsTitleModalVisible(false)}
+        options={categories}
+        onSelect={categoryId => {
+          const foundCategory = categories.find(
+            category => category.categoryId === categoryId,
+          );
+
+          setCurrentCategory(foundCategory ? { ...foundCategory } : null);
         }}
-        animationConfig={{
-          delay: 0,
+        position={{
+          top: position.top,
+          left: position.left,
         }}
-        onRequestClose={() => setIsTitleModalVisible(false)}
-        displayArea={{ x: 16, y: 0, width: 300, height: 600 }}>
-        <View className="rounded-b-[15px] rounded-t-[15px] bg-white shadow-lg">
-          <ScrollView showsVerticalScrollIndicator={false} className="px-4">
-            {categories?.map((category, index) => (
-              <Pressable
-                key={index}
-                className="flex-row items-center border-b-2 border-gray-200 py-[15px] typo-body-16-regular"
-                onPress={() => {
-                  setCurrentCategory(category);
-                  setIsTitleModalVisible(false);
-                }}>
-                <View
-                  className="mr-2 h-[19px] w-[19px] rounded-full"
-                  style={{ backgroundColor: category.backgroundColor }}
-                />
-                <Text className="text-start">{category.categoryName}</Text>
-              </Pressable>
-            ))}
-          </ScrollView>
-        </View>
-      </Popover>
+      />
     </>
   );
 };

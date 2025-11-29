@@ -2,7 +2,10 @@ import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 import { NavigatorScreenParams } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
-import { Schedule } from '@/features/calendar/shared/types';
+import {
+  Schedule,
+  ScheduleDatePayload,
+} from '@/features/calendar/shared/types';
 
 export type MainNavigationProps = {
   OnboardRoute: undefined;
@@ -35,7 +38,7 @@ export type HomeNavigationProps = {
   Profile: undefined;
 
   EditSchedule: Schedule;
-  CreateSchedule: undefined;
+  CreateSchedule: ScheduleDatePayload;
 };
 
 export type BoardNavigationProps = {
@@ -56,7 +59,7 @@ export type TabNavigationProps = {
 export type CalendarNavigationProps = {
   CalendarMain: undefined;
   EditSchedule: Schedule;
-  CreateSchedule: undefined;
+  CreateSchedule: ScheduleDatePayload;
 };
 
 export type MainStackNavigationProp =

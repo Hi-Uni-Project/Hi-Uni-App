@@ -24,7 +24,7 @@ interface CalendarBottomSheetProps {
 const backdropComponent = (props: BottomSheetBackdropProps) => (
   <BottomSheetBackdrop
     disappearsOnIndex={0}
-    pressBehavior={null}
+    pressBehavior="collapse"
     enableTouchThrough={true}
     {...props}
   />
@@ -67,7 +67,9 @@ const CalendarBottomSheet = ({
         </Text>
         <Pressable
           onPress={() => {
-            navigation.navigate('CreateSchedule');
+            navigation.navigate('CreateSchedule', {
+              ISODateString: selectedDate.toISOString(),
+            });
           }}>
           <AddIcon width={22} height={22} />
         </Pressable>

@@ -1,18 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 import { useRoute, RouteProp, useNavigation } from '@react-navigation/native';
-import { Pressable, ScrollView, Text } from 'react-native';
+import { Platform, Pressable, ScrollView, Text } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import ScheduleDurationPicker from '@/features/calendar/editSchedule/components/ScheduleDurationPicker';
 import ScheduleHeaderInput from '@/features/calendar/editSchedule/components/ScheduleHeaderInput';
 import ScheduleMemoInput from '@/features/calendar/editSchedule/components/ScheduleMemoInput';
-import useDatePicker from '@/features/calendar/editSchedule/hooks/useDatePicker';
-import useScheduleDeleteQueries from '@/features/calendar/editSchedule/hooks/useScheduleDeleteQueries';
-import useScheduleEditQueries from '@/features/calendar/editSchedule/hooks/useScheduleSaveQueries';
+import useEditSchedule from '@/features/calendar/editSchedule/hooks/useEditSchedule';
 import CalendarDetailHeader from '@/features/calendar/editSchedule/layouts/CalendarDetailHeader';
-import useCalendarScheduleStore from '@/features/calendar/editSchedule/stores/useCalendarScheduleStore';
-import { ScheduleEditForm } from '@/features/calendar/editSchedule/types';
 import { Schedule } from '@/features/calendar/shared/types';
 import ScreenLayout from '@/shared/components/layouts/ScreenLayout';
 import ConfirmModal from '@/shared/ui/organisms/ConfirmModal';
@@ -29,92 +25,63 @@ const CalendarScheduleScreen = () => {
   const route = useRoute<CalendarScheduleRouteProp>();
   const existData = route.params;
 
-  const storeInitialize = useCalendarScheduleStore(state => state.initialize);
-  const storeReset = useCalendarScheduleStore(state => state.reset);
-  const scheduleData = useCalendarScheduleStore(state => state.scheduleData);
-
-  const isValid = useCalendarScheduleStore(state => state.isValid);
-  const hasDataChanges = useCalendarScheduleStore(
-    state => state.hasDataChanges,
-  );
-
-  const { createSchedule, updateSchedule } = useScheduleEditQueries();
-  const { deleteSchedule } = useScheduleDeleteQueries();
-
-  const datePickerData = useDatePicker();
-
-  const isCompleteDisabled = !isValid || !hasDataChanges;
+  const {
+    isChanged,
+    isValidate,
+    scheduleData,
+    updateField,
+    editSchedule,
+    removeSchedule,
+    datePickerController,
+  } = useEditSchedule({ initialData: existData });
 
   const [showDeleteModal, setShowDeleteModal] = useState(false);
 
-  useEffect(() => {
-    const scheduleEditForm: ScheduleEditForm = existData
-      ? {
-          id: existData.scheduleId,
-          startDate: new Date(existData.startDate),
-          endDate: new Date(existData.endDate),
-          category: existData.category,
-          detail: existData.detail,
-          memo: existData.memo,
-        }
-      : {
-          id: null,
-          startDate: new Date(),
-          endDate: new Date(),
-          category: null,
-          detail: '',
-          memo: '',
-        };
-
-    storeInitialize(scheduleEditForm);
-
-    return () => {
-      storeReset();
-    };
-  }, [existData, storeInitialize, storeReset]);
-
   return (
-    <ScreenLayout className="relative">
+    <ScreenLayout className="relative" pointerEvents="box-none">
       <CalendarDetailHeader
         onCompletePress={() => {
-          if (existData) {
-            updateSchedule(scheduleData, {
-              onSuccess: () => {
-                storeInitialize(scheduleData);
-                navigation.goBack();
-              },
-            });
-          } else {
-            createSchedule(scheduleData, {
-              onSuccess: () => {
-                storeInitialize(scheduleData);
-                navigation.goBack();
-              },
-            });
-          }
+          editSchedule(() => {
+            navigation.goBack();
+          });
         }}
-        isCompleteDisabled={isCompleteDisabled}
+        isCompleteDisabled={!(isChanged && isValidate)}
       />
-      <ScrollView className="px-6">
-        <ScheduleHeaderInput />
-        <ScheduleDurationPicker {...datePickerData} />
+      <ScrollView
+        className="px-6"
+        style={{
+          marginTop: Platform.OS === 'ios' ? 0 : insets.top + 10,
+        }}>
+        <ScheduleHeaderInput
+          category={scheduleData?.category}
+          updateCategory={category => updateField('category', { ...category })}
+          detail={scheduleData?.detail || ''}
+          updateDetail={detail => updateField('detail', detail)}
+        />
+        <ScheduleDurationPicker {...datePickerController} />
         <ScheduleMemoInput
+          memo={scheduleData?.memo || ''}
+          updateMemo={memo => updateField('memo', memo)}
           onFocus={() => {
-            datePickerData.closeAllPickers();
+            datePickerController.closeAllPickers();
           }}
         />
       </ScrollView>
-      <Pressable
-        className="absolute w-full flex-row items-center justify-center"
-        onPress={() => setShowDeleteModal(true)}
-        style={{
-          bottom: insets.bottom,
-        }}>
-        <TrashIcon width={20} height={20} color="#B7B7B7" />
-        <Text className="ml-2 text-surface-400 typo-body-15-medium">
-          일정 삭제하기
-        </Text>
-      </Pressable>
+
+      {'scheduleId' in existData && (
+        <Pressable
+          className="absolute w-full flex-row items-center justify-center"
+          onPress={() => setShowDeleteModal(true)}
+          style={{
+            bottom:
+              Platform.OS === 'ios' ? insets.bottom + 10 : insets.bottom + 20,
+          }}>
+          <TrashIcon width={20} height={20} color="#B7B7B7" />
+          <Text className="ml-2 text-surface-400 typo-body-15-medium">
+            일정 삭제하기
+          </Text>
+        </Pressable>
+      )}
 
       <ConfirmModal
         visible={showDeleteModal}
@@ -122,11 +89,8 @@ const CalendarScheduleScreen = () => {
         confirmText="네, 삭제할래요."
         cancelText="아니요, 그대로 둘게요."
         onConfirm={() =>
-          deleteSchedule(scheduleData.id, {
-            onSuccess: () => {
-              storeInitialize(scheduleData);
-              navigation.goBack();
-            },
+          removeSchedule(() => {
+            navigation.goBack();
           })
         }
         onClose={() => setShowDeleteModal(false)}

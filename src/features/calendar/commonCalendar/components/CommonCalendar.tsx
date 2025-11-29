@@ -135,6 +135,7 @@ const CommonCalendar = ({
           textDayFontSize: 18,
           textMonthFontSize: 17,
           textDayHeaderFontSize: 14,
+          weekVerticalMargin: 4,
         } as ExtendedTheme
       }
     />
