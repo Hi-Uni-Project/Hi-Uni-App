@@ -2,14 +2,19 @@ import React from 'react';
 
 import { View, Text, TextInput } from 'react-native';
 
-import { useReviewTemplate } from '../../hooks/useReviewTemplate';
 import { DateSelector } from '../DateSelector';
 import { FormField } from '../FormField';
 import TemplateCalendar from '../TemplateCalendar';
 
 import DateLine from '@/static/icons/date-line.svg';
 
-const ReviewTemplate = () => {
+interface Props {
+  reviewForm: ReturnType<
+    typeof import('../../hooks/useReviewTemplate').useReviewTemplate
+  >;
+}
+
+const ReviewTemplate = ({ reviewForm }: Props) => {
   const {
     showCal,
     formData,
@@ -18,7 +23,7 @@ const ReviewTemplate = () => {
     formatDate,
     updateField,
     toggleCalendar,
-  } = useReviewTemplate();
+  } = reviewForm;
 
   return (
     <View className="w-full">
