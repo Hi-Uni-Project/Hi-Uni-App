@@ -8,6 +8,7 @@ import BoardWriteModals from '@/features/board/boardWrite/components/Modal/Board
 import NormalWriteView from '@/features/board/boardWrite/components/NormalWriteView';
 import ReviewView from '@/features/board/boardWrite/components/ReviewView';
 import { useBoardWrite } from '@/features/board/boardWrite/hooks/useBoardWrite';
+import { useReviewTemplate } from '@/features/board/boardWrite/hooks/useReviewTemplate';
 import {
   POST_TYPE_DISPLAY_NAME,
   POST_TYPE_OPTIONS,
@@ -16,6 +17,8 @@ import {
 
 const BoardWrite = () => {
   const insets = useSafeAreaInsets();
+
+  const reviewForm = useReviewTemplate();
 
   const {
     selectedPostType,
@@ -57,6 +60,7 @@ const BoardWrite = () => {
           isDropdownOpen={modalState.type === 'dropdown'}
           title={title}
           isReview={isReview}
+          reviewForm={reviewForm}
           onPostTypeSelectorPress={toggleDropdown}
           onTitleChange={setTitle}
           onReviewToggle={handleReviewToggle}
