@@ -46,10 +46,20 @@ export const useReviewTemplate = () => {
         ...prev,
         [field]: value,
       };
-      console.log(`Field updated: ${field}`, value);
-      console.log('Updated formData:', updated);
       return updated;
     });
+  };
+
+  // 후기 글쓰기 데이터가 있는지 확인
+  const hasReviewContent = (): boolean => {
+    return (
+      formData.companyName.trim() !== '' ||
+      formData.position.trim() !== '' ||
+      formData.tasks.trim() !== '' ||
+      formData.learnings.trim() !== '' ||
+      formData.feelings.trim() !== '' ||
+      formData.additionalExperience.trim() !== ''
+    );
   };
 
   const resetForm = () => {
@@ -87,5 +97,6 @@ export const useReviewTemplate = () => {
     updateField,
     resetForm,
     toggleCalendar,
+    hasReviewContent,
   };
 };

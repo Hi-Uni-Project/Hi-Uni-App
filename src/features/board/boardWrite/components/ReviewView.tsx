@@ -8,7 +8,7 @@ import ReviewCheckbox from './ReviewCheckbox';
 
 import { PostType } from '@/features/board/shared/types/enum/postEnum';
 
-interface ReviewViewProps {
+interface Props {
   selectedPostType: PostType | null;
   displayName: string;
   isDropdownOpen: boolean;
@@ -30,7 +30,7 @@ const ReviewView = ({
   onPostTypeSelectorPress,
   onTitleChange,
   onReviewToggle,
-}: ReviewViewProps) => {
+}: Props) => {
   return (
     <ScrollView
       className="flex-1 px-5 pt-7"

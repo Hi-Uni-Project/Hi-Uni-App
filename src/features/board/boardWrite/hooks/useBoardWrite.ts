@@ -8,7 +8,9 @@ import { useReviewTemplate } from './useReviewTemplate';
 
 import { PostType } from '@/features/board/shared/types/enum/postEnum';
 
-export const useBoardWrite = () => {
+export const useBoardWrite = (
+  reviewTemplate: ReturnType<typeof useReviewTemplate>,
+) => {
   const navigation = useNavigation();
 
   const [selectedPostType, setSelectedPostType] = useState<PostType | null>(
@@ -18,7 +20,8 @@ export const useBoardWrite = () => {
   const [isReview, setIsReview] = useState(false);
   const [content, setContent] = useState('');
   const [modalState, setModalState] = useState<ModalState>({ type: 'none' });
-  const { formData } = useReviewTemplate();
+  const [changeType, setChangeType] = useState<PostType | null>(null);
+  const { formData, hasReviewContent, resetForm } = reviewTemplate;
 
   const hasContent = () => content.trim() !== '' || title.trim() !== '';
 
@@ -30,9 +33,25 @@ export const useBoardWrite = () => {
     }
   };
 
+  // 말머리 관련 핸들러
   const handlePostTypeChange = (newType: PostType) => {
     setSelectedPostType(newType);
     setModalState({ type: 'none' });
+  };
+
+  const handlePostTypeSelect = (value: string) => {
+    if (hasReviewContent() && selectedPostType !== value) {
+      setModalState({ type: 'optionChange' });
+      setChangeType(value as PostType);
+    } else {
+      handlePostTypeChange(value as PostType);
+      setModalState({ type: 'none' });
+    }
+  };
+
+  const handleConfirmPostTypeChange = () => {
+    handlePostTypeChange(changeType);
+    resetForm();
   };
 
   const handleReviewToggle = () => {
@@ -102,5 +121,7 @@ export const useBoardWrite = () => {
     handleChangeToReviewConfirm,
     handleChangeToReviewCancel,
     toggleDropdown,
+    handlePostTypeSelect,
+    handleConfirmPostTypeChange,
   };
 };

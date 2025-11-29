@@ -7,11 +7,10 @@ import DropdownModal from '@/features/board/boardWrite/DropdownModal';
 import { PostType } from '@/features/board/shared/types/enum/postEnum';
 import ConfirmModal from '@/shared/ui/organisms/ConfirmModal';
 
-interface BoardWriteModalsProps {
+interface Props {
   modalState: ModalState;
   dropdownOptions: any[];
   dropdownPosition: { top: number; left: number };
-  onDropdownClose: () => void;
   onDropdownSelect: (value: string) => void;
   onExitModalClose: () => void;
   onExitModalConfirm: () => void;
@@ -21,13 +20,13 @@ interface BoardWriteModalsProps {
   onChangeToReviewCancel: () => void;
   onOptionSheetVisibleChange: Dispatch<SetStateAction<boolean>>;
   onOptionSelect: Dispatch<SetStateAction<PostType>>;
+  handleConfirmPostTypeChange: () => void;
 }
 
 const BoardWriteModals = ({
   modalState,
   dropdownOptions,
   dropdownPosition,
-  onDropdownClose,
   onDropdownSelect,
   onExitModalClose,
   onExitModalConfirm,
@@ -37,13 +36,13 @@ const BoardWriteModals = ({
   onChangeToReviewCancel,
   onOptionSheetVisibleChange,
   onOptionSelect,
-}: BoardWriteModalsProps) => {
+  handleConfirmPostTypeChange,
+}: Props) => {
   return (
     <>
       {/* 드롭다운 모달 */}
       <DropdownModal
         visible={modalState.type === 'dropdown'}
-        onClose={onDropdownClose}
         options={dropdownOptions}
         onSelect={onDropdownSelect}
         position={dropdownPosition}
@@ -75,7 +74,7 @@ const BoardWriteModals = ({
         onCancel={onChangeToReviewCancel}
       />
 
-      {/* 후기 있는 상태에서 말머리 변경 확인 모달 */}
+      {/* 후기 글 작성이 있는 상태에서 말머리 변경 확인 모달 */}
       <ConfirmModal
         visible={modalState.type === 'optionChange'}
         onClose={onChangeToReviewModalClose}
@@ -85,7 +84,7 @@ const BoardWriteModals = ({
         confirmText="네, 말머리를 바꿀래요."
         cancelText="아니요, 계속 작성할래요."
         status="caution"
-        onConfirm={onChangeToReviewConfirm}
+        onConfirm={handleConfirmPostTypeChange}
         onCancel={onChangeToReviewCancel}
       />
 

@@ -12,7 +12,6 @@ import { useReviewTemplate } from '@/features/board/boardWrite/hooks/useReviewTe
 import {
   POST_TYPE_DISPLAY_NAME,
   POST_TYPE_OPTIONS,
-  PostType,
 } from '@/features/board/shared/types/enum/postEnum';
 
 const BoardWrite = () => {
@@ -31,14 +30,15 @@ const BoardWrite = () => {
     setSelectedPostType,
     setModalState,
     handlePressedClosed,
-    handlePostTypeChange,
     handleReviewToggle,
     handleExitModalConfirm,
     handleExitModalCancel,
     handleChangeToReviewConfirm,
     handleChangeToReviewCancel,
     toggleDropdown,
-  } = useBoardWrite();
+    handlePostTypeSelect,
+    handleConfirmPostTypeChange,
+  } = useBoardWrite(reviewForm);
 
   const displayName = POST_TYPE_DISPLAY_NAME[selectedPostType] ?? '선택';
   const placeholder = selectedPostType
@@ -88,8 +88,7 @@ const BoardWrite = () => {
           top: insets.top + 70 + 28 + 42,
           left: 20,
         }}
-        onDropdownClose={() => setModalState({ type: 'none' })}
-        onDropdownSelect={value => handlePostTypeChange(value as PostType)}
+        onDropdownSelect={value => handlePostTypeSelect(value)}
         onExitModalClose={() => setModalState({ type: 'none' })}
         onExitModalConfirm={handleExitModalConfirm}
         onExitModalCancel={handleExitModalCancel}
@@ -100,6 +99,7 @@ const BoardWrite = () => {
           setModalState(visible ? { type: 'optionSheet' } : { type: 'none' })
         }
         onOptionSelect={setSelectedPostType}
+        handleConfirmPostTypeChange={handleConfirmPostTypeChange}
       />
     </View>
   );
