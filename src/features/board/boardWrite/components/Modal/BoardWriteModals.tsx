@@ -1,16 +1,11 @@
 import React, { Dispatch, SetStateAction } from 'react';
 
+import { ModalState } from '../../types';
+
 import OptionBottomSheet from '@/features/board/boardWrite/components/Modal/OptionBottomSheet';
 import DropdownModal from '@/features/board/boardWrite/DropdownModal';
 import { PostType } from '@/features/board/shared/types/enum/postEnum';
 import ConfirmModal from '@/shared/ui/organisms/ConfirmModal';
-
-type ModalState =
-  | { type: 'none' }
-  | { type: 'exit' }
-  | { type: 'changeToReview' }
-  | { type: 'dropdown' }
-  | { type: 'optionSheet' };
 
 interface BoardWriteModalsProps {
   modalState: ModalState;
@@ -74,6 +69,20 @@ const BoardWriteModals = ({
           '후기글로 바꾸면\n지금 작성한 내용은 사라져요.\n계속 진행할까요?'
         }
         confirmText="네, 후기글로 바꿀래요."
+        cancelText="아니요, 계속 작성할래요."
+        status="caution"
+        onConfirm={onChangeToReviewConfirm}
+        onCancel={onChangeToReviewCancel}
+      />
+
+      {/* 후기 있는 상태에서 말머리 변경 확인 모달 */}
+      <ConfirmModal
+        visible={modalState.type === 'optionChange'}
+        onClose={onChangeToReviewModalClose}
+        title={
+          '말머리를 바꾸면\n지금 작성한 내용은 사라져요.\n계속 진행할까요?'
+        }
+        confirmText="네, 말머리를 바꿀래요."
         cancelText="아니요, 계속 작성할래요."
         status="caution"
         onConfirm={onChangeToReviewConfirm}
