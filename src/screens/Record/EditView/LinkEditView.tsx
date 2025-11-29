@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 
-import { RouteProp, useRoute } from '@react-navigation/native';
+import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import {
   Keyboard,
   KeyboardAvoidingView,
@@ -14,17 +14,51 @@ import {
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import ResumeBackHeader from '@/features/record/editResume/components/ResumeBackHeader';
-import { Link } from '@/features/record/editResume/types/domainType';
+import useResumeEdit from '@/features/record/editResume/hooks/useResumeEdit';
+import { RecordNavigationProps } from '@/navigation/types/navigationTypes';
 
-type LinkRouteProp = RouteProp<{
-  EditLink: Link;
-}>;
+type EditLinkRouteProp = RouteProp<RecordNavigationProps, 'EditLink'>;
 
 const LinkEditView = () => {
   const insets = useSafeAreaInsets();
+  const navigation = useNavigation();
+  const route = useRoute<EditLinkRouteProp>();
 
-  const route = useRoute<LinkRouteProp>();
-  const existData = route.params;
+  const { resumeData, addLink, updateLink, deleteLink } = useResumeEdit();
+
+  // EditLink인 경우 linkId가 params로 전달됨
+  const editLinkId = route.params?.linkId;
+  const isEditMode = editLinkId !== undefined;
+  const editTarget = isEditMode
+    ? resumeData.links.find(l => l.linkId === editLinkId)
+    : undefined;
+
+  // 로컬 폼 상태
+  const [linkName, setLinkName] = useState(editTarget?.linkName || '');
+  const [linkUrl, setLinkUrl] = useState(editTarget?.linkUrl || '');
+
+  const isFormValid = linkName.trim() !== '' && linkUrl.trim() !== '';
+
+  const handleSubmit = () => {
+    if (!isFormValid) {
+      return;
+    }
+
+    if (isEditMode && editTarget) {
+      updateLink({ linkId: editTarget.linkId, linkName, linkUrl });
+    } else {
+      addLink({ linkName, linkUrl });
+    }
+
+    navigation.goBack();
+  };
+
+  const handleDelete = () => {
+    if (isEditMode && editTarget) {
+      deleteLink(editTarget.linkId);
+      navigation.goBack();
+    }
+  };
 
   return (
     <View className="flex-1 bg-surface-50">
@@ -34,23 +68,23 @@ const LinkEditView = () => {
           bottom:
             Platform.OS === 'ios' ? insets.bottom + 10 : insets.bottom + 20,
         }}>
-        <Pressable
-          onPress={() => {
-            console.log('링크 추가 버튼 눌림');
-          }}>
-          <View className="flex-row items-center rounded-full bg-main-text px-[27px] py-[14px]">
+        <Pressable onPress={handleSubmit} disabled={!isFormValid}>
+          <View
+            className={`flex-row items-center rounded-full px-[27px] py-[14px] ${
+              isFormValid ? 'bg-main-text' : 'bg-surface-300'
+            }`}>
             <Text className="text-surface-200 typo-body-16-medium">
-              링크 추가하기
+              {isEditMode ? '링크 수정하기' : '링크 추가하기'}
             </Text>
           </View>
         </Pressable>
 
-        {!existData && (
-          <View className="mt-3">
+        {isEditMode && (
+          <Pressable className="mt-3" onPress={handleDelete}>
             <Text className="text-surface-400 typo-body-15-medium">
               링크 삭제하기
             </Text>
-          </View>
+          </Pressable>
         )}
       </View>
 
@@ -75,6 +109,8 @@ const LinkEditView = () => {
                 className="mt-[9px] rounded-[15px] border-[1px] border-gray-200 bg-white pb-[11px] pl-[14px] pt-[12px] typo-body-15-regular"
                 placeholder="링크명을 입력해주세요"
                 placeholderTextColor={'#B7B7B7'}
+                value={linkName}
+                onChangeText={setLinkName}
               />
             </View>
 
@@ -93,6 +129,8 @@ const LinkEditView = () => {
                 textAlignVertical="top"
                 multiline={true}
                 style={{ height: 98 }}
+                value={linkUrl}
+                onChangeText={setLinkUrl}
               />
             </View>
           </View>

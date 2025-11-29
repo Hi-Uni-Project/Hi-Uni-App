@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 
-import { RouteProp, useRoute } from '@react-navigation/native';
+import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import {
   Keyboard,
   KeyboardAvoidingView,
@@ -14,24 +14,66 @@ import {
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import ResumeBackHeader from '@/features/record/editResume/components/ResumeBackHeader';
-import { Language } from '@/features/record/editResume/types/domainType';
+import useResumeEdit from '@/features/record/editResume/hooks/useResumeEdit';
+import { LanguageLevel } from '@/features/record/editResume/types/domainType';
 import {
   LanguageLevelEnumToLabel,
   LanguageLevelLabelToEnum,
 } from '@/features/record/editResume/utils/labelMapper';
+import { RecordNavigationProps } from '@/navigation/types/navigationTypes';
 import HUDropdown from '@/shared/ui/atoms/HUDropdown';
 
-type LanguageRouteProp = RouteProp<{
-  EditLanguage: Language;
-}>;
+type LanguageRouteProp = RouteProp<RecordNavigationProps, 'EditLanguage'>;
 
 const LanguageEditView = () => {
   const insets = useSafeAreaInsets();
-
+  const navigation = useNavigation();
   const route = useRoute<LanguageRouteProp>();
-  const existData = route.params;
+
+  const { resumeData, addLanguage, updateLanguage, deleteLanguage } =
+    useResumeEdit();
+
+  // EditLanguage인 경우 languageId가 params로 전달됨
+  const editLanguageId = route.params?.languageId;
+  const isEditMode = editLanguageId !== undefined;
+  const editTarget = isEditMode
+    ? resumeData.languages.find(l => l.languageId === editLanguageId)
+    : undefined;
+
+  // 로컬 폼 상태
+  const [language, setLanguage] = useState(editTarget?.language || '');
+  const [level, setLevel] = useState<LanguageLevel | null>(
+    editTarget?.level || null,
+  );
 
   const languageLevelRef = React.useRef<View>(null);
+
+  const isFormValid = language.trim() !== '' && level !== null;
+
+  const handleSubmit = () => {
+    if (!isFormValid || level === null) {
+      return;
+    }
+
+    if (isEditMode && editTarget) {
+      updateLanguage({
+        languageId: editTarget.languageId,
+        language,
+        level,
+      });
+    } else {
+      addLanguage({ language, level });
+    }
+
+    navigation.goBack();
+  };
+
+  const handleDelete = () => {
+    if (isEditMode && editTarget && editTarget.languageId !== null) {
+      deleteLanguage(editTarget.languageId);
+      navigation.goBack();
+    }
+  };
 
   return (
     <View className="flex-1 bg-surface-50">
@@ -41,21 +83,23 @@ const LanguageEditView = () => {
           bottom:
             Platform.OS === 'ios' ? insets.bottom + 10 : insets.bottom + 20,
         }}>
-        <Pressable
-          onPress={() => {
-            console.log('어학 추가 버튼 눌림');
-          }}>
-          <View className="flex-row items-center rounded-full bg-main-text px-[27px] py-[14px]">
+        <Pressable onPress={handleSubmit} disabled={!isFormValid}>
+          <View
+            className={`flex-row items-center rounded-full px-[27px] py-[14px] ${
+              isFormValid ? 'bg-main-text' : 'bg-surface-300'
+            }`}>
             <Text className="text-surface-200 typo-body-16-medium">
-              어학 추가하기
+              {isEditMode ? '어학 수정하기' : '어학 추가하기'}
             </Text>
           </View>
         </Pressable>
 
-        {!existData && (
-          <View>
-            <Text>어학 삭제하기</Text>
-          </View>
+        {isEditMode && (
+          <Pressable className="mt-3" onPress={handleDelete}>
+            <Text className="text-surface-400 typo-body-15-medium">
+              어학 삭제하기
+            </Text>
+          </Pressable>
         )}
       </View>
 
@@ -80,6 +124,8 @@ const LanguageEditView = () => {
                 className="mt-[9px] rounded-[15px] border-[1px] border-gray-200 bg-white pb-[11px] pl-[14px] pt-[12px] typo-body-15-regular"
                 placeholder="언어를 입력해주세요"
                 placeholderTextColor={'#B7B7B7'}
+                value={language}
+                onChangeText={setLanguage}
               />
             </View>
 
@@ -95,10 +141,12 @@ const LanguageEditView = () => {
               <View className="mt-[9px] items-start">
                 <HUDropdown
                   ref={languageLevelRef}
-                  categoryName="선택"
+                  categoryName={
+                    level ? LanguageLevelEnumToLabel[level] : '선택'
+                  }
                   dropdownItems={Object.values(LanguageLevelEnumToLabel)}
                   onSelectItem={item => {
-                    console.log('선택된 수준:', LanguageLevelLabelToEnum[item]);
+                    setLevel(LanguageLevelLabelToEnum[item]);
                   }}
                   containerStyle={{}}
                 />

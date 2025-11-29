@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 
-import { RouteProp, useRoute } from '@react-navigation/native';
+import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import {
   Keyboard,
   KeyboardAvoidingView,
@@ -14,24 +14,89 @@ import {
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import ResumeBackHeader from '@/features/record/editResume/components/ResumeBackHeader';
-import { Achievement } from '@/features/record/editResume/types/domainType';
+import useResumeEdit from '@/features/record/editResume/hooks/useResumeEdit';
+import { AchievementType } from '@/features/record/editResume/types/domainType';
+import {
+  formatToShortDate,
+  parseShortDate,
+} from '@/features/record/editResume/utils/dateUtils';
 import {
   AchievementTypeEnumToLabel,
   AchievementTypeLabelToEnum,
 } from '@/features/record/editResume/utils/labelMapper';
+import { RecordNavigationProps } from '@/navigation/types/navigationTypes';
 import HUDropdown from '@/shared/ui/atoms/HUDropdown';
 
-type AchievementRouteProp = RouteProp<{
-  EditAchievement: Achievement;
-}>;
+type AchievementRouteProp = RouteProp<RecordNavigationProps, 'EditAchievement'>;
 
 const AchievementEditView = () => {
   const insets = useSafeAreaInsets();
-
+  const navigation = useNavigation();
   const route = useRoute<AchievementRouteProp>();
-  const existData = route.params;
+
+  const { resumeData, addAchievement, updateAchievement, deleteAchievement } =
+    useResumeEdit();
+
+  // EditAchievement인 경우 achievementId가 params로 전달됨
+  const editAchievementId = route.params?.achievementId;
+  const isEditMode = editAchievementId !== undefined;
+  const editTarget = isEditMode
+    ? resumeData.achievements.find(a => a.achievementId === editAchievementId)
+    : undefined;
+
+  // 로컬 폼 상태
+  const [type, setType] = useState<AchievementType | null>(
+    editTarget?.type || null,
+  );
+  const [activityName, setActivityName] = useState(
+    editTarget?.activityName || '',
+  );
+  const [periodDateStr, setPeriodDateStr] = useState(
+    editTarget?.periodDate ? formatToShortDate(editTarget.periodDate) : '',
+  );
+  const [achievementDescription, setAchievementDescription] = useState(
+    editTarget?.achievementDescription || '',
+  );
 
   const achievementTypeRef = React.useRef<View>(null);
+
+  const isFormValid =
+    type !== null &&
+    activityName.trim() !== '' &&
+    parseShortDate(periodDateStr) !== null;
+
+  const handleSubmit = () => {
+    const periodDate = parseShortDate(periodDateStr);
+    if (!isFormValid || type === null || periodDate === null) {
+      return;
+    }
+
+    if (isEditMode && editTarget) {
+      updateAchievement({
+        achievementId: editTarget.achievementId,
+        type,
+        activityName,
+        periodDate,
+        achievementDescription,
+      });
+    } else {
+      addAchievement({
+        type,
+        activityName,
+        periodDate,
+        achievementDescription,
+      });
+    }
+
+    navigation.goBack();
+  };
+
+  const handleDelete = () => {
+    if (isEditMode && editTarget && editTarget.achievementId !== null) {
+      deleteAchievement(editTarget.achievementId);
+      navigation.goBack();
+    }
+  };
 
   return (
     <View className="flex-1 bg-surface-50">
@@ -41,23 +106,25 @@ const AchievementEditView = () => {
           bottom:
             Platform.OS === 'ios' ? insets.bottom + 10 : insets.bottom + 20,
         }}>
-        <Pressable
-          onPress={() => {
-            console.log('수상/자격증/교육 추가 버튼 눌림');
-          }}>
-          <View className="flex-row items-center rounded-full bg-main-text px-[27px] py-[14px]">
+        <Pressable onPress={handleSubmit} disabled={!isFormValid}>
+          <View
+            className={`flex-row items-center rounded-full px-[27px] py-[14px] ${
+              isFormValid ? 'bg-main-text' : 'bg-surface-300'
+            }`}>
             <Text className="text-surface-200 typo-body-16-medium">
-              수상/자격증/교육 추가하기
+              {isEditMode
+                ? '수상/자격증/교육 수정하기'
+                : '수상/자격증/교육 추가하기'}
             </Text>
           </View>
         </Pressable>
 
-        {existData && (
-          <View className="mt-3">
+        {isEditMode && (
+          <Pressable className="mt-3" onPress={handleDelete}>
             <Text className="text-surface-400 typo-body-15-medium">
               수상/자격증/교육 삭제하기
             </Text>
-          </View>
+          </Pressable>
         )}
       </View>
 
@@ -82,13 +149,12 @@ const AchievementEditView = () => {
               <View className="mt-[9px] items-start">
                 <HUDropdown
                   ref={achievementTypeRef}
-                  categoryName="선택"
+                  categoryName={
+                    type ? AchievementTypeEnumToLabel[type] : '선택'
+                  }
                   dropdownItems={Object.values(AchievementTypeEnumToLabel)}
                   onSelectItem={item => {
-                    console.log(
-                      '선택된 타입:',
-                      AchievementTypeLabelToEnum[item],
-                    );
+                    setType(AchievementTypeLabelToEnum[item]);
                   }}
                   containerStyle={{}}
                 />
@@ -107,6 +173,8 @@ const AchievementEditView = () => {
                 className="mt-[9px] rounded-[15px] border-[1px] border-gray-200 bg-white pb-[11px] pl-[14px] pt-[12px] typo-body-15-regular"
                 placeholder="활동명을 입력해주세요"
                 placeholderTextColor={'#B7B7B7'}
+                value={activityName}
+                onChangeText={setActivityName}
               />
             </View>
 
@@ -118,14 +186,12 @@ const AchievementEditView = () => {
                   *
                 </Text>
               </Text>
-              {/*
-                TODO: 기간 선택 드롭다운으로 구현 필요
-                임시로 22.06.23 형태의 string 형식의 text를 date로 변환하여 구현
-              */}
               <TextInput
                 className="mt-[9px] w-[144px] rounded-[15px] border-[1px] border-gray-200 bg-white pb-[11px] pl-[14px] pt-[12px] typo-body-15-regular"
                 placeholder="22.06.23"
                 placeholderTextColor={'#B7B7B7'}
+                value={periodDateStr}
+                onChangeText={setPeriodDateStr}
               />
             </View>
 
@@ -139,6 +205,8 @@ const AchievementEditView = () => {
                 textAlignVertical="top"
                 multiline={true}
                 style={{ height: 98 }}
+                value={achievementDescription}
+                onChangeText={setAchievementDescription}
               />
             </View>
           </View>

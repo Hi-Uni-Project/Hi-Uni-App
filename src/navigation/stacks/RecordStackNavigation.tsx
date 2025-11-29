@@ -8,9 +8,9 @@ import AchievementEditView from '@/screens/Record/EditView/AchievementEditView';
 import CareerEditView from '@/screens/Record/EditView/CareerEditView';
 import EducationEditView from '@/screens/Record/EditView/EducationEditView';
 import LanguageEditView from '@/screens/Record/EditView/LanguageEditView';
+import LinkEditView from '@/screens/Record/EditView/LinkEditView';
 import ProjectEditView from '@/screens/Record/EditView/ProjectEditView';
-import ResumeEditView from '@/screens/Record/EditView/ResumeEditView';
-import LinkEditView from '@/screens/Record/LinkEditView';
+import ResumeEditView from '@/screens/Record/ResumeEditView';
 
 const Stack = createNativeStackNavigator<RecordNavigationProps>();
 

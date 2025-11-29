@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 
-import { RouteProp, useRoute } from '@react-navigation/native';
+import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import {
   Keyboard,
   KeyboardAvoidingView,
@@ -14,17 +14,85 @@ import {
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import ResumeBackHeader from '@/features/record/editResume/components/ResumeBackHeader';
-import { Career } from '@/features/record/editResume/types/domainType';
+import useResumeEdit from '@/features/record/editResume/hooks/useResumeEdit';
+import {
+  formatToShortDate,
+  parseShortDate,
+} from '@/features/record/editResume/utils/dateUtils';
+import { RecordNavigationProps } from '@/navigation/types/navigationTypes';
 
-type CareerRouteProp = RouteProp<{
-  EditCareer: Career;
-}>;
+type CareerRouteProp = RouteProp<RecordNavigationProps, 'EditCareer'>;
 
 const CareerEditView = () => {
   const insets = useSafeAreaInsets();
-
+  const navigation = useNavigation();
   const route = useRoute<CareerRouteProp>();
-  const existData = route.params;
+
+  const { resumeData, addCareer, updateCareer, deleteCareer } = useResumeEdit();
+
+  // EditCareer인 경우 careerId가 params로 전달됨
+  const editCareerId = route.params?.careerId;
+  const isEditMode = editCareerId !== undefined;
+  const editTarget = isEditMode
+    ? resumeData.careers.find(c => c.careerId === editCareerId)
+    : undefined;
+
+  // 로컬 폼 상태
+  const [companyName, setCompanyName] = useState(editTarget?.companyName || '');
+  const [startDateStr, setStartDateStr] = useState(
+    editTarget?.startDate ? formatToShortDate(editTarget.startDate) : '',
+  );
+  const [endDateStr, setEndDateStr] = useState(
+    editTarget?.endDate ? formatToShortDate(editTarget.endDate) : '',
+  );
+  const [role, setRole] = useState(editTarget?.role || '');
+  const [position, setPosition] = useState(editTarget?.position || '');
+  const [jobDescription, setJobDescription] = useState(
+    editTarget?.jobDescription || '',
+  );
+
+  const isFormValid =
+    companyName.trim() !== '' &&
+    parseShortDate(startDateStr) !== null &&
+    parseShortDate(endDateStr) !== null;
+
+  const handleSubmit = () => {
+    const startDate = parseShortDate(startDateStr);
+    const endDate = parseShortDate(endDateStr);
+    if (!isFormValid || startDate === null || endDate === null) {
+      return;
+    }
+
+    if (isEditMode && editTarget) {
+      updateCareer({
+        careerId: editTarget.careerId,
+        companyName,
+        startDate,
+        endDate,
+        role,
+        position,
+        jobDescription,
+      });
+    } else {
+      addCareer({
+        companyName,
+        startDate,
+        endDate,
+        role,
+        position,
+        jobDescription,
+      });
+    }
+
+    navigation.goBack();
+  };
+
+  const handleDelete = () => {
+    if (isEditMode && editTarget && editTarget.careerId !== null) {
+      deleteCareer(editTarget.careerId);
+      navigation.goBack();
+    }
+  };
 
   return (
     <View className="flex-1 bg-surface-50">
@@ -34,21 +102,23 @@ const CareerEditView = () => {
           bottom:
             Platform.OS === 'ios' ? insets.bottom + 10 : insets.bottom + 20,
         }}>
-        <Pressable
-          onPress={() => {
-            console.log('경력 추가 버튼 눌림');
-          }}>
-          <View className="flex-row items-center rounded-full bg-main-text px-[27px] py-[14px]">
+        <Pressable onPress={handleSubmit} disabled={!isFormValid}>
+          <View
+            className={`flex-row items-center rounded-full px-[27px] py-[14px] ${
+              isFormValid ? 'bg-main-text' : 'bg-surface-300'
+            }`}>
             <Text className="text-surface-200 typo-body-16-medium">
-              경력 추가하기
+              {isEditMode ? '경력 수정하기' : '경력 추가하기'}
             </Text>
           </View>
         </Pressable>
 
-        {!existData && (
-          <View>
-            <Text>경력 삭제하기</Text>
-          </View>
+        {isEditMode && (
+          <Pressable className="mt-3" onPress={handleDelete}>
+            <Text className="text-surface-400 typo-body-15-medium">
+              경력 삭제하기
+            </Text>
+          </Pressable>
         )}
       </View>
 
@@ -73,6 +143,8 @@ const CareerEditView = () => {
                 className="mt-[9px] w-[185px] rounded-[15px] border-[1px] border-gray-200 bg-white pb-[11px] pl-[14px] pt-[12px] typo-body-15-regular"
                 placeholder="회사명을 입력해주세요"
                 placeholderTextColor={'#B7B7B7'}
+                value={companyName}
+                onChangeText={setCompanyName}
               />
             </View>
 
@@ -84,10 +156,6 @@ const CareerEditView = () => {
                   *
                 </Text>
               </Text>
-              {/*
-                TODO: 기간 선택 드롭다운으로 구현 필요
-                임시로 22.06.23 형태의 string 형식의 text를 date로 변환하여 구현
-              */}
               <View className="mt-[9px] flex-row items-end">
                 <View>
                   <Text className="typo-body-12-regular mb-[4px] ml-[2px] text-surface-400">
@@ -97,6 +165,8 @@ const CareerEditView = () => {
                     className="w-[144px] rounded-[15px] border-[1px] border-gray-200 bg-white pb-[11px] pl-[14px] pt-[12px] typo-body-15-regular"
                     placeholder="22.06.23"
                     placeholderTextColor={'#B7B7B7'}
+                    value={startDateStr}
+                    onChangeText={setStartDateStr}
                   />
                 </View>
 
@@ -110,6 +180,8 @@ const CareerEditView = () => {
                     className="w-[144px] rounded-[15px] border-[1px] border-gray-200 bg-white pb-[11px] pl-[14px] pt-[12px] typo-body-15-regular"
                     placeholder="22.06.23"
                     placeholderTextColor={'#B7B7B7'}
+                    value={endDateStr}
+                    onChangeText={setEndDateStr}
                   />
                 </View>
               </View>
@@ -122,6 +194,8 @@ const CareerEditView = () => {
                 className="mt-[9px] w-[272px] rounded-[15px] border-[1px] border-gray-200 bg-white pb-[11px] pl-[14px] pt-[12px] typo-body-15-regular"
                 placeholder="직무를 입력해주세요"
                 placeholderTextColor={'#B7B7B7'}
+                value={role}
+                onChangeText={setRole}
               />
             </View>
 
@@ -132,6 +206,8 @@ const CareerEditView = () => {
                 className="mt-[9px] w-[272px] rounded-[15px] border-[1px] border-gray-200 bg-white pb-[11px] pl-[14px] pt-[12px] typo-body-15-regular"
                 placeholder="직급/직책을 입력해주세요"
                 placeholderTextColor={'#B7B7B7'}
+                value={position}
+                onChangeText={setPosition}
               />
             </View>
 
@@ -144,6 +220,8 @@ const CareerEditView = () => {
                 placeholderTextColor={'#B7B7B7'}
                 textAlignVertical="top"
                 multiline={true}
+                value={jobDescription}
+                onChangeText={setJobDescription}
               />
             </View>
           </View>

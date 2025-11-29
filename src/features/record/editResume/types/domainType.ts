@@ -55,7 +55,7 @@ export enum AchievementType {
 }
 
 export interface Career {
-  careerId: number;
+  careerId: number | null;
   companyName: string;
   startDate: Date;
   endDate: Date;
@@ -65,7 +65,7 @@ export interface Career {
 }
 
 export interface Project {
-  projectId: number;
+  projectId: number | null;
   projectName: string;
   startDate: Date;
   endDate: Date;
@@ -74,7 +74,7 @@ export interface Project {
 }
 
 export interface Education {
-  educationId: number;
+  educationId: number | null;
   universityName: string;
   startDate: Date;
   endDate: Date;
@@ -83,13 +83,13 @@ export interface Education {
 }
 
 export interface Language {
-  languageId: number;
+  languageId: number | null;
   language: string;
   level: LanguageLevel;
 }
 
 export interface Achievement {
-  achievementId: number;
+  achievementId: number | null;
   activityName: string;
   periodDate: Date;
   type: AchievementType;
@@ -97,13 +97,13 @@ export interface Achievement {
 }
 
 export interface Link {
-  linkId: number;
+  linkId: number | null;
   linkName: string;
   linkUrl: string;
 }
 
 export interface Skill {
-  skillId: number;
+  skillId: number | null;
   name: string;
 }
 
