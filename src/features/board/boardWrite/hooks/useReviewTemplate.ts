@@ -100,3 +100,5 @@ export const useReviewTemplate = () => {
     hasReviewContent,
   };
 };
+
+export default useReviewTemplate;

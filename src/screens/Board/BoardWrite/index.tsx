@@ -7,7 +7,7 @@ import BoardWriteHeader from '@/features/board/boardWrite/components/layouts/Boa
 import BoardWriteModals from '@/features/board/boardWrite/components/Modal/BoardWriteModals';
 import NormalWriteView from '@/features/board/boardWrite/components/NormalWriteView';
 import ReviewView from '@/features/board/boardWrite/components/ReviewView';
-import { useBoardWrite } from '@/features/board/boardWrite/hooks/useBoardWrite';
+import useBoardWrite from '@/features/board/boardWrite/hooks/useBoardWrite';
 import { useReviewTemplate } from '@/features/board/boardWrite/hooks/useReviewTemplate';
 import {
   POST_TYPE_DISPLAY_NAME,

@@ -8,7 +8,7 @@ import { useReviewTemplate } from './useReviewTemplate';
 
 import { PostType } from '@/features/board/shared/types/enum/postEnum';
 
-export const useBoardWrite = (
+const useBoardWrite = (
   reviewTemplate: ReturnType<typeof useReviewTemplate>,
 ) => {
   const navigation = useNavigation();
@@ -125,3 +125,5 @@ export const useBoardWrite = (
     handleConfirmPostTypeChange,
   };
 };
+
+export default useBoardWrite;
