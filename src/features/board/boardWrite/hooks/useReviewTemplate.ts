@@ -1,8 +1,6 @@
 import { useState } from 'react';
 
-// ReviewTemplate Form 데이터 타입 -> 템플릿 마다 다르기 때문에 수정
-// 현재 인턴십 기준
-
+// ReviewTemplate Form 데이터 타입(인턴십 기준)
 export interface ReviewFormData {
   companyName: string; // 회사명 (필수)
   startDate: Date; // 시작일 (필수)
@@ -13,15 +11,6 @@ export interface ReviewFormData {
   feelings: string; // 느낀 점 (선택)
   additionalExperience: string; // 추가 경험 (선택)
 }
-
-// 필수 필드 타입
-type RequiredFields =
-  | 'companyName'
-  | 'startDate'
-  | 'endDate'
-  | 'position'
-  | 'tasks'
-  | 'learnings';
 
 export const useReviewTemplate = () => {
   const [showCal, setShowCal] = useState(false);
@@ -52,37 +41,15 @@ export const useReviewTemplate = () => {
     field: K,
     value: ReviewFormData[K],
   ) => {
-    setFormData(prev => ({
-      ...prev,
-      [field]: value,
-    }));
-  };
-
-  const validateRequiredFields = (): boolean => {
-    const requiredFields: RequiredFields[] = [
-      'companyName',
-      'startDate',
-      'endDate',
-      'position',
-      'tasks',
-      'learnings',
-    ];
-
-    return requiredFields.every(field => {
-      const value = formData[field];
-      if (typeof value === 'string') {
-        return value.trim() !== '';
-      }
-      return value !== null && value !== undefined;
+    setFormData(prev => {
+      const updated = {
+        ...prev,
+        [field]: value,
+      };
+      console.log(`Field updated: ${field}`, value);
+      console.log('Updated formData:', updated);
+      return updated;
     });
-  };
-
-  const isFieldEmpty = (field: keyof ReviewFormData): boolean => {
-    const value = formData[field];
-    if (typeof value === 'string') {
-      return value.trim() === '';
-    }
-    return value === null || value === undefined;
   };
 
   const resetForm = () => {
@@ -118,8 +85,6 @@ export const useReviewTemplate = () => {
     // Methods
     formatDate,
     updateField,
-    validateRequiredFields,
-    isFieldEmpty,
     resetForm,
     toggleCalendar,
   };
