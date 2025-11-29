@@ -12,12 +12,9 @@ interface Props {
   dropdownOptions: any[];
   dropdownPosition: { top: number; left: number };
   onDropdownSelect: (value: string) => void;
-  onExitModalClose: () => void;
-  onExitModalConfirm: () => void;
+  handleModalClose: () => void;
   onExitModalCancel: () => void;
-  onChangeToReviewModalClose: () => void;
   onChangeToReviewConfirm: () => void;
-  onChangeToReviewCancel: () => void;
   onOptionSheetVisibleChange: Dispatch<SetStateAction<boolean>>;
   onOptionSelect: Dispatch<SetStateAction<PostType>>;
   handleConfirmPostTypeChange: () => void;
@@ -28,12 +25,9 @@ const BoardWriteModals = ({
   dropdownOptions,
   dropdownPosition,
   onDropdownSelect,
-  onExitModalClose,
-  onExitModalConfirm,
+  handleModalClose,
   onExitModalCancel,
-  onChangeToReviewModalClose,
   onChangeToReviewConfirm,
-  onChangeToReviewCancel,
   onOptionSheetVisibleChange,
   onOptionSelect,
   handleConfirmPostTypeChange,
@@ -51,19 +45,19 @@ const BoardWriteModals = ({
       {/* 나가기 확인 모달 */}
       <ConfirmModal
         visible={modalState.type === 'exit'}
-        onClose={onExitModalClose}
+        onClose={handleModalClose}
         title={'작성 중인 내용이 있어요.\n이대로 나갈까요?'}
         confirmText="아니요, 계속 작성할래요."
         cancelText="네, 이대로 나갈래요."
         status="caution"
-        onConfirm={onExitModalConfirm}
+        onConfirm={handleModalClose}
         onCancel={onExitModalCancel}
       />
 
       {/* 후기 변경 확인 모달 */}
       <ConfirmModal
         visible={modalState.type === 'changeToReview'}
-        onClose={onChangeToReviewModalClose}
+        onClose={handleModalClose}
         title={
           '후기글로 바꾸면\n지금 작성한 내용은 사라져요.\n계속 진행할까요?'
         }
@@ -71,13 +65,13 @@ const BoardWriteModals = ({
         cancelText="아니요, 계속 작성할래요."
         status="caution"
         onConfirm={onChangeToReviewConfirm}
-        onCancel={onChangeToReviewCancel}
+        onCancel={handleModalClose}
       />
 
       {/* 후기 글 작성이 있는 상태에서 말머리 변경 확인 모달 */}
       <ConfirmModal
         visible={modalState.type === 'optionChange'}
-        onClose={onChangeToReviewModalClose}
+        onClose={handleModalClose}
         title={
           '말머리를 바꾸면\n지금 작성한 내용은 사라져요.\n계속 진행할까요?'
         }
@@ -85,7 +79,7 @@ const BoardWriteModals = ({
         cancelText="아니요, 계속 작성할래요."
         status="caution"
         onConfirm={handleConfirmPostTypeChange}
-        onCancel={onChangeToReviewCancel}
+        onCancel={handleModalClose}
       />
 
       {/* 옵션 바텀시트 */}

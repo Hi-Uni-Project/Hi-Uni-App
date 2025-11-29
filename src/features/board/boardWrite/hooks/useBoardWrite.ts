@@ -21,22 +21,27 @@ export const useBoardWrite = (
   const [content, setContent] = useState('');
   const [modalState, setModalState] = useState<ModalState>({ type: 'none' });
   const [changeType, setChangeType] = useState<PostType | null>(null);
-  const { formData, hasReviewContent, resetForm } = reviewTemplate;
+  const { hasReviewContent, resetForm } = reviewTemplate;
 
   const hasContent = () => content.trim() !== '' || title.trim() !== '';
 
+  // X 버튼 핸들러
   const handlePressedClosed = () => {
-    if (hasContent() || formData) {
+    if (hasContent() || hasReviewContent()) {
       setModalState({ type: 'exit' });
     } else {
       navigation.goBack();
     }
   };
 
+  const handleModalClose = () => {
+    setModalState({ type: 'none' });
+  };
+
   // 말머리 관련 핸들러
   const handlePostTypeChange = (newType: PostType) => {
     setSelectedPostType(newType);
-    setModalState({ type: 'none' });
+    handleModalClose();
   };
 
   const handlePostTypeSelect = (value: string) => {
@@ -45,7 +50,7 @@ export const useBoardWrite = (
       setChangeType(value as PostType);
     } else {
       handlePostTypeChange(value as PostType);
-      setModalState({ type: 'none' });
+      handleModalClose();
     }
   };
 
@@ -54,6 +59,7 @@ export const useBoardWrite = (
     resetForm();
   };
 
+  // review 모드 변경
   const handleReviewToggle = () => {
     if (!isReview && hasContent()) {
       setModalState({ type: 'changeToReview' });
@@ -66,32 +72,27 @@ export const useBoardWrite = (
     }
   };
 
-  const handleExitModalConfirm = () => {
-    setModalState({ type: 'none' });
-  };
-
+  // 글쓰기 도중 나가는 모달 핸들러
   const handleExitModalCancel = () => {
-    setModalState({ type: 'none' });
+    handleModalClose();
     setTimeout(() => {
       navigation.goBack();
     }, 300);
   };
 
+  // 일반글에서 후기글로 변경시 핸들러
   const handleChangeToReviewConfirm = () => {
     setContent('');
     setTitle('');
     setIsReview(true);
-    setModalState({ type: 'none' });
+    handleModalClose();
 
     if (!selectedPostType) {
       setModalState({ type: 'optionSheet' });
     }
   };
 
-  const handleChangeToReviewCancel = () => {
-    setModalState({ type: 'none' });
-  };
-
+  // dropdown
   const toggleDropdown = () => {
     setModalState(prev =>
       prev.type === 'dropdown' ? { type: 'none' } : { type: 'dropdown' },
@@ -116,10 +117,9 @@ export const useBoardWrite = (
     handlePressedClosed,
     handlePostTypeChange,
     handleReviewToggle,
-    handleExitModalConfirm,
     handleExitModalCancel,
+    handleModalClose,
     handleChangeToReviewConfirm,
-    handleChangeToReviewCancel,
     toggleDropdown,
     handlePostTypeSelect,
     handleConfirmPostTypeChange,

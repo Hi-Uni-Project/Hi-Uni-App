@@ -31,10 +31,9 @@ const BoardWrite = () => {
     setModalState,
     handlePressedClosed,
     handleReviewToggle,
-    handleExitModalConfirm,
     handleExitModalCancel,
+    handleModalClose,
     handleChangeToReviewConfirm,
-    handleChangeToReviewCancel,
     toggleDropdown,
     handlePostTypeSelect,
     handleConfirmPostTypeChange,
@@ -89,12 +88,9 @@ const BoardWrite = () => {
           left: 20,
         }}
         onDropdownSelect={value => handlePostTypeSelect(value)}
-        onExitModalClose={() => setModalState({ type: 'none' })}
-        onExitModalConfirm={handleExitModalConfirm}
         onExitModalCancel={handleExitModalCancel}
-        onChangeToReviewModalClose={() => setModalState({ type: 'none' })}
+        handleModalClose={handleModalClose}
         onChangeToReviewConfirm={handleChangeToReviewConfirm}
-        onChangeToReviewCancel={handleChangeToReviewCancel}
         onOptionSheetVisibleChange={visible =>
           setModalState(visible ? { type: 'optionSheet' } : { type: 'none' })
         }
