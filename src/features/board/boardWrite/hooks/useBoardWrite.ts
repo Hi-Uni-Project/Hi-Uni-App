@@ -2,16 +2,11 @@ import { useState } from 'react';
 
 import { useNavigation } from '@react-navigation/native';
 
+import { ModalState } from '../types';
+
 import { useReviewTemplate } from './useReviewTemplate';
 
 import { PostType } from '@/features/board/shared/types/enum/postEnum';
-
-type ModalState =
-  | { type: 'none' }
-  | { type: 'exit' }
-  | { type: 'changeToReview' }
-  | { type: 'dropdown' }
-  | { type: 'optionSheet' };
 
 export const useBoardWrite = () => {
   const navigation = useNavigation();
