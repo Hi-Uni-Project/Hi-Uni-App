@@ -2,28 +2,27 @@ import React, { Dispatch, SetStateAction, useEffect, useRef } from 'react';
 
 import { View, Text, Modal, Pressable, Animated, Easing } from 'react-native';
 
-import { SORT_OPTIONS } from '@/features/board/shared/types/enum/sortEnum';
-import ActionIcons from '@/shared/icons/ActionIcons';
+import {
+  POST_TYPE_OPTIONS,
+  PostType,
+} from '@/features/board/shared/types/enum/postEnum';
 import { cn } from '@/shared/lib/cn';
-import FilteredChecked from '@/static/icons/filtered-checked.svg';
 
 interface Props {
-  sortSheetVisible: boolean;
-  setSortSheetVisible: Dispatch<SetStateAction<boolean>>;
-  selectedSort: string;
-  setSelectedSort: (displayName: string) => void;
+  optionSheetVisible: boolean;
+  setOptionSheetVisible: Dispatch<SetStateAction<boolean>>;
+  setSelectedOption: Dispatch<SetStateAction<PostType>>;
 }
 
-const SortBottomSheet = ({
-  sortSheetVisible,
-  setSortSheetVisible,
-  selectedSort,
-  setSelectedSort,
+const OptionBottomSheet = ({
+  optionSheetVisible,
+  setOptionSheetVisible,
+  setSelectedOption,
 }: Props) => {
   const translateY = useRef(new Animated.Value(300)).current;
 
   useEffect(() => {
-    if (sortSheetVisible) {
+    if (optionSheetVisible) {
       Animated.timing(translateY, {
         toValue: 0,
         duration: 250,
@@ -38,57 +37,43 @@ const SortBottomSheet = ({
         useNativeDriver: true,
       }).start();
     }
-  }, [sortSheetVisible]);
+  }, [optionSheetVisible]);
 
   return (
     <Modal
       transparent
       statusBarTranslucent
-      visible={sortSheetVisible}
+      visible={optionSheetVisible}
       animationType="fade">
-      <Pressable
-        className="flex-1 bg-black/40"
-        onPress={() => setSortSheetVisible(false)}>
+      <Pressable className="flex-1 bg-black/40">
         <Animated.View
           style={{
             transform: [{ translateY }],
           }}
           className="absolute bottom-0 w-full rounded-t-2xl bg-white p-5">
           <View className="mb-[25px] mt-1 flex-row items-center justify-center">
-            <Pressable
-              onPress={() => setSortSheetVisible(false)}
-              className="absolute left-0">
-              <ActionIcons
-                type="close"
-                height={20}
-                width={20}
-                color="#1E2128"
-              />
-            </Pressable>
             <Text className="text-surface-700 typo-body-17-medium">
-              정렬 기준
+              말머리를 먼저 설정해주세요.
             </Text>
           </View>
 
-          {SORT_OPTIONS.map((option, index) => (
+          {POST_TYPE_OPTIONS.map((option, index) => (
             <Pressable
               key={option.value}
               onPress={() => {
-                setSelectedSort(option.label);
-                setSortSheetVisible(false);
+                setSelectedOption(option.value);
+                setOptionSheetVisible(false);
               }}
               className="py-4">
               <View
                 className={cn(
                   'flex-row items-center justify-between pb-6',
-                  index !== SORT_OPTIONS.length - 1 &&
+                  index !== POST_TYPE_OPTIONS.length - 1 &&
                     'border-b-[1.5px] border-b-surface-200',
                 )}>
                 <Text className="text-main-text typo-body-17-medium">
                   {option.label}
                 </Text>
-
-                {selectedSort === option.label && <FilteredChecked />}
               </View>
             </Pressable>
           ))}
@@ -98,4 +83,4 @@ const SortBottomSheet = ({
   );
 };
 
-export default SortBottomSheet;
+export default OptionBottomSheet;

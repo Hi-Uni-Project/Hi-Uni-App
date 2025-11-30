@@ -7,11 +7,13 @@ import WriteButton from '@/static/icons/write-button.svg';
 
 interface Props {
   insets: EdgeInsets;
+  onPress: () => void;
 }
 
-const BoardFloatingButton = ({ insets }: Props) => {
+const BoardFloatingButton = ({ insets, onPress }: Props) => {
   return (
     <Pressable
+      onPress={onPress}
       className="absolute right-1"
       style={[
         styles.shadow,
