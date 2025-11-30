@@ -3,11 +3,13 @@ import { loginStrategies } from '../lib/socialStrategies';
 import { LoginRequest, LoginResponse, SocialTypes } from '../types';
 
 import { MainStackNavigationProp } from '@/navigation/types/navigationTypes';
+import { useRegisterStore } from '@/shared/stores/register';
 import { useUserStore } from '@/shared/stores/user';
 
 export const useLoginService = (navigation: MainStackNavigationProp) => {
   const { setAccessToken, setRefreshToken, setAuthToken, setUserSocialType } =
     useUserStore();
+  const { setUniv, setTos } = useRegisterStore();
 
   const handleSocialLogin = async (provider: SocialTypes) => {
     try {
@@ -36,8 +38,25 @@ export const useLoginService = (navigation: MainStackNavigationProp) => {
   };
 
   const handleSuccessfulLogin = (response: LoginResponse) => {
-    setAccessToken(response.data.accessToken);
-    setRefreshToken(response.data.refreshToken);
+    const { accessToken, refreshToken, user } = response.data;
+
+    setAccessToken(accessToken);
+    setRefreshToken(refreshToken);
+
+    setUniv({
+      univName: user.univ.univName,
+      univEmail: user.univ.univEmail,
+      firstMajorName: user.univ.firstMajorName,
+      secondMajorName: user.univ.secondMajorName,
+    });
+
+    setTos({
+      inPersonTosIsAgreed: user.tos.inPersonTosIsAgreed,
+      marketingTosIsAgreed: user.tos.marketingTosIsAgreed,
+      personalInfoTosIsAgreed: user.tos.personalInfoTosIsAgreed,
+      serviceImprovementTosIsAgreed: user.tos.serviceImprovementTosIsAgreed,
+      serviceTosIsAgreed: user.tos.serviceTosIsAgreed,
+    });
 
     navigation.navigate('HomeRoute');
   };

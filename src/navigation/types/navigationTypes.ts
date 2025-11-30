@@ -45,6 +45,7 @@ export type BoardNavigationProps = {
   MyComments: undefined;
   MyPosts: undefined;
   PopularReviews: { title: string };
+  BoardWrite: undefined;
 };
 
 export type TabNavigationProps = {

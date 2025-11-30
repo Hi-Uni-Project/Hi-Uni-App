@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 
 import { Post } from '@/features/board/shared/types/DefaultPostType';
+import { SortType } from '@/features/board/shared/types/enum/sortEnum';
 import {
   fetchWeeklyHotPosts,
   fetchMyPosts,
@@ -19,8 +20,12 @@ const useBoardQuery = (
   });
 };
 
-export const useWeeklyHotPosts = () =>
-  useBoardQuery(['weeklyHotPosts'], fetchWeeklyHotPosts, 1000 * 60);
+export const useWeeklyHotPosts = (sort: SortType = SortType.LATEST) =>
+  useBoardQuery(
+    ['weeklyHotPosts', sort],
+    () => fetchWeeklyHotPosts(sort),
+    1000 * 60,
+  );
 
 export const useMyPostsQuery = () =>
   useBoardQuery(['myPosts'], fetchMyPosts, 1000 * 60);

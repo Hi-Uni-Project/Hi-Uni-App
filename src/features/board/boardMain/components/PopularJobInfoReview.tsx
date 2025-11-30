@@ -3,28 +3,19 @@ import React from 'react';
 import { View, FlatList, Platform, Pressable } from 'react-native';
 
 import SectionTitle from '../../shared/components/SectionTitle';
-import {
-  getPostTypeByDisplayName,
-  PostCategory,
-} from '../../shared/types/enum/postEnum';
-import { useCategoryWeeklyHotQuery } from '../hooks/useWeeklyHotQuery';
+import { Post } from '../../shared/types/DefaultPostType';
 
 import BoardPostCardLG from '@/shared/components/Board/BoardPostCard/lg';
 import Loading from '@/shared/ui/organisms/Loading';
 
 interface Props {
+  posts: Post[];
+  onPress: () => void;
   title: string;
-  onPress?: () => void;
+  isLoading: boolean;
 }
 
-const PopularJobInfoReview = ({ title, onPress }: Props) => {
-  const selectedPostType = getPostTypeByDisplayName(title);
-
-  const { data: posts = [], isLoading } = useCategoryWeeklyHotQuery(
-    PostCategory.JOB_INFORMATION,
-    selectedPostType,
-  );
-
+const PopularJobInfoReview = ({ posts, onPress, title, isLoading }: Props) => {
   if (isLoading) {
     return (
       <View className="bg-primary-purple pb-5 pt-[23px]">
@@ -34,7 +25,7 @@ const PopularJobInfoReview = ({ title, onPress }: Props) => {
   }
 
   return (
-    <Pressable onPress={onPress}>
+    <Pressable onPress={onPress} className="pt-[17px]">
       <View className="bg-primary-purple pb-5 pt-[23px]">
         <SectionTitle title={`${title} 인기 후기`} onPress={onPress} />
         <FlatList

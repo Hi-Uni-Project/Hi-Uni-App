@@ -109,6 +109,12 @@ module.exports = function addFontsUtil({ addUtilities }) {
       lineHeight: '24px',
       letterSpacing: -0.28,
     },
+    '.typo-caption-14-medium': {
+      fontWeight: 500,
+      fontSize: 14,
+      lineHeight: '20px',
+      letterSpacing: -0.28,
+    },
     '.typo-caption-14-regular': {
       fontWeight: 400,
       fontSize: 14,
