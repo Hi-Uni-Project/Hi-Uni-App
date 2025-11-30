@@ -145,6 +145,7 @@ const LanguageEditView = () => {
                   onSelectItem={item => {
                     setLevel(LanguageLevelLabelToEnum[item]);
                   }}
+                  dropdownWidth={179}
                 />
               </View>
             </View>

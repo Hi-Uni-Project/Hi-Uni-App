@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 
+import clsx from 'clsx';
 import {
   Animated,
   Modal,
@@ -26,6 +27,9 @@ interface HUCategoryDropdownProps {
   selectedComponentStyle?: StyleProp<ViewStyle>;
 
   containerStyle?: StyleProp<ViewStyle>;
+
+  // 드롭다운 목록의 너비
+  dropdownWidth?: number;
 }
 
 const HUDropdown = ({
@@ -33,6 +37,7 @@ const HUDropdown = ({
   onSelectItem,
   categoryName = '선택',
   containerStyle,
+  dropdownWidth = 122,
 }: HUCategoryDropdownProps) => {
   const [selectedItem, setSelectedItem] = useState<string | null>(null);
   const [isVisible, setIsVisible] = useState(false);
@@ -80,7 +85,11 @@ const HUDropdown = ({
             isVisible ? 'border-primary-purple' : 'border-surface-300'
           }`}
           style={containerStyle}>
-          <Text className="pr-2 text-surface-500 typo-body-16-regular">
+          <Text
+            className={clsx(
+              selectedItem ? 'text-main-text' : 'text-surface-500',
+              'pr-2 typo-body-16-regular',
+            )}>
             {selectedItem || categoryName}
           </Text>
           <Animated.View style={{ transform: [{ rotate: rotateInterpolate }] }}>
@@ -108,7 +117,7 @@ const HUDropdown = ({
                 style={[
                   {
                     borderRadius: 15,
-                    width: 122,
+                    width: dropdownWidth,
                     maxHeight: 300,
                   },
                 ]}>

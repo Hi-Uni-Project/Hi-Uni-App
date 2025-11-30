@@ -30,6 +30,18 @@ import HUDropdown from '@/shared/ui/atoms/HUDropdown';
 
 type EducationRouteProp = RouteProp<RecordNavigationProps, 'EditEducation'>;
 
+// 끝 날짜 입력이 비활성화되는 졸업 상태
+const DISABLED_END_DATE_STATUSES: GraduationStatus[] = [
+  GraduationStatus.ENROLLED,
+  GraduationStatus.LEAVE,
+];
+
+// 졸업 상태에 따른 끝 날짜 표시 텍스트
+const END_DATE_DISPLAY_TEXT: Partial<Record<GraduationStatus, string>> = {
+  [GraduationStatus.ENROLLED]: '재학 중',
+  [GraduationStatus.LEAVE]: '휴학 중',
+};
+
 const EducationEditView = () => {
   const insets = useSafeAreaInsets();
   const navigation = useNavigation();
@@ -59,11 +71,20 @@ const EducationEditView = () => {
   );
   const [major, setMajor] = useState(editTarget?.major || '');
 
+  // 끝 날짜 입력 비활성화 여부
+  const isEndDateDisabled =
+    graduationStatus !== null &&
+    DISABLED_END_DATE_STATUSES.includes(graduationStatus);
+
+  // 끝 날짜 표시 텍스트 (비활성화 시)
+  const endDateDisplayText =
+    graduationStatus !== null ? END_DATE_DISPLAY_TEXT[graduationStatus] : null;
+
   const isFormValid =
     universityName.trim() !== '' &&
     graduationStatus !== null &&
     parseShortDate(startDateStr) !== null &&
-    parseShortDate(endDateStr) !== null &&
+    (isEndDateDisabled || parseShortDate(endDateStr) !== null) &&
     major.trim() !== '';
 
   const handleSubmit = () => {
@@ -202,11 +223,21 @@ const EducationEditView = () => {
 
                 <View className="mx-[11px] w-[14px] border-y-[1px] border-surface-300" />
 
-                <DatePickerInput
-                  value={endDateStr}
-                  onSelectDate={setEndDateStr}
-                  placeholder="26.02.28"
-                />
+                {isEndDateDisabled ? (
+                  <View className="w-[144px] rounded-[15px] border-[1px] border-gray-200">
+                    <TextInput
+                      className="pb-[11px] pl-[14px] pt-[12px] text-surface-500 typo-body-15-regular"
+                      value={endDateDisplayText || ''}
+                      editable={true}
+                    />
+                  </View>
+                ) : (
+                  <DatePickerInput
+                    value={endDateStr}
+                    onSelectDate={setEndDateStr}
+                    placeholder="26.02.28"
+                  />
+                )}
               </View>
             </View>
 
