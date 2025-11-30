@@ -59,8 +59,6 @@ const AchievementEditView = () => {
     editTarget?.achievementDescription || '',
   );
 
-  const achievementTypeRef = React.useRef<View>(null);
-
   const isFormValid =
     type !== null &&
     activityName.trim() !== '' &&
@@ -149,7 +147,6 @@ const AchievementEditView = () => {
 
               <View className="mt-[9px] items-start">
                 <HUDropdown
-                  ref={achievementTypeRef}
                   categoryName={
                     type ? AchievementTypeEnumToLabel[type] : '선택'
                   }
@@ -157,7 +154,6 @@ const AchievementEditView = () => {
                   onSelectItem={item => {
                     setType(AchievementTypeLabelToEnum[item]);
                   }}
-                  containerStyle={{}}
                 />
               </View>
             </View>

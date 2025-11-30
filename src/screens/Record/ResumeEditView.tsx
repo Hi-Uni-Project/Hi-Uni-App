@@ -31,9 +31,6 @@ const ResumeEditView = () => {
   const insets = useSafeAreaInsets();
   const navigation = useNavigation<RecordStackNavigationProp>();
 
-  const sexRef = React.useRef<View>(null);
-  const ageRef = React.useRef<View>(null);
-
   const { resumeData, updateField } = useResumeEdit();
 
   return (
@@ -71,7 +68,6 @@ const ResumeEditView = () => {
 
                   <View className="mt-[10px] flex-row">
                     <HUDropdown
-                      ref={sexRef}
                       categoryName="성별"
                       dropdownItems={Object.values(GenderEnumToLabel)}
                       onSelectItem={item => {
@@ -81,7 +77,6 @@ const ResumeEditView = () => {
                     />
 
                     <HUDropdown
-                      ref={ageRef}
                       categoryName="출생년도"
                       dropdownItems={Array.from(
                         {

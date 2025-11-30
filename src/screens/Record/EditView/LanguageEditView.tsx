@@ -46,8 +46,6 @@ const LanguageEditView = () => {
     editTarget?.level || null,
   );
 
-  const languageLevelRef = React.useRef<View>(null);
-
   const isFormValid = language.trim() !== '' && level !== null;
 
   const handleSubmit = () => {
@@ -140,7 +138,6 @@ const LanguageEditView = () => {
 
               <View className="mt-[9px] items-start">
                 <HUDropdown
-                  ref={languageLevelRef}
                   categoryName={
                     level ? LanguageLevelEnumToLabel[level] : '선택'
                   }
@@ -148,7 +145,6 @@ const LanguageEditView = () => {
                   onSelectItem={item => {
                     setLevel(LanguageLevelLabelToEnum[item]);
                   }}
-                  containerStyle={{}}
                 />
               </View>
             </View>

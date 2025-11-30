@@ -66,7 +66,7 @@ const ResumeEditHeader = ({
               </Text>
             </Pressable>
 
-            <Pressable className="ml-[18px]">
+            <Pressable className="ml-[18px] mt-[2px]">
               <MoreIcon />
             </Pressable>
           </View>

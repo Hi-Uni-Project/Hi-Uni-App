@@ -59,8 +59,6 @@ const EducationEditView = () => {
   );
   const [major, setMajor] = useState(editTarget?.major || '');
 
-  const graduationStatusRef = React.useRef<View>(null);
-
   const isFormValid =
     universityName.trim() !== '' &&
     graduationStatus !== null &&
@@ -174,7 +172,6 @@ const EducationEditView = () => {
 
               <View className="mt-[9px] items-start">
                 <HUDropdown
-                  ref={graduationStatusRef}
                   categoryName={
                     graduationStatus
                       ? GraduationStatusEnumToLabel[graduationStatus]
@@ -184,7 +181,6 @@ const EducationEditView = () => {
                   onSelectItem={item => {
                     setGraduationStatus(GraduationStatusLabelToEnum[item]);
                   }}
-                  containerStyle={{}}
                 />
               </View>
             </View>
