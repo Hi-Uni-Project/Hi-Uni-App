@@ -2,13 +2,13 @@ import React from 'react';
 
 import { View, Text, Pressable } from 'react-native';
 
-import { SkillResponse } from '../types/responseType';
+import { Skill } from '../types/domainType';
 
 import ActionIcons from '@/shared/icons/ActionIcons';
 
 interface Props {
-  selectedSkills: SkillResponse[];
-  onRemoveSkill: (skillId: number) => void;
+  selectedSkills: Skill[];
+  onRemoveSkill: (skillName: string) => void;
 }
 
 const SelectedSkillsList = ({ selectedSkills, onRemoveSkill }: Props) => {
@@ -20,12 +20,12 @@ const SelectedSkillsList = ({ selectedSkills, onRemoveSkill }: Props) => {
     <View className="flex-row flex-wrap gap-[7px] pt-4">
       {selectedSkills.map(skill => (
         <View
-          key={skill.skillId}
+          key={skill.name}
           className="flex-row items-center rounded-full border-[1.5px] border-[#D9D9D9] px-3 py-[6px]">
           <Text className="mr-[7px] text-surface-700 typo-caption-14-semibold">
             {skill.name}
           </Text>
-          <Pressable onPress={() => onRemoveSkill(skill.skillId)}>
+          <Pressable onPress={() => onRemoveSkill(skill.name)}>
             <ActionIcons
               type="erase"
               color={'#DADADA'}

@@ -2,16 +2,16 @@ import React from 'react';
 
 import { View, Pressable, ScrollView, ActivityIndicator } from 'react-native';
 
-import { SkillResponse } from '../types/responseType';
+import { Skill } from '../types/domainType';
 
 import HighlightedText from '@/features/register/shared/components/HighlightedText';
 import { shadowStyleSheet } from '@/shared/styles/shadow';
 
 interface Props {
-  results: SkillResponse[];
+  results: Skill[];
   searchKeyword: string;
-  selectedSkillIds: number[];
-  onSelectSkill: (skill: SkillResponse) => void;
+  selectedSkillIds: (number | null)[];
+  onSelectSkill: (skill: Skill) => void;
   isLoading?: boolean;
 }
 

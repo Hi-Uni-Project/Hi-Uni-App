@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 
 import { fetchResumeData, searchSkillData } from '../api/resumeApi';
+import { mapSkillToDomain } from '../utils/responseToDomainMapper';
 
 const useResumeQueries = () => {
   const resumeDataQuery = useQuery({
@@ -22,6 +23,7 @@ const useSkillSearchQuery = (keyword: string) => {
     queryKey: ['skillSearch', keyword],
     queryFn: () => searchSkillData(keyword),
     enabled: keyword.length > 0,
+    select: response => response.data.map(mapSkillToDomain),
   });
 
   return {

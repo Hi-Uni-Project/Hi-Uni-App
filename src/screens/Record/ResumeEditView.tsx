@@ -39,19 +39,16 @@ const ResumeEditView = () => {
   const [isCareerProjectSheetVisible, setIsCareerProjectSheetVisible] =
     useState(false);
 
-  const { resumeData, updateField } = useResumeEdit();
+  const { resumeData, updateField, addSkill, deleteSkill } = useResumeEdit();
 
   const {
     inputValue,
     setInputValue,
     searchKeyword,
-    selectedSkills,
     searchResults,
     isLoading,
     isSearchResultVisible,
     handleSearch,
-    handleSelectSkill,
-    handleRemoveSkill,
     clearSearch,
   } = useSkillSearch();
 
@@ -219,15 +216,17 @@ const ResumeEditView = () => {
                   <SkillSearchResultList
                     results={searchResults}
                     searchKeyword={searchKeyword}
-                    selectedSkillIds={selectedSkills.map(s => s.skillId)}
-                    onSelectSkill={handleSelectSkill}
+                    selectedSkillIds={resumeData.skills.map(s => s.skillId)}
+                    onSelectSkill={skill =>
+                      addSkill({ skillId: skill.skillId, name: skill.name })
+                    }
                     isLoading={isLoading}
                   />
                 )}
 
                 <SelectedSkillsList
-                  selectedSkills={selectedSkills}
-                  onRemoveSkill={handleRemoveSkill}
+                  selectedSkills={resumeData.skills}
+                  onRemoveSkill={skillName => deleteSkill(skillName)}
                 />
               </View>
 

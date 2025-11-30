@@ -8,6 +8,7 @@ import {
   Language,
   Link,
   Project,
+  Skill,
 } from '../types/domainType';
 
 /**
@@ -218,6 +219,34 @@ const useResumeEdit = () => {
     [resumeData.projects, updateField],
   );
 
+  // ============================================
+  // Skill 관련 함수
+  // ============================================
+  const addSkill = useCallback(
+    (skill: Omit<Skill, 'skillId'> & { skillId?: number | null }) => {
+      const { skills } = resumeData;
+      const isAlreadyAdded = skills.some(s => s.name === skill.name);
+      if (isAlreadyAdded) {
+        return;
+      }
+      updateField('skills', [
+        ...skills,
+        { ...skill, skillId: skill.skillId ?? null },
+      ]);
+    },
+    [resumeData, updateField],
+  );
+
+  const deleteSkill = useCallback(
+    (skillName: string) => {
+      const filteredSkills = resumeData.skills.filter(
+        s => s.name !== skillName,
+      );
+      updateField('skills', filteredSkills);
+    },
+    [resumeData.skills, updateField],
+  );
+
   useEffect(() => {
     console.log('resumeData updated:', resumeData);
   }, [resumeData]);
@@ -251,6 +280,9 @@ const useResumeEdit = () => {
     addProject,
     updateProject,
     deleteProject,
+    // Skill
+    addSkill,
+    deleteSkill,
   };
 };
 
