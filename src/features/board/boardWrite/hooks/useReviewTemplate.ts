@@ -1,18 +1,9 @@
 import { useState } from 'react';
 
-// ReviewTemplate Form 데이터 타입(인턴십 기준)
-export interface ReviewFormData {
-  companyName: string; // 회사명 (필수)
-  startDate: Date; // 시작일 (필수)
-  endDate: Date; // 종료일 (필수)
-  position: string; // 직무 (필수)
-  tasks: string; // 담당했던 업무 (필수)
-  learnings: string; // 실무에서 배운 점 (필수)
-  feelings: string; // 느낀 점 (선택)
-  additionalExperience: string; // 추가 경험 (선택)
-}
+import { PostType } from '../../shared/types/enum/postEnum';
+import { getInitialFormData, ReviewFormData } from '../types';
 
-export const useReviewTemplate = () => {
+export const useReviewTemplate = (selectedPostType: PostType | null) => {
   const [showCal, setShowCal] = useState(false);
 
   const formatDate = (date: Date) => {
@@ -22,66 +13,41 @@ export const useReviewTemplate = () => {
     return `${year}.${month}.${day}`;
   };
 
-  const [formData, setFormData] = useState<ReviewFormData>({
-    companyName: '',
-    startDate: new Date(),
-    endDate: (() => {
-      const tomorrow = new Date();
-      tomorrow.setDate(tomorrow.getDate() + 1);
-      return tomorrow;
-    })(),
-    position: '',
-    tasks: '',
-    learnings: '',
-    feelings: '',
-    additionalExperience: '',
-  });
+  const [formData, setFormData] = useState<ReviewFormData>(
+    getInitialFormData(selectedPostType),
+  );
 
-  const updateField = <K extends keyof ReviewFormData>(
-    field: K,
-    value: ReviewFormData[K],
-  ) => {
-    setFormData(prev => {
-      const updated = {
-        ...prev,
-        [field]: value,
-      };
-      return updated;
-    });
+  const updateField = (field: string, value: any) => {
+    setFormData(prev => ({
+      ...prev,
+      [field]: value,
+    }));
   };
 
-  // 후기 글쓰기 데이터가 있는지 확인
   const hasReviewContent = (): boolean => {
-    return (
-      formData.companyName.trim() !== '' ||
-      formData.position.trim() !== '' ||
-      formData.tasks.trim() !== '' ||
-      formData.learnings.trim() !== '' ||
-      formData.feelings.trim() !== '' ||
-      formData.additionalExperience.trim() !== ''
-    );
+    return Object.entries(formData).some(([key, value]) => {
+      if (key === 'startDate' || key === 'endDate') {
+        return false;
+      }
+      if (typeof value === 'string') {
+        return value.trim() !== '';
+      }
+      return false;
+    });
   };
 
   const resetForm = () => {
-    setFormData({
-      companyName: '',
-      startDate: new Date(),
-      endDate: (() => {
-        const tomorrow = new Date();
-        tomorrow.setDate(tomorrow.getDate() + 1);
-        return tomorrow;
-      })(),
-      position: '',
-      tasks: '',
-      learnings: '',
-      feelings: '',
-      additionalExperience: '',
-    });
+    setFormData(getInitialFormData(selectedPostType));
   };
 
   const toggleCalendar = () => {
     setShowCal(prev => !prev);
   };
+
+  const startDate =
+    'startDate' in formData ? (formData as any).startDate : new Date();
+  const endDate =
+    'endDate' in formData ? (formData as any).endDate : new Date();
 
   return {
     // State
@@ -89,8 +55,8 @@ export const useReviewTemplate = () => {
     formData,
 
     // Computed
-    startDate: formData.startDate,
-    endDate: formData.endDate,
+    startDate,
+    endDate,
 
     // Methods
     formatDate,

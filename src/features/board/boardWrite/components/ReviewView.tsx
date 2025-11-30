@@ -2,9 +2,9 @@ import React from 'react';
 
 import { View, TextInput, ScrollView } from 'react-native';
 
-import ReviewTemplate from './layouts/ReviewTemplate';
 import PostTypeSelector from './PostTypeSelector';
 import ReviewCheckbox from './ReviewCheckbox';
+import ReviewTemplateSwitcher from './ReviewTemplateSwitcher';
 
 import { PostType } from '@/features/board/shared/types/enum/postEnum';
 
@@ -63,7 +63,10 @@ const ReviewView = ({
         }
       />
 
-      <ReviewTemplate reviewForm={reviewForm} />
+      <ReviewTemplateSwitcher
+        postType={selectedPostType}
+        reviewForm={reviewForm}
+      />
     </ScrollView>
   );
 };

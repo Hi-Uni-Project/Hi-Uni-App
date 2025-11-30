@@ -1,5 +1,3 @@
-// (나중에 대외활동에 대한 속성명이 추가될 예정입니다.)
-
 export enum PostType {
   JOB = 'JOB',
   INTERNSHIP = 'INTERNSHIP',
