@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import { useNavigation } from '@react-navigation/native';
 import {
@@ -17,6 +17,9 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import AddButton from '@/features/record/editResume/components/AddButton';
 import ImagePicker from '@/features/record/editResume/components/ImagePicker';
 import ResumeEditHeader from '@/features/record/editResume/components/ResumeEditHeader';
+import SelectBottomSheet, {
+  SelectOption,
+} from '@/features/record/editResume/components/SelectBottomSheet';
 import useResumeEdit from '@/features/record/editResume/hooks/useResumeEdit';
 import {
   GenderEnumToLabel,
@@ -30,8 +33,23 @@ import InfoIcon from '@/static/icons/info.svg';
 const ResumeEditView = () => {
   const insets = useSafeAreaInsets();
   const navigation = useNavigation<RecordStackNavigationProp>();
+  const [isCareerProjectSheetVisible, setIsCareerProjectSheetVisible] =
+    useState(false);
 
   const { resumeData, updateField } = useResumeEdit();
+
+  const careerProjectOptions: SelectOption[] = [
+    {
+      label: '경력 추가하기',
+      value: 'career',
+      onPress: () => navigation.navigate('CreateCareer'),
+    },
+    {
+      label: '프로젝트 추가하기',
+      value: 'project',
+      onPress: () => navigation.navigate('CreateProject'),
+    },
+  ];
 
   return (
     <View className="flex-1 bg-surface-50">
@@ -145,16 +163,7 @@ const ResumeEditView = () => {
                   </Text>
                   <View className="flex-row items-center">
                     <AddButton
-                      onPress={() => {
-                        navigation.navigate('CreateCareer');
-                      }}
-                    />
-                  </View>
-                  <View className="flex-row items-center">
-                    <AddButton
-                      onPress={() => {
-                        navigation.navigate('CreateProject');
-                      }}
+                      onPress={() => setIsCareerProjectSheetVisible(true)}
                     />
                   </View>
                 </View>
@@ -238,6 +247,13 @@ const ResumeEditView = () => {
           </TouchableWithoutFeedback>
         </ScrollView>
       </KeyboardAvoidingView>
+
+      <SelectBottomSheet
+        visible={isCareerProjectSheetVisible}
+        onClose={() => setIsCareerProjectSheetVisible(false)}
+        title="무엇을 추가하시겠어요?"
+        options={careerProjectOptions}
+      />
     </View>
   );
 };
