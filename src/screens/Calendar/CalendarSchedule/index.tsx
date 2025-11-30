@@ -11,7 +11,7 @@ import useEditSchedule from '@/features/calendar/editSchedule/hooks/useEditSched
 import CalendarDetailHeader from '@/features/calendar/editSchedule/layouts/CalendarDetailHeader';
 import { Schedule } from '@/features/calendar/shared/types';
 import ScreenLayout from '@/shared/components/layouts/ScreenLayout';
-import ConfirmModal from '@/shared/ui/organisms/ConfirmModal';
+import ConfirmPortal from '@/shared/ui/organisms/ConfrimPortal';
 import TrashIcon from '@/static/icons/trash.svg';
 
 type CalendarScheduleRouteProp = RouteProp<{
@@ -38,7 +38,7 @@ const CalendarScheduleScreen = () => {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
 
   return (
-    <ScreenLayout className="relative" pointerEvents="box-none">
+    <ScreenLayout className="relative">
       <CalendarDetailHeader
         onCompletePress={() => {
           editSchedule(() => {
@@ -82,8 +82,7 @@ const CalendarScheduleScreen = () => {
           </Text>
         </Pressable>
       )}
-
-      <ConfirmModal
+      <ConfirmPortal
         visible={showDeleteModal}
         title="일정을 삭제할까요?"
         confirmText="네, 삭제할래요."
