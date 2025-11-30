@@ -35,12 +35,7 @@ const ResumeEditView = () => {
 
   return (
     <View className="flex-1 bg-surface-50">
-      <ResumeEditHeader
-        isCompleteDisabled={true}
-        onCompletePress={() => {
-          // Handle complete press
-        }}
-      />
+      <ResumeEditHeader isCompleteDisabled={true} onCompletePress={() => {}} />
 
       <KeyboardAvoidingView
         style={{ flex: 1 }}

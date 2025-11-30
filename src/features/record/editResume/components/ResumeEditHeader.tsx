@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import { useNavigation } from '@react-navigation/native';
-import { View, StatusBar, Pressable, Text } from 'react-native';
+import { View, StatusBar, Pressable, Text, Platform } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { HomeStackNavigationProp } from '@/navigation/types/navigationTypes';
+import OptionPopup, { OptionItem } from '@/shared/components/Board/OptionPopup';
 import ArrowIcons from '@/shared/icons/ArrowIcons';
 import { cn } from '@/shared/lib/cn';
 import MoreIcon from '@/static/icons/more.svg';
@@ -14,12 +15,30 @@ interface ResumeEditHeaderProps {
   onCompletePress: () => void;
 }
 
+const TOP_OFFSET = Platform.OS === 'ios' ? 60 : 30;
+
 const ResumeEditHeader = ({
   onCompletePress,
   isCompleteDisabled,
 }: ResumeEditHeaderProps) => {
   const insets = useSafeAreaInsets();
   const navigation = useNavigation<HomeStackNavigationProp>();
+  const [isOptionVisible, setIsOptionVisible] = useState(false);
+
+  const options: OptionItem[] = [
+    {
+      label: '미리보기',
+      onPress: () => {},
+    },
+    {
+      label: '내보내기',
+      onPress: () => {},
+    },
+    {
+      label: '전체 삭제',
+      onPress: () => {},
+    },
+  ];
 
   return (
     <>
@@ -66,12 +85,24 @@ const ResumeEditHeader = ({
               </Text>
             </Pressable>
 
-            <Pressable className="ml-[18px] mt-[2px]">
+            <Pressable
+              className="ml-[18px] mt-[2px]"
+              onPress={() => setIsOptionVisible(true)}>
               <MoreIcon />
             </Pressable>
           </View>
         </View>
       </View>
+
+      <OptionPopup
+        visible={isOptionVisible}
+        onClose={() => setIsOptionVisible(false)}
+        options={options}
+        position={{
+          top: insets.top + TOP_OFFSET,
+          right: 20,
+        }}
+      />
     </>
   );
 };
