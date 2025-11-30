@@ -14,7 +14,7 @@ import {
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import DatePickerInput from '@/features/record/editResume/components/DatePickerInput';
-import ResumeBackHeader from '@/features/record/editResume/components/ResumeBackHeader';
+import ResumeHeader from '@/features/record/editResume/components/ResumeHeader';
 import useResumeEdit from '@/features/record/editResume/hooks/useResumeEdit';
 import { GraduationStatus } from '@/features/record/editResume/types/domainType';
 import {
@@ -156,7 +156,7 @@ const EducationEditView = () => {
         )}
       </View>
 
-      <ResumeBackHeader title="학력" />
+      <ResumeHeader title="학력" />
       <KeyboardAvoidingView
         style={{ flex: 1 }}
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}

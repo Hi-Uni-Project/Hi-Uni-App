@@ -14,7 +14,7 @@ import {
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import DatePickerInput from '@/features/record/editResume/components/DatePickerInput';
-import ResumeBackHeader from '@/features/record/editResume/components/ResumeBackHeader';
+import ResumeHeader from '@/features/record/editResume/components/ResumeHeader';
 import useResumeEdit from '@/features/record/editResume/hooks/useResumeEdit';
 import { AchievementType } from '@/features/record/editResume/types/domainType';
 import {
@@ -127,7 +127,7 @@ const AchievementEditView = () => {
         )}
       </View>
 
-      <ResumeBackHeader title="수상/자격증/교육" />
+      <ResumeHeader title="수상/자격증/교육" />
       <KeyboardAvoidingView
         style={{ flex: 1 }}
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}

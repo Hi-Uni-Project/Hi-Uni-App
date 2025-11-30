@@ -13,7 +13,7 @@ import {
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import ResumeBackHeader from '@/features/record/editResume/components/ResumeBackHeader';
+import ResumeHeader from '@/features/record/editResume/components/ResumeHeader';
 import useResumeEdit from '@/features/record/editResume/hooks/useResumeEdit';
 import { LanguageLevel } from '@/features/record/editResume/types/domainType';
 import {
@@ -101,7 +101,7 @@ const LanguageEditView = () => {
         )}
       </View>
 
-      <ResumeBackHeader title="어학" />
+      <ResumeHeader title="어학" />
       <KeyboardAvoidingView
         style={{ flex: 1 }}
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}

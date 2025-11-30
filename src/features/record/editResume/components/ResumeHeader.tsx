@@ -7,11 +7,17 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { HomeStackNavigationProp } from '@/navigation/types/navigationTypes';
 import ArrowIcons from '@/shared/icons/ArrowIcons';
 
-interface ResumeBackHeaderProps {
+interface ResumeHeaderProps {
   title: string;
+  rightButtonText?: string;
+  onRightButtonPress?: () => void;
 }
 
-const ResumeBackHeader = ({ title }: ResumeBackHeaderProps) => {
+const ResumeHeader = ({
+  title,
+  rightButtonText,
+  onRightButtonPress,
+}: ResumeHeaderProps) => {
   const insets = useSafeAreaInsets();
   const navigation = useNavigation<HomeStackNavigationProp>();
 
@@ -46,10 +52,18 @@ const ResumeBackHeader = ({ title }: ResumeBackHeaderProps) => {
               {title}
             </Text>
           </View>
+
+          {rightButtonText && onRightButtonPress && (
+            <Pressable onPress={onRightButtonPress}>
+              <Text className="text-primary-purple typo-sub-title-18-medium">
+                {rightButtonText}
+              </Text>
+            </Pressable>
+          )}
         </View>
       </View>
     </>
   );
 };
 
-export default ResumeBackHeader;
+export default ResumeHeader;

@@ -14,7 +14,7 @@ import {
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import DatePickerInput from '@/features/record/editResume/components/DatePickerInput';
-import ResumeBackHeader from '@/features/record/editResume/components/ResumeBackHeader';
+import ResumeHeader from '@/features/record/editResume/components/ResumeHeader';
 import useResumeEdit from '@/features/record/editResume/hooks/useResumeEdit';
 import {
   formatToShortDate,
@@ -123,7 +123,11 @@ const CareerEditView = () => {
         )}
       </View>
 
-      <ResumeBackHeader title="경력" />
+      <ResumeHeader
+        title="경력"
+        rightButtonText="불러오기"
+        onRightButtonPress={() => {}}
+      />
       <KeyboardAvoidingView
         style={{ flex: 1 }}
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}

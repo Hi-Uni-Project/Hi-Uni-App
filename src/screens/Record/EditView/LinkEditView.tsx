@@ -13,7 +13,7 @@ import {
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import ResumeBackHeader from '@/features/record/editResume/components/ResumeBackHeader';
+import ResumeHeader from '@/features/record/editResume/components/ResumeHeader';
 import useResumeEdit from '@/features/record/editResume/hooks/useResumeEdit';
 import { RecordNavigationProps } from '@/navigation/types/navigationTypes';
 
@@ -88,7 +88,7 @@ const LinkEditView = () => {
         )}
       </View>
 
-      <ResumeBackHeader title="링크" />
+      <ResumeHeader title="링크" />
       <KeyboardAvoidingView
         style={{ flex: 1 }}
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
