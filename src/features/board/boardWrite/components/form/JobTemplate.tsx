@@ -2,17 +2,12 @@ import React from 'react';
 
 import { View, TextInput } from 'react-native';
 
-import { FormMap } from '../../types';
 import { FormField } from '../FormField';
 
 interface Props {
-  reviewForm: {
-    formData: FormMap[T];
-    updateField: <K extends keyof FormMap[T]>(
-      key: K,
-      value: FormMap[T][K],
-    ) => void;
-  };
+  reviewForm: ReturnType<
+    typeof import('../../hooks/useReviewTemplate').useReviewTemplate
+  >;
 }
 
 const JobTemplate = ({ reviewForm }: Props) => {

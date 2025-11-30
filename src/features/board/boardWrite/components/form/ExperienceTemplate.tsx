@@ -11,17 +11,22 @@ import { formatDateOrTime } from '@/shared/utils/formatter';
 import DateLine from '@/static/icons/date-line.svg';
 
 interface Props {
-  reviewForm: {
-    formData: WorkStoryFormData;
-    updateField: <K extends keyof WorkStoryFormData>(
-      key: K,
-      value: WorkStoryFormData[K],
-    ) => void;
-  };
+  reviewForm: ReturnType<
+    typeof import('../../hooks/useReviewTemplate').useReviewTemplate
+  >;
 }
 
 const ExperienceTemplate = ({ reviewForm }: Props) => {
-  const { formData, updateField } = reviewForm;
+  const {
+    formData: rawFormData,
+    updateField,
+    startDate,
+    endDate,
+    showCal,
+    toggleCalendar,
+    formatDate,
+  } = reviewForm;
+  const formData = rawFormData as WorkStoryFormData;
 
   return (
     <View className="w-full">
