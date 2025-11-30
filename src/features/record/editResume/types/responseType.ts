@@ -101,3 +101,4 @@ export interface ResumeDataResponse {
 }
 
 export type ResumeResponse = ResponseTypes<ResumeDataResponse>;
+export type SkillSearchResponse = ResponseTypes<SkillResponse[]>;

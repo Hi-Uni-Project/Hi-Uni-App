@@ -20,14 +20,17 @@ import ResumeEditHeader from '@/features/record/editResume/components/ResumeEdit
 import SelectBottomSheet, {
   SelectOption,
 } from '@/features/record/editResume/components/SelectBottomSheet';
+import SelectedSkillsList from '@/features/record/editResume/components/SelectedSkillsList';
+import SkillSearchInput from '@/features/record/editResume/components/SkillSearchInput';
+import SkillSearchResultList from '@/features/record/editResume/components/SkillSearchResultList';
 import useResumeEdit from '@/features/record/editResume/hooks/useResumeEdit';
+import useSkillSearch from '@/features/record/editResume/hooks/useSkillSearch';
 import {
   GenderEnumToLabel,
   GenderLabelToEnum,
 } from '@/features/record/editResume/utils/labelMapper';
 import { RecordStackNavigationProp } from '@/navigation/types/navigationTypes';
 import HUDropdown from '@/shared/ui/atoms/HUDropdown';
-import HUInput from '@/shared/ui/atoms/HUInput';
 import InfoIcon from '@/static/icons/info.svg';
 
 const ResumeEditView = () => {
@@ -37,6 +40,20 @@ const ResumeEditView = () => {
     useState(false);
 
   const { resumeData, updateField } = useResumeEdit();
+
+  const {
+    inputValue,
+    setInputValue,
+    searchKeyword,
+    selectedSkills,
+    searchResults,
+    isLoading,
+    isSearchResultVisible,
+    handleSearch,
+    handleSelectSkill,
+    handleRemoveSkill,
+    clearSearch,
+  } = useSkillSearch();
 
   const careerProjectOptions: SelectOption[] = [
     {
@@ -191,7 +208,27 @@ const ResumeEditView = () => {
                   <Text className="typo-body-17-semibold">스킬</Text>
                 </View>
 
-                <HUInput placeholder="내 스킬을 입력하여 추가하세요" />
+                <SkillSearchInput
+                  value={inputValue}
+                  onChangeText={setInputValue}
+                  onSubmit={handleSearch}
+                  onClear={clearSearch}
+                />
+
+                {isSearchResultVisible && (
+                  <SkillSearchResultList
+                    results={searchResults}
+                    searchKeyword={searchKeyword}
+                    selectedSkillIds={selectedSkills.map(s => s.skillId)}
+                    onSelectSkill={handleSelectSkill}
+                    isLoading={isLoading}
+                  />
+                )}
+
+                <SelectedSkillsList
+                  selectedSkills={selectedSkills}
+                  onRemoveSkill={handleRemoveSkill}
+                />
               </View>
 
               {/* 어학 */}

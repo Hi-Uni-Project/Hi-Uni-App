@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 
-import { fetchResumeData } from '../api/resumeApi';
+import { fetchResumeData, searchSkillData } from '../api/resumeApi';
 
 const useResumeQueries = () => {
   const resumeDataQuery = useQuery({
@@ -17,4 +17,18 @@ const useResumeQueries = () => {
   };
 };
 
-export default useResumeQueries;
+const useSkillSearchQuery = (keyword: string) => {
+  const result = useQuery({
+    queryKey: ['skillSearch', keyword],
+    queryFn: () => searchSkillData(keyword),
+    enabled: keyword.length > 0,
+  });
+
+  return {
+    skillSearchData: result.data,
+    skillSearchLoading: result.isLoading,
+    skillSearchError: result.isError,
+  };
+};
+
+export { useResumeQueries, useSkillSearchQuery };
