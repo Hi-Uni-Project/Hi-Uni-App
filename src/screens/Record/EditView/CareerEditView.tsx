@@ -13,6 +13,7 @@ import {
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import DatePickerInput from '@/features/record/editResume/components/DatePickerInput';
 import ResumeBackHeader from '@/features/record/editResume/components/ResumeBackHeader';
 import useResumeEdit from '@/features/record/editResume/hooks/useResumeEdit';
 import {
@@ -161,12 +162,9 @@ const CareerEditView = () => {
                   <Text className="typo-body-12-regular mb-[4px] ml-[2px] text-surface-400">
                     시작일
                   </Text>
-                  <TextInput
-                    className="w-[144px] rounded-[15px] border-[1px] border-gray-200 bg-white pb-[11px] pl-[14px] pt-[12px] typo-body-15-regular"
-                    placeholder="22.06.23"
-                    placeholderTextColor={'#B7B7B7'}
+                  <DatePickerInput
                     value={startDateStr}
-                    onChangeText={setStartDateStr}
+                    onSelectDate={setStartDateStr}
                   />
                 </View>
 
@@ -176,12 +174,9 @@ const CareerEditView = () => {
                   <Text className="typo-body-12-regular mb-[4px] ml-[2px] text-surface-400">
                     종료일
                   </Text>
-                  <TextInput
-                    className="w-[144px] rounded-[15px] border-[1px] border-gray-200 bg-white pb-[11px] pl-[14px] pt-[12px] typo-body-15-regular"
-                    placeholder="22.06.23"
-                    placeholderTextColor={'#B7B7B7'}
+                  <DatePickerInput
                     value={endDateStr}
-                    onChangeText={setEndDateStr}
+                    onSelectDate={setEndDateStr}
                   />
                 </View>
               </View>

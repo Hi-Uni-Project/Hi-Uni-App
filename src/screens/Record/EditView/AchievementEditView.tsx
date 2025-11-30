@@ -13,6 +13,7 @@ import {
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import DatePickerInput from '@/features/record/editResume/components/DatePickerInput';
 import ResumeBackHeader from '@/features/record/editResume/components/ResumeBackHeader';
 import useResumeEdit from '@/features/record/editResume/hooks/useResumeEdit';
 import { AchievementType } from '@/features/record/editResume/types/domainType';
@@ -186,13 +187,12 @@ const AchievementEditView = () => {
                   *
                 </Text>
               </Text>
-              <TextInput
-                className="mt-[9px] w-[144px] rounded-[15px] border-[1px] border-gray-200 bg-white pb-[11px] pl-[14px] pt-[12px] typo-body-15-regular"
-                placeholder="22.06.23"
-                placeholderTextColor={'#B7B7B7'}
-                value={periodDateStr}
-                onChangeText={setPeriodDateStr}
-              />
+              <View className="mt-[9px]">
+                <DatePickerInput
+                  value={periodDateStr}
+                  onSelectDate={setPeriodDateStr}
+                />
+              </View>
             </View>
 
             {/* 세부 내용 */}
