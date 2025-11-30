@@ -1,18 +1,22 @@
+// 기존 코드 호환성을 위한 re-export
+// 새로운 코드에서는 ../types/enum/resumeEnum에서 직접 import 권장
+
 import {
-  AchievementType,
   Gender,
   GraduationStatus,
   LanguageLevel,
-} from '../types/domainType';
+  AchievementType,
+  GENDER_DISPLAY_NAME,
+  GRADUATION_STATUS_DISPLAY_NAME,
+  LANGUAGE_LEVEL_DISPLAY_NAME,
+  ACHIEVEMENT_TYPE_DISPLAY_NAME,
+} from '../types/enum/resumeEnum';
 
 // ============================================
-// Gender (성별)
+// Gender (성별) - Legacy 호환
 // ============================================
 
-export const GenderEnumToLabel: Record<Gender, string> = {
-  [Gender.MALE]: '남성',
-  [Gender.FEMALE]: '여성',
-};
+export const GenderEnumToLabel = GENDER_DISPLAY_NAME;
 
 export const GenderLabelToEnum: Record<string, Gender> = {
   남성: Gender.MALE,
@@ -20,17 +24,10 @@ export const GenderLabelToEnum: Record<string, Gender> = {
 };
 
 // ============================================
-// GraduationStatus (졸업 상태)
+// GraduationStatus (졸업 상태) - Legacy 호환
 // ============================================
 
-export const GraduationStatusEnumToLabel: Record<GraduationStatus, string> = {
-  [GraduationStatus.GRADUATED]: '졸업',
-  [GraduationStatus.EXPECTED]: '졸업 예정',
-  [GraduationStatus.ENROLLED]: '재학 중',
-  [GraduationStatus.DROPOUT]: '중퇴',
-  [GraduationStatus.COMPLETED]: '수료',
-  [GraduationStatus.LEAVE]: '휴학 중',
-};
+export const GraduationStatusEnumToLabel = GRADUATION_STATUS_DISPLAY_NAME;
 
 export const GraduationStatusLabelToEnum: Record<string, GraduationStatus> = {
   졸업: GraduationStatus.GRADUATED,
@@ -42,15 +39,10 @@ export const GraduationStatusLabelToEnum: Record<string, GraduationStatus> = {
 };
 
 // ============================================
-// LanguageLevel (언어 능력)
+// LanguageLevel (언어 능력) - Legacy 호환
 // ============================================
 
-export const LanguageLevelEnumToLabel: Record<LanguageLevel, string> = {
-  [LanguageLevel.BASIC]: '일상 회화',
-  [LanguageLevel.BUSINESS]: '비즈니스 레벨',
-  [LanguageLevel.PROFESSIONAL]: '고급 비즈니스 레벨',
-  [LanguageLevel.FLUENT]: '유창함',
-};
+export const LanguageLevelEnumToLabel = LANGUAGE_LEVEL_DISPLAY_NAME;
 
 export const LanguageLevelLabelToEnum: Record<string, LanguageLevel> = {
   '일상 회화': LanguageLevel.BASIC,
@@ -60,15 +52,10 @@ export const LanguageLevelLabelToEnum: Record<string, LanguageLevel> = {
 };
 
 // ============================================
-// AchievementType (수상/자격증 유형)
+// AchievementType (수상/자격증 유형) - Legacy 호환
 // ============================================
 
-export const AchievementTypeEnumToLabel: Record<AchievementType, string> = {
-  [AchievementType.AWARD]: '수상',
-  [AchievementType.CERTIFICATE]: '자격증',
-  [AchievementType.TRAINING]: '교육',
-  [AchievementType.OTHER]: '기타',
-};
+export const AchievementTypeEnumToLabel = ACHIEVEMENT_TYPE_DISPLAY_NAME;
 
 export const AchievementTypeLabelToEnum: Record<string, AchievementType> = {
   수상: AchievementType.AWARD,

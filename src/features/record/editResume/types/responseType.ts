@@ -1,17 +1,8 @@
 import { ResponseTypes } from '@/shared/api/types';
 
+// Response 타입은 서버 API 응답 기준 (원천 타입)
 export type GenderResponse = 'MALE' | 'FEMALE';
 
-/**
- * 졸업 상태 응답 타입
- *
- * - GRADUATED(졸업)
- * - EXPECTED(졸업 예정)
- * - ENROLLED(재학 중)
- * - DROPOUT(중퇴)
- * - COMPLETED(수료)
- * - LEAVE(휴학 중)
- */
 export type GraduationStatusResponse =
   | 'GRADUATED'
   | 'EXPECTED'
@@ -20,28 +11,12 @@ export type GraduationStatusResponse =
   | 'COMPLETED'
   | 'LEAVE';
 
-/**
- * 언어 능력 응답 타입
- *
- * - BASIC(일상 회화)
- * - BUSINESS(비즈니스 레벨)
- * - PROFESSIONAL(고급 비즈니스 레벨)
- * - FLUENT(유창함)
- */
 export type LanguageLevelResponse =
   | 'BASIC'
   | 'BUSINESS'
   | 'PROFESSIONAL'
   | 'FLUENT';
 
-/**
- * 수상 및 자격증 유형 응답 타입
- *
- * - AWARD(수상)
- * - CERTIFICATE(자격증)
- * - TRAINING(교육)
- * - OTHER(기타)
- */
 export type AchievementTypeResponse =
   | 'AWARD'
   | 'CERTIFICATE'

@@ -1,58 +1,14 @@
 import { Asset } from 'react-native-image-picker';
 
-export enum Gender {
-  MALE = 'MALE',
-  FEMALE = 'FEMALE',
-}
+import {
+  Gender,
+  GraduationStatus,
+  LanguageLevel,
+  AchievementType,
+} from './enum/resumeEnum';
 
-/**
- * 졸업 상태 응답 타입
- *
- * - GRADUATED(졸업)
- * - EXPECTED(졸업 예정)
- * - ENROLLED(재학 중)
- * - DROPOUT(중퇴)
- * - COMPLETED(수료)
- * - LEAVE(휴학 중)
- */
-export enum GraduationStatus {
-  GRADUATED = 'GRADUATED',
-  EXPECTED = 'EXPECTED',
-  ENROLLED = 'ENROLLED',
-  DROPOUT = 'DROPOUT',
-  COMPLETED = 'COMPLETED',
-  LEAVE = 'LEAVE',
-}
-
-/**
- * 언어 능력 응답 타입
- *
- * - BASIC(일상 회화)
- * - BUSINESS(비즈니스 레벨)
- * - PROFESSIONAL(고급 비즈니스 레벨)
- * - FLUENT(유창함)
- */
-export enum LanguageLevel {
-  BASIC = 'BASIC',
-  BUSINESS = 'BUSINESS',
-  PROFESSIONAL = 'PROFESSIONAL',
-  FLUENT = 'FLUENT',
-}
-
-/**
- * 수상 및 자격증 유형 응답 타입
- *
- * - AWARD(수상)
- * - CERTIFICATE(자격증)
- * - TRAINING(교육)
- * - OTHER(기타)
- */
-export enum AchievementType {
-  AWARD = 'AWARD',
-  CERTIFICATE = 'CERTIFICATE',
-  TRAINING = 'TRAINING',
-  OTHER = 'OTHER',
-}
+// enum은 ./enum/resumeEnum.ts에서 관리
+export { Gender, GraduationStatus, LanguageLevel, AchievementType };
 
 export interface Career {
   careerId: number | null;
