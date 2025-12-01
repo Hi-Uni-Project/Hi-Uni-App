@@ -27,7 +27,7 @@ const useBoardWrite = () => {
     if (selectedPostType && isReview) {
       resetForm();
     }
-  }, [selectedPostType]);
+  }, [selectedPostType, isReview]);
 
   const hasContent = () => content.trim() !== '' || title.trim() !== '';
 
@@ -64,6 +64,7 @@ const useBoardWrite = () => {
     if (changeType) {
       handlePostTypeChange(changeType);
       resetForm();
+      setTitle('');
     }
   };
 
