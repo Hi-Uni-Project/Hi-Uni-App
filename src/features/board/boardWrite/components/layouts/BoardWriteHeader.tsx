@@ -1,5 +1,6 @@
 import React from 'react';
 
+import clsx from 'clsx';
 import { View, Pressable, Text } from 'react-native';
 
 import ActionIcons from '@/shared/icons/ActionIcons';
@@ -8,9 +9,15 @@ interface Props {
   paddingTop: number;
   height: number;
   onClose: () => void;
+  isSubmitEnabled: string | boolean;
 }
 
-const BoardWriteHeader = ({ paddingTop, height, onClose }: Props) => {
+const BoardWriteHeader = ({
+  paddingTop,
+  height,
+  onClose,
+  isSubmitEnabled,
+}: Props) => {
   return (
     <View
       className="bg-white px-5"
@@ -30,8 +37,13 @@ const BoardWriteHeader = ({ paddingTop, height, onClose }: Props) => {
           글쓰기
         </Text>
 
-        <Pressable>
-          <Text className="text-surface-300 typo-sub-title-18-medium">
+        <Pressable
+          disabled={!isSubmitEnabled}
+          onPress={() => console.log('API')}>
+          <Text
+            className={clsx(
+              `${isSubmitEnabled ? 'text-primary-purple' : 'text-surface-300'} typo-sub-title-18-medium`,
+            )}>
             완료
           </Text>
         </Pressable>
