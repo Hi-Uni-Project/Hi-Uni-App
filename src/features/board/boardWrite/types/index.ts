@@ -1,3 +1,5 @@
+import useReviewTemplate from '../hooks/useReviewTemplate';
+
 import { PostType } from '@/features/board/shared/types/enum/postEnum';
 
 export type ModalState =
@@ -7,6 +9,10 @@ export type ModalState =
   | { type: 'dropdown' }
   | { type: 'optionSheet' }
   | { type: 'optionChange' };
+
+export interface TemplateProps {
+  reviewForm: ReturnType<typeof useReviewTemplate>;
+}
 
 export interface InternshipFormData {
   companyName: string;
@@ -151,4 +157,38 @@ export const getInitialFormData = (
         additionalExperience: '',
       } as InternshipFormData;
   }
+};
+
+export const isJobFormData = (data: ReviewFormData): data is JobFormData => {
+  return 'applicationMethod' in data;
+};
+
+export const isInterviewFormData = (
+  data: ReviewFormData,
+): data is InterviewFormData => {
+  return 'interviewType' in data;
+};
+
+export const isLicenseFormData = (
+  data: ReviewFormData,
+): data is LicenseFormData => {
+  return 'licenseName' in data;
+};
+
+export const hasDateFields = (
+  data: ReviewFormData,
+): data is InternshipFormData | WorkStoryFormData => {
+  return 'startDate' in data && 'endDate' in data;
+};
+
+export const isInternshipFormData = (
+  data: ReviewFormData,
+): data is InternshipFormData => {
+  return 'learnings' in data && 'startDate' in data;
+};
+
+export const isWorkStoryFormData = (
+  data: ReviewFormData,
+): data is WorkStoryFormData => {
+  return 'jobLevel' in data && 'startDate' in data;
 };

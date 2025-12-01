@@ -1,7 +1,15 @@
 import { useState } from 'react';
 
 import { PostType } from '../../shared/types/enum/postEnum';
-import { getInitialFormData, ReviewFormData } from '../types';
+import {
+  getInitialFormData,
+  InternshipFormData,
+  InterviewFormData,
+  JobFormData,
+  LicenseFormData,
+  ReviewFormData,
+  WorkStoryFormData,
+} from '../types';
 
 export const useReviewTemplate = (selectedPostType: PostType | null) => {
   const [showCal, setShowCal] = useState(false);
@@ -36,6 +44,99 @@ export const useReviewTemplate = (selectedPostType: PostType | null) => {
     });
   };
 
+  const validateRequiredFields = (): boolean => {
+    if (!selectedPostType) {
+      return false;
+    }
+
+    const isCorrectType = () => {
+      switch (selectedPostType) {
+        case 'INTERNSHIP':
+          return 'learnings' in formData && 'startDate' in formData;
+        case 'JOB':
+          return 'applicationMethod' in formData;
+        case 'INTERVIEW':
+          return 'interviewType' in formData;
+        case 'EXPERIENCE':
+          return 'jobLevel' in formData && 'startDate' in formData;
+        case 'LICENSE':
+          return 'licenseName' in formData;
+        default:
+          return false;
+      }
+    };
+
+    if (!isCorrectType()) {
+      return false;
+    }
+
+    switch (selectedPostType) {
+      case 'INTERNSHIP': {
+        const data = formData as InternshipFormData;
+        return !!(
+          data.companyName?.trim() &&
+          data.startDate &&
+          data.endDate &&
+          data.position?.trim() &&
+          data.tasks?.trim() &&
+          data.learnings?.trim()
+        );
+      }
+
+      case 'JOB': {
+        const data = formData as JobFormData;
+        return !!(
+          data.companyName?.trim() &&
+          data.position?.trim() &&
+          data.applicationMethod?.trim() &&
+          data.focusArea?.trim() &&
+          data.preparation?.trim() &&
+          data.result?.trim()
+        );
+      }
+
+      case 'INTERVIEW': {
+        const data = formData as InterviewFormData;
+        return !!(
+          data.companyName?.trim() &&
+          data.position?.trim() &&
+          data.interviewType?.trim() &&
+          data.questions?.trim() &&
+          data.answerPreparation?.trim() &&
+          data.atmosphere?.trim()
+        );
+      }
+
+      case 'EXPERIENCE': {
+        const data = formData as WorkStoryFormData;
+        return !!(
+          data.companyName?.trim() &&
+          data.startDate &&
+          data.endDate &&
+          data.position?.trim() &&
+          data.jobLevel?.trim() &&
+          data.tasks?.trim() &&
+          data.requiredSkills?.trim()
+        );
+      }
+
+      case 'LICENSE': {
+        const data = formData as LicenseFormData;
+        return !!(
+          data.licenseName?.trim() &&
+          data.preparationPeriod?.trim() &&
+          data.materials?.trim() &&
+          data.difficulty?.trim() &&
+          data.studyMethod?.trim() &&
+          data.tips?.trim()
+        );
+      }
+
+      default:
+        return false;
+    }
+  };
+
   const resetForm = () => {
     setFormData(getInitialFormData(selectedPostType));
   };
@@ -64,6 +165,7 @@ export const useReviewTemplate = (selectedPostType: PostType | null) => {
     resetForm,
     toggleCalendar,
     hasReviewContent,
+    validateRequiredFields,
   };
 };
 

@@ -2,21 +2,15 @@ import React from 'react';
 
 import { View, TextInput } from 'react-native';
 
-import { InterviewFormData } from '../../types';
+import { isInterviewFormData, TemplateProps } from '../../types';
 import { FormField } from '../FormField';
 
-interface Props {
-  reviewForm: {
-    formData: InterviewFormData;
-    updateField: <K extends keyof InterviewFormData>(
-      key: K,
-      value: InterviewFormData[K],
-    ) => void;
-  };
-}
-
-const InterviewTemplate = ({ reviewForm }: Props) => {
+const InterviewTemplate = ({ reviewForm }: TemplateProps) => {
   const { formData, updateField } = reviewForm;
+
+  if (!isInterviewFormData(formData)) {
+    return null;
+  }
 
   return (
     <View className="w-full">

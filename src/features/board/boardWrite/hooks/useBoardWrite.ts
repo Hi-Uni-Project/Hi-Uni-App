@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import { useNavigation } from '@react-navigation/native';
 
@@ -8,9 +8,7 @@ import { useReviewTemplate } from './useReviewTemplate';
 
 import { PostType } from '@/features/board/shared/types/enum/postEnum';
 
-const useBoardWrite = (
-  reviewTemplate: ReturnType<typeof useReviewTemplate>,
-) => {
+const useBoardWrite = () => {
   const navigation = useNavigation();
 
   const [selectedPostType, setSelectedPostType] = useState<PostType | null>(
@@ -21,7 +19,15 @@ const useBoardWrite = (
   const [content, setContent] = useState('');
   const [modalState, setModalState] = useState<ModalState>({ type: 'none' });
   const [changeType, setChangeType] = useState<PostType | null>(null);
+
+  const reviewTemplate = useReviewTemplate(selectedPostType);
   const { hasReviewContent, resetForm } = reviewTemplate;
+
+  useEffect(() => {
+    if (selectedPostType && isReview) {
+      resetForm();
+    }
+  }, [selectedPostType]);
 
   const hasContent = () => content.trim() !== '' || title.trim() !== '';
 
@@ -55,8 +61,10 @@ const useBoardWrite = (
   };
 
   const handleConfirmPostTypeChange = () => {
-    handlePostTypeChange(changeType);
-    resetForm();
+    if (changeType) {
+      handlePostTypeChange(changeType);
+      resetForm();
+    }
   };
 
   // review 모드 변경
@@ -106,6 +114,7 @@ const useBoardWrite = (
     isReview,
     content,
     modalState,
+    reviewTemplate,
 
     // Setters
     setTitle,

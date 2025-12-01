@@ -2,23 +2,16 @@ import React from 'react';
 
 import { View, TextInput, Text } from 'react-native';
 
-import { WorkStoryFormData } from '../../types';
+import { isWorkStoryFormData, TemplateProps } from '../../types';
 import { DateSelector } from '../DateSelector';
 import { FormField } from '../FormField';
 import TemplateCalendar from '../TemplateCalendar';
 
-import { formatDateOrTime } from '@/shared/utils/formatter';
 import DateLine from '@/static/icons/date-line.svg';
 
-interface Props {
-  reviewForm: ReturnType<
-    typeof import('../../hooks/useReviewTemplate').useReviewTemplate
-  >;
-}
-
-const ExperienceTemplate = ({ reviewForm }: Props) => {
+const ExperienceTemplate = ({ reviewForm }: TemplateProps) => {
   const {
-    formData: rawFormData,
+    formData,
     updateField,
     startDate,
     endDate,
@@ -26,7 +19,10 @@ const ExperienceTemplate = ({ reviewForm }: Props) => {
     toggleCalendar,
     formatDate,
   } = reviewForm;
-  const formData = rawFormData as WorkStoryFormData;
+
+  if (!isWorkStoryFormData(formData)) {
+    return null;
+  }
 
   return (
     <View className="w-full">
@@ -52,7 +48,7 @@ const ExperienceTemplate = ({ reviewForm }: Props) => {
           <View className="mt-2 flex-row space-x-3">
             <DateSelector
               label="시작일"
-              date={formatDateOrTime(startDate)}
+              date={formatDate(startDate)}
               onPress={toggleCalendar}
             />
 

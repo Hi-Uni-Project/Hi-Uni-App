@@ -2,16 +2,15 @@ import React from 'react';
 
 import { View, TextInput } from 'react-native';
 
+import { isJobFormData, TemplateProps } from '../../types';
 import { FormField } from '../FormField';
 
-interface Props {
-  reviewForm: ReturnType<
-    typeof import('../../hooks/useReviewTemplate').useReviewTemplate
-  >;
-}
-
-const JobTemplate = ({ reviewForm }: Props) => {
+const JobTemplate = ({ reviewForm }: TemplateProps) => {
   const { formData, updateField } = reviewForm;
+
+  if (!isJobFormData(formData)) {
+    return null;
+  }
 
   return (
     <View className="w-full">

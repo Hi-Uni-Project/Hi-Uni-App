@@ -2,21 +2,15 @@ import React from 'react';
 
 import { View, TextInput } from 'react-native';
 
-import { LicenseFormData } from '../../types';
+import { isLicenseFormData, TemplateProps } from '../../types';
 import { FormField } from '../FormField';
 
-interface Props {
-  reviewForm: {
-    formData: LicenseFormData;
-    updateField: <K extends keyof LicenseFormData>(
-      key: K,
-      value: LicenseFormData[K],
-    ) => void;
-  };
-}
-
-const LicenseTemplate = ({ reviewForm }: Props) => {
+const LicenseTemplate = ({ reviewForm }: TemplateProps) => {
   const { formData, updateField } = reviewForm;
+
+  if (!isLicenseFormData(formData)) {
+    return null;
+  }
 
   return (
     <View className="w-full">
