@@ -72,6 +72,7 @@ const NormalWriteView = ({
         <TextInput
           multiline
           value={content}
+          textAlignVertical="top"
           onChangeText={onContentChange}
           placeholder={placeholder}
           placeholderTextColor="#b7b7b7"

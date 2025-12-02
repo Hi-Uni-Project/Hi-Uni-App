@@ -15,7 +15,7 @@ const JobTemplate = ({ reviewForm }: TemplateProps) => {
   return (
     <View className="w-full">
       <View className="mt-4 px-7">
-        <View className="absolute left-0 top-0 h-[820px] w-[5px] rounded-[15px] bg-primary-purple" />
+        <View className="absolute left-0 top-0 h-[835px] w-[5px] rounded-[15px] bg-primary-purple" />
 
         {/* 회사명 */}
         <FormField
@@ -60,7 +60,7 @@ const JobTemplate = ({ reviewForm }: TemplateProps) => {
           value={formData.preparation}
           onChangeText={text => updateField('preparation', text)}
           multiline
-          height="h-18"
+          height={65}
           required
         />
 
@@ -80,7 +80,7 @@ const JobTemplate = ({ reviewForm }: TemplateProps) => {
           value={formData.feelings}
           onChangeText={text => updateField('feelings', text)}
           multiline
-          height="h-[80px]"
+          height={85}
         />
       </View>
 
@@ -91,6 +91,7 @@ const JobTemplate = ({ reviewForm }: TemplateProps) => {
           placeholder="추가로 취업 후기를 작성해주세요."
           placeholderTextColor="#b7b7b7"
           value={formData.additionalExperience}
+          textAlignVertical="top"
           onChangeText={text => updateField('additionalExperience', text)}
           className="h-[420px] rounded-[15px] border border-surface-200 bg-white p-4 text-main-text typo-body-15-regular"
         />

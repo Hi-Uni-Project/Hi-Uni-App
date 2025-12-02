@@ -27,7 +27,7 @@ const ExperienceTemplate = ({ reviewForm }: TemplateProps) => {
   return (
     <View className="w-full">
       <View className="mt-4 px-7">
-        <View className="absolute left-0 top-0 h-[865px] w-[5px] rounded-[15px] bg-primary-purple" />
+        <View className="absolute left-0 top-0 h-[860px] w-[5px] rounded-[15px] bg-primary-purple" />
 
         {/* 회사명 */}
         <FormField
@@ -91,7 +91,7 @@ const ExperienceTemplate = ({ reviewForm }: TemplateProps) => {
           value={formData.tasks}
           onChangeText={text => updateField('tasks', text)}
           multiline
-          height="h-18"
+          height={45}
           required
         />
 
@@ -101,7 +101,7 @@ const ExperienceTemplate = ({ reviewForm }: TemplateProps) => {
           placeholder="(ex : Figma와 같은 디자인 툴 활용 능력, 데이터 기반 사고, 사용자 관점에서 문제 해결 능력 등)"
           value={formData.requiredSkills}
           onChangeText={text => updateField('requiredSkills', text)}
-          height="h-18"
+          height={65}
           multiline
           required
         />
@@ -113,7 +113,7 @@ const ExperienceTemplate = ({ reviewForm }: TemplateProps) => {
           value={formData.feelings}
           onChangeText={text => updateField('feelings', text)}
           multiline
-          height="h-[70px]"
+          height={65}
         />
       </View>
 
@@ -122,6 +122,7 @@ const ExperienceTemplate = ({ reviewForm }: TemplateProps) => {
         <TextInput
           multiline
           placeholder="추가로 실무 이야기를 작성해주세요."
+          textAlignVertical="top"
           placeholderTextColor="#b7b7b7"
           value={formData.additionalExperience}
           onChangeText={text => updateField('additionalExperience', text)}

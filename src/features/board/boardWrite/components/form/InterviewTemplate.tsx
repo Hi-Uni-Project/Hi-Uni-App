@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { View, TextInput } from 'react-native';
+import { View, TextInput, Platform } from 'react-native';
 
 import { isInterviewFormData, TemplateProps } from '../../types';
 import { FormField } from '../FormField';
@@ -15,7 +15,7 @@ const InterviewTemplate = ({ reviewForm }: TemplateProps) => {
   return (
     <View className="w-full">
       <View className="mt-4 px-7">
-        <View className="absolute left-0 top-0 h-[885px] w-[5px] rounded-[15px] bg-primary-purple" />
+        <View className="absolute left-0 top-0 h-[880px] w-[5px] rounded-[15px] bg-primary-purple" />
 
         {/* 회사명 */}
         <FormField
@@ -51,7 +51,7 @@ const InterviewTemplate = ({ reviewForm }: TemplateProps) => {
           value={formData.questions}
           onChangeText={text => updateField('questions', text)}
           multiline
-          height="h-18"
+          height={65}
           required
         />
 
@@ -61,7 +61,7 @@ const InterviewTemplate = ({ reviewForm }: TemplateProps) => {
           placeholder="(ex : 무역 관련 시사 자료를 공부하고, 이전 교환학생 경험과 인턴십 사례를 활용해 답변을 구성하였습니다.)"
           value={formData.answerPreparation}
           onChangeText={text => updateField('answerPreparation', text)}
-          height="h-18"
+          height={65}
           multiline
           required
         />
@@ -72,7 +72,7 @@ const InterviewTemplate = ({ reviewForm }: TemplateProps) => {
           placeholder="(ex : 비교적 편안했으며, 꼬리 질문보다는 경험 기반 답변을 중점적으로 확인하는 분위기였습니다.)"
           value={formData.atmosphere}
           onChangeText={text => updateField('atmosphere', text)}
-          height="h-13"
+          height={65}
           multiline
           required
         />
@@ -84,7 +84,7 @@ const InterviewTemplate = ({ reviewForm }: TemplateProps) => {
           value={formData.feelings}
           onChangeText={text => updateField('feelings', text)}
           multiline
-          height="h-[70px]"
+          height={Platform.OS === 'android' ? 90 : 65}
         />
       </View>
 
@@ -95,6 +95,7 @@ const InterviewTemplate = ({ reviewForm }: TemplateProps) => {
           placeholder="추가로 면접 후기를 작성해주세요."
           placeholderTextColor="#b7b7b7"
           value={formData.additionalExperience}
+          textAlignVertical="top"
           onChangeText={text => updateField('additionalExperience', text)}
           className="h-[420px] rounded-[15px] border border-surface-200 bg-white p-4 text-main-text typo-body-15-regular"
         />

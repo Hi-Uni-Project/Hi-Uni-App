@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { View, Text, TextInput } from 'react-native';
+import { View, Text, TextInput, Platform } from 'react-native';
 
 interface Props {
   label: string;
@@ -9,7 +9,7 @@ interface Props {
   onChangeText: (text: string) => void;
   multiline?: boolean;
   required?: boolean;
-  height?: string;
+  height?: number;
 }
 
 export const FormField = ({
@@ -19,16 +19,8 @@ export const FormField = ({
   onChangeText,
   multiline = false,
   required = false,
-  height,
+  height = 72,
 }: Props) => {
-  const inputClassName = multiline
-    ? `${height || 'h-16'} p-0 text-main-text typo-body-15-regular`
-    : 'h-4 p-0 text-main-text typo-body-15-regular';
-
-  const containerClassName = multiline
-    ? 'mt-2 rounded-[15px] border border-surface-200 bg-white p-4'
-    : 'mt-2 rounded-[15px] border border-surface-200 bg-white px-4 py-3';
-
   return (
     <View className="mb-6">
       <Text className="text-main-text typo-body-16-semibold">
@@ -36,14 +28,22 @@ export const FormField = ({
         {required && <Text className="text-primary-purple"> *</Text>}
       </Text>
 
-      <View className={containerClassName}>
+      <View className="mt-2 rounded-[15px] border border-surface-200 bg-white px-4 py-3">
         <TextInput
           placeholder={placeholder}
           placeholderTextColor="#B7B7B7"
           value={value}
           onChangeText={onChangeText}
-          className={inputClassName}
           multiline={multiline}
+          className="text-main-text typo-body-15-regular"
+          style={{
+            height: multiline ? height : 22, // 모든 단일 행에 고정 높이
+            padding: 0,
+            margin: 0,
+            ...(Platform.OS === 'android' && {
+              textAlignVertical: multiline ? 'top' : 'center',
+            }),
+          }}
         />
       </View>
     </View>
