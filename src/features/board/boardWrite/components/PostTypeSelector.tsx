@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Pressable, Text } from 'react-native';
+import { Pressable, Text, View } from 'react-native';
 
 import { PostType } from '@/features/board/shared/types/enum/postEnum';
 import ChevronIcons from '@/shared/icons/ChevronIcons';
@@ -19,21 +19,23 @@ const PostTypeSelector = ({
   onPress,
 }: Props) => {
   return (
-    <Pressable
-      className={`flex-row items-center justify-center rounded-[20px] ${selectedPostType ? 'bg-primary-purple' : 'border border-surface-300'} px-3 py-0.5`}
-      onPress={onPress}>
-      <Text
-        className={`mr-2 ${selectedPostType ? 'text-white' : 'text-surface-600'} typo-body-16-regular`}>
-        {displayName}
-      </Text>
+    <View className="items-center justify-center">
+      <Pressable
+        className={`flex-row items-center justify-center rounded-[20px] ${selectedPostType ? 'bg-primary-purple' : 'border border-surface-300'} h-8 px-3`}
+        onPress={onPress}>
+        <Text
+          className={`mr-2 ${selectedPostType ? 'text-white' : 'text-surface-600'} typo-body-16-regular`}>
+          {displayName}
+        </Text>
 
-      <ChevronIcons
-        direction={isDropdownOpen ? 'top' : 'bottom'}
-        width={11}
-        height={9}
-        color={selectedPostType ? '#ffffff' : '#b7b7b7'}
-      />
-    </Pressable>
+        <ChevronIcons
+          direction={isDropdownOpen ? 'top' : 'bottom'}
+          width={11}
+          height={9}
+          color={selectedPostType ? '#ffffff' : '#b7b7b7'}
+        />
+      </Pressable>
+    </View>
   );
 };
 

@@ -1,5 +1,7 @@
 import React from 'react';
 
+import useReviewTemplate from '../hooks/useReviewTemplate';
+
 import ExperienceTemplate from './form/ExperienceTemplate';
 import InternshipTemplate from './form/InternshipTemplate';
 import InterviewTemplate from './form/InterviewTemplate';
@@ -10,14 +12,10 @@ import { PostType } from '@/features/board/shared/types/enum/postEnum';
 
 interface Props {
   postType: PostType | null;
-  reviewForm: any;
+  reviewForm: ReturnType<typeof useReviewTemplate>;
 }
 
 const ReviewTemplateSwitcher = ({ postType, reviewForm }: Props) => {
-  if (!postType) {
-    return <InternshipTemplate reviewForm={reviewForm} />;
-  }
-
   switch (postType) {
     case 'INTERNSHIP':
       return <InternshipTemplate reviewForm={reviewForm} />;
@@ -33,9 +31,6 @@ const ReviewTemplateSwitcher = ({ postType, reviewForm }: Props) => {
 
     case 'LICENSE':
       return <LicenseTemplate reviewForm={reviewForm} />;
-
-    default:
-      return <InternshipTemplate reviewForm={reviewForm} />;
   }
 };
 
