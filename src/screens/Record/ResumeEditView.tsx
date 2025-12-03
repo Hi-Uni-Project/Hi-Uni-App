@@ -16,6 +16,10 @@ import {
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import AddButton from '@/features/record/editResume/components/AddButton';
+import AchievementItem from '@/features/record/editResume/components/card/AchievementItem';
+import CareerCard from '@/features/record/editResume/components/card/CareerCard';
+import EducationCard from '@/features/record/editResume/components/card/EducationCard';
+import LanguageCard from '@/features/record/editResume/components/card/LanguageCard';
 import ImagePicker from '@/features/record/editResume/components/ImagePicker';
 import ResumeEditHeader from '@/features/record/editResume/components/ResumeEditHeader';
 import SelectBottomSheet, {
@@ -27,13 +31,9 @@ import SkillSearchResultList from '@/features/record/editResume/components/Skill
 import useResumeEdit from '@/features/record/editResume/hooks/useResumeEdit';
 import useSkillSearch from '@/features/record/editResume/hooks/useSkillSearch';
 import { AchievementType } from '@/features/record/editResume/types/domainType';
-import { formatToShortDate } from '@/features/record/editResume/utils/dateUtils';
 import {
   GenderEnumToLabel,
   GenderLabelToEnum,
-  GraduationStatusEnumToLabel,
-  LanguageLevelEnumToLabel,
-  AchievementTypeEnumToLabel,
 } from '@/features/record/editResume/utils/labelMapper';
 import { RecordStackNavigationProp } from '@/navigation/types/navigationTypes';
 import HUDropdown from '@/shared/ui/atoms/HUDropdown';
@@ -192,49 +192,24 @@ const ResumeEditView = () => {
 
               {resumeData.careers.length > 0 &&
                 resumeData.careers.map((career, index) => {
-                  return (
-                    <Pressable
-                      onPress={() => {
-                        if (career.careerId != null) {
-                          navigation.navigate('EditCareer', {
-                            careerId: career.careerId,
-                          });
-                        } else {
-                          navigation.navigate('EditCareer', {
-                            tempId: career.tempId,
-                          });
-                        }
-                      }}
-                      className="mx-5 mt-3 justify-start rounded-[15px] bg-surface-200 p-[14px]"
-                      key={index}>
-                      <Text className="text-primary-purple typo-caption-14-regular">
-                        경력
-                      </Text>
-                      <Text className="mt-1 text-main-text typo-body-16-semibold">
-                        {career.companyName}
-                      </Text>
-                      <Text className="mt-[5px] typo-body-15-semibold">
-                        {formatToShortDate(career.startDate)} -{' '}
-                        {formatToShortDate(career.endDate)}
-                      </Text>
+                  const onPress = () => {
+                    if (career.careerId != null) {
+                      navigation.navigate('EditCareer', {
+                        careerId: career.careerId,
+                      });
+                    } else {
+                      navigation.navigate('EditCareer', {
+                        tempId: career.tempId,
+                      });
+                    }
+                  };
 
-                      {career.role && career.role.trim() !== '' && (
-                        <Text className="mt-[7px] text-gray-800 typo-caption-14-regular">
-                          {career.role}
-                        </Text>
-                      )}
-                      {career.position && career.position.trim() !== '' && (
-                        <Text className="mt-[3px] text-gray-800 typo-caption-14-regular">
-                          {career.position}
-                        </Text>
-                      )}
-                      {career.jobDescription &&
-                        career.jobDescription.trim() !== '' && (
-                          <Text className="mt-[3px] text-gray-800 typo-caption-14-regular">
-                            {career.jobDescription}
-                          </Text>
-                        )}
-                    </Pressable>
+                  return (
+                    <CareerCard
+                      key={career.careerId ?? career.tempId ?? index}
+                      career={career}
+                      onPress={onPress}
+                    />
                   );
                 })}
 
@@ -254,42 +229,24 @@ const ResumeEditView = () => {
 
               {resumeData.educations.length > 0 &&
                 resumeData.educations.map((education, index) => {
-                  return (
-                    <Pressable
-                      onPress={() => {
-                        if (education.educationId != null) {
-                          navigation.navigate('EditEducation', {
-                            educationId: education.educationId,
-                          });
-                        } else {
-                          navigation.navigate('EditEducation', {
-                            tempId: education.tempId,
-                          });
-                        }
-                      }}
-                      className="mx-5 mt-3 justify-start rounded-[15px] bg-surface-200 py-[15px] pl-[14px]"
-                      key={index}>
-                      <Text className="text-main-text typo-body-16-semibold">
-                        {education.universityName}
-                      </Text>
-                      <Text className="mt-[5px] typo-body-15-semibold">
-                        {formatToShortDate(education.startDate)} -{' '}
-                        {formatToShortDate(education.endDate)}{' '}
-                        <Text>
-                          (
-                          {
-                            GraduationStatusEnumToLabel[
-                              education.graduationStatus
-                            ]
-                          }
-                          )
-                        </Text>
-                      </Text>
+                  const onPress = () => {
+                    if (education.educationId != null) {
+                      navigation.navigate('EditEducation', {
+                        educationId: education.educationId,
+                      });
+                    } else {
+                      navigation.navigate('EditEducation', {
+                        tempId: education.tempId,
+                      });
+                    }
+                  };
 
-                      <Text className="mt-[7px] text-gray-800 typo-caption-14-regular">
-                        {education.major}
-                      </Text>
-                    </Pressable>
+                  return (
+                    <EducationCard
+                      key={education.educationId ?? education.tempId ?? index}
+                      education={education}
+                      onPress={onPress}
+                    />
                   );
                 })}
               <View className="mx-5 mt-[34px] border-b-[1.5px] border-surface-200" />
@@ -341,29 +298,28 @@ const ResumeEditView = () => {
 
               {resumeData.languages.length > 0 && (
                 <View className="mt-3 flex-row flex-wrap px-5">
-                  {resumeData.languages.map((lang, idx) => (
-                    <Pressable
-                      key={idx}
-                      onPress={() => {
-                        if (lang.languageId != null) {
-                          navigation.navigate('EditLanguage', {
-                            languageId: lang.languageId,
-                          });
-                        } else {
-                          navigation.navigate('EditLanguage', {
-                            tempId: lang.tempId,
-                          });
-                        }
-                      }}
-                      className={`w-[48%] ${idx % 2 === 0 ? 'mr-[4%]' : ''} mb-3 h-[103px] justify-start rounded-[15px] bg-surface-200 py-[15px] pl-[14px]`}>
-                      <Text className="text-main-text typo-body-16-semibold">
-                        {lang.language}
-                      </Text>
-                      <Text className="mt-[7px] text-surface-800 typo-caption-14-regular">
-                        {LanguageLevelEnumToLabel[lang.level]}
-                      </Text>
-                    </Pressable>
-                  ))}
+                  {resumeData.languages.map((lang, idx) => {
+                    const onPress = () => {
+                      if (lang.languageId != null) {
+                        navigation.navigate('EditLanguage', {
+                          languageId: lang.languageId,
+                        });
+                      } else {
+                        navigation.navigate('EditLanguage', {
+                          tempId: lang.tempId,
+                        });
+                      }
+                    };
+
+                    return (
+                      <LanguageCard
+                        key={lang.languageId ?? lang.tempId ?? idx}
+                        language={lang}
+                        onPress={onPress}
+                        isLeft={idx % 2 === 0}
+                      />
+                    );
+                  })}
                 </View>
               )}
 
@@ -388,99 +344,77 @@ const ResumeEditView = () => {
                 {/* 수상 */}
                 {resumeData.achievements
                   .filter(a => a.type === AchievementType.AWARD)
-                  .map(a => (
-                    <Pressable
-                      key={a.achievementId ?? a.tempId}
-                      onPress={() => {
-                        if (a.achievementId != null) {
-                          navigation.navigate('EditAchievement', {
-                            achievementId: a.achievementId,
-                          });
-                        } else {
-                          navigation.navigate('EditAchievement', {
-                            tempId: a.tempId,
-                          });
-                        }
-                      }}
-                      className="mb-3 justify-start rounded-[15px] bg-surface-200 p-[14px]">
-                      <Text className="text-primary-purple typo-caption-14-regular">
-                        {AchievementTypeEnumToLabel[AchievementType.AWARD]}
-                      </Text>
-                      <Text className="mt-1 text-main-text typo-body-16-semibold">
-                        {a.activityName}
-                      </Text>
-                      <Text className="mt-[5px] text-main-text typo-body-15-semibold">
-                        {formatToShortDate(a.periodDate)}
-                      </Text>
-                      <Text className="mt-[7px] text-surface-800 typo-caption-14-regular">
-                        {a.achievementDescription}
-                      </Text>
-                    </Pressable>
-                  ))}
+                  .map(a => {
+                    const onPress = () => {
+                      if (a.achievementId != null) {
+                        navigation.navigate('EditAchievement', {
+                          achievementId: a.achievementId,
+                        });
+                      } else {
+                        navigation.navigate('EditAchievement', {
+                          tempId: a.tempId,
+                        });
+                      }
+                    };
+
+                    return (
+                      <AchievementItem
+                        key={a.achievementId ?? a.tempId}
+                        achievement={a}
+                        onPress={onPress}
+                      />
+                    );
+                  })}
 
                 {/* 자격증 */}
                 {resumeData.achievements
                   .filter(a => a.type === AchievementType.CERTIFICATE)
-                  .map(a => (
-                    <Pressable
-                      key={a.achievementId ?? a.tempId}
-                      onPress={() => {
-                        if (a.achievementId != null) {
-                          navigation.navigate('EditAchievement', {
-                            achievementId: a.achievementId,
-                          });
-                        } else {
-                          navigation.navigate('EditAchievement', {
-                            tempId: a.tempId,
-                          });
-                        }
-                      }}
-                      className="mb-3 justify-start rounded-[15px] bg-surface-200 p-[14px]">
-                      <Text className="text-primary-purple typo-caption-14-regular">
-                        {
-                          AchievementTypeEnumToLabel[
-                            AchievementType.CERTIFICATE
-                          ]
-                        }
-                      </Text>
-                      <Text className="mt-1 text-main-text typo-body-16-semibold">
-                        {a.activityName}
-                      </Text>
-                      <Text className="mt-[3px] text-gray-800 typo-caption-14-regular">
-                        {formatToShortDate(a.periodDate)}
-                      </Text>
-                    </Pressable>
-                  ))}
+                  .map(a => {
+                    const onPress = () => {
+                      if (a.achievementId != null) {
+                        navigation.navigate('EditAchievement', {
+                          achievementId: a.achievementId,
+                        });
+                      } else {
+                        navigation.navigate('EditAchievement', {
+                          tempId: a.tempId,
+                        });
+                      }
+                    };
+
+                    return (
+                      <AchievementItem
+                        key={a.achievementId ?? a.tempId}
+                        achievement={a}
+                        onPress={onPress}
+                      />
+                    );
+                  })}
 
                 {/* 교육(연수) */}
                 {resumeData.achievements
                   .filter(a => a.type === AchievementType.TRAINING)
-                  .map(a => (
-                    <Pressable
-                      key={a.achievementId ?? a.tempId}
-                      onPress={() => {
-                        if (a.achievementId != null) {
-                          navigation.navigate('EditAchievement', {
-                            achievementId: a.achievementId,
-                          });
-                        } else {
-                          navigation.navigate('EditAchievement', {
-                            tempId: a.tempId,
-                          });
-                        }
-                      }}
-                      className="mb-3 justify-start rounded-[15px] bg-surface-200 p-[14px]">
-                      <Text className="text-primary-purple typo-caption-14-regular">
-                        {AchievementTypeEnumToLabel[AchievementType.TRAINING]}
-                      </Text>
-                      <Text className="mt-1 text-main-text typo-body-16-semibold">
-                        {a.activityName}
-                      </Text>
-                      <Text className="mt-[3px] text-gray-800 typo-caption-14-regular">
-                        {formatToShortDate(a.periodDate)}
-                      </Text>
-                    </Pressable>
-                  ))}
+                  .map(a => {
+                    const onPress = () => {
+                      if (a.achievementId != null) {
+                        navigation.navigate('EditAchievement', {
+                          achievementId: a.achievementId,
+                        });
+                      } else {
+                        navigation.navigate('EditAchievement', {
+                          tempId: a.tempId,
+                        });
+                      }
+                    };
+
+                    return (
+                      <AchievementItem
+                        key={a.achievementId ?? a.tempId}
+                        achievement={a}
+                        onPress={onPress}
+                      />
+                    );
+                  })}
               </View>
 
               {/* 링크 */}
