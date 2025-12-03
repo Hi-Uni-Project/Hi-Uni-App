@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 
 import { PortalProvider } from '@gorhom/portal';
 import { NavigationContainer } from '@react-navigation/native';
@@ -11,10 +11,10 @@ import { useBootSplash } from '@/shared/hooks/useBootSplash';
 const queryClient = new QueryClient();
 
 interface AppProvidersProps {
-  children: React.ReactNode;
+  children: ReactNode;
 }
 
-export const AppProviders: React.FC<AppProvidersProps> = ({ children }) => {
+export const AppProviders = ({ children }: AppProvidersProps) => {
   useBootSplash(2000);
 
   return (

@@ -11,6 +11,8 @@ interface Props {
 }
 
 const BoardFloatingButton = ({ insets, onPress }: Props) => {
+  const BOTTOM_INSETS = Platform.OS === 'ios' ? 30 : 15;
+
   return (
     <Pressable
       onPress={onPress}
@@ -18,7 +20,7 @@ const BoardFloatingButton = ({ insets, onPress }: Props) => {
       style={[
         styles.shadow,
         {
-          bottom: insets.bottom - 30,
+          bottom: insets.bottom - BOTTOM_INSETS,
         },
       ]}>
       <WriteButton />

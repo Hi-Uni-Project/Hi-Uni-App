@@ -2,23 +2,16 @@ import React from 'react';
 
 import { View, TextInput, Text } from 'react-native';
 
-import { WorkStoryFormData } from '../../types';
+import { isWorkStoryFormData, TemplateProps } from '../../types';
 import { DateSelector } from '../DateSelector';
 import { FormField } from '../FormField';
 import TemplateCalendar from '../TemplateCalendar';
 
-import { formatDateOrTime } from '@/shared/utils/formatter';
 import DateLine from '@/static/icons/date-line.svg';
 
-interface Props {
-  reviewForm: ReturnType<
-    typeof import('../../hooks/useReviewTemplate').useReviewTemplate
-  >;
-}
-
-const ExperienceTemplate = ({ reviewForm }: Props) => {
+const ExperienceTemplate = ({ reviewForm }: TemplateProps) => {
   const {
-    formData: rawFormData,
+    formData,
     updateField,
     startDate,
     endDate,
@@ -26,12 +19,15 @@ const ExperienceTemplate = ({ reviewForm }: Props) => {
     toggleCalendar,
     formatDate,
   } = reviewForm;
-  const formData = rawFormData as WorkStoryFormData;
+
+  if (!isWorkStoryFormData(formData)) {
+    return null;
+  }
 
   return (
     <View className="w-full">
       <View className="mt-4 px-7">
-        <View className="absolute left-0 top-0 h-[865px] w-[5px] rounded-[15px] bg-primary-purple" />
+        <View className="absolute left-0 top-0 h-[860px] w-[5px] rounded-[15px] bg-primary-purple" />
 
         {/* 회사명 */}
         <FormField
@@ -52,7 +48,7 @@ const ExperienceTemplate = ({ reviewForm }: Props) => {
           <View className="mt-2 flex-row space-x-3">
             <DateSelector
               label="시작일"
-              date={formatDateOrTime(startDate)}
+              date={formatDate(startDate)}
               onPress={toggleCalendar}
             />
 
@@ -95,7 +91,7 @@ const ExperienceTemplate = ({ reviewForm }: Props) => {
           value={formData.tasks}
           onChangeText={text => updateField('tasks', text)}
           multiline
-          height="h-18"
+          height={45}
           required
         />
 
@@ -105,7 +101,7 @@ const ExperienceTemplate = ({ reviewForm }: Props) => {
           placeholder="(ex : Figma와 같은 디자인 툴 활용 능력, 데이터 기반 사고, 사용자 관점에서 문제 해결 능력 등)"
           value={formData.requiredSkills}
           onChangeText={text => updateField('requiredSkills', text)}
-          height="h-18"
+          height={65}
           multiline
           required
         />
@@ -117,7 +113,7 @@ const ExperienceTemplate = ({ reviewForm }: Props) => {
           value={formData.feelings}
           onChangeText={text => updateField('feelings', text)}
           multiline
-          height="h-[70px]"
+          height={65}
         />
       </View>
 
@@ -126,6 +122,7 @@ const ExperienceTemplate = ({ reviewForm }: Props) => {
         <TextInput
           multiline
           placeholder="추가로 실무 이야기를 작성해주세요."
+          textAlignVertical="top"
           placeholderTextColor="#b7b7b7"
           value={formData.additionalExperience}
           onChangeText={text => updateField('additionalExperience', text)}

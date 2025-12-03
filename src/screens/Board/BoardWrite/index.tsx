@@ -8,7 +8,6 @@ import BoardWriteModals from '@/features/board/boardWrite/components/Modal/Board
 import NormalWriteView from '@/features/board/boardWrite/components/NormalWriteView';
 import ReviewView from '@/features/board/boardWrite/components/ReviewView';
 import useBoardWrite from '@/features/board/boardWrite/hooks/useBoardWrite';
-import { useReviewTemplate } from '@/features/board/boardWrite/hooks/useReviewTemplate';
 import {
   POST_TYPE_DISPLAY_NAME,
   POST_TYPE_OPTIONS,
@@ -17,14 +16,13 @@ import {
 const BoardWrite = () => {
   const insets = useSafeAreaInsets();
 
-  const reviewForm = useReviewTemplate();
-
   const {
     selectedPostType,
     title,
     isReview,
     content,
     modalState,
+    reviewTemplate,
     setTitle,
     setContent,
     setSelectedPostType,
@@ -37,7 +35,12 @@ const BoardWrite = () => {
     toggleDropdown,
     handlePostTypeSelect,
     handleConfirmPostTypeChange,
-  } = useBoardWrite(reviewForm);
+  } = useBoardWrite();
+  const { validateRequiredFields } = reviewTemplate;
+
+  const isSubmitEnabled = isReview
+    ? title.trim() && validateRequiredFields()
+    : title.trim() && content.trim();
 
   const displayName = POST_TYPE_DISPLAY_NAME[selectedPostType] ?? '선택';
   const placeholder = selectedPostType
@@ -47,6 +50,7 @@ const BoardWrite = () => {
   return (
     <View className="flex-1 bg-surface-50">
       <BoardWriteHeader
+        isSubmitEnabled={isSubmitEnabled}
         paddingTop={insets.top}
         height={insets.top + 70}
         onClose={handlePressedClosed}
@@ -59,7 +63,7 @@ const BoardWrite = () => {
           isDropdownOpen={modalState.type === 'dropdown'}
           title={title}
           isReview={isReview}
-          reviewForm={reviewForm}
+          reviewForm={reviewTemplate}
           onPostTypeSelectorPress={toggleDropdown}
           onTitleChange={setTitle}
           onReviewToggle={handleReviewToggle}
