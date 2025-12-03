@@ -114,9 +114,9 @@ const ResumeEditView = () => {
                       categoryName="출생년도"
                       dropdownItems={Array.from(
                         {
-                          length: 2005 - 1990 + 1,
+                          length: 2008 - 1980 + 1,
                         },
-                        (_, i) => `${2005 - i}년`,
+                        (_, i) => `${2008 - i}년`,
                       )}
                       onSelectItem={item => {
                         updateField(
