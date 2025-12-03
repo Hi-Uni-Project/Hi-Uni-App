@@ -12,6 +12,7 @@ export { Gender, GraduationStatus, LanguageLevel, AchievementType };
 
 export interface Career {
   careerId: number | null;
+  tempId?: string;
   companyName: string;
   startDate: Date;
   endDate: Date;

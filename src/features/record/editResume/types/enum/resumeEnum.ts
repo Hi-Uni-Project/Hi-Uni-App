@@ -5,16 +5,19 @@
 export enum Gender {
   MALE = 'MALE',
   FEMALE = 'FEMALE',
+  OTHER = 'OTHER',
 }
 
 export const GENDER_DISPLAY_NAME: Record<Gender, string> = {
   [Gender.MALE]: '남성',
   [Gender.FEMALE]: '여성',
+  [Gender.OTHER]: '선택안함',
 };
 
 export const GENDER_OPTIONS = [
   { label: GENDER_DISPLAY_NAME[Gender.MALE], value: Gender.MALE },
   { label: GENDER_DISPLAY_NAME[Gender.FEMALE], value: Gender.FEMALE },
+  { label: GENDER_DISPLAY_NAME[Gender.OTHER], value: Gender.OTHER },
 ];
 
 export const getGenderByLabel = (label: string): Gender | undefined => {

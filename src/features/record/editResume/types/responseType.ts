@@ -1,7 +1,7 @@
 import { ResponseTypes } from '@/shared/api/types';
 
 // Response 타입은 서버 API 응답 기준 (원천 타입)
-export type GenderResponse = 'MALE' | 'FEMALE';
+export type GenderResponse = 'MALE' | 'FEMALE' | 'OTHER';
 
 export type GraduationStatusResponse =
   | 'GRADUATED'
