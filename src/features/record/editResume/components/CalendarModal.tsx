@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-import { Modal, Pressable, View, Text } from 'react-native';
+import { Modal, Pressable, View, Text, Dimensions } from 'react-native';
 
 import { shadowStyleSheet } from '@/shared/styles/shadow';
 import BackMonth from '@/static/icons/back-month.svg';
@@ -9,6 +9,8 @@ import NextMonth from '@/static/icons/next-month.svg';
 import NextYear from '@/static/icons/next-year.svg';
 
 const WEEK_DAYS = ['일', '월', '화', '수', '목', '금', '토'];
+const CALENDAR_WIDTH = 304; // 280 + padding 24
+const SCREEN_PADDING = 16;
 
 interface CalendarModalProps {
   visible: boolean;
@@ -66,6 +68,11 @@ const CalendarModal = ({
   const lastDate = new Date(year, month + 1, 0).getDate();
   const daysArray = Array.from({ length: lastDate }, (_, i) => i + 1);
 
+  // X 좌표가 화면을 벗어나면 조정
+  const screenWidth = Dimensions.get('window').width;
+  const maxX = screenWidth - CALENDAR_WIDTH - SCREEN_PADDING;
+  const adjustedX = Math.min(anchorPosition.x, maxX);
+
   const handleDateSelect = (day: number) => {
     setSelectedDay(day);
 
@@ -90,7 +97,7 @@ const CalendarModal = ({
           className="absolute rounded-2xl bg-white p-3"
           style={[
             {
-              left: anchorPosition.x,
+              left: adjustedX,
               top: anchorPosition.y + 10,
             },
             shadowStyleSheet.dropShadow,
