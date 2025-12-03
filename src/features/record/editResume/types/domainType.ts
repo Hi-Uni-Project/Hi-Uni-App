@@ -23,6 +23,7 @@ export interface Career {
 
 export interface Project {
   projectId: number | null;
+  tempId?: string;
   projectName: string;
   startDate: Date;
   endDate: Date;
@@ -32,6 +33,7 @@ export interface Project {
 
 export interface Education {
   educationId: number | null;
+  tempId?: string;
   universityName: string;
   startDate: Date;
   endDate: Date;
@@ -41,12 +43,14 @@ export interface Education {
 
 export interface Language {
   languageId: number | null;
+  tempId?: string;
   language: string;
   level: LanguageLevel;
 }
 
 export interface Achievement {
   achievementId: number | null;
+  tempId?: string;
   activityName: string;
   periodDate: Date;
   type: AchievementType;
@@ -55,6 +59,7 @@ export interface Achievement {
 
 export interface Link {
   linkId: number | null;
+  tempId?: string;
   linkName: string;
   linkUrl: string;
 }

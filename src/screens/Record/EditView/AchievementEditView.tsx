@@ -38,11 +38,15 @@ const AchievementEditView = () => {
   const { resumeData, addAchievement, updateAchievement, deleteAchievement } =
     useResumeEdit();
 
-  // EditAchievement인 경우 achievementId가 params로 전달됨
-  const editAchievementId = route.params?.achievementId;
-  const isEditMode = editAchievementId !== undefined;
+  // EditAchievement인 경우 achievementId(서버 id) 또는 tempId(클라이언트 임시 id)가 params로 전달됩니다
+  const { achievementId, tempId } = route.params ?? {};
+  const isEditMode = achievementId !== undefined || tempId !== undefined;
   const editTarget = isEditMode
-    ? resumeData.achievements.find(a => a.achievementId === editAchievementId)
+    ? resumeData.achievements.find(
+        a =>
+          (achievementId !== undefined && a.achievementId === achievementId) ||
+          (tempId !== undefined && a.tempId === tempId),
+      )
     : undefined;
 
   // 로컬 폼 상태
@@ -73,6 +77,7 @@ const AchievementEditView = () => {
     if (isEditMode && editTarget) {
       updateAchievement({
         achievementId: editTarget.achievementId,
+        tempId: editTarget.tempId,
         type,
         activityName,
         periodDate,
@@ -91,8 +96,8 @@ const AchievementEditView = () => {
   };
 
   const handleDelete = () => {
-    if (isEditMode && editTarget && editTarget.achievementId !== null) {
-      deleteAchievement(editTarget.achievementId);
+    if (isEditMode && editTarget) {
+      deleteAchievement(editTarget.achievementId ?? editTarget.tempId);
       navigation.goBack();
     }
   };

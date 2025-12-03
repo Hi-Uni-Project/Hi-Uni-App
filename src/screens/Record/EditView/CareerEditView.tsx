@@ -31,14 +31,18 @@ const CareerEditView = () => {
 
   const { resumeData, addCareer, updateCareer, deleteCareer } = useResumeEdit();
 
-  // EditCareer인 경우 careerId가 params로 전달됨
-  const editCareerId = route.params?.careerId;
-  const isEditMode = editCareerId !== undefined;
+  // EditCareer인 경우 careerId(서버 id) 또는 tempId(클라이언트 임시 id)가 params로 전달됩니다
+  const { careerId, tempId } = route.params ?? {};
+  const isEditMode = careerId !== undefined || tempId !== undefined;
   const editTarget = isEditMode
-    ? resumeData.careers.find(c => c.careerId === editCareerId)
+    ? resumeData.careers.find(c => {
+        return (
+          (careerId !== undefined && c.careerId === careerId) ||
+          (tempId !== undefined && c.tempId === tempId)
+        );
+      })
     : undefined;
 
-  // 로컬 폼 상태
   const [companyName, setCompanyName] = useState(editTarget?.companyName || '');
   const [startDateStr, setStartDateStr] = useState(
     editTarget?.startDate ? formatToShortDate(editTarget.startDate) : '',
@@ -67,6 +71,7 @@ const CareerEditView = () => {
     if (isEditMode && editTarget) {
       updateCareer({
         careerId: editTarget.careerId,
+        tempId: editTarget.tempId,
         companyName,
         startDate,
         endDate,
@@ -89,8 +94,8 @@ const CareerEditView = () => {
   };
 
   const handleDelete = () => {
-    if (isEditMode && editTarget && editTarget.careerId !== null) {
-      deleteCareer(editTarget.careerId);
+    if (isEditMode && editTarget) {
+      deleteCareer(editTarget.careerId ?? editTarget.tempId);
       navigation.goBack();
     }
   };

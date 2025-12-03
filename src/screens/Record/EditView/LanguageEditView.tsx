@@ -33,11 +33,15 @@ const LanguageEditView = () => {
   const { resumeData, addLanguage, updateLanguage, deleteLanguage } =
     useResumeEdit();
 
-  // EditLanguage인 경우 languageId가 params로 전달됨
-  const editLanguageId = route.params?.languageId;
-  const isEditMode = editLanguageId !== undefined;
+  // EditLanguage인 경우 languageId(서버 id) 또는 tempId(클라이언트 임시 id)가 params로 전달됩니다
+  const { languageId, tempId } = route.params ?? {};
+  const isEditMode = languageId !== undefined || tempId !== undefined;
   const editTarget = isEditMode
-    ? resumeData.languages.find(l => l.languageId === editLanguageId)
+    ? resumeData.languages.find(
+        l =>
+          (languageId !== undefined && l.languageId === languageId) ||
+          (tempId !== undefined && l.tempId === tempId),
+      )
     : undefined;
 
   // 로컬 폼 상태
@@ -56,6 +60,7 @@ const LanguageEditView = () => {
     if (isEditMode && editTarget) {
       updateLanguage({
         languageId: editTarget.languageId,
+        tempId: editTarget.tempId,
         language,
         level,
       });
@@ -67,8 +72,8 @@ const LanguageEditView = () => {
   };
 
   const handleDelete = () => {
-    if (isEditMode && editTarget && editTarget.languageId !== null) {
-      deleteLanguage(editTarget.languageId);
+    if (isEditMode && editTarget) {
+      deleteLanguage(editTarget.languageId ?? editTarget.tempId);
       navigation.goBack();
     }
   };

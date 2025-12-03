@@ -26,11 +26,15 @@ const LinkEditView = () => {
 
   const { resumeData, addLink, updateLink, deleteLink } = useResumeEdit();
 
-  // EditLink인 경우 linkId가 params로 전달됨
-  const editLinkId = route.params?.linkId;
-  const isEditMode = editLinkId !== undefined;
+  // EditLink인 경우 linkId(서버 id) 또는 tempId(클라이언트 임시 id)가 params로 전달됩니다
+  const { linkId, tempId } = route.params ?? {};
+  const isEditMode = linkId !== undefined || tempId !== undefined;
   const editTarget = isEditMode
-    ? resumeData.links.find(l => l.linkId === editLinkId)
+    ? resumeData.links.find(
+        l =>
+          (linkId !== undefined && l.linkId === linkId) ||
+          (tempId !== undefined && l.tempId === tempId),
+      )
     : undefined;
 
   // 로컬 폼 상태
@@ -45,7 +49,12 @@ const LinkEditView = () => {
     }
 
     if (isEditMode && editTarget) {
-      updateLink({ linkId: editTarget.linkId, linkName, linkUrl });
+      updateLink({
+        linkId: editTarget.linkId,
+        tempId: editTarget.tempId,
+        linkName,
+        linkUrl,
+      });
     } else {
       addLink({ linkName, linkUrl });
     }
@@ -55,7 +64,7 @@ const LinkEditView = () => {
 
   const handleDelete = () => {
     if (isEditMode && editTarget) {
-      deleteLink(editTarget.linkId);
+      deleteLink(editTarget.linkId ?? editTarget.tempId);
       navigation.goBack();
     }
   };

@@ -32,11 +32,16 @@ const ProjectEditView = () => {
   const { resumeData, addProject, updateProject, deleteProject } =
     useResumeEdit();
 
-  // EditProject인 경우 projectId가 params로 전달됨
-  const editProjectId = route.params?.projectId;
-  const isEditMode = editProjectId !== undefined;
+  // EditProject인 경우 projectId(서버 id) 또는 tempId(클라이언트 임시 id)가 params로 전달됩니다
+  const { projectId, tempId } = route.params ?? {};
+  const isEditMode = projectId !== undefined || tempId !== undefined;
   const editTarget = isEditMode
-    ? resumeData.projects.find(p => p.projectId === editProjectId)
+    ? resumeData.projects.find(p => {
+        return (
+          (projectId !== undefined && p.projectId === projectId) ||
+          (tempId !== undefined && p.tempId === tempId)
+        );
+      })
     : undefined;
 
   // 로컬 폼 상태
@@ -67,6 +72,7 @@ const ProjectEditView = () => {
     if (isEditMode && editTarget) {
       updateProject({
         projectId: editTarget.projectId,
+        tempId: editTarget.tempId,
         projectName,
         startDate,
         endDate,
@@ -87,8 +93,8 @@ const ProjectEditView = () => {
   };
 
   const handleDelete = () => {
-    if (isEditMode && editTarget && editTarget.projectId !== null) {
-      deleteProject(editTarget.projectId);
+    if (isEditMode && editTarget) {
+      deleteProject(editTarget.projectId ?? editTarget.tempId);
       navigation.goBack();
     }
   };

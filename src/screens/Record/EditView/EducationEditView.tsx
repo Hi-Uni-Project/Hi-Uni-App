@@ -50,11 +50,15 @@ const EducationEditView = () => {
   const { resumeData, addEducation, updateEducation, deleteEducation } =
     useResumeEdit();
 
-  // EditEducation인 경우 educationId가 params로 전달됨
-  const editEducationId = route.params?.educationId;
-  const isEditMode = editEducationId !== undefined;
+  // EditEducation인 경우 educationId(서버 id) 또는 tempId(클라이언트 임시 id)가 params로 전달됩니다
+  const { educationId, tempId } = route.params ?? {};
+  const isEditMode = educationId !== undefined || tempId !== undefined;
   const editTarget = isEditMode
-    ? resumeData.educations.find(e => e.educationId === editEducationId)
+    ? resumeData.educations.find(
+        e =>
+          (educationId !== undefined && e.educationId === educationId) ||
+          (tempId !== undefined && e.tempId === tempId),
+      )
     : undefined;
 
   // 로컬 폼 상태
@@ -102,6 +106,7 @@ const EducationEditView = () => {
     if (isEditMode && editTarget) {
       updateEducation({
         educationId: editTarget.educationId,
+        tempId: editTarget.tempId,
         universityName,
         graduationStatus,
         startDate,
@@ -122,8 +127,8 @@ const EducationEditView = () => {
   };
 
   const handleDelete = () => {
-    if (isEditMode && editTarget && editTarget.educationId !== null) {
-      deleteEducation(editTarget.educationId);
+    if (isEditMode && editTarget) {
+      deleteEducation(editTarget.educationId ?? editTarget.tempId);
       navigation.goBack();
     }
   };

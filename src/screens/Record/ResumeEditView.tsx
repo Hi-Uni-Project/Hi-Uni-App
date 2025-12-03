@@ -25,6 +25,7 @@ import SkillSearchInput from '@/features/record/editResume/components/SkillSearc
 import SkillSearchResultList from '@/features/record/editResume/components/SkillSearchResultList';
 import useResumeEdit from '@/features/record/editResume/hooks/useResumeEdit';
 import useSkillSearch from '@/features/record/editResume/hooks/useSkillSearch';
+import { formatToShortDate } from '@/features/record/editResume/utils/dateUtils';
 import {
   GenderEnumToLabel,
   GenderLabelToEnum,
@@ -182,6 +183,54 @@ const ResumeEditView = () => {
                   </View>
                 </View>
               </View>
+
+              {resumeData.careers.length > 0 &&
+                resumeData.careers.map((career, index) => {
+                  return (
+                    <Pressable
+                      onPress={() => {
+                        if (career.careerId != null) {
+                          navigation.navigate('EditCareer', {
+                            careerId: career.careerId,
+                          });
+                        } else {
+                          navigation.navigate('EditCareer', {
+                            tempId: career.tempId,
+                          });
+                        }
+                      }}
+                      className="mx-5 mt-3 justify-start rounded-[15px] bg-surface-200 p-[14px]"
+                      key={index}>
+                      <Text className="text-primary-purple typo-caption-14-regular">
+                        경력
+                      </Text>
+                      <Text className="mt-1 text-main-text typo-body-16-semibold">
+                        {career.companyName}
+                      </Text>
+                      <Text className="mt-[5px] typo-body-15-semibold">
+                        {formatToShortDate(career.startDate)} -{' '}
+                        {formatToShortDate(career.endDate)}
+                      </Text>
+
+                      {career.role && career.role.trim() !== '' && (
+                        <Text className="mt-[7px] text-gray-800 typo-caption-14-regular">
+                          {career.role}
+                        </Text>
+                      )}
+                      {career.position && career.position.trim() !== '' && (
+                        <Text className="mt-[3px] text-gray-800 typo-caption-14-regular">
+                          {career.position}
+                        </Text>
+                      )}
+                      {career.jobDescription &&
+                        career.jobDescription.trim() !== '' && (
+                          <Text className="mt-[3px] text-gray-800 typo-caption-14-regular">
+                            {career.jobDescription}
+                          </Text>
+                        )}
+                    </Pressable>
+                  );
+                })}
 
               {/* 학력 사항 */}
               <View className="mt-[40px] px-5">

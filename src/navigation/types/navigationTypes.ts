@@ -66,17 +66,17 @@ export type CalendarNavigationProps = {
 export type RecordNavigationProps = {
   ResumeEdit: undefined;
   CreateEducation: undefined;
-  EditEducation: { educationId: number };
+  EditEducation: { educationId?: number; tempId?: string };
   CreateLink: undefined;
-  EditLink: { linkId: number };
+  EditLink: { linkId?: number; tempId?: string };
   CreateAchievement: undefined;
-  EditAchievement: { achievementId: number };
+  EditAchievement: { achievementId?: number; tempId?: string };
   CreateLanguage: undefined;
-  EditLanguage: { languageId: number };
+  EditLanguage: { languageId?: number; tempId?: string };
   CreateCareer: undefined;
-  EditCareer: { careerId: number };
+  EditCareer: { careerId?: number; tempId?: string };
   CreateProject: undefined;
-  EditProject: { projectId: number };
+  EditProject: { projectId?: number; tempId?: string };
 };
 
 export type MainStackNavigationProp =
