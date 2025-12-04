@@ -21,6 +21,7 @@ export const GenderEnumToLabel = GENDER_DISPLAY_NAME;
 export const GenderLabelToEnum: Record<string, Gender> = {
   남성: Gender.MALE,
   여성: Gender.FEMALE,
+  선택안함: Gender.OTHER,
 };
 
 // ============================================

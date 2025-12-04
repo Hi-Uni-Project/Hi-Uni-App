@@ -15,6 +15,7 @@ export const mapGenderToDomain = (response: GenderResponse): Gender => {
   const genderMap: Record<GenderResponse, Gender> = {
     MALE: Gender.MALE,
     FEMALE: Gender.FEMALE,
+    OTHER: Gender.OTHER,
   };
   return genderMap[response];
 };
@@ -61,6 +62,7 @@ export const mapGenderToResponse = (domain: Gender): GenderResponse => {
   const genderMap: Record<Gender, GenderResponse> = {
     [Gender.MALE]: 'MALE',
     [Gender.FEMALE]: 'FEMALE',
+    [Gender.OTHER]: 'OTHER',
   };
   return genderMap[domain];
 };

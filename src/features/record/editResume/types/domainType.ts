@@ -97,7 +97,7 @@ export interface ResumeEditForm {
   photo: Asset | null;
 
   name: string;
-  gender: Gender | null;
+  gender: Gender;
   birthYear: number;
 
   title: string;
