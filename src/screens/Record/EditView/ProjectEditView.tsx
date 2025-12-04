@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
+import React from 'react';
 
-import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import {
   Keyboard,
   KeyboardAvoidingView,
@@ -15,89 +14,18 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import DatePickerInput from '@/features/record/editResume/components/DatePickerInput';
 import ResumeHeader from '@/features/record/editResume/components/ResumeHeader';
-import useResumeEdit from '@/features/record/editResume/hooks/useResumeEdit';
-import {
-  formatToShortDate,
-  parseShortDate,
-} from '@/features/record/editResume/utils/dateUtils';
-import { RecordNavigationProps } from '@/navigation/types/navigationTypes';
-
-type ProjectRouteProp = RouteProp<RecordNavigationProps, 'EditProject'>;
+import useProjectEdit from '@/features/record/editResume/hooks/useProjectEdit';
 
 const ProjectEditView = () => {
   const insets = useSafeAreaInsets();
-  const navigation = useNavigation();
-  const route = useRoute<ProjectRouteProp>();
-
-  const { resumeData, addProject, updateProject, deleteProject } =
-    useResumeEdit();
-
-  // EditProject인 경우 projectId(서버 id) 또는 tempId(클라이언트 임시 id)가 params로 전달됩니다
-  const { projectId, tempId } = route.params ?? {};
-  const isEditMode = projectId !== undefined || tempId !== undefined;
-  const editTarget = isEditMode
-    ? resumeData.projects.find(p => {
-        return (
-          (projectId !== undefined && p.projectId === projectId) ||
-          (tempId !== undefined && p.tempId === tempId)
-        );
-      })
-    : undefined;
-
-  // 로컬 폼 상태
-  const [projectName, setProjectName] = useState(editTarget?.projectName || '');
-  const [startDateStr, setStartDateStr] = useState(
-    editTarget?.startDate ? formatToShortDate(editTarget.startDate) : '',
-  );
-  const [endDateStr, setEndDateStr] = useState(
-    editTarget?.endDate ? formatToShortDate(editTarget.endDate) : '',
-  );
-  const [role, setRole] = useState(editTarget?.role || '');
-  const [experienceDescription, setExperienceDescription] = useState(
-    editTarget?.experienceDescription || '',
-  );
-
-  const isFormValid =
-    projectName.trim() !== '' &&
-    parseShortDate(startDateStr) !== null &&
-    parseShortDate(endDateStr) !== null;
-
-  const handleSubmit = () => {
-    const startDate = parseShortDate(startDateStr);
-    const endDate = parseShortDate(endDateStr);
-    if (!isFormValid || startDate === null || endDate === null) {
-      return;
-    }
-
-    if (isEditMode && editTarget) {
-      updateProject({
-        projectId: editTarget.projectId,
-        tempId: editTarget.tempId,
-        projectName,
-        startDate,
-        endDate,
-        role,
-        experienceDescription,
-      });
-    } else {
-      addProject({
-        projectName,
-        startDate,
-        endDate,
-        role,
-        experienceDescription,
-      });
-    }
-
-    navigation.goBack();
-  };
-
-  const handleDelete = () => {
-    if (isEditMode && editTarget) {
-      deleteProject(editTarget.projectId ?? editTarget.tempId);
-      navigation.goBack();
-    }
-  };
+  const {
+    fields,
+    setField,
+    isEditMode,
+    isFormValid,
+    handleSubmit,
+    handleDelete,
+  } = useProjectEdit();
 
   return (
     <View className="flex-1 bg-surface-50">
@@ -148,8 +76,8 @@ const ProjectEditView = () => {
                 className="mt-[9px] w-[185px] rounded-[15px] border-[1px] border-gray-200 bg-white pb-[11px] pl-[14px] pt-[12px] typo-body-15-regular"
                 placeholder="프로젝트명을 입력해주세요"
                 placeholderTextColor={'#B7B7B7'}
-                value={projectName}
-                onChangeText={setProjectName}
+                value={fields.projectName}
+                onChangeText={value => setField('projectName', value)}
               />
             </View>
 
@@ -167,8 +95,8 @@ const ProjectEditView = () => {
                     시작일
                   </Text>
                   <DatePickerInput
-                    value={startDateStr}
-                    onSelectDate={setStartDateStr}
+                    value={fields.startDateStr}
+                    onSelectDate={value => setField('startDateStr', value)}
                   />
                 </View>
 
@@ -179,8 +107,8 @@ const ProjectEditView = () => {
                     종료일
                   </Text>
                   <DatePickerInput
-                    value={endDateStr}
-                    onSelectDate={setEndDateStr}
+                    value={fields.endDateStr}
+                    onSelectDate={value => setField('endDateStr', value)}
                   />
                 </View>
               </View>
@@ -193,8 +121,8 @@ const ProjectEditView = () => {
                 className="mt-[9px] w-[272px] rounded-[15px] border-[1px] border-gray-200 bg-white pb-[11px] pl-[14px] pt-[12px] typo-body-15-regular"
                 placeholder="역할을 입력해주세요"
                 placeholderTextColor={'#B7B7B7'}
-                value={role}
-                onChangeText={setRole}
+                value={fields.role}
+                onChangeText={value => setField('role', value)}
               />
             </View>
 
@@ -207,8 +135,8 @@ const ProjectEditView = () => {
                 placeholderTextColor={'#B7B7B7'}
                 textAlignVertical="top"
                 multiline={true}
-                value={experienceDescription}
-                onChangeText={setExperienceDescription}
+                value={fields.experienceDescription}
+                onChangeText={value => setField('experienceDescription', value)}
               />
             </View>
           </View>

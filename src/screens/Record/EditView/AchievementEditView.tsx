@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
+import React from 'react';
 
-import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import {
   Keyboard,
   KeyboardAvoidingView,
@@ -15,92 +14,23 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import DatePickerInput from '@/features/record/editResume/components/DatePickerInput';
 import ResumeHeader from '@/features/record/editResume/components/ResumeHeader';
-import useResumeEdit from '@/features/record/editResume/hooks/useResumeEdit';
-import { AchievementType } from '@/features/record/editResume/types/domainType';
-import {
-  formatToShortDate,
-  parseShortDate,
-} from '@/features/record/editResume/utils/dateUtils';
+import useAchievementEdit from '@/features/record/editResume/hooks/useAchievementEdit';
 import {
   AchievementTypeEnumToLabel,
   AchievementTypeLabelToEnum,
 } from '@/features/record/editResume/utils/labelMapper';
-import { RecordNavigationProps } from '@/navigation/types/navigationTypes';
 import HUDropdown from '@/shared/ui/atoms/HUDropdown';
-
-type AchievementRouteProp = RouteProp<RecordNavigationProps, 'EditAchievement'>;
 
 const AchievementEditView = () => {
   const insets = useSafeAreaInsets();
-  const navigation = useNavigation();
-  const route = useRoute<AchievementRouteProp>();
-
-  const { resumeData, addAchievement, updateAchievement, deleteAchievement } =
-    useResumeEdit();
-
-  // EditAchievement인 경우 achievementId(서버 id) 또는 tempId(클라이언트 임시 id)가 params로 전달됩니다
-  const { achievementId, tempId } = route.params ?? {};
-  const isEditMode = achievementId !== undefined || tempId !== undefined;
-  const editTarget = isEditMode
-    ? resumeData.achievements.find(
-        a =>
-          (achievementId !== undefined && a.achievementId === achievementId) ||
-          (tempId !== undefined && a.tempId === tempId),
-      )
-    : undefined;
-
-  // 로컬 폼 상태
-  const [type, setType] = useState<AchievementType | null>(
-    editTarget?.type || null,
-  );
-  const [activityName, setActivityName] = useState(
-    editTarget?.activityName || '',
-  );
-  const [periodDateStr, setPeriodDateStr] = useState(
-    editTarget?.periodDate ? formatToShortDate(editTarget.periodDate) : '',
-  );
-  const [achievementDescription, setAchievementDescription] = useState(
-    editTarget?.achievementDescription || '',
-  );
-
-  const isFormValid =
-    type !== null &&
-    activityName.trim() !== '' &&
-    parseShortDate(periodDateStr) !== null;
-
-  const handleSubmit = () => {
-    const periodDate = parseShortDate(periodDateStr);
-    if (!isFormValid || type === null || periodDate === null) {
-      return;
-    }
-
-    if (isEditMode && editTarget) {
-      updateAchievement({
-        achievementId: editTarget.achievementId,
-        tempId: editTarget.tempId,
-        type,
-        activityName,
-        periodDate,
-        achievementDescription,
-      });
-    } else {
-      addAchievement({
-        type,
-        activityName,
-        periodDate,
-        achievementDescription,
-      });
-    }
-
-    navigation.goBack();
-  };
-
-  const handleDelete = () => {
-    if (isEditMode && editTarget) {
-      deleteAchievement(editTarget.achievementId ?? editTarget.tempId);
-      navigation.goBack();
-    }
-  };
+  const {
+    fields,
+    setField,
+    isEditMode,
+    isFormValid,
+    handleSubmit,
+    handleDelete,
+  } = useAchievementEdit();
 
   return (
     <View className="flex-1 bg-surface-50">
@@ -153,11 +83,13 @@ const AchievementEditView = () => {
               <View className="mt-[9px] items-start">
                 <HUDropdown
                   categoryName={
-                    type ? AchievementTypeEnumToLabel[type] : '선택'
+                    fields.type
+                      ? AchievementTypeEnumToLabel[fields.type]
+                      : '선택'
                   }
                   dropdownItems={Object.values(AchievementTypeEnumToLabel)}
                   onSelectItem={item => {
-                    setType(AchievementTypeLabelToEnum[item]);
+                    setField('type', AchievementTypeLabelToEnum[item]);
                   }}
                 />
               </View>
@@ -175,8 +107,8 @@ const AchievementEditView = () => {
                 className="mt-[9px] rounded-[15px] border-[1px] border-gray-200 bg-white pb-[11px] pl-[14px] pt-[12px] typo-body-15-regular"
                 placeholder="활동명을 입력해주세요"
                 placeholderTextColor={'#B7B7B7'}
-                value={activityName}
-                onChangeText={setActivityName}
+                value={fields.activityName}
+                onChangeText={value => setField('activityName', value)}
               />
             </View>
 
@@ -190,8 +122,8 @@ const AchievementEditView = () => {
               </Text>
               <View className="mt-[9px]">
                 <DatePickerInput
-                  value={periodDateStr}
-                  onSelectDate={setPeriodDateStr}
+                  value={fields.periodDateStr}
+                  onSelectDate={value => setField('periodDateStr', value)}
                 />
               </View>
             </View>
@@ -206,8 +138,10 @@ const AchievementEditView = () => {
                 textAlignVertical="top"
                 multiline={true}
                 style={{ height: 98 }}
-                value={achievementDescription}
-                onChangeText={setAchievementDescription}
+                value={fields.achievementDescription}
+                onChangeText={value =>
+                  setField('achievementDescription', value)
+                }
               />
             </View>
           </View>

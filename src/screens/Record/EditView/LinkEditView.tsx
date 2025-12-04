@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
+import React from 'react';
 
-import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import {
   Keyboard,
   KeyboardAvoidingView,
@@ -14,60 +13,18 @@ import {
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import ResumeHeader from '@/features/record/editResume/components/ResumeHeader';
-import useResumeEdit from '@/features/record/editResume/hooks/useResumeEdit';
-import { RecordNavigationProps } from '@/navigation/types/navigationTypes';
-
-type EditLinkRouteProp = RouteProp<RecordNavigationProps, 'EditLink'>;
+import useLinkEdit from '@/features/record/editResume/hooks/useLinkEdit';
 
 const LinkEditView = () => {
   const insets = useSafeAreaInsets();
-  const navigation = useNavigation();
-  const route = useRoute<EditLinkRouteProp>();
-
-  const { resumeData, addLink, updateLink, deleteLink } = useResumeEdit();
-
-  // EditLink인 경우 linkId(서버 id) 또는 tempId(클라이언트 임시 id)가 params로 전달됩니다
-  const { linkId, tempId } = route.params ?? {};
-  const isEditMode = linkId !== undefined || tempId !== undefined;
-  const editTarget = isEditMode
-    ? resumeData.links.find(
-        l =>
-          (linkId !== undefined && l.linkId === linkId) ||
-          (tempId !== undefined && l.tempId === tempId),
-      )
-    : undefined;
-
-  // 로컬 폼 상태
-  const [linkName, setLinkName] = useState(editTarget?.linkName || '');
-  const [linkUrl, setLinkUrl] = useState(editTarget?.linkUrl || '');
-
-  const isFormValid = linkName.trim() !== '' && linkUrl.trim() !== '';
-
-  const handleSubmit = () => {
-    if (!isFormValid) {
-      return;
-    }
-
-    if (isEditMode && editTarget) {
-      updateLink({
-        linkId: editTarget.linkId,
-        tempId: editTarget.tempId,
-        linkName,
-        linkUrl,
-      });
-    } else {
-      addLink({ linkName, linkUrl });
-    }
-
-    navigation.goBack();
-  };
-
-  const handleDelete = () => {
-    if (isEditMode && editTarget) {
-      deleteLink(editTarget.linkId ?? editTarget.tempId);
-      navigation.goBack();
-    }
-  };
+  const {
+    fields,
+    setField,
+    isEditMode,
+    isFormValid,
+    handleSubmit,
+    handleDelete,
+  } = useLinkEdit();
 
   return (
     <View className="flex-1 bg-surface-50">
@@ -118,8 +75,8 @@ const LinkEditView = () => {
                 className="mt-[9px] rounded-[15px] border-[1px] border-gray-200 bg-white pb-[11px] pl-[14px] pt-[12px] typo-body-15-regular"
                 placeholder="링크명을 입력해주세요"
                 placeholderTextColor={'#B7B7B7'}
-                value={linkName}
-                onChangeText={setLinkName}
+                value={fields.linkName}
+                onChangeText={value => setField('linkName', value)}
               />
             </View>
 
@@ -138,8 +95,8 @@ const LinkEditView = () => {
                 textAlignVertical="top"
                 multiline={true}
                 style={{ height: 98 }}
-                value={linkUrl}
-                onChangeText={setLinkUrl}
+                value={fields.linkUrl}
+                onChangeText={value => setField('linkUrl', value)}
               />
             </View>
           </View>

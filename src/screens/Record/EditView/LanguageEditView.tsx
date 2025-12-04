@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
+import React from 'react';
 
-import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import {
   Keyboard,
   KeyboardAvoidingView,
@@ -14,69 +13,23 @@ import {
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import ResumeHeader from '@/features/record/editResume/components/ResumeHeader';
-import useResumeEdit from '@/features/record/editResume/hooks/useResumeEdit';
-import { LanguageLevel } from '@/features/record/editResume/types/domainType';
+import useLanguageEdit from '@/features/record/editResume/hooks/useLanguageEdit';
 import {
   LanguageLevelEnumToLabel,
   LanguageLevelLabelToEnum,
 } from '@/features/record/editResume/utils/labelMapper';
-import { RecordNavigationProps } from '@/navigation/types/navigationTypes';
 import HUDropdown from '@/shared/ui/atoms/HUDropdown';
-
-type LanguageRouteProp = RouteProp<RecordNavigationProps, 'EditLanguage'>;
 
 const LanguageEditView = () => {
   const insets = useSafeAreaInsets();
-  const navigation = useNavigation();
-  const route = useRoute<LanguageRouteProp>();
-
-  const { resumeData, addLanguage, updateLanguage, deleteLanguage } =
-    useResumeEdit();
-
-  // EditLanguage인 경우 languageId(서버 id) 또는 tempId(클라이언트 임시 id)가 params로 전달됩니다
-  const { languageId, tempId } = route.params ?? {};
-  const isEditMode = languageId !== undefined || tempId !== undefined;
-  const editTarget = isEditMode
-    ? resumeData.languages.find(
-        l =>
-          (languageId !== undefined && l.languageId === languageId) ||
-          (tempId !== undefined && l.tempId === tempId),
-      )
-    : undefined;
-
-  // 로컬 폼 상태
-  const [language, setLanguage] = useState(editTarget?.language || '');
-  const [level, setLevel] = useState<LanguageLevel | null>(
-    editTarget?.level || null,
-  );
-
-  const isFormValid = language.trim() !== '' && level !== null;
-
-  const handleSubmit = () => {
-    if (!isFormValid || level === null) {
-      return;
-    }
-
-    if (isEditMode && editTarget) {
-      updateLanguage({
-        languageId: editTarget.languageId,
-        tempId: editTarget.tempId,
-        language,
-        level,
-      });
-    } else {
-      addLanguage({ language, level });
-    }
-
-    navigation.goBack();
-  };
-
-  const handleDelete = () => {
-    if (isEditMode && editTarget) {
-      deleteLanguage(editTarget.languageId ?? editTarget.tempId);
-      navigation.goBack();
-    }
-  };
+  const {
+    fields,
+    setField,
+    isEditMode,
+    isFormValid,
+    handleSubmit,
+    handleDelete,
+  } = useLanguageEdit();
 
   return (
     <View className="flex-1 bg-surface-50">
@@ -127,8 +80,8 @@ const LanguageEditView = () => {
                 className="mt-[9px] rounded-[15px] border-[1px] border-gray-200 bg-white pb-[11px] pl-[14px] pt-[12px] typo-body-15-regular"
                 placeholder="언어를 입력해주세요"
                 placeholderTextColor={'#B7B7B7'}
-                value={language}
-                onChangeText={setLanguage}
+                value={fields.language}
+                onChangeText={value => setField('language', value)}
               />
             </View>
 
@@ -144,11 +97,13 @@ const LanguageEditView = () => {
               <View className="mt-[9px] items-start">
                 <HUDropdown
                   categoryName={
-                    level ? LanguageLevelEnumToLabel[level] : '선택'
+                    fields.level
+                      ? LanguageLevelEnumToLabel[fields.level]
+                      : '선택'
                   }
                   dropdownItems={Object.values(LanguageLevelEnumToLabel)}
                   onSelectItem={item => {
-                    setLevel(LanguageLevelLabelToEnum[item]);
+                    setField('level', LanguageLevelLabelToEnum[item]);
                   }}
                   dropdownWidth={179}
                 />
