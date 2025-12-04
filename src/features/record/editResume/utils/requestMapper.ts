@@ -22,9 +22,7 @@ import {
 /**
  * Date를 ISO 8601 문자열로 변환
  */
-const toISOString = (date: Date): string => {
-  return date.toISOString();
-};
+const toISOString = (date: Date): string => date.toISOString();
 
 /**
  * Career → CareerRequest
@@ -100,9 +98,11 @@ export const mapLinkToRequest = (link: Link): LinkRequest => ({
  * Skill → SkillRequest
  * skillId가 null인 경우 필터링해야 함 (서버에 등록된 스킬만 전송)
  */
-export const mapSkillToRequest = (skill: Skill): SkillRequest | null => {
+export const mapSkillToRequest = (skill: Skill): SkillRequest => {
+  // skillId는 request로 보낼 때 null일 수 없으므로 호출 전에 필터링되어야 합니다.
+  // 안전을 위해 guard 처리로 문제 발생 시 빨리 발견합니다.
   if (skill.skillId === null) {
-    return null;
+    throw new Error('mapSkillToRequest: expected skill.skillId to be non-null');
   }
   return { skillId: skill.skillId };
 };
@@ -112,19 +112,53 @@ export const mapSkillToRequest = (skill: Skill): SkillRequest | null => {
  */
 export const mapResumeEditFormToRequest = (
   form: ResumeEditForm,
-): ResumeUpdateRequest => ({
-  name: form.name,
-  gender: form.gender,
-  birthYear: form.birthYear,
-  title: form.title,
-  aboutMe: form.aboutMe,
-  careers: form.careers.map(mapCareerToRequest),
-  projects: form.projects.map(mapProjectToRequest),
-  educations: form.educations.map(mapEducationToRequest),
-  languages: form.languages.map(mapLanguageToRequest),
-  achievements: form.achievements.map(mapAchievementToRequest),
-  links: form.links.map(mapLinkToRequest),
-  skills: form.skills
-    .map(mapSkillToRequest)
-    .filter((s): s is SkillRequest => s !== null),
-});
+): ResumeUpdateRequest => {
+  const careersMapped =
+    form.careers && form.careers.length > 0
+      ? form.careers.map(mapCareerToRequest)
+      : null;
+
+  const projectsMapped =
+    form.projects && form.projects.length > 0
+      ? form.projects.map(mapProjectToRequest)
+      : null;
+
+  const educationsMapped =
+    form.educations && form.educations.length > 0
+      ? form.educations.map(mapEducationToRequest)
+      : null;
+
+  const languagesMapped =
+    form.languages && form.languages.length > 0
+      ? form.languages.map(mapLanguageToRequest)
+      : null;
+
+  const achievementsMapped =
+    form.achievements && form.achievements.length > 0
+      ? form.achievements.map(mapAchievementToRequest)
+      : null;
+
+  const linksMapped =
+    form.links && form.links.length > 0
+      ? form.links.map(mapLinkToRequest)
+      : null;
+
+  const skillsMapped = form.skills
+    ? form.skills.filter(s => s.skillId !== null).map(mapSkillToRequest)
+    : [];
+
+  return {
+    name: form.name,
+    gender: form.gender,
+    birthYear: form.birthYear,
+    title: form.title,
+    aboutMe: form.aboutMe,
+    careers: careersMapped,
+    projects: projectsMapped,
+    educations: educationsMapped,
+    languages: languagesMapped,
+    achievements: achievementsMapped,
+    links: linksMapped,
+    skills: skillsMapped.length > 0 ? skillsMapped : null,
+  };
+};

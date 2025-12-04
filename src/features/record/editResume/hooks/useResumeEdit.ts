@@ -10,6 +10,8 @@ import {
   Project,
   Skill,
 } from '../types/domainType';
+import { ResumeUpdateRequest } from '../types/requestType';
+import { mapResumeEditFormToRequest } from '../utils/requestMapper';
 
 /**
  * 이력서를 등록, 수정하는 역할을 하는 hook 입니다.
@@ -269,6 +271,13 @@ const useResumeEdit = () => {
     [resumeData.skills, updateField],
   );
 
+  // ============================================
+  // Request 데이터 변환
+  // ============================================
+  const getRequestData = useCallback((): ResumeUpdateRequest => {
+    return mapResumeEditFormToRequest(resumeData);
+  }, [resumeData]);
+
   useEffect(() => {
     console.log('resumeData updated:', resumeData);
   }, [resumeData]);
@@ -305,6 +314,8 @@ const useResumeEdit = () => {
     // Skill
     addSkill,
     deleteSkill,
+    // Request
+    getRequestData,
   };
 };
 

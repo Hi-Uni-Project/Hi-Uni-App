@@ -32,7 +32,8 @@ const ResumeEditView = () => {
   const [isCareerProjectSheetVisible, setIsCareerProjectSheetVisible] =
     useState(false);
 
-  const { resumeData, updateField, addSkill, deleteSkill } = useResumeEdit();
+  const { resumeData, updateField, addSkill, deleteSkill, getRequestData } =
+    useResumeEdit();
   const {
     goToCreateCareer,
     goToCreateEducation,
@@ -72,9 +73,20 @@ const ResumeEditView = () => {
     },
   ];
 
+  const handleCompletePress = () => {
+    const requestData = getRequestData();
+    console.log(
+      '📝 Resume Request Data:',
+      JSON.stringify(requestData, null, 2),
+    );
+  };
+
   return (
     <View className="flex-1 bg-surface-50">
-      <ResumeEditHeader isCompleteDisabled={true} onCompletePress={() => {}} />
+      <ResumeEditHeader
+        isCompleteDisabled={false}
+        onCompletePress={handleCompletePress}
+      />
 
       <KeyboardAvoidingView
         style={{ flex: 1 }}

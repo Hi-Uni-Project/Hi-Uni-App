@@ -65,11 +65,11 @@ export interface ResumeUpdateRequest {
   birthYear: number;
   title: string;
   aboutMe: string;
-  careers: CareerRequest[];
-  projects: ProjectRequest[];
-  educations: EducationRequest[];
-  languages: LanguageRequest[];
-  achievements: AchievementRequest[];
-  links: LinkRequest[];
-  skills: SkillRequest[];
+  careers: CareerRequest[] | null;
+  projects: ProjectRequest[] | null;
+  educations: EducationRequest[] | null;
+  languages: LanguageRequest[] | null;
+  achievements: AchievementRequest[] | null;
+  links: LinkRequest[] | null;
+  skills: SkillRequest[] | null;
 }
