@@ -1,52 +1,51 @@
 import React, { useState } from 'react';
 
-import Clipboard from '@react-native-clipboard/clipboard';
-import { useNavigation } from '@react-navigation/native';
 import {
   Keyboard,
   KeyboardAvoidingView,
   Platform,
-  Pressable,
   ScrollView,
-  Text,
-  TextInput,
   TouchableWithoutFeedback,
   View,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import AddButton from '@/features/record/editResume/components/AddButton';
-import AchievementItem from '@/features/record/editResume/components/card/AchievementItem';
-import CareerCard from '@/features/record/editResume/components/card/CareerCard';
-import EducationCard from '@/features/record/editResume/components/card/EducationCard';
-import LanguageCard from '@/features/record/editResume/components/card/LanguageCard';
-import ImagePicker from '@/features/record/editResume/components/ImagePicker';
 import ResumeEditHeader from '@/features/record/editResume/components/ResumeEditHeader';
+import AboutMeSection from '@/features/record/editResume/components/section/AboutMeSection';
+import AchievementSection from '@/features/record/editResume/components/section/AchievementSection';
+import CareerSection from '@/features/record/editResume/components/section/CareerSection';
+import EducationSection from '@/features/record/editResume/components/section/EducationSection';
+import LanguageSection from '@/features/record/editResume/components/section/LanguageSection';
+import LinkSection from '@/features/record/editResume/components/section/LinkSection';
+import ProfileSection from '@/features/record/editResume/components/section/ProfileSection';
+import SkillSection from '@/features/record/editResume/components/section/SkillSection';
+import TitleSection from '@/features/record/editResume/components/section/TitleSection';
 import SelectBottomSheet, {
   SelectOption,
 } from '@/features/record/editResume/components/SelectBottomSheet';
-import SelectedSkillsList from '@/features/record/editResume/components/SelectedSkillsList';
-import SkillSearchInput from '@/features/record/editResume/components/SkillSearchInput';
-import SkillSearchResultList from '@/features/record/editResume/components/SkillSearchResultList';
 import useResumeEdit from '@/features/record/editResume/hooks/useResumeEdit';
+import useResumeNavigator from '@/features/record/editResume/hooks/useResumeNavigator';
 import useSkillSearch from '@/features/record/editResume/hooks/useSkillSearch';
-import { AchievementType } from '@/features/record/editResume/types/domainType';
-import {
-  GenderEnumToLabel,
-  GenderLabelToEnum,
-} from '@/features/record/editResume/utils/labelMapper';
-import { RecordStackNavigationProp } from '@/navigation/types/navigationTypes';
-import HUDropdown from '@/shared/ui/atoms/HUDropdown';
-import InfoIcon from '@/static/icons/info.svg';
 
 const ResumeEditView = () => {
   const insets = useSafeAreaInsets();
-  const navigation = useNavigation<RecordStackNavigationProp>();
   const [isCareerProjectSheetVisible, setIsCareerProjectSheetVisible] =
     useState(false);
 
   const { resumeData, updateField, addSkill, deleteSkill } = useResumeEdit();
-  const [copiedLinks, setCopiedLinks] = useState<Record<string, boolean>>({});
+  const {
+    goToCreateCareer,
+    goToCreateEducation,
+    goToCreateLanguage,
+    goToCreateAchievement,
+    goToCreateProject,
+    goToCreateLink,
+    goToEditCareer,
+    goToEditEducation,
+    goToEditLanguage,
+    goToEditAchievement,
+    goToEditLink,
+  } = useResumeNavigator();
 
   const {
     inputValue,
@@ -63,12 +62,12 @@ const ResumeEditView = () => {
     {
       label: '경력 추가하기',
       value: 'career',
-      onPress: () => navigation.navigate('CreateCareer'),
+      onPress: goToCreateCareer,
     },
     {
       label: '프로젝트 추가하기',
       value: 'project',
-      onPress: () => navigation.navigate('CreateProject'),
+      onPress: goToCreateProject,
     },
   ];
 
@@ -84,421 +83,70 @@ const ResumeEditView = () => {
           <View style={{ height: insets.top + 74 }} />
           <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
             <View>
-              <View className="mt-[23px] flex-row px-5">
-                <ImagePicker
-                  photo={resumeData?.photo || null}
-                  onPhotoChange={photo => updateField('photo', photo)}
-                />
+              <ProfileSection
+                photo={resumeData?.photo || null}
+                name={resumeData?.name || ''}
+                onPhotoChange={photo => updateField('photo', photo)}
+                onNameChange={text => updateField('name', text)}
+                onGenderChange={gender => updateField('gender', gender)}
+                onBirthYearChange={year => updateField('birthYear', year)}
+              />
 
-                {/* 이름, 사진, 생년월일 */}
-                <View className="ml-[25px] items-start justify-center">
-                  <TextInput
-                    className="w-[140px] rounded-[15px] border-[1px] border-gray-200 bg-white pb-[11px] pl-[14px] pt-[12px] typo-body-15-regular"
-                    placeholder="이름"
-                    value={resumeData?.name || ''}
-                    onChangeText={text => updateField('name', text)}
-                    placeholderTextColor={'#B7B7B7'}
-                  />
+              <TitleSection
+                title={resumeData?.title || ''}
+                onTitleChange={text => updateField('title', text)}
+              />
 
-                  <View className="mt-[10px] flex-row">
-                    <HUDropdown
-                      categoryName="성별"
-                      dropdownItems={Object.values(GenderEnumToLabel)}
-                      onSelectItem={item => {
-                        updateField('gender', GenderLabelToEnum[item]);
-                      }}
-                      containerStyle={{ marginRight: 8 }}
-                    />
+              <AboutMeSection
+                aboutMe={resumeData?.aboutMe || ''}
+                onAboutMeChange={text => updateField('aboutMe', text)}
+              />
 
-                    <HUDropdown
-                      categoryName="출생년도"
-                      dropdownItems={Array.from(
-                        {
-                          length: 2008 - 1980 + 1,
-                        },
-                        (_, i) => `${2008 - i}년`,
-                      )}
-                      onSelectItem={item => {
-                        updateField(
-                          'birthYear',
-                          Number(item.replace('년', '')),
-                        );
-                      }}
-                    />
-                  </View>
-                </View>
-              </View>
+              <CareerSection
+                careers={resumeData.careers}
+                onAddPress={() => setIsCareerProjectSheetVisible(true)}
+                onEditPress={goToEditCareer}
+              />
 
-              {/* 이력서 제목 */}
-              <View className="mt-6 px-5">
-                <Text className="typo-body-17-semibold">
-                  이력서 제목
-                  <Text className="text-primary-purple typo-body-17-semibold">
-                    *
-                  </Text>
-                </Text>
-                <TextInput
-                  className="mt-[9px] rounded-[15px] border-[1px] border-gray-200 bg-white pb-[11px] pl-[14px] pt-[12px] typo-body-15-regular"
-                  placeholder="이력서 제목을 입력해주세요"
-                  onChangeText={text => updateField('title', text)}
-                  value={resumeData?.title || ''}
-                  placeholderTextColor={'#B7B7B7'}
-                />
-              </View>
+              <EducationSection
+                educations={resumeData.educations}
+                onAddPress={goToCreateEducation}
+                onEditPress={goToEditEducation}
+              />
 
-              {/* 내 소개 */}
-              <View className="mt-6 px-5">
-                <View className="flex-row items-center justify-between">
-                  <Text className="typo-body-17-semibold">내 소개</Text>
-                  <View className="flex-row items-center">
-                    <Pressable>
-                      <InfoIcon color="#B7B7B7" width={26} height={26} />
-                    </Pressable>
-                    <Pressable className="ml-[5px]">
-                      <View className="flex-row items-center rounded-full bg-primary-purple px-4 py-2">
-                        <Text className="text-surface-200 typo-body-15-medium">
-                          AI 내 소개 생성 (5/5)
-                        </Text>
-                      </View>
-                    </Pressable>
-                  </View>
-                </View>
-                <TextInput
-                  className="mt-[9px] min-h-[120px] rounded-[15px] border-[1px] border-gray-200 bg-white pb-[11px] pl-[14px] pt-[12px] typo-body-15-regular"
-                  placeholder="나를 어필할 수 있는 소개를 작성해보세요! (최대 800자)"
-                  placeholderTextColor={'#B7B7B7'}
-                  value={resumeData?.aboutMe || ''}
-                  textAlignVertical="top"
-                  onChangeText={text => updateField('aboutMe', text)}
-                  maxLength={800}
-                  multiline={true}
-                  numberOfLines={4}
-                />
-              </View>
+              <SkillSection
+                skills={resumeData.skills}
+                inputValue={inputValue}
+                searchKeyword={searchKeyword}
+                searchResults={searchResults}
+                isLoading={isLoading}
+                isSearchResultVisible={isSearchResultVisible}
+                onInputChange={setInputValue}
+                onSearch={handleSearch}
+                onClearSearch={clearSearch}
+                onSelectSkill={skill =>
+                  addSkill({ skillId: skill.skillId, name: skill.name })
+                }
+                onRemoveSkill={deleteSkill}
+              />
 
-              {/* 경력 사항 혹은 프로젝트 사항 */}
-              <View className="mt-[40px] px-5">
-                <View className="flex-row items-center justify-between">
-                  <Text className="typo-body-17-semibold">
-                    경력 사항 혹은 프로젝트 사항
-                  </Text>
-                  <View className="flex-row items-center">
-                    <AddButton
-                      onPress={() => setIsCareerProjectSheetVisible(true)}
-                    />
-                  </View>
-                </View>
-              </View>
+              <LanguageSection
+                languages={resumeData.languages}
+                onAddPress={goToCreateLanguage}
+                onEditPress={goToEditLanguage}
+              />
 
-              {resumeData.careers.length > 0 &&
-                resumeData.careers.map((career, index) => {
-                  const onPress = () => {
-                    if (career.careerId != null) {
-                      navigation.navigate('EditCareer', {
-                        careerId: career.careerId,
-                      });
-                    } else {
-                      navigation.navigate('EditCareer', {
-                        tempId: career.tempId,
-                      });
-                    }
-                  };
+              <AchievementSection
+                achievements={resumeData.achievements}
+                onAddPress={goToCreateAchievement}
+                onEditPress={goToEditAchievement}
+              />
 
-                  return (
-                    <CareerCard
-                      key={career.careerId ?? career.tempId ?? index}
-                      career={career}
-                      onPress={onPress}
-                    />
-                  );
-                })}
-
-              {/* 학력 사항 */}
-              <View className="mt-[40px] px-5">
-                <View className="flex-row items-center justify-between">
-                  <Text className="typo-body-17-semibold">학력 사항</Text>
-                  <View className="flex-row items-center">
-                    <AddButton
-                      onPress={() => {
-                        navigation.navigate('CreateEducation');
-                      }}
-                    />
-                  </View>
-                </View>
-              </View>
-
-              {resumeData.educations.length > 0 &&
-                resumeData.educations.map((education, index) => {
-                  const onPress = () => {
-                    if (education.educationId != null) {
-                      navigation.navigate('EditEducation', {
-                        educationId: education.educationId,
-                      });
-                    } else {
-                      navigation.navigate('EditEducation', {
-                        tempId: education.tempId,
-                      });
-                    }
-                  };
-
-                  return (
-                    <EducationCard
-                      key={education.educationId ?? education.tempId ?? index}
-                      education={education}
-                      onPress={onPress}
-                    />
-                  );
-                })}
-              <View className="mx-5 mt-[34px] border-b-[1.5px] border-surface-200" />
-
-              {/* 스킬 */}
-              <View className="mt-[40px] px-5">
-                <View className="mb-5 flex-row items-center justify-between">
-                  <Text className="typo-body-17-semibold">스킬</Text>
-                </View>
-
-                <SkillSearchInput
-                  value={inputValue}
-                  onChangeText={setInputValue}
-                  onSubmit={handleSearch}
-                  onClear={clearSearch}
-                />
-
-                {isSearchResultVisible && (
-                  <SkillSearchResultList
-                    results={searchResults}
-                    searchKeyword={searchKeyword}
-                    selectedSkillIds={resumeData.skills.map(s => s.skillId)}
-                    onSelectSkill={skill =>
-                      addSkill({ skillId: skill.skillId, name: skill.name })
-                    }
-                    isLoading={isLoading}
-                  />
-                )}
-
-                <SelectedSkillsList
-                  selectedSkills={resumeData.skills}
-                  onRemoveSkill={skillName => deleteSkill(skillName)}
-                />
-              </View>
-
-              {/* 어학 */}
-              <View className="mt-[41px] px-5">
-                <View className="flex-row items-center justify-between">
-                  <Text className="typo-body-17-semibold">어학</Text>
-                  <View className="flex-row items-center">
-                    <AddButton
-                      onPress={() => {
-                        navigation.navigate('CreateLanguage');
-                      }}
-                    />
-                  </View>
-                </View>
-              </View>
-
-              {resumeData.languages.length > 0 && (
-                <View className="mt-3 flex-row flex-wrap px-5">
-                  {resumeData.languages.map((lang, idx) => {
-                    const onPress = () => {
-                      if (lang.languageId != null) {
-                        navigation.navigate('EditLanguage', {
-                          languageId: lang.languageId,
-                        });
-                      } else {
-                        navigation.navigate('EditLanguage', {
-                          tempId: lang.tempId,
-                        });
-                      }
-                    };
-
-                    return (
-                      <LanguageCard
-                        key={lang.languageId ?? lang.tempId ?? idx}
-                        language={lang}
-                        onPress={onPress}
-                        isLeft={idx % 2 === 0}
-                      />
-                    );
-                  })}
-                </View>
-              )}
-
-              {/* 수상/자격증/교육 */}
-              <View className="mt-[41px] px-5">
-                <View className="flex-row items-center justify-between">
-                  <Text className="typo-body-17-semibold">
-                    수상/자격증/교육
-                  </Text>
-                  <View className="flex-row items-center">
-                    <AddButton
-                      onPress={() => {
-                        navigation.navigate('CreateAchievement');
-                      }}
-                    />
-                  </View>
-                </View>
-              </View>
-
-              {/* 수상/자격증/교육 리스트 (수상 → 자격증 → 교육 순서) */}
-              <View className="mt-3 px-5">
-                {/* 수상 */}
-                {resumeData.achievements
-                  .filter(a => a.type === AchievementType.AWARD)
-                  .map(a => {
-                    const onPress = () => {
-                      if (a.achievementId != null) {
-                        navigation.navigate('EditAchievement', {
-                          achievementId: a.achievementId,
-                        });
-                      } else {
-                        navigation.navigate('EditAchievement', {
-                          tempId: a.tempId,
-                        });
-                      }
-                    };
-
-                    return (
-                      <AchievementItem
-                        key={a.achievementId ?? a.tempId}
-                        achievement={a}
-                        onPress={onPress}
-                      />
-                    );
-                  })}
-
-                {/* 자격증 */}
-                {resumeData.achievements
-                  .filter(a => a.type === AchievementType.CERTIFICATE)
-                  .map(a => {
-                    const onPress = () => {
-                      if (a.achievementId != null) {
-                        navigation.navigate('EditAchievement', {
-                          achievementId: a.achievementId,
-                        });
-                      } else {
-                        navigation.navigate('EditAchievement', {
-                          tempId: a.tempId,
-                        });
-                      }
-                    };
-
-                    return (
-                      <AchievementItem
-                        key={a.achievementId ?? a.tempId}
-                        achievement={a}
-                        onPress={onPress}
-                      />
-                    );
-                  })}
-
-                {/* 교육(연수) */}
-                {resumeData.achievements
-                  .filter(a => a.type === AchievementType.TRAINING)
-                  .map(a => {
-                    const onPress = () => {
-                      if (a.achievementId != null) {
-                        navigation.navigate('EditAchievement', {
-                          achievementId: a.achievementId,
-                        });
-                      } else {
-                        navigation.navigate('EditAchievement', {
-                          tempId: a.tempId,
-                        });
-                      }
-                    };
-
-                    return (
-                      <AchievementItem
-                        key={a.achievementId ?? a.tempId}
-                        achievement={a}
-                        onPress={onPress}
-                      />
-                    );
-                  })}
-              </View>
-
-              {/* 링크 */}
-              <View className="mt-[41px] px-5">
-                <View className="flex-row items-center justify-between">
-                  <Text className="typo-body-17-semibold">링크</Text>
-                  <View className="flex-row items-center">
-                    <AddButton
-                      onPress={() => {
-                        navigation.navigate('CreateLink');
-                      }}
-                    />
-                  </View>
-                </View>
-
-                <Text className="mt-[13px] text-surface-400 typo-body-15-regular">
-                  포트폴리오 혹은 참고할만한 링크를 넣어주세요.
-                </Text>
-              </View>
-
-              {/* 링크 리스트 */}
-              {resumeData.links.length > 0 && (
-                <View className="mt-3 px-5">
-                  {resumeData.links.map(link => {
-                    const key = link.linkId ?? link.tempId ?? link.linkUrl;
-                    return (
-                      <Pressable
-                        key={key}
-                        onPress={() => {
-                          if (link.linkId != null) {
-                            navigation.navigate('EditLink', {
-                              linkId: link.linkId,
-                            });
-                          } else {
-                            navigation.navigate('EditLink', {
-                              tempId: link.tempId,
-                            });
-                          }
-                        }}
-                        className="rounded-[15px] border-[1px] border-surface-200 bg-transparent p-[14px]">
-                        <View className="flex-row items-start justify-between">
-                          <View className="flex-1 pr-3">
-                            <Text className="text-main-text typo-body-16-semibold">
-                              {link.linkName || link.linkUrl}
-                            </Text>
-                            <Text
-                              numberOfLines={1}
-                              className="mt-[3px] text-gray-800 typo-caption-14-regular">
-                              {link.linkUrl}
-                            </Text>
-                          </View>
-
-                          {/* 임시 복사 버튼 — 아이콘은 추후 교체 가능 */}
-                          <Pressable
-                            onPress={async () => {
-                              try {
-                                Clipboard.setString(link.linkUrl);
-                              } catch (e) {
-                                // fallback: log for now
-                                console.log('copy fallback:', link.linkUrl);
-                              }
-
-                              setCopiedLinks(prev => ({
-                                ...prev,
-                                [key]: true,
-                              }));
-                              setTimeout(() => {
-                                setCopiedLinks(prev => ({
-                                  ...prev,
-                                  [key]: false,
-                                }));
-                              }, 2000);
-                            }}
-                            className="ml-2 items-center justify-center rounded-full bg-surface-200 px-3 py-1">
-                            <Text className="typo-caption-14-regular">
-                              {copiedLinks[key] ? '복사됨' : '복사'}
-                            </Text>
-                          </Pressable>
-                        </View>
-                      </Pressable>
-                    );
-                  })}
-                </View>
-              )}
+              <LinkSection
+                links={resumeData.links}
+                onAddPress={goToCreateLink}
+                onEditPress={goToEditLink}
+              />
 
               <View style={{ height: insets.bottom + 50 }} />
             </View>
