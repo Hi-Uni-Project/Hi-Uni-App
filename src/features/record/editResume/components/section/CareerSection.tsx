@@ -4,18 +4,23 @@ import { Text, View } from 'react-native';
 
 import AddButton from '@/features/record/editResume/components/AddButton';
 import CareerCard from '@/features/record/editResume/components/card/CareerCard';
-import { Career } from '@/features/record/editResume/types/domainType';
+import ProjectCard from '@/features/record/editResume/components/card/ProjectCard';
+import { Career, Project } from '@/features/record/editResume/types/domainType';
 
 interface CareerSectionProps {
   careers: Career[];
+  projects: Project[];
   onAddPress: () => void;
-  onEditPress: (id: number | string | undefined) => void;
+  onEditCareerPress: (id: number | string | undefined) => void;
+  onEditProjectPress: (id: number | string | undefined) => void;
 }
 
 const CareerSection = ({
   careers,
+  projects,
   onAddPress,
-  onEditPress,
+  onEditCareerPress,
+  onEditProjectPress,
 }: CareerSectionProps) => {
   return (
     <>
@@ -35,7 +40,18 @@ const CareerSection = ({
           <CareerCard
             key={career.careerId ?? career.tempId ?? index}
             career={career}
-            onPress={() => onEditPress(career.careerId ?? career.tempId)}
+            onPress={() => onEditCareerPress(career.careerId ?? career.tempId)}
+          />
+        ))}
+
+      {projects.length > 0 &&
+        projects.map((project, index) => (
+          <ProjectCard
+            key={project.projectId ?? project.tempId ?? index}
+            project={project}
+            onPress={() =>
+              onEditProjectPress(project.projectId ?? project.tempId)
+            }
           />
         ))}
     </>

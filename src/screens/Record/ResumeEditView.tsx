@@ -41,6 +41,7 @@ const ResumeEditView = () => {
     goToCreateProject,
     goToCreateLink,
     goToEditCareer,
+    goToEditProject,
     goToEditEducation,
     goToEditLanguage,
     goToEditAchievement,
@@ -104,8 +105,10 @@ const ResumeEditView = () => {
 
               <CareerSection
                 careers={resumeData.careers}
+                projects={resumeData.projects}
                 onAddPress={() => setIsCareerProjectSheetVisible(true)}
-                onEditPress={goToEditCareer}
+                onEditCareerPress={goToEditCareer}
+                onEditProjectPress={goToEditProject}
               />
 
               <EducationSection
