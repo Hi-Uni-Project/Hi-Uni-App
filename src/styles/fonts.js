@@ -101,7 +101,12 @@ module.exports = function addFontsUtil({ addUtilities }) {
       lineHeight: '20px',
       letterSpacing: -0.3,
     },
-
+    '.typo-body-15-regular-post-detail': {
+      fontWeight: 400,
+      fontSize: 15,
+      lineHeight: '20px',
+      letterSpacing: -0.27,
+    },
     // caption
     '.typo-caption-14-semibold': {
       fontWeight: 600,
