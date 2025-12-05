@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import {
   Keyboard,
@@ -24,7 +24,9 @@ import SelectBottomSheet, {
   SelectOption,
 } from '@/features/record/editResume/components/SelectBottomSheet';
 import useResumeEdit from '@/features/record/editResume/hooks/useResumeEdit';
+import useResumeMutation from '@/features/record/editResume/hooks/useResumeMutation';
 import useResumeNavigator from '@/features/record/editResume/hooks/useResumeNavigator';
+import { useResumeQueries } from '@/features/record/editResume/hooks/useResumeQueries';
 import useSkillSearch from '@/features/record/editResume/hooks/useSkillSearch';
 
 const ResumeEditView = () => {
@@ -32,8 +34,14 @@ const ResumeEditView = () => {
   const [isCareerProjectSheetVisible, setIsCareerProjectSheetVisible] =
     useState(false);
 
+  const { resumeData: serverResumeData } = useResumeQueries();
+
+  useEffect(() => {
+    console.log('serverResumeData:', serverResumeData);
+  }, [serverResumeData]);
   const { resumeData, updateField, addSkill, deleteSkill, getRequestData } =
     useResumeEdit();
+  const { submitResume, isSubmitting } = useResumeMutation();
   const {
     goToCreateCareer,
     goToCreateEducation,
@@ -75,16 +83,17 @@ const ResumeEditView = () => {
 
   const handleCompletePress = () => {
     const requestData = getRequestData();
-    console.log(
-      '📝 Resume Request Data:',
-      JSON.stringify(requestData, null, 2),
-    );
+
+    submitResume({
+      resumeData: requestData,
+      photo: resumeData.photo,
+    });
   };
 
   return (
     <View className="flex-1 bg-surface-50">
       <ResumeEditHeader
-        isCompleteDisabled={false}
+        isCompleteDisabled={isSubmitting}
         onCompletePress={handleCompletePress}
       />
 
