@@ -25,6 +25,10 @@ const BoardDetailPosts = () => {
   const [activeCommentOption, setActiveCommentOption] = useState<number | null>(
     null,
   );
+  const [scrollY, setScrollY] = useState(0); // 스크롤 위치 추적
+  const [commentLayouts, setCommentLayouts] = useState<{
+    [key: number]: number;
+  }>({}); // 각 댓글의 Y 위치
 
   const TOP_OFFSET = 70; // 헤더 높이
 
@@ -140,7 +144,11 @@ const BoardDetailPosts = () => {
       <ScrollView
         className="flex-1"
         contentContainerStyle={{ paddingBottom: insets.bottom + 80 }}
-        showsVerticalScrollIndicator={false}>
+        showsVerticalScrollIndicator={false}
+        onScroll={event => {
+          setScrollY(event.nativeEvent.contentOffset.y);
+        }}
+        scrollEventThrottle={16}>
         <View className="p-5">
           {/* Author Info */}
           <View className="mb-3 flex-row items-center">
@@ -206,7 +214,16 @@ const BoardDetailPosts = () => {
             </Text>
 
             {comments.map((commentItem, idx) => (
-              <View key={commentItem.id} className="pb-6">
+              <View
+                key={commentItem.id}
+                className="pb-6"
+                onLayout={event => {
+                  const layout = event.nativeEvent.layout;
+                  setCommentLayouts(prev => ({
+                    ...prev,
+                    [commentItem.id]: layout.y,
+                  }));
+                }}>
                 <View
                   className={clsx(
                     `${idx !== comments.length - 1 && 'border-b border-b-surface-200'} flex-row justify-between pb-6`,
@@ -291,7 +308,12 @@ const BoardDetailPosts = () => {
                   onClose={() => setActiveCommentOption(null)}
                   options={commentOptions}
                   position={{
-                    top: insets.top + TOP_OFFSET + 485 + idx * 145, // 댓글 위치에 따라 조정
+                    top:
+                      insets.top +
+                      TOP_OFFSET +
+                      (commentLayouts[commentItem.id] || 0) -
+                      scrollY +
+                      420,
                     right: 20,
                   }}
                 />
