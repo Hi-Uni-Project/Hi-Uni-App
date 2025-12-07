@@ -1,14 +1,17 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import clsx from 'clsx';
 import {
   View,
   Text,
   ScrollView,
-  TouchableOpacity,
   TextInput,
   Pressable,
   Animated,
+  Platform,
+  Keyboard,
+  KeyboardAvoidingView,
+  TouchableWithoutFeedback,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Toast from 'react-native-toast-message';
@@ -18,6 +21,7 @@ import ArrowIcons from '@/shared/icons/ArrowIcons';
 import BoardActionIcons from '@/shared/icons/BoardActionIcons';
 import CommentActionIcons from '@/shared/icons/CommentActionIcons';
 import ToggleIcons from '@/shared/icons/ToggleIcons';
+import { shadowStyleSheet } from '@/shared/styles/shadow';
 import ConfirmModal from '@/shared/ui/organisms/ConfirmModal';
 import CommentArrowIcon from '@/static/icons/comment-arrow.svg';
 import MoreIcon from '@/static/icons/more.svg';
@@ -40,10 +44,13 @@ const BoardDetailPosts = () => {
   // 좋아요와 스크랩 상태 추가
   const [isLiked, setIsLiked] = useState(false);
   const [isBookmarked, setIsBookmarked] = useState(false);
+  const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
+  const [keyboardHeight, setKeyboardHeight] = useState(0);
 
   // 애니메이션 값
   const [likeScale] = useState(new Animated.Value(1));
   const [bookmarkScale] = useState(new Animated.Value(1));
+  const backdropOpacity = useState(new Animated.Value(0))[0];
 
   // 커스텀 Toast 설정
   const toastConfig = {
@@ -60,6 +67,40 @@ const BoardDetailPosts = () => {
       </View>
     ),
   };
+
+  // 키보드 이벤트 리스너
+  useEffect(() => {
+    const keyboardWillShowListener = Keyboard.addListener(
+      Platform.OS === 'ios' ? 'keyboardWillShow' : 'keyboardDidShow',
+      e => {
+        setIsKeyboardVisible(true);
+        setKeyboardHeight(e.endCoordinates.height); // 키보드 높이 저장
+        Animated.timing(backdropOpacity, {
+          toValue: 1,
+          duration: 250,
+          useNativeDriver: true,
+        }).start();
+      },
+    );
+
+    const keyboardWillHideListener = Keyboard.addListener(
+      Platform.OS === 'ios' ? 'keyboardWillHide' : 'keyboardDidHide',
+      () => {
+        setIsKeyboardVisible(false);
+        setKeyboardHeight(0);
+        Animated.timing(backdropOpacity, {
+          toValue: 0,
+          duration: 250,
+          useNativeDriver: true,
+        }).start();
+      },
+    );
+
+    return () => {
+      keyboardWillShowListener.remove();
+      keyboardWillHideListener.remove();
+    };
+  }, []);
 
   // 좋아요 애니메이션
   const handleLikePress = () => {
@@ -112,7 +153,15 @@ const BoardDetailPosts = () => {
     }
   };
 
-  const TOP_OFFSET = 70;
+  const handleSendComment = () => {
+    if (comment.trim()) {
+      console.log('댓글 전송:', comment);
+      setComment('');
+      Keyboard.dismiss();
+    }
+  };
+
+  const TOP_OFFSET = Platform.OS === 'ios' ? 70 : 50;
 
   // 게시글 옵션 메뉴
   const postOptions: OptionItem[] = [
@@ -207,6 +256,24 @@ const BoardDetailPosts = () => {
 
   return (
     <View className="flex-1 bg-white">
+      {/* Backdrop - 키보드가 열렸을 때만 표시 */}
+      {isKeyboardVisible && (
+        <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+          <Animated.View
+            style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              backgroundColor: 'rgba(0, 0, 0, 0.4)',
+              opacity: backdropOpacity,
+              zIndex: 10,
+            }}
+          />
+        </TouchableWithoutFeedback>
+      )}
+
       {/* Header */}
       <View style={{ paddingTop: insets.top }}>
         <View className="flex-row items-center justify-between px-5 py-4">
@@ -233,353 +300,390 @@ const BoardDetailPosts = () => {
         </View>
       </View>
 
-      {/* Content */}
-      <ScrollView
+      <KeyboardAvoidingView
         className="flex-1"
-        contentContainerStyle={{ paddingBottom: insets.bottom + 80 }}
-        showsVerticalScrollIndicator={false}
-        onScroll={event => {
-          setScrollY(event.nativeEvent.contentOffset.y);
-        }}
-        scrollEventThrottle={16}>
-        <View className="p-5">
-          {/* Author Info */}
-          <View className="mb-3 flex-row items-center">
-            <View className="mr-3 h-10 w-10 rounded-full bg-surface-300" />
-            <View>
-              <Text className="text-main-text typo-body-15-semibold">익명</Text>
-              <Text className="text-surface-500 typo-caption-13-light">
-                {post.school} · {post.date}
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        keyboardVerticalOffset={Platform.OS === 'ios' ? -20 : 0}>
+        {/* Content */}
+        <ScrollView
+          className="flex-1"
+          contentContainerStyle={{ paddingBottom: 80 }}
+          showsVerticalScrollIndicator={false}
+          onScroll={event => {
+            setScrollY(event.nativeEvent.contentOffset.y);
+          }}
+          scrollEventThrottle={16}
+          keyboardShouldPersistTaps="handled">
+          <View className="p-5">
+            {/* Author Info */}
+            <View className="mb-3 flex-row items-center">
+              <View className="mr-3 h-10 w-10 rounded-full bg-surface-300" />
+              <View>
+                <Text className="text-main-text typo-body-15-semibold">
+                  익명
+                </Text>
+                <Text className="text-surface-500 typo-caption-13-light">
+                  {post.school} · {post.date}
+                </Text>
+              </View>
+            </View>
+
+            {/* Title */}
+            <Text className="mb-4 text-main-text typo-sub-title-20-semibold">
+              {post.title}
+            </Text>
+
+            {/* Content */}
+            <Text className="mb-6 leading-6 text-main-text typo-body-15-regular-post-detail">
+              {post.content}
+            </Text>
+
+            {/* Stats */}
+            <View className="mb-6 flex-row items-center justify-between space-x-6">
+              <View className="flex-row items-center">
+                <ToggleIcons
+                  type="eyeOpenStroke"
+                  color="#979797"
+                  width={24}
+                  height={24}
+                />
+                <Text className="ml-1 text-surface-500 typo-body-15-medium">
+                  {post.views}명이 봤어요
+                </Text>
+              </View>
+
+              <View className="flex-row gap-2">
+                {/* 좋아요 버튼 */}
+                <Pressable
+                  onPress={handleLikePress}
+                  className={clsx(
+                    'flex-row items-center rounded-[50px] border-[1.5px] px-3.5 py-1.5',
+                    isLiked
+                      ? 'border-main-red bg-main-red/10'
+                      : 'border-surface-200',
+                  )}
+                  style={({ pressed }) => [
+                    {
+                      opacity: pressed ? 0.7 : 1,
+                    },
+                  ]}>
+                  <Animated.View style={{ transform: [{ scale: likeScale }] }}>
+                    <BoardActionIcons
+                      action={isLiked ? 'like' : 'like-gray'}
+                      width={20}
+                      height={20}
+                    />
+                  </Animated.View>
+                  <Text
+                    className={clsx(
+                      'ml-1 typo-caption-14-semibold',
+                      isLiked ? 'text-main-red' : 'text-surface-600',
+                    )}>
+                    {post.likes}
+                  </Text>
+                </Pressable>
+
+                {/* 스크랩 버튼 */}
+                <Pressable
+                  onPress={handleBookmarkPress}
+                  className={clsx(
+                    'flex-row items-center rounded-[50px] border-[1.5px] px-3.5 py-1.5',
+                    isBookmarked
+                      ? 'border-tertiary-yellow bg-tertiary-yellow/[7%]'
+                      : 'border-surface-200',
+                  )}
+                  style={({ pressed }) => [
+                    {
+                      opacity: pressed ? 0.7 : 1,
+                    },
+                  ]}>
+                  <Animated.View
+                    style={{ transform: [{ scale: bookmarkScale }] }}>
+                    <BoardActionIcons
+                      action={isBookmarked ? 'scrab-on' : 'scrab-gray'}
+                      width={20}
+                      height={20}
+                    />
+                  </Animated.View>
+                  <Text
+                    className={clsx(
+                      'ml-1 typo-caption-14-semibold',
+                      isBookmarked
+                        ? 'text-tertiary-yellow'
+                        : 'text-surface-600',
+                    )}>
+                    {post.bookmarks}
+                  </Text>
+                </Pressable>
+              </View>
+            </View>
+
+            <View
+              className="h-1.5 bg-surface-50"
+              style={{ marginLeft: -20, marginRight: -20 }}
+            />
+
+            {/* Comments Section */}
+            <View className="border-surface-200 pt-5">
+              <Text className="mb-6 text-main-text typo-body-16-semibold">
+                댓글 {post.commentCount}
               </Text>
+
+              {comments.map((commentItem, idx) => (
+                <View
+                  key={commentItem.id}
+                  className="pb-6"
+                  onLayout={event => {
+                    const layout = event.nativeEvent.layout;
+                    setCommentLayouts(prev => ({
+                      ...prev,
+                      [`comment-${commentItem.id}`]: layout.y,
+                    }));
+                  }}>
+                  <View
+                    className={clsx(
+                      idx !== comments.length - 1 &&
+                        'border-b border-b-surface-200',
+                      'flex-col justify-between pb-6',
+                    )}>
+                    <View className="w-full">
+                      <View className="mb-3 flex-row items-center justify-between">
+                        <View className="flex-row items-center">
+                          <View className="mr-3 h-8 w-8 rounded-full bg-surface-300" />
+                          <Text className="mr-2 text-main-text typo-caption-14-semibold">
+                            {commentItem.author}
+                          </Text>
+                          <Text className="text-surface-500 typo-caption-14-regular">
+                            · {commentItem.school}
+                          </Text>
+                        </View>
+
+                        {/* comment box */}
+                        <View className="flex-row items-center space-x-2 rounded-[100px] bg-surface-100 px-3 py-2">
+                          <Pressable>
+                            <CommentActionIcons
+                              action="comment"
+                              height={18}
+                              width={18}
+                            />
+                          </Pressable>
+
+                          <View className="h-3 w-[1px] bg-surface-300" />
+
+                          <Pressable>
+                            <CommentActionIcons
+                              action="like"
+                              height={18}
+                              width={18}
+                            />
+                          </Pressable>
+
+                          <View className="h-3 w-[1px] bg-surface-300" />
+
+                          <Pressable
+                            onPress={() =>
+                              setActiveCommentOption(
+                                activeCommentOption ===
+                                  `comment-${commentItem.id}`
+                                  ? null
+                                  : `comment-${commentItem.id}`,
+                              )
+                            }>
+                            <CommentActionIcons
+                              action="toggle"
+                              height={18}
+                              width={18}
+                            />
+                          </Pressable>
+                        </View>
+                      </View>
+
+                      <Text className="mb-2 text-main-text typo-body-15-regular">
+                        {commentItem.content}
+                      </Text>
+
+                      <View className="flex-row items-center space-x-2">
+                        <Text className="text-surface-500 typo-caption-13-light">
+                          {commentItem.date}
+                        </Text>
+                        {commentItem.likes > 0 && (
+                          <View className="flex-row items-center">
+                            <BoardActionIcons
+                              width={14}
+                              height={14}
+                              action="like"
+                            />
+                            <Text className="ml-1 text-xs text-red-500">
+                              {commentItem.likes}
+                            </Text>
+                          </View>
+                        )}
+                      </View>
+                    </View>
+
+                    {/* 답글 */}
+                    {commentItem.replies &&
+                      commentItem.replies.map(reply => (
+                        <View
+                          key={reply.id}
+                          className="flex-row space-x-2 px-5 pl-2 pt-4"
+                          onLayout={event => {
+                            const layout = event.nativeEvent.layout;
+                            setCommentLayouts(prev => ({
+                              ...prev,
+                              [`reply-${reply.id}`]: layout.y,
+                            }));
+                          }}>
+                          <CommentArrowIcon className="top-2" />
+
+                          <View className="w-full flex-col rounded-[10px] bg-surface-100 p-3.5">
+                            <View className="mb-3 flex-row justify-between">
+                              <View className="flex-row items-center">
+                                <View className="mr-3 h-8 w-8 rounded-full bg-surface-300" />
+                                <Text className="mr-2 text-main-text typo-caption-14-semibold">
+                                  {reply.author}
+                                </Text>
+                                <Text className="text-surface-500 typo-caption-14-regular">
+                                  · {reply.school}
+                                </Text>
+                              </View>
+
+                              <View className="flex-row items-center space-x-2 rounded-[100px] bg-surface-200 px-3 py-2">
+                                <Pressable>
+                                  <CommentActionIcons
+                                    action="like"
+                                    height={18}
+                                    width={18}
+                                  />
+                                </Pressable>
+
+                                <View className="h-3 w-[1px] bg-surface-300" />
+
+                                <Pressable
+                                  onPress={() =>
+                                    setActiveCommentOption(
+                                      activeCommentOption ===
+                                        `reply-${reply.id}`
+                                        ? null
+                                        : `reply-${reply.id}`,
+                                    )
+                                  }>
+                                  <CommentActionIcons
+                                    action="toggle"
+                                    height={18}
+                                    width={18}
+                                  />
+                                </Pressable>
+                              </View>
+                            </View>
+
+                            <Text className="mb-2 text-main-text typo-body-15-regular">
+                              {reply.content}
+                            </Text>
+
+                            <View className="flex-row items-center space-x-2">
+                              <Text className="text-surface-500 typo-caption-13-light">
+                                {reply.date}
+                              </Text>
+                              {reply.likes && reply.likes > 0 && (
+                                <View className="flex-row items-center">
+                                  <BoardActionIcons
+                                    width={14}
+                                    height={14}
+                                    action="like"
+                                  />
+                                  <Text className="ml-1 text-xs text-red-500">
+                                    {reply.likes}
+                                  </Text>
+                                </View>
+                              )}
+                            </View>
+                          </View>
+
+                          {/* 답글 옵션 팝업 */}
+                          <OptionPopup
+                            visible={
+                              activeCommentOption === `reply-${reply.id}`
+                            }
+                            onClose={() => setActiveCommentOption(null)}
+                            options={commentOptions}
+                            position={{
+                              top:
+                                insets.top +
+                                TOP_OFFSET +
+                                (commentLayouts[`reply-${reply.id}`] || 0) -
+                                scrollY +
+                                665,
+                              right: 30,
+                            }}
+                          />
+                        </View>
+                      ))}
+                  </View>
+
+                  {/* 댓글 옵션 팝업 */}
+                  <OptionPopup
+                    visible={
+                      activeCommentOption === `comment-${commentItem.id}`
+                    }
+                    onClose={() => setActiveCommentOption(null)}
+                    options={commentOptions}
+                    position={{
+                      top:
+                        insets.top +
+                        TOP_OFFSET +
+                        (commentLayouts[`comment-${commentItem.id}`] || 0) -
+                        scrollY +
+                        420,
+                      right: 20,
+                    }}
+                  />
+                </View>
+              ))}
             </View>
           </View>
+        </ScrollView>
 
-          {/* Title */}
-          <Text className="mb-4 text-main-text typo-sub-title-20-semibold">
-            {post.title}
-          </Text>
-
-          {/* Content */}
-          <Text className="mb-6 leading-6 text-main-text typo-body-15-regular-post-detail">
-            {post.content}
-          </Text>
-
-          {/* Stats */}
-          <View className="mb-6 flex-row items-center justify-between space-x-6">
-            <View className="flex-row items-center">
-              <ToggleIcons
-                type="eyeOpenStroke"
-                color="#979797"
+        {/* Bottom Input Bar */}
+        <View
+          className="bg-white px-5 py-3"
+          style={[
+            {
+              paddingBottom: insets.bottom || 12,
+              zIndex: 30,
+              bottom: Platform.OS === 'android' ? keyboardHeight + 10 : 0, // Android에서만 키보드 높이만큼 올림
+            },
+            shadowStyleSheet.dropShadowTop,
+          ]}>
+          <View className="flex-row items-center justify-between rounded-[15px] bg-surface-100 px-4">
+            <View className="flex-1 justify-center" style={{ height: 52 }}>
+              <TextInput
+                placeholder="댓글을 입력하세요."
+                placeholderTextColor="#979797"
+                value={comment}
+                onChangeText={setComment}
+                className="bottom-0.5 text-main-text typo-body-16-medium"
+                style={{
+                  padding: 0,
+                  margin: 0,
+                  textAlignVertical: 'center',
+                  includeFontPadding: false,
+                }}
+                returnKeyType="send"
+                onSubmitEditing={handleSendComment}
+                multiline
+              />
+            </View>
+            <Pressable onPress={handleSendComment} className="ml-2">
+              <CommentActionIcons
+                action={comment.trim() ? 'send-on' : 'send'}
                 width={24}
                 height={24}
               />
-              <Text className="ml-1 text-surface-500 typo-body-15-medium">
-                {post.views}명이 봤어요
-              </Text>
-            </View>
-
-            <View className="flex-row gap-2">
-              {/* 좋아요 버튼 */}
-              <Pressable
-                onPress={handleLikePress}
-                className={clsx(
-                  'flex-row items-center rounded-[50px] border-[1.5px] px-3.5 py-1.5',
-                  isLiked
-                    ? 'border-main-red bg-main-red/10'
-                    : 'border-surface-200',
-                )}
-                style={({ pressed }) => [
-                  {
-                    opacity: pressed ? 0.7 : 1,
-                  },
-                ]}>
-                <Animated.View style={{ transform: [{ scale: likeScale }] }}>
-                  <BoardActionIcons
-                    action={isLiked ? 'like' : 'like-gray'}
-                    width={20}
-                    height={20}
-                  />
-                </Animated.View>
-                <Text
-                  className={clsx(
-                    'ml-1 typo-caption-14-semibold',
-                    isLiked ? 'text-main-red' : 'text-surface-600',
-                  )}>
-                  {post.likes}
-                </Text>
-              </Pressable>
-
-              {/* 스크랩 버튼 */}
-              <Pressable
-                onPress={handleBookmarkPress}
-                className={clsx(
-                  'flex-row items-center rounded-[50px] border-[1.5px] px-3.5 py-1.5',
-                  isBookmarked
-                    ? 'border-tertiary-yellow bg-tertiary-yellow/[7%]'
-                    : 'border-surface-200',
-                )}
-                style={({ pressed }) => [
-                  {
-                    opacity: pressed ? 0.7 : 1,
-                  },
-                ]}>
-                <Animated.View
-                  style={{ transform: [{ scale: bookmarkScale }] }}>
-                  <BoardActionIcons
-                    action={isBookmarked ? 'scrab-on' : 'scrab-gray'}
-                    width={20}
-                    height={20}
-                  />
-                </Animated.View>
-                <Text
-                  className={clsx(
-                    'ml-1 typo-caption-14-semibold',
-                    isBookmarked ? 'text-tertiary-yellow' : 'text-surface-600',
-                  )}>
-                  {post.bookmarks}
-                </Text>
-              </Pressable>
-            </View>
-          </View>
-
-          <View
-            className="h-1.5 bg-surface-50"
-            style={{ marginLeft: -20, marginRight: -20 }}
-          />
-
-          {/* Comments Section */}
-          <View className="border-surface-200 pt-5">
-            <Text className="mb-6 text-main-text typo-body-16-semibold">
-              댓글 {post.commentCount}
-            </Text>
-
-            {comments.map((commentItem, idx) => (
-              <View
-                key={commentItem.id}
-                className="pb-6"
-                onLayout={event => {
-                  const layout = event.nativeEvent.layout;
-                  setCommentLayouts(prev => ({
-                    ...prev,
-                    [`comment-${commentItem.id}`]: layout.y,
-                  }));
-                }}>
-                <View
-                  className={clsx(
-                    idx !== comments.length - 1 &&
-                      'border-b border-b-surface-200',
-                    'flex-col justify-between pb-6',
-                  )}>
-                  <View className="w-full">
-                    <View className="mb-3 flex-row items-center justify-between">
-                      <View className="flex-row items-center">
-                        <View className="mr-3 h-8 w-8 rounded-full bg-surface-300" />
-                        <Text className="mr-2 text-main-text typo-caption-14-semibold">
-                          {commentItem.author}
-                        </Text>
-                        <Text className="text-surface-500 typo-caption-14-regular">
-                          · {commentItem.school}
-                        </Text>
-                      </View>
-
-                      {/* comment box */}
-                      <View className="flex-row items-center space-x-2 rounded-[100px] bg-surface-100 px-3 py-2">
-                        <Pressable>
-                          <CommentActionIcons
-                            action="comment"
-                            height={18}
-                            width={18}
-                          />
-                        </Pressable>
-
-                        <View className="h-3 w-[1px] bg-surface-300" />
-
-                        <Pressable>
-                          <CommentActionIcons
-                            action="like"
-                            height={18}
-                            width={18}
-                          />
-                        </Pressable>
-
-                        <View className="h-3 w-[1px] bg-surface-300" />
-
-                        <Pressable
-                          onPress={() =>
-                            setActiveCommentOption(
-                              activeCommentOption ===
-                                `comment-${commentItem.id}`
-                                ? null
-                                : `comment-${commentItem.id}`,
-                            )
-                          }>
-                          <CommentActionIcons
-                            action="toggle"
-                            height={18}
-                            width={18}
-                          />
-                        </Pressable>
-                      </View>
-                    </View>
-
-                    <Text className="mb-2 text-main-text typo-body-15-regular">
-                      {commentItem.content}
-                    </Text>
-
-                    <View className="flex-row items-center space-x-2">
-                      <Text className="text-surface-500 typo-caption-13-light">
-                        {commentItem.date}
-                      </Text>
-                      {commentItem.likes > 0 && (
-                        <View className="flex-row items-center">
-                          <BoardActionIcons
-                            width={14}
-                            height={14}
-                            action="like"
-                          />
-                          <Text className="ml-1 text-xs text-red-500">
-                            {commentItem.likes}
-                          </Text>
-                        </View>
-                      )}
-                    </View>
-                  </View>
-
-                  {/* 답글 */}
-                  {commentItem.replies &&
-                    commentItem.replies.map(reply => (
-                      <View
-                        key={reply.id}
-                        className="flex-row space-x-2 px-5 pl-2 pt-4"
-                        onLayout={event => {
-                          const layout = event.nativeEvent.layout;
-                          setCommentLayouts(prev => ({
-                            ...prev,
-                            [`reply-${reply.id}`]: layout.y,
-                          }));
-                        }}>
-                        <CommentArrowIcon className="top-2" />
-
-                        <View className="w-full flex-col rounded-[10px] bg-surface-100 p-3.5">
-                          <View className="mb-3 flex-row justify-between">
-                            <View className="flex-row items-center">
-                              <View className="mr-3 h-8 w-8 rounded-full bg-surface-300" />
-                              <Text className="mr-2 text-main-text typo-caption-14-semibold">
-                                {reply.author}
-                              </Text>
-                              <Text className="text-surface-500 typo-caption-14-regular">
-                                · {reply.school}
-                              </Text>
-                            </View>
-
-                            <View className="flex-row items-center space-x-2 rounded-[100px] bg-surface-200 px-3 py-2">
-                              <Pressable>
-                                <CommentActionIcons
-                                  action="like"
-                                  height={18}
-                                  width={18}
-                                />
-                              </Pressable>
-
-                              <View className="h-3 w-[1px] bg-surface-300" />
-
-                              <Pressable
-                                onPress={() =>
-                                  setActiveCommentOption(
-                                    activeCommentOption === `reply-${reply.id}`
-                                      ? null
-                                      : `reply-${reply.id}`,
-                                  )
-                                }>
-                                <CommentActionIcons
-                                  action="toggle"
-                                  height={18}
-                                  width={18}
-                                />
-                              </Pressable>
-                            </View>
-                          </View>
-
-                          <Text className="mb-2 text-main-text typo-body-15-regular">
-                            {reply.content}
-                          </Text>
-
-                          <View className="flex-row items-center space-x-2">
-                            <Text className="text-surface-500 typo-caption-13-light">
-                              {reply.date}
-                            </Text>
-                            {reply.likes && reply.likes > 0 && (
-                              <View className="flex-row items-center">
-                                <BoardActionIcons
-                                  width={14}
-                                  height={14}
-                                  action="like"
-                                />
-                                <Text className="ml-1 text-xs text-red-500">
-                                  {reply.likes}
-                                </Text>
-                              </View>
-                            )}
-                          </View>
-                        </View>
-
-                        {/* 답글 옵션 팝업 */}
-                        <OptionPopup
-                          visible={activeCommentOption === `reply-${reply.id}`}
-                          onClose={() => setActiveCommentOption(null)}
-                          options={commentOptions}
-                          position={{
-                            top:
-                              insets.top +
-                              TOP_OFFSET +
-                              (commentLayouts[`reply-${reply.id}`] || 0) -
-                              scrollY +
-                              665,
-                            right: 30,
-                          }}
-                        />
-                      </View>
-                    ))}
-                </View>
-
-                {/* 댓글 옵션 팝업 */}
-                <OptionPopup
-                  visible={activeCommentOption === `comment-${commentItem.id}`}
-                  onClose={() => setActiveCommentOption(null)}
-                  options={commentOptions}
-                  position={{
-                    top:
-                      insets.top +
-                      TOP_OFFSET +
-                      (commentLayouts[`comment-${commentItem.id}`] || 0) -
-                      scrollY +
-                      420,
-                    right: 20,
-                  }}
-                />
-              </View>
-            ))}
+            </Pressable>
           </View>
         </View>
-      </ScrollView>
-
-      {/* Bottom Input Bar */}
-      <View
-        style={{ paddingBottom: insets.bottom }}
-        className="border-t border-surface-200 bg-white p-4">
-        <View className="flex-row items-center rounded-full bg-surface-100 px-4 py-2">
-          <TextInput
-            placeholder="저도 부타드려여 ㅠㅠㅠ"
-            placeholderTextColor="#9CA3AF"
-            value={comment}
-            onChangeText={setComment}
-            className="flex-1 text-main-text typo-body-15-regular"
-          />
-          <TouchableOpacity className="ml-2">
-            {/* <Send width={20} height={20} color="#8B5CF6" /> */}
-          </TouchableOpacity>
-        </View>
-      </View>
+      </KeyboardAvoidingView>
 
       {/* Option Popup */}
       <OptionPopup
