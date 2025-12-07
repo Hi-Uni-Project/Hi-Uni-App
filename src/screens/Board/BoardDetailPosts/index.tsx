@@ -16,6 +16,7 @@ import ArrowIcons from '@/shared/icons/ArrowIcons';
 import BoardActionIcons from '@/shared/icons/BoardActionIcons';
 import CommentActionIcons from '@/shared/icons/CommentActionIcons';
 import ToggleIcons from '@/shared/icons/ToggleIcons';
+import ConfirmModal from '@/shared/ui/organisms/ConfirmModal';
 import CommentArrowIcon from '@/static/icons/comment-arrow.svg';
 import MoreIcon from '@/static/icons/more.svg';
 
@@ -30,6 +31,7 @@ const BoardDetailPosts = () => {
   const [commentLayouts, setCommentLayouts] = useState<{
     [key: number]: number;
   }>({}); // 각 댓글의 Y 위치
+  const [deleteModalVisible, setDeleteModalVisible] = useState(false);
 
   const TOP_OFFSET = 70; // 헤더 높이
 
@@ -58,15 +60,15 @@ const BoardDetailPosts = () => {
   // 댓글 옵션 메뉴
   const commentOptions: OptionItem[] = [
     {
-      label: '신고하기',
+      label: '수정하기',
       onPress: () => {
-        console.log('댓글 신고하기');
+        console.log('댓글 수정하기');
       },
     },
     {
-      label: '차단하기',
+      label: '삭제하기',
       onPress: () => {
-        console.log('댓글 차단하기');
+        setDeleteModalVisible(true);
       },
     },
   ];
@@ -421,6 +423,17 @@ const BoardDetailPosts = () => {
           top: insets.top + TOP_OFFSET,
           right: 30,
         }}
+      />
+
+      <ConfirmModal
+        visible={deleteModalVisible}
+        onClose={() => setDeleteModalVisible(false)}
+        title="댓글을 삭제할까요?"
+        confirmText="네, 삭제할래요."
+        cancelText="아니요, 그대로 둘게요."
+        status="caution"
+        onConfirm={() => setDeleteModalVisible(false)}
+        onCancel={() => setDeleteModalVisible(false)}
       />
     </View>
   );
