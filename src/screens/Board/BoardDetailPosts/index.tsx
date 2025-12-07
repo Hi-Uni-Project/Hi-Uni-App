@@ -8,8 +8,10 @@ import {
   TouchableOpacity,
   TextInput,
   Pressable,
+  Animated,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import Toast from 'react-native-toast-message';
 
 import OptionPopup, { OptionItem } from '@/shared/components/Board/OptionPopup';
 import ArrowIcons from '@/shared/icons/ArrowIcons';
@@ -34,6 +36,81 @@ const BoardDetailPosts = () => {
   const [deleteCommentModalVisible, setDeleteCommentModalVisible] =
     useState(false);
   const [deletePostModalVisible, setDeletePostModalVisible] = useState(false);
+
+  // 좋아요와 스크랩 상태 추가
+  const [isLiked, setIsLiked] = useState(false);
+  const [isBookmarked, setIsBookmarked] = useState(false);
+
+  // 애니메이션 값
+  const [likeScale] = useState(new Animated.Value(1));
+  const [bookmarkScale] = useState(new Animated.Value(1));
+
+  // 커스텀 Toast 설정
+  const toastConfig = {
+    customToast: ({ text1, text2 }: any) => (
+      <View className="mx-5 rounded-[15px] bg-[#1E2128]/[70%] px-5 py-4 shadow-lg">
+        <Text className="text-center text-white typo-body-15-regular">
+          {text1}
+        </Text>
+        {text2 && (
+          <Text className="mt-1 text-center text-white typo-body-15-regular">
+            {text2}
+          </Text>
+        )}
+      </View>
+    ),
+  };
+
+  // 좋아요 애니메이션
+  const handleLikePress = () => {
+    setIsLiked(!isLiked);
+
+    Animated.sequence([
+      Animated.timing(likeScale, {
+        toValue: 1.3,
+        duration: 150,
+        useNativeDriver: true,
+      }),
+      Animated.spring(likeScale, {
+        toValue: 1,
+        friction: 3,
+        tension: 40,
+        useNativeDriver: true,
+      }),
+    ]).start();
+  };
+
+  // 스크랩 애니메이션
+  const handleBookmarkPress = () => {
+    const newBookmarkState = !isBookmarked;
+    setIsBookmarked(!isBookmarked);
+
+    Animated.sequence([
+      Animated.timing(bookmarkScale, {
+        toValue: 1.3,
+        duration: 150,
+        useNativeDriver: true,
+      }),
+      Animated.spring(bookmarkScale, {
+        toValue: 1,
+        friction: 3,
+        tension: 40,
+        useNativeDriver: true,
+      }),
+    ]).start();
+
+    // Toast 표시
+    if (newBookmarkState) {
+      Toast.show({
+        type: 'customToast',
+        text1: '내 스크랩에 저장되었어요.',
+        text2: '마이페이지 > 내 스크랩 보기에서 볼 수 있어요.',
+        position: 'bottom',
+        visibilityTime: 2500,
+        bottomOffset: insets.bottom + 200,
+      });
+    }
+  };
 
   const TOP_OFFSET = 70;
 
@@ -202,16 +279,63 @@ const BoardDetailPosts = () => {
             </View>
 
             <View className="flex-row gap-2">
-              <Pressable className="flex-row items-center rounded-[50px] border-[1.5px] border-surface-200 px-3.5 py-1.5">
-                <BoardActionIcons action="like-gray" width={20} height={20} />
-                <Text className="ml-1 text-surface-600 typo-caption-14-semibold">
+              {/* 좋아요 버튼 */}
+              <Pressable
+                onPress={handleLikePress}
+                className={clsx(
+                  'flex-row items-center rounded-[50px] border-[1.5px] px-3.5 py-1.5',
+                  isLiked
+                    ? 'border-main-red bg-main-red/10'
+                    : 'border-surface-200',
+                )}
+                style={({ pressed }) => [
+                  {
+                    opacity: pressed ? 0.7 : 1,
+                  },
+                ]}>
+                <Animated.View style={{ transform: [{ scale: likeScale }] }}>
+                  <BoardActionIcons
+                    action={isLiked ? 'like' : 'like-gray'}
+                    width={20}
+                    height={20}
+                  />
+                </Animated.View>
+                <Text
+                  className={clsx(
+                    'ml-1 typo-caption-14-semibold',
+                    isLiked ? 'text-main-red' : 'text-surface-600',
+                  )}>
                   {post.likes}
                 </Text>
               </Pressable>
 
-              <Pressable className="flex-row items-center rounded-[50px] border-[1.5px] border-surface-200 px-3.5 py-1.5">
-                <BoardActionIcons action="scrab-gray" width={20} height={20} />
-                <Text className="ml-1 text-surface-600 typo-caption-14-semibold">
+              {/* 스크랩 버튼 */}
+              <Pressable
+                onPress={handleBookmarkPress}
+                className={clsx(
+                  'flex-row items-center rounded-[50px] border-[1.5px] px-3.5 py-1.5',
+                  isBookmarked
+                    ? 'border-tertiary-yellow bg-tertiary-yellow/[7%]'
+                    : 'border-surface-200',
+                )}
+                style={({ pressed }) => [
+                  {
+                    opacity: pressed ? 0.7 : 1,
+                  },
+                ]}>
+                <Animated.View
+                  style={{ transform: [{ scale: bookmarkScale }] }}>
+                  <BoardActionIcons
+                    action={isBookmarked ? 'scrab-on' : 'scrab-gray'}
+                    width={20}
+                    height={20}
+                  />
+                </Animated.View>
+                <Text
+                  className={clsx(
+                    'ml-1 typo-caption-14-semibold',
+                    isBookmarked ? 'text-tertiary-yellow' : 'text-surface-600',
+                  )}>
                   {post.bookmarks}
                 </Text>
               </Pressable>
@@ -497,6 +621,8 @@ const BoardDetailPosts = () => {
         }}
         onCancel={() => setDeletePostModalVisible(false)}
       />
+
+      <Toast config={toastConfig} />
     </View>
   );
 };
