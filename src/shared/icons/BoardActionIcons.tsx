@@ -1,5 +1,6 @@
 import React from 'react';
 
+import ScrabOn from '@/static/icons/comment-scrab-on.svg';
 import CommentsIcon from '@/static/icons/comment.svg';
 import ScrabGrayIcon from '@/static/icons/scrab-gray.svg';
 import ScrabIcon from '@/static/icons/scrab.svg';
@@ -7,7 +8,13 @@ import ThumbsUpGaryIcon from '@/static/icons/thumbs_up-gray.svg';
 import ThumbsUpIcon from '@/static/icons/thumbs_up.svg';
 
 interface Props {
-  action: 'like' | 'comment' | 'scrab' | 'like-gray' | 'scrab-gray';
+  action:
+    | 'like'
+    | 'comment'
+    | 'scrab'
+    | 'like-gray'
+    | 'scrab-gray'
+    | 'scrab-on';
   width?: number;
   height?: number;
 }
@@ -24,6 +31,8 @@ const BoardActionIcons = ({ action, height, width }: Props) => {
       return <ThumbsUpGaryIcon width={width} height={height} />;
     case 'scrab-gray':
       return <ScrabGrayIcon width={width} height={height} />;
+    case 'scrab-on':
+      return <ScrabOn width={width} height={height} />;
     default:
       return null;
   }
