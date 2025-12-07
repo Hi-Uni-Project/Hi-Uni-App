@@ -24,16 +24,16 @@ const BoardDetailPosts = () => {
   const insets = useSafeAreaInsets();
   const [comment, setComment] = useState('');
   const [isPostOptionVisible, setIsPostOptionVisible] = useState(false);
-  const [activeCommentOption, setActiveCommentOption] = useState<number | null>(
+  const [activeCommentOption, setActiveCommentOption] = useState<string | null>(
     null,
   );
-  const [scrollY, setScrollY] = useState(0); // 스크롤 위치 추적
+  const [scrollY, setScrollY] = useState(0);
   const [commentLayouts, setCommentLayouts] = useState<{
-    [key: number]: number;
-  }>({}); // 각 댓글의 Y 위치
+    [key: string]: number;
+  }>({});
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
 
-  const TOP_OFFSET = 70; // 헤더 높이
+  const TOP_OFFSET = 70;
 
   // 게시글 옵션 메뉴
   const postOptions: OptionItem[] = [
@@ -235,12 +235,14 @@ const BoardDetailPosts = () => {
                   const layout = event.nativeEvent.layout;
                   setCommentLayouts(prev => ({
                     ...prev,
-                    [commentItem.id]: layout.y,
+                    [`comment-${commentItem.id}`]: layout.y,
                   }));
                 }}>
                 <View
                   className={clsx(
-                    `${idx !== comments.length - 1 && 'border-b border-b-surface-200'} flex-col justify-between pb-6`,
+                    idx !== comments.length - 1 &&
+                      'border-b border-b-surface-200',
+                    'flex-col justify-between pb-6',
                   )}>
                   <View className="w-full">
                     <View className="mb-3 flex-row items-center justify-between">
@@ -279,9 +281,10 @@ const BoardDetailPosts = () => {
                         <Pressable
                           onPress={() =>
                             setActiveCommentOption(
-                              activeCommentOption === commentItem.id
+                              activeCommentOption ===
+                                `comment-${commentItem.id}`
                                 ? null
-                                : commentItem.id,
+                                : `comment-${commentItem.id}`,
                             )
                           }>
                           <CommentActionIcons
@@ -316,9 +319,19 @@ const BoardDetailPosts = () => {
                     </View>
                   </View>
 
+                  {/* 답글 */}
                   {commentItem.replies &&
                     commentItem.replies.map(reply => (
-                      <View className="flex-row space-x-2 px-5 pl-2 pt-4">
+                      <View
+                        key={reply.id}
+                        className="flex-row space-x-2 px-5 pl-2 pt-4"
+                        onLayout={event => {
+                          const layout = event.nativeEvent.layout;
+                          setCommentLayouts(prev => ({
+                            ...prev,
+                            [`reply-${reply.id}`]: layout.y,
+                          }));
+                        }}>
                         <CommentArrowIcon className="top-2" />
 
                         <View className="w-full flex-col rounded-[10px] bg-surface-100 p-3.5">
@@ -326,10 +339,10 @@ const BoardDetailPosts = () => {
                             <View className="flex-row items-center">
                               <View className="mr-3 h-8 w-8 rounded-full bg-surface-300" />
                               <Text className="mr-2 text-main-text typo-caption-14-semibold">
-                                {commentItem.author}
+                                {reply.author}
                               </Text>
                               <Text className="text-surface-500 typo-caption-14-regular">
-                                · {commentItem.school}
+                                · {reply.school}
                               </Text>
                             </View>
 
@@ -347,9 +360,9 @@ const BoardDetailPosts = () => {
                               <Pressable
                                 onPress={() =>
                                   setActiveCommentOption(
-                                    activeCommentOption === commentItem.id
+                                    activeCommentOption === `reply-${reply.id}`
                                       ? null
-                                      : commentItem.id,
+                                      : `reply-${reply.id}`,
                                   )
                                 }>
                                 <CommentActionIcons
@@ -369,7 +382,7 @@ const BoardDetailPosts = () => {
                             <Text className="text-surface-500 typo-caption-13-light">
                               {reply.date}
                             </Text>
-                            {reply.likes > 0 && (
+                            {reply.likes && reply.likes > 0 && (
                               <View className="flex-row items-center">
                                 <BoardActionIcons
                                   width={14}
@@ -383,20 +396,36 @@ const BoardDetailPosts = () => {
                             )}
                           </View>
                         </View>
+
+                        {/* 답글 옵션 팝업 */}
+                        <OptionPopup
+                          visible={activeCommentOption === `reply-${reply.id}`}
+                          onClose={() => setActiveCommentOption(null)}
+                          options={commentOptions}
+                          position={{
+                            top:
+                              insets.top +
+                              TOP_OFFSET +
+                              (commentLayouts[`reply-${reply.id}`] || 0) -
+                              scrollY +
+                              665,
+                            right: 30,
+                          }}
+                        />
                       </View>
                     ))}
                 </View>
 
                 {/* 댓글 옵션 팝업 */}
                 <OptionPopup
-                  visible={activeCommentOption === commentItem.id}
+                  visible={activeCommentOption === `comment-${commentItem.id}`}
                   onClose={() => setActiveCommentOption(null)}
                   options={commentOptions}
                   position={{
                     top:
                       insets.top +
                       TOP_OFFSET +
-                      (commentLayouts[commentItem.id] || 0) -
+                      (commentLayouts[`comment-${commentItem.id}`] || 0) -
                       scrollY +
                       420,
                     right: 20,
