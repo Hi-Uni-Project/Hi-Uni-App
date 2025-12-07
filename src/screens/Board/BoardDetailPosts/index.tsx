@@ -31,7 +31,9 @@ const BoardDetailPosts = () => {
   const [commentLayouts, setCommentLayouts] = useState<{
     [key: string]: number;
   }>({});
-  const [deleteModalVisible, setDeleteModalVisible] = useState(false);
+  const [deleteCommentModalVisible, setDeleteCommentModalVisible] =
+    useState(false);
+  const [deletePostModalVisible, setDeletePostModalVisible] = useState(false);
 
   const TOP_OFFSET = 70;
 
@@ -40,7 +42,7 @@ const BoardDetailPosts = () => {
     {
       label: '쪽지 보내기',
       onPress: () => {
-        console.log('쪽지 보내기');
+        setDeletePostModalVisible(true); // 임시 삭제 모달
       },
     },
     {
@@ -68,7 +70,7 @@ const BoardDetailPosts = () => {
     {
       label: '삭제하기',
       onPress: () => {
-        setDeleteModalVisible(true);
+        setDeleteCommentModalVisible(true);
       },
     },
   ];
@@ -466,15 +468,34 @@ const BoardDetailPosts = () => {
         }}
       />
 
+      {/* 댓글 삭제 모달 */}
       <ConfirmModal
-        visible={deleteModalVisible}
-        onClose={() => setDeleteModalVisible(false)}
+        visible={deleteCommentModalVisible}
+        onClose={() => setDeleteCommentModalVisible(false)}
         title="댓글을 삭제할까요?"
         confirmText="네, 삭제할래요."
         cancelText="아니요, 그대로 둘게요."
         status="caution"
-        onConfirm={() => setDeleteModalVisible(false)}
-        onCancel={() => setDeleteModalVisible(false)}
+        onConfirm={() => {
+          console.log('댓글 삭제');
+          setDeleteCommentModalVisible(false);
+        }}
+        onCancel={() => setDeleteCommentModalVisible(false)}
+      />
+
+      {/* 게시글 삭제 모달 */}
+      <ConfirmModal
+        visible={deletePostModalVisible}
+        onClose={() => setDeletePostModalVisible(false)}
+        title="게시글을 삭제할까요?"
+        confirmText="네, 삭제할래요."
+        cancelText="아니요, 그대로 둘게요."
+        status="caution"
+        onConfirm={() => {
+          console.log('게시글 삭제');
+          setDeletePostModalVisible(false);
+        }}
+        onCancel={() => setDeletePostModalVisible(false)}
       />
     </View>
   );
