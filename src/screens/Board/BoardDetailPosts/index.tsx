@@ -16,6 +16,7 @@ import ArrowIcons from '@/shared/icons/ArrowIcons';
 import BoardActionIcons from '@/shared/icons/BoardActionIcons';
 import CommentActionIcons from '@/shared/icons/CommentActionIcons';
 import ToggleIcons from '@/shared/icons/ToggleIcons';
+import CommentArrowIcon from '@/static/icons/comment-arrow.svg';
 import MoreIcon from '@/static/icons/more.svg';
 
 const BoardDetailPosts = () => {
@@ -226,7 +227,7 @@ const BoardDetailPosts = () => {
                 }}>
                 <View
                   className={clsx(
-                    `${idx !== comments.length - 1 && 'border-b border-b-surface-200'} flex-row justify-between pb-6`,
+                    `${idx !== comments.length - 1 && 'border-b border-b-surface-200'} flex-col justify-between pb-6`,
                   )}>
                   <View className="w-full">
                     <View className="mb-3 flex-row items-center justify-between">
@@ -301,7 +302,77 @@ const BoardDetailPosts = () => {
                       )}
                     </View>
                   </View>
+
+                  {commentItem.replies && (
+                    <View className="flex-row space-x-2 px-5 pl-2 pt-4">
+                      <CommentArrowIcon className="top-2" />
+
+                      <View className="w-full flex-col rounded-[10px] bg-surface-100 p-3.5">
+                        <View className="mb-3 flex-row justify-between">
+                          <View className="flex-row items-center">
+                            <View className="mr-3 h-8 w-8 rounded-full bg-surface-300" />
+                            <Text className="mr-2 text-main-text typo-caption-14-semibold">
+                              {commentItem.author}
+                            </Text>
+                            <Text className="text-surface-500 typo-caption-14-regular">
+                              · {commentItem.school}
+                            </Text>
+                          </View>
+
+                          <View className="flex-row items-center space-x-2 rounded-[100px] bg-surface-200 px-3 py-2">
+                            <Pressable>
+                              <CommentActionIcons
+                                action="like"
+                                height={18}
+                                width={18}
+                              />
+                            </Pressable>
+
+                            <View className="h-3 w-[1px] bg-surface-300" />
+
+                            <Pressable
+                              onPress={() =>
+                                setActiveCommentOption(
+                                  activeCommentOption === commentItem.id
+                                    ? null
+                                    : commentItem.id,
+                                )
+                              }>
+                              <CommentActionIcons
+                                action="toggle"
+                                height={18}
+                                width={18}
+                              />
+                            </Pressable>
+                          </View>
+                        </View>
+
+                        <Text className="mb-2 text-main-text typo-body-15-regular">
+                          {commentItem.content}
+                        </Text>
+
+                        <View className="flex-row items-center space-x-2">
+                          <Text className="text-surface-500 typo-caption-13-light">
+                            {commentItem.date}
+                          </Text>
+                          {commentItem.likes > 0 && (
+                            <View className="flex-row items-center">
+                              <BoardActionIcons
+                                width={14}
+                                height={14}
+                                action="like"
+                              />
+                              <Text className="ml-1 text-xs text-red-500">
+                                {commentItem.likes}
+                              </Text>
+                            </View>
+                          )}
+                        </View>
+                      </View>
+                    </View>
+                  )}
                 </View>
+
                 {/* 댓글 옵션 팝업 */}
                 <OptionPopup
                   visible={activeCommentOption === commentItem.id}
