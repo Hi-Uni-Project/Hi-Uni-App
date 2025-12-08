@@ -9,6 +9,7 @@ const initialState: ResumeEditForm = {
   birthYear: 0,
   title: '',
   aboutMe: '',
+  aboutMeCnt: 5,
   careers: [],
   projects: [],
   educations: [],

@@ -23,6 +23,7 @@ import TitleSection from '@/features/record/editResume/components/section/TitleS
 import SelectBottomSheet, {
   SelectOption,
 } from '@/features/record/editResume/components/SelectBottomSheet';
+import useAiAboutMeMutation from '@/features/record/editResume/hooks/useAiAboutMeMutation';
 import useResumeEdit from '@/features/record/editResume/hooks/useResumeEdit';
 import useResumeMutation from '@/features/record/editResume/hooks/useResumeMutation';
 import useResumeNavigator from '@/features/record/editResume/hooks/useResumeNavigator';
@@ -57,6 +58,21 @@ const ResumeEditView = () => {
   }, [serverResumeData, setResumeData]);
 
   const { submitResume, isSubmitting } = useResumeMutation();
+
+  const [isPostNotFoundError, setIsPostNotFoundError] = useState(false);
+
+  const { generateAboutMe, isGenerating } = useAiAboutMeMutation({
+    onSuccess: data => {
+      updateField('aboutMe', data.aboutMe);
+      updateField('aboutMeCnt', data.aboutMeCnt);
+    },
+    onError: (_error, statusCode) => {
+      if (statusCode === 'POST_NOT_FOUND') {
+        setIsPostNotFoundError(true);
+      }
+    },
+  });
+
   const {
     goToCreateCareer,
     goToCreateEducation,
@@ -137,7 +153,12 @@ const ResumeEditView = () => {
 
               <AboutMeSection
                 aboutMe={resumeData?.aboutMe || ''}
+                aboutMeCnt={resumeData?.aboutMeCnt ?? 5}
+                isGenerating={isGenerating}
+                isPostNotFoundError={isPostNotFoundError}
                 onAboutMeChange={text => updateField('aboutMe', text)}
+                onGeneratePress={generateAboutMe}
+                onErrorModalClose={() => setIsPostNotFoundError(false)}
               />
 
               <CareerSection

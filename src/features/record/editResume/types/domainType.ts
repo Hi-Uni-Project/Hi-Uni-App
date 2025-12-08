@@ -1,5 +1,3 @@
-import { Asset } from 'react-native-image-picker';
-
 import {
   Gender,
   GraduationStatus,
@@ -94,7 +92,7 @@ export interface Resume {
 }
 
 export interface ResumeEditForm {
-  photo: Asset | null;
+  photo: string | null;
 
   name: string;
   gender: Gender;
@@ -103,6 +101,7 @@ export interface ResumeEditForm {
   title: string;
 
   aboutMe: string;
+  aboutMeCnt: number;
 
   careers: Career[];
   projects: Project[];

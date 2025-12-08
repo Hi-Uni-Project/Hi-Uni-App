@@ -102,3 +102,10 @@ export interface ResumeDataResponse {
 
 export type ResumeResponse = ResponseTypes<ResumeDataResponse>;
 export type SkillSearchResponse = ResponseTypes<SkillResponse[]>;
+
+export interface AiAboutMeDataResponse {
+  aboutMeCnt: number;
+  aboutMe: string;
+}
+
+export type AiAboutMeResponse = ResponseTypes<AiAboutMeDataResponse>;

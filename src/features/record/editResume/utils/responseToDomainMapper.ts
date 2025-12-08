@@ -6,6 +6,7 @@ import {
   Link,
   Project,
   Resume,
+  ResumeEditForm,
   Skill,
 } from '../types/domainType';
 import {
@@ -105,4 +106,28 @@ export const mapResumeToDomain = (response: ResumeDataResponse): Resume => ({
   linksSize: response.linksSize,
   skillsSize: response.skillsSize,
   careersSize: response.careersSize,
+});
+
+/**
+ * 서버 응답 데이터를 편집 폼 형태로 변환
+ * - photo: 서버의 imageUrl 그대로 저장 (상대 경로)
+ * - ImagePicker에서 서버/로컬 이미지 구분하여 렌더링
+ */
+export const mapResumeToEditForm = (
+  response: ResumeDataResponse,
+): ResumeEditForm => ({
+  photo: response.imageUrl || null,
+  name: response.name || '',
+  gender: mapGenderToDomain(response.gender),
+  birthYear: response.birthYear || 0,
+  title: response.title || '',
+  aboutMe: response.aboutMe || '',
+  aboutMeCnt: response.aboutMeCnt ?? 5,
+  careers: (response.careers || []).map(mapCareerToDomain),
+  projects: (response.projects || []).map(mapProjectToDomain),
+  educations: (response.educations || []).map(mapEducationToDomain),
+  skills: (response.skills || []).map(mapSkillToDomain),
+  languages: (response.languages || []).map(mapLanguageToDomain),
+  achievements: (response.achievements || []).map(mapAchievementToDomain),
+  links: (response.links || []).map(mapLinkToDomain),
 });
