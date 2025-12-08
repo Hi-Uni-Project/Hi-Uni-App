@@ -28,6 +28,7 @@ import useResumeMutation from '@/features/record/editResume/hooks/useResumeMutat
 import useResumeNavigator from '@/features/record/editResume/hooks/useResumeNavigator';
 import { useResumeQueries } from '@/features/record/editResume/hooks/useResumeQueries';
 import useSkillSearch from '@/features/record/editResume/hooks/useSkillSearch';
+import { mapResumeToEditForm } from '@/features/record/editResume/utils/responseToDomainMapper';
 
 const ResumeEditView = () => {
   const insets = useSafeAreaInsets();
@@ -36,11 +37,25 @@ const ResumeEditView = () => {
 
   const { resumeData: serverResumeData } = useResumeQueries();
 
+  const {
+    resumeData,
+    setResumeData,
+    updateField,
+    addSkill,
+    deleteSkill,
+    getRequestData,
+    resetStore,
+  } = useResumeEdit();
+
+  // 서버 데이터로 편집 폼 초기화
   useEffect(() => {
-    console.log('serverResumeData:', serverResumeData);
-  }, [serverResumeData]);
-  const { resumeData, updateField, addSkill, deleteSkill, getRequestData } =
-    useResumeEdit();
+    if (serverResumeData) {
+      const editFormData = mapResumeToEditForm(serverResumeData);
+      console.log('서버에서 받아온 이력서 데이터:', editFormData);
+      setResumeData(editFormData);
+    }
+  }, [serverResumeData, setResumeData]);
+
   const { submitResume, isSubmitting } = useResumeMutation();
   const {
     goToCreateCareer,
@@ -95,6 +110,7 @@ const ResumeEditView = () => {
       <ResumeEditHeader
         isCompleteDisabled={isSubmitting}
         onCompletePress={handleCompletePress}
+        onDeleteAll={resetStore}
       />
 
       <KeyboardAvoidingView
