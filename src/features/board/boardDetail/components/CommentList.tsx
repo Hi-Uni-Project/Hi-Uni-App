@@ -1,0 +1,64 @@
+import React from 'react';
+
+import { View, Text } from 'react-native';
+
+import { Comment } from '../types';
+
+import CommentItem from './CommentItem';
+
+import { OptionItem } from '@/shared/components/Board/OptionPopup';
+
+interface Props {
+  comments: Comment[];
+  commentCount: number;
+  activeOption: string | null;
+  commentOptions: OptionItem[];
+  scrollY: number;
+  topOffset: number;
+  topInset: number;
+  commentLayouts: { [key: string]: number };
+  onCommentLayout: (id: string, y: number) => void;
+  onToggleOption: (id: string) => void;
+  onCloseOption: () => void;
+}
+
+const CommentList = ({
+  comments,
+  commentCount,
+  activeOption,
+  commentOptions,
+  scrollY,
+  topOffset,
+  topInset,
+  commentLayouts,
+  onCommentLayout,
+  onToggleOption,
+  onCloseOption,
+}: Props) => {
+  return (
+    <View className="border-surface-200 pt-5">
+      <Text className="mb-6 text-main-text typo-body-16-semibold">
+        댓글 {commentCount}
+      </Text>
+
+      {comments.map((comment, idx) => (
+        <CommentItem
+          key={comment.id}
+          comment={comment}
+          isLast={idx === comments.length - 1}
+          activeOption={activeOption}
+          commentOptions={commentOptions}
+          scrollY={scrollY}
+          topOffset={topOffset}
+          topInset={topInset}
+          commentLayouts={commentLayouts}
+          onLayout={onCommentLayout}
+          onToggleOption={onToggleOption}
+          onCloseOption={onCloseOption}
+        />
+      ))}
+    </View>
+  );
+};
+
+export default CommentList;

@@ -1,0 +1,45 @@
+import React from 'react';
+
+import { View, Text, Pressable } from 'react-native';
+
+import ArrowIcons from '@/shared/icons/ArrowIcons';
+import MoreIcon from '@/static/icons/more.svg';
+
+interface Props {
+  category: string;
+  subcategory: string;
+  paddingTop: number;
+  onBackPress: () => void;
+  onMorePress: () => void;
+}
+
+const BoardDetailHeader = ({
+  category,
+  subcategory,
+  paddingTop,
+  onBackPress,
+  onMorePress,
+}: Props) => {
+  return (
+    <View style={{ paddingTop }}>
+      <View className="flex-row items-center justify-between px-5 py-4">
+        <Pressable onPress={onBackPress}>
+          <ArrowIcons direction="left" width={26} height={26} color="#1E2128" />
+        </Pressable>
+        <View className="flex-1 items-center">
+          <Text className="text-main-text typo-body-16-semibold">
+            {category}
+          </Text>
+          <Text className="text-surface-500 typo-caption-14-medium">
+            {subcategory}
+          </Text>
+        </View>
+        <Pressable onPress={onMorePress}>
+          <MoreIcon width={26} height={26} color={'#1E2128'} />
+        </Pressable>
+      </View>
+    </View>
+  );
+};
+
+export default BoardDetailHeader;
