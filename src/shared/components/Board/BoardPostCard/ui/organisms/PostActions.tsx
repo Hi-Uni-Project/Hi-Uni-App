@@ -14,14 +14,14 @@ const PostActions = ({ likeCount, commentCount, bookmarkCount }: Props) => {
   return (
     <View className="-mb-2 mr-1.5 mt-1.5 flex-row space-x-2.5">
       <View className="flex-row items-center space-x-[2px]">
-        <BoardActionIcons action="like" />
+        <BoardActionIcons action="like" width={15} height={15} />
         <Text className="text-error-red typo-caption-13-medium">
           {likeCount}
         </Text>
       </View>
 
       <View className="flex-row items-center space-x-[2px]">
-        <BoardActionIcons action="comment" />
+        <BoardActionIcons action="comment" width={15} height={15} />
         <Text className="text-primary-purple typo-caption-13-medium">
           {commentCount}
         </Text>
@@ -29,7 +29,7 @@ const PostActions = ({ likeCount, commentCount, bookmarkCount }: Props) => {
 
       {bookmarkCount && bookmarkCount > 0 && (
         <View className="flex-row items-center space-x-[2px]">
-          <BoardActionIcons action="scrab" />
+          <BoardActionIcons action="scrab" width={15} height={15} />
           <Text className="text-tertiary-yellow typo-caption-13-medium">
             {bookmarkCount}
           </Text>
