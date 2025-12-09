@@ -93,6 +93,7 @@ export interface Resume {
 
 export interface ResumeEditForm {
   photo: string | null;
+  updateImage: boolean;
 
   name: string;
   gender: Gender;

@@ -148,6 +148,7 @@ export const mapResumeEditFormToRequest = (
     : [];
 
   return {
+    updateImage: form.updateImage,
     name: form.name,
     gender: form.gender,
     birthYear: form.birthYear,

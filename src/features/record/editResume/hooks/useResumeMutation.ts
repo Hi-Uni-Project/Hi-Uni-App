@@ -1,12 +1,11 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { Asset } from 'react-native-image-picker';
 
 import { postResume } from '../api/resumeApi';
 import { ResumeUpdateRequest } from '../types/requestType';
 
 interface ResumeSubmitParams {
   resumeData: ResumeUpdateRequest;
-  photo: Asset | null;
+  photo: string | null;
 }
 
 const useResumeMutation = () => {

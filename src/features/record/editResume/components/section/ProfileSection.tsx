@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { TextInput, View } from 'react-native';
-import { Asset } from 'react-native-image-picker';
 
 import ImagePicker from '@/features/record/editResume/components/ImagePicker';
 import { Gender } from '@/features/record/editResume/types/domainType';
@@ -12,9 +11,9 @@ import {
 import HUDropdown from '@/shared/ui/atoms/HUDropdown';
 
 interface ProfileSectionProps {
-  photo: Asset | null;
+  photo: string | null;
   name: string;
-  onPhotoChange: (photo: Asset | null) => void;
+  onPhotoChange: (photoUri: string | null) => void;
   onNameChange: (name: string) => void;
   onGenderChange: (gender: Gender) => void;
   onBirthYearChange: (year: number) => void;

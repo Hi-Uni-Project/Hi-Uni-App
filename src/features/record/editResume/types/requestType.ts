@@ -60,6 +60,7 @@ export interface SkillRequest {
 }
 
 export interface ResumeUpdateRequest {
+  updateImage: boolean;
   name: string;
   gender: Gender;
   birthYear: number;

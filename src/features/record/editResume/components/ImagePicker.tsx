@@ -1,45 +1,42 @@
 import React from 'react';
 
 import { Image, Pressable, View } from 'react-native';
-import { Asset, launchImageLibrary } from 'react-native-image-picker';
 
+import useImagePicker from '@/features/record/editResume/hooks/useImagePicker';
+import { getImageSource } from '@/features/record/editResume/utils/imageUtils';
 import CameraIcon from '@/static/icons/camera.svg';
 import EmptyPhotoIcon from '@/static/icons/empty_photo.svg';
 
 interface ImagePickerProps {
-  photo: Asset | null;
-  onPhotoChange: (photo: Asset | null) => void;
+  photo: string | null;
+  onPhotoChange: (photoUri: string | null) => void;
 }
 
 const ImagePicker = ({ photo, onPhotoChange }: ImagePickerProps) => {
-  const pickImage = async (): Promise<void> => {
-    const result = await launchImageLibrary({
-      mediaType: 'photo',
-      quality: 0.8,
-      selectionLimit: 1,
-    });
+  const { pickImage } = useImagePicker();
 
-    if (result.didCancel) {
-      return null;
-    }
-    if (result.errorMessage) {
-      throw new Error(result.errorMessage);
-    }
-
-    const asset = result.assets?.[0];
-    if (asset) {
-      onPhotoChange(asset);
+  const handlePickImage = async (): Promise<void> => {
+    try {
+      const uri = await pickImage();
+      if (uri) {
+        onPhotoChange(uri);
+      }
+    } catch (error) {
+      console.error('Image pick error:', error);
     }
   };
 
   return (
     <>
-      <Pressable onPress={pickImage}>
+      <Pressable onPress={handlePickImage}>
         <View className="relative h-[93px] w-[93px] items-center justify-center rounded-full">
-          {photo?.uri ? (
+          {photo ? (
             <Image
-              source={{ uri: photo.uri }}
+              source={getImageSource(photo)}
               style={{ width: 93, height: 93, borderRadius: 100 }}
+              onError={e =>
+                console.log('Image load error:', e.nativeEvent.error)
+              }
             />
           ) : (
             <EmptyPhotoIcon />

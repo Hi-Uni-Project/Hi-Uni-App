@@ -140,7 +140,10 @@ const ResumeEditView = () => {
               <ProfileSection
                 photo={resumeData?.photo || null}
                 name={resumeData?.name || ''}
-                onPhotoChange={photo => updateField('photo', photo)}
+                onPhotoChange={photo => {
+                  updateField('photo', photo);
+                  updateField('updateImage', true);
+                }}
                 onNameChange={text => updateField('name', text)}
                 onGenderChange={gender => updateField('gender', gender)}
                 onBirthYearChange={year => updateField('birthYear', year)}

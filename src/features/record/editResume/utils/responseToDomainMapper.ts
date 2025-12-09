@@ -116,6 +116,7 @@ export const mapResumeToDomain = (response: ResumeDataResponse): Resume => ({
 export const mapResumeToEditForm = (
   response: ResumeDataResponse,
 ): ResumeEditForm => ({
+  updateImage: false,
   photo: response.imageUrl || null,
   name: response.name || '',
   gender: mapGenderToDomain(response.gender),
