@@ -8,9 +8,10 @@ import { usePostSubmit } from './usePostSubmit';
 import { useReviewTemplate } from './useReviewTemplate';
 
 import { PostType } from '@/features/board/shared/types/enum/postEnum';
+import { HomeStackNavigationProp } from '@/navigation/types/navigationTypes';
 
 const useBoardWrite = () => {
-  const navigation = useNavigation();
+  const navigation = useNavigation<HomeStackNavigationProp>();
 
   const [selectedPostType, setSelectedPostType] = useState<PostType | null>(
     null,

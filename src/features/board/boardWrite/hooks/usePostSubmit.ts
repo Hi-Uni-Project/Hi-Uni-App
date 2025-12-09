@@ -2,12 +2,13 @@ import { createPost } from '../../api/createPost';
 import { CreatePostRequest, PostData } from '../../api/types';
 
 import { PostType } from '@/features/board/shared/types/enum/postEnum';
+import { HomeStackNavigationProp } from '@/navigation/types/navigationTypes';
 
 interface UsePostSubmitProps {
   selectedPostType: PostType | null;
   title: string;
   content: string;
-  navigation: any;
+  navigation: HomeStackNavigationProp;
 }
 
 export const usePostSubmit = ({
