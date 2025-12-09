@@ -52,7 +52,7 @@ const OptionPopup = ({
                     </Text>
                   </Pressable>
                   {index < options.length - 1 && (
-                    <View className="mb-3 mt-3 w-[140px] border-b-[1.5px] border-b-gray-200" />
+                    <View className="mb-3 mt-3 w-[120px] border-b-[1.5px] border-b-gray-200" />
                   )}
                 </View>
               ))}
