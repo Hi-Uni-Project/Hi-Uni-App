@@ -16,7 +16,10 @@ const ExperienceTemplate = ({ reviewForm }: TemplateProps) => {
     startDate,
     endDate,
     showCal,
-    toggleCalendar,
+    calendarMode,
+    openCalendar,
+    closeCalendar,
+    handleDateSelect,
     formatDate,
   } = reviewForm;
 
@@ -49,21 +52,30 @@ const ExperienceTemplate = ({ reviewForm }: TemplateProps) => {
             <DateSelector
               label="시작일"
               date={formatDate(startDate)}
-              onPress={toggleCalendar}
+              onPress={() => openCalendar('start')}
             />
 
-            <DateLine className="mr-3 mt-6 self-center" />
+            <DateLine className="mt-6 self-center" />
 
             <DateSelector
               label="종료일"
               date={formatDate(endDate)}
-              onPress={toggleCalendar}
+              onPress={() => openCalendar('end')}
             />
           </View>
 
-          <View className="absolute top-28 z-10">
-            {showCal && <TemplateCalendar />}
-          </View>
+          {/* 캘린더 오버레이 */}
+          {showCal && (
+            <View className="absolute left-0 top-28 z-10">
+              <TemplateCalendar
+                mode={calendarMode!}
+                startDate={startDate}
+                endDate={endDate}
+                onSelectDate={handleDateSelect}
+                onClose={closeCalendar}
+              />
+            </View>
+          )}
         </View>
 
         {/* 직무 */}

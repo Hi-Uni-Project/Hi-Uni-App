@@ -11,8 +11,11 @@ import {
   WorkStoryFormData,
 } from '../types';
 
+type CalendarMode = 'start' | 'end' | null;
+
 export const useReviewTemplate = (selectedPostType: PostType | null) => {
   const [showCal, setShowCal] = useState(false);
+  const [calendarMode, setCalendarMode] = useState<CalendarMode>(null);
 
   const formatDate = (date: Date) => {
     const year = String(date.getFullYear()).slice(2);
@@ -141,8 +144,23 @@ export const useReviewTemplate = (selectedPostType: PostType | null) => {
     setFormData(getInitialFormData(selectedPostType));
   };
 
-  const toggleCalendar = () => {
-    setShowCal(prev => !prev);
+  const openCalendar = (mode: 'start' | 'end') => {
+    setCalendarMode(mode);
+    setShowCal(true);
+  };
+
+  const closeCalendar = () => {
+    setShowCal(false);
+    setCalendarMode(null);
+  };
+
+  const handleDateSelect = (date: Date) => {
+    if (calendarMode === 'start') {
+      updateField('startDate', date);
+    } else if (calendarMode === 'end') {
+      updateField('endDate', date);
+    }
+    closeCalendar();
   };
 
   const startDate =
@@ -153,6 +171,7 @@ export const useReviewTemplate = (selectedPostType: PostType | null) => {
   return {
     // State
     showCal,
+    calendarMode,
     formData,
 
     // Computed
@@ -163,7 +182,9 @@ export const useReviewTemplate = (selectedPostType: PostType | null) => {
     formatDate,
     updateField,
     resetForm,
-    toggleCalendar,
+    openCalendar,
+    closeCalendar,
+    handleDateSelect,
     hasReviewContent,
     validateRequiredFields,
   };
