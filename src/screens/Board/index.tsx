@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import { ScrollView, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -31,10 +31,21 @@ const BoardScreen = () => {
     resetSort,
   } = useSortBoard();
 
-  const { posts, isLoading, selectedCategoryIdx, setSelectedCategoryIdx } =
-    useBoardCategory({
-      selectedSort,
-    });
+  const {
+    posts,
+    isLoading,
+    selectedCategoryIdx,
+    setSelectedCategoryIdx,
+    refetch,
+  } = useBoardCategory({
+    selectedSort,
+  });
+
+  useFocusEffect(
+    useCallback(() => {
+      refetch();
+    }, [refetch]),
+  );
 
   return (
     <View className="flex-1">
