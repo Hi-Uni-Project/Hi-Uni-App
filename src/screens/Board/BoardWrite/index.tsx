@@ -35,12 +35,13 @@ const BoardWrite = () => {
     toggleDropdown,
     handlePostTypeSelect,
     handleConfirmPostTypeChange,
+    handleSubmit,
   } = useBoardWrite();
   const { validateRequiredFields } = reviewTemplate;
 
   const isSubmitEnabled = isReview
     ? title.trim() && validateRequiredFields()
-    : title.trim() && content.trim();
+    : title.trim() && content.trim() && selectedPostType;
 
   const displayName = POST_TYPE_DISPLAY_NAME[selectedPostType] ?? '선택';
   const placeholder = selectedPostType
@@ -54,6 +55,7 @@ const BoardWrite = () => {
         paddingTop={insets.top}
         height={insets.top + 70}
         onClose={handlePressedClosed}
+        onSubmit={handleSubmit}
       />
 
       {isReview ? (

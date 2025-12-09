@@ -9,6 +9,7 @@ interface Props {
   paddingTop: number;
   height: number;
   onClose: () => void;
+  onSubmit: () => void;
   isSubmitEnabled: string | boolean;
 }
 
@@ -17,6 +18,7 @@ const BoardWriteHeader = ({
   height,
   onClose,
   isSubmitEnabled,
+  onSubmit,
 }: Props) => {
   return (
     <View
@@ -37,9 +39,7 @@ const BoardWriteHeader = ({
           글쓰기
         </Text>
 
-        <Pressable
-          disabled={!isSubmitEnabled}
-          onPress={() => console.log('API')}>
+        <Pressable disabled={!isSubmitEnabled} onPress={onSubmit}>
           <Text
             className={clsx(
               `${isSubmitEnabled ? 'text-primary-purple' : 'text-surface-300'} typo-sub-title-18-medium`,

@@ -4,6 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 
 import { ModalState } from '../types';
 
+import { usePostSubmit } from './usePostSubmit';
 import { useReviewTemplate } from './useReviewTemplate';
 
 import { PostType } from '@/features/board/shared/types/enum/postEnum';
@@ -22,6 +23,13 @@ const useBoardWrite = () => {
 
   const reviewTemplate = useReviewTemplate(selectedPostType);
   const { hasReviewContent, resetForm } = reviewTemplate;
+
+  const { handleSubmit } = usePostSubmit({
+    selectedPostType,
+    title,
+    content,
+    navigation,
+  });
 
   useEffect(() => {
     if (selectedPostType && isReview) {
@@ -133,6 +141,7 @@ const useBoardWrite = () => {
     toggleDropdown,
     handlePostTypeSelect,
     handleConfirmPostTypeChange,
+    handleSubmit,
   };
 };
 
