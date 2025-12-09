@@ -7,6 +7,23 @@ export interface CreatePostRequest {
   imageUrl?: string; // 삭제 예정
 }
 
+export interface CreateReviewPostRequest {
+  title: string;
+  content: string;
+  imageUrl?: string; // 삭제 예정
+  type: PostType;
+  firstQuestion?: string;
+  secondQuestion?: string;
+  thirdQuestion?: string;
+  fourthQuestion?: string;
+  fifthQuestion?: string;
+  sixthQuestion?: string;
+  seventhQuestion?: string;
+  eighthQuestion?: string;
+  startDate?: string;
+  endDate?: string;
+}
+
 export interface PostData {
   nickname: string;
   univName: string;

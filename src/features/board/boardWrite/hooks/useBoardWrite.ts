@@ -25,10 +25,13 @@ const useBoardWrite = () => {
   const reviewTemplate = useReviewTemplate(selectedPostType);
   const { hasReviewContent, resetForm } = reviewTemplate;
 
+  // 게시글 제출 훅 (일반 글 + 후기 글)
   const { handleSubmit } = usePostSubmit({
     selectedPostType,
     title,
     content,
+    isReview,
+    reviewFormData: reviewTemplate.formData,
     navigation,
   });
 

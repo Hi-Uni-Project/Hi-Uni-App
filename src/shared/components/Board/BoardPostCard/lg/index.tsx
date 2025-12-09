@@ -17,7 +17,7 @@ const BoardPostCardLG = ({ onPress, ...post }: Props) => {
   return (
     <Pressable
       onPress={onPress}
-      className="relative h-[275px] w-[296px] justify-between rounded-[15px] border border-surface-200 bg-white px-[19px] pb-[20px] pt-[18px]">
+      className="relative h-[275px] w-[296px] justify-between rounded-[15px] border border-surface-200 bg-white px-[20px] pb-[20px] pt-[18px]">
       <View>
         <View className="mb-5 flex-row items-center justify-between">
           <Text className="text-main-text typo-body-17-semibold">
