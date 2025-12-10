@@ -12,6 +12,7 @@ export type MainNavigationProps = {
   SignupRoute: undefined;
   HomeRoute: undefined;
   BoardRoute: NavigatorScreenParams<BoardNavigationProps>;
+  RecordRoute: NavigatorScreenParams<RecordNavigationProps>;
 };
 
 export type SignupNavigationProps = {
@@ -62,6 +63,22 @@ export type CalendarNavigationProps = {
   CreateSchedule: ScheduleDatePayload;
 };
 
+export type RecordNavigationProps = {
+  ResumeEdit: undefined;
+  CreateEducation: undefined;
+  EditEducation: { educationId?: number; tempId?: string };
+  CreateLink: undefined;
+  EditLink: { linkId?: number; tempId?: string };
+  CreateAchievement: undefined;
+  EditAchievement: { achievementId?: number; tempId?: string };
+  CreateLanguage: undefined;
+  EditLanguage: { languageId?: number; tempId?: string };
+  CreateCareer: undefined;
+  EditCareer: { careerId?: number; tempId?: string };
+  CreateProject: undefined;
+  EditProject: { projectId?: number; tempId?: string };
+};
+
 export type MainStackNavigationProp =
   NativeStackNavigationProp<MainNavigationProps>;
 
@@ -79,5 +96,8 @@ export type CalendarStackNavigationProp =
 
 export type BoardStackNavigationProp =
   NativeStackNavigationProp<BoardNavigationProps>;
+
+export type RecordStackNavigationProp =
+  NativeStackNavigationProp<RecordNavigationProps>;
 
 export type HomeTabNavigationProp = BottomTabNavigationProp<TabNavigationProps>;
