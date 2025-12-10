@@ -76,7 +76,6 @@ const CalendarModal = ({
   const handleDateSelect = (day: number) => {
     setSelectedDay(day);
 
-    // "YY.MM.DD" 형식으로 변환
     const yearStr = (year % 100).toString().padStart(2, '0');
     const monthStr = (month + 1).toString().padStart(2, '0');
     const dayStr = day.toString().padStart(2, '0');

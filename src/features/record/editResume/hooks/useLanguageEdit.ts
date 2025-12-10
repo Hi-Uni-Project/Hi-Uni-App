@@ -16,7 +16,7 @@ interface LanguageFormFields {
   level: LanguageLevel | null;
 }
 
-export default function useLanguageEdit() {
+const useLanguageEdit = () => {
   const navigation = useNavigation();
   const route = useRoute<EditLanguageRouteProp>();
   const { resumeData, addLanguage, updateLanguage, deleteLanguage } =
@@ -87,4 +87,6 @@ export default function useLanguageEdit() {
     handleSubmit,
     handleDelete,
   };
-}
+};
+
+export default useLanguageEdit;

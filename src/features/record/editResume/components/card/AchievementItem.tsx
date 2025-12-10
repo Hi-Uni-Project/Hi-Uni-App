@@ -6,10 +6,10 @@ import { Achievement } from '@/features/record/editResume/types/domainType';
 import { formatToShortDate } from '@/features/record/editResume/utils/dateUtils';
 import { AchievementTypeEnumToLabel } from '@/features/record/editResume/utils/labelMapper';
 
-type Props = {
+interface Props {
   achievement: Achievement;
   onPress?: () => void;
-};
+}
 
 const AchievementItem = ({ achievement, onPress }: Props) => {
   return (

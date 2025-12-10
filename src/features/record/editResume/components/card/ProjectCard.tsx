@@ -5,10 +5,10 @@ import { Pressable, Text } from 'react-native';
 import { Project } from '@/features/record/editResume/types/domainType';
 import { formatToShortDate } from '@/features/record/editResume/utils/dateUtils';
 
-type Props = {
+interface Props {
   project: Project;
   onPress?: () => void;
-};
+}
 
 const ProjectCard = ({ project, onPress }: Props) => {
   return (
@@ -24,8 +24,7 @@ const ProjectCard = ({ project, onPress }: Props) => {
       </Text>
 
       <Text className="mt-[5px] typo-body-15-semibold">
-        {formatToShortDate(project.startDate)} -{' '}
-        {formatToShortDate(project.endDate)}
+        {`${formatToShortDate(project.startDate)} - ${formatToShortDate(project.endDate)}`}
       </Text>
 
       {project.role && project.role.trim() !== '' && (

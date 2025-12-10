@@ -13,24 +13,10 @@ import {
 import { ResumeUpdateRequest } from '../types/requestType';
 import { mapResumeEditFormToRequest } from '../utils/requestMapper';
 
-/**
- * 이력서를 등록, 수정하는 역할을 하는 hook 입니다.
- *
- * @description
- * - 이력서 데이터 관리 (초기 데이터 불러오기, 수정된 데이터 저장)
- * - 제출 가능 여부 판단
- * - api 요청을 통한 제출 처리
- * - 작성 중 행동에 대한 처리
- *
- * 기타 하위 hook 및 유틸 함수들을 포함할 수 있습니다.
- */
 const useResumeEdit = () => {
   const { resumeData, setResumeData, updateField, resetStore } =
     useResumeEditStore();
 
-  // ============================================
-  // Link 관련 함수
-  // ============================================
   const addLink = useCallback(
     (link: Omit<Link, 'linkId' | 'tempId'>) => {
       const { links } = resumeData;
@@ -62,9 +48,6 @@ const useResumeEdit = () => {
     [resumeData.links, updateField],
   );
 
-  // ============================================
-  // Language 관련 함수
-  // ============================================
   const addLanguage = useCallback(
     (language: Omit<Language, 'languageId' | 'tempId'>) => {
       const { languages } = resumeData;
@@ -98,9 +81,6 @@ const useResumeEdit = () => {
     [resumeData.languages, updateField],
   );
 
-  // ============================================
-  // Achievement 관련 함수
-  // ============================================
   const addAchievement = useCallback(
     (achievement: Omit<Achievement, 'achievementId' | 'tempId'>) => {
       const { achievements } = resumeData;
@@ -135,9 +115,6 @@ const useResumeEdit = () => {
     [resumeData.achievements, updateField],
   );
 
-  // ============================================
-  // Education 관련 함수
-  // ============================================
   const addEducation = useCallback(
     (education: Omit<Education, 'educationId' | 'tempId'>) => {
       const { educations } = resumeData;
@@ -171,9 +148,6 @@ const useResumeEdit = () => {
     [resumeData.educations, updateField],
   );
 
-  // ============================================
-  // Career 관련 함수
-  // ============================================
   const addCareer = useCallback(
     (career: Omit<Career, 'careerId' | 'tempId'>) => {
       const { careers } = resumeData;
@@ -207,9 +181,6 @@ const useResumeEdit = () => {
     [resumeData.careers, updateField],
   );
 
-  // ============================================
-  // Project 관련 함수
-  // ============================================
   const addProject = useCallback(
     (project: Omit<Project, 'projectId' | 'tempId'>) => {
       const { projects } = resumeData;
@@ -243,9 +214,6 @@ const useResumeEdit = () => {
     [resumeData.projects, updateField],
   );
 
-  // ============================================
-  // Skill 관련 함수
-  // ============================================
   const addSkill = useCallback(
     (skill: Omit<Skill, 'skillId'> & { skillId?: number | null }) => {
       const { skills } = resumeData;
@@ -271,9 +239,6 @@ const useResumeEdit = () => {
     [resumeData.skills, updateField],
   );
 
-  // ============================================
-  // Request 데이터 변환
-  // ============================================
   const getRequestData = useCallback((): ResumeUpdateRequest => {
     return mapResumeEditFormToRequest(resumeData);
   }, [resumeData]);
@@ -287,34 +252,34 @@ const useResumeEdit = () => {
     setResumeData,
     updateField,
     resetStore,
-    // Link
+
     addLink,
     updateLink,
     deleteLink,
-    // Language
+
     addLanguage,
     updateLanguage,
     deleteLanguage,
-    // Achievement
+
     addAchievement,
     updateAchievement,
     deleteAchievement,
-    // Education
+
     addEducation,
     updateEducation,
     deleteEducation,
-    // Career
+
     addCareer,
     updateCareer,
     deleteCareer,
-    // Project
+
     addProject,
     updateProject,
     deleteProject,
-    // Skill
+
     addSkill,
     deleteSkill,
-    // Request
+
     getRequestData,
   };
 };

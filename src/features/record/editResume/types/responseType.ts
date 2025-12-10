@@ -1,6 +1,5 @@
 import { ResponseTypes } from '@/shared/api/types';
 
-// Response 타입은 서버 API 응답 기준 (원천 타입)
 export type GenderResponse = 'MALE' | 'FEMALE' | 'OTHER';
 
 export type GraduationStatusResponse =
@@ -26,8 +25,8 @@ export type AchievementTypeResponse =
 export interface CareerResponse {
   careerId: number;
   companyName: string;
-  startDate: string; // ISO DateTime string
-  endDate: string; // ISO DateTime string
+  startDate: string;
+  endDate: string;
   role: string;
   position: string;
   jobDescription: string;
@@ -36,8 +35,8 @@ export interface CareerResponse {
 export interface ProjectResponse {
   projectId: number;
   projectName: string;
-  startDate: string; // ISO DateTime string
-  endDate: string; // ISO DateTime string
+  startDate: string;
+  endDate: string;
   role: string;
   experienceDescription: string;
 }
@@ -45,8 +44,8 @@ export interface ProjectResponse {
 export interface EducationResponse {
   educationId: number;
   universityName: string;
-  startDate: string; // ISO DateTime string
-  endDate: string; // ISO DateTime string
+  startDate: string;
+  endDate: string;
   graduationStatus: GraduationStatusResponse;
   major: string;
 }
@@ -60,7 +59,7 @@ export interface LanguageResponse {
 export interface AchievementResponse {
   achievementId: number;
   activityName: string;
-  periodDate: string; // ISO DateTime string
+  periodDate: string;
   type: AchievementTypeResponse;
   achievementDescription: string;
 }

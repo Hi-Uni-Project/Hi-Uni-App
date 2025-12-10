@@ -20,7 +20,7 @@ interface ProjectFormFields {
   experienceDescription: string;
 }
 
-export default function useProjectEdit() {
+const useProjectEdit = () => {
   const navigation = useNavigation();
   const route = useRoute<EditProjectRouteProp>();
   const { resumeData, addProject, updateProject, deleteProject } =
@@ -130,4 +130,6 @@ export default function useProjectEdit() {
     handleSubmit,
     handleDelete,
   };
-}
+};
+
+export default useProjectEdit;

@@ -1,6 +1,3 @@
-// 기존 코드 호환성을 위한 re-export
-// 새로운 코드에서는 ../types/enum/resumeEnum에서 직접 import 권장
-
 import {
   Gender,
   GraduationStatus,

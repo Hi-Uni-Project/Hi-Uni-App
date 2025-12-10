@@ -2,10 +2,6 @@ import { useCallback } from 'react';
 
 import { launchImageLibrary } from 'react-native-image-picker';
 
-/**
- * 이미지 선택을 위한 커스텀 훅
- * @returns 이미지 선택 함수와 로딩 상태
- */
 const useImagePicker = () => {
   const pickImage = useCallback(async (): Promise<string | null> => {
     const result = await launchImageLibrary({

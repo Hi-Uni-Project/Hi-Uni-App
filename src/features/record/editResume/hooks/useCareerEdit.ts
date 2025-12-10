@@ -21,7 +21,7 @@ interface CareerFormFields {
   jobDescription: string;
 }
 
-export default function useCareerEdit() {
+const useCareerEdit = () => {
   const navigation = useNavigation();
   const route = useRoute<EditCareerRouteProp>();
   const { resumeData, addCareer, updateCareer, deleteCareer } = useResumeEdit();
@@ -137,4 +137,6 @@ export default function useCareerEdit() {
     handleSubmit,
     handleDelete,
   };
-}
+};
+
+export default useCareerEdit;

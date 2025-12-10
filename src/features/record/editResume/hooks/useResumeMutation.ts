@@ -15,7 +15,6 @@ const useResumeMutation = () => {
     mutationFn: ({ resumeData, photo }: ResumeSubmitParams) =>
       postResume({ resumeData, photo }),
     onSuccess: () => {
-      console.log('이력서 저장 성공');
       queryClient.invalidateQueries({ queryKey: ['resumeData'] });
     },
     onError: error => {

@@ -23,19 +23,17 @@ interface EducationFormFields {
   major: string;
 }
 
-// 끝 날짜 입력이 비활성화되는 졸업 상태
 const DISABLED_END_DATE_STATUSES: GraduationStatus[] = [
   GraduationStatus.ENROLLED,
   GraduationStatus.LEAVE,
 ];
 
-// 졸업 상태에 따른 끝 날짜 표시 텍스트
 const END_DATE_DISPLAY_TEXT: Partial<Record<GraduationStatus, string>> = {
   [GraduationStatus.ENROLLED]: '재학 중',
   [GraduationStatus.LEAVE]: '휴학 중',
 };
 
-export default function useEducationEdit() {
+const useEducationEdit = () => {
   const navigation = useNavigation();
   const route = useRoute<EditEducationRouteProp>();
   const { resumeData, addEducation, updateEducation, deleteEducation } =
@@ -96,7 +94,7 @@ export default function useEducationEdit() {
     }
   };
 
-  // Education 특화 로직: 끝 날짜 비활성화 여부
+  // Education 시 끝 날짜 비활성화 여부
   const isEndDateDisabled =
     graduationStatus !== null &&
     DISABLED_END_DATE_STATUSES.includes(graduationStatus);
@@ -166,4 +164,6 @@ export default function useEducationEdit() {
     handleSubmit,
     handleDelete,
   };
-}
+};
+
+export default useEducationEdit;

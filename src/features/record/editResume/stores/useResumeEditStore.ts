@@ -2,6 +2,17 @@ import { create } from 'zustand';
 
 import { ResumeEditForm } from '../types/domainType';
 
+interface ResumeEditStore {
+  resumeData: ResumeEditForm;
+
+  setResumeData: (data: ResumeEditForm) => void;
+  updateField: <K extends keyof ResumeEditForm>(
+    field: K,
+    value: ResumeEditForm[K],
+  ) => void;
+  resetStore: () => void;
+}
+
 const initialState: ResumeEditForm = {
   photo: null,
   name: '',
@@ -17,19 +28,8 @@ const initialState: ResumeEditForm = {
   languages: [],
   achievements: [],
   links: [],
+  updateImage: false,
 };
-
-interface ResumeEditStore {
-  resumeData: ResumeEditForm;
-
-  // 기본 setter
-  setResumeData: (data: ResumeEditForm) => void;
-  updateField: <K extends keyof ResumeEditForm>(
-    field: K,
-    value: ResumeEditForm[K],
-  ) => void;
-  resetStore: () => void;
-}
 
 export const useResumeEditStore = create<ResumeEditStore>(set => ({
   resumeData: initialState,

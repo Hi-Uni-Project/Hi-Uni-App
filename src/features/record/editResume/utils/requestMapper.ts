@@ -19,14 +19,8 @@ import {
   SkillRequest,
 } from '../types/requestType';
 
-/**
- * Date를 ISO 8601 문자열로 변환
- */
 const toISOString = (date: Date): string => date.toISOString();
 
-/**
- * Career → CareerRequest
- */
 export const mapCareerToRequest = (career: Career): CareerRequest => ({
   careerId: career.careerId,
   companyName: career.companyName,
@@ -37,9 +31,6 @@ export const mapCareerToRequest = (career: Career): CareerRequest => ({
   jobDescription: career.jobDescription,
 });
 
-/**
- * Project → ProjectRequest
- */
 export const mapProjectToRequest = (project: Project): ProjectRequest => ({
   projectId: project.projectId,
   projectName: project.projectName,
@@ -49,9 +40,6 @@ export const mapProjectToRequest = (project: Project): ProjectRequest => ({
   experienceDescription: project.experienceDescription,
 });
 
-/**
- * Education → EducationRequest
- */
 export const mapEducationToRequest = (
   education: Education,
 ): EducationRequest => ({
@@ -63,18 +51,12 @@ export const mapEducationToRequest = (
   major: education.major,
 });
 
-/**
- * Language → LanguageRequest
- */
 export const mapLanguageToRequest = (language: Language): LanguageRequest => ({
   languageId: language.languageId,
   language: language.language,
   level: language.level,
 });
 
-/**
- * Achievement → AchievementRequest
- */
 export const mapAchievementToRequest = (
   achievement: Achievement,
 ): AchievementRequest => ({
@@ -85,31 +67,19 @@ export const mapAchievementToRequest = (
   achievementDescription: achievement.achievementDescription,
 });
 
-/**
- * Link → LinkRequest
- */
 export const mapLinkToRequest = (link: Link): LinkRequest => ({
   linkId: link.linkId,
   linkName: link.linkName,
   linkUrl: link.linkUrl,
 });
 
-/**
- * Skill → SkillRequest
- * skillId가 null인 경우 필터링해야 함 (서버에 등록된 스킬만 전송)
- */
 export const mapSkillToRequest = (skill: Skill): SkillRequest => {
-  // skillId는 request로 보낼 때 null일 수 없으므로 호출 전에 필터링되어야 합니다.
-  // 안전을 위해 guard 처리로 문제 발생 시 빨리 발견합니다.
   if (skill.skillId === null) {
     throw new Error('mapSkillToRequest: expected skill.skillId to be non-null');
   }
   return { skillId: skill.skillId };
 };
 
-/**
- * ResumeEditForm → ResumeUpdateRequest
- */
 export const mapResumeEditFormToRequest = (
   form: ResumeEditForm,
 ): ResumeUpdateRequest => {

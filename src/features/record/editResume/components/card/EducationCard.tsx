@@ -6,10 +6,10 @@ import { Education } from '@/features/record/editResume/types/domainType';
 import { formatToShortDate } from '@/features/record/editResume/utils/dateUtils';
 import { GraduationStatusEnumToLabel } from '@/features/record/editResume/utils/labelMapper';
 
-type Props = {
+interface Props {
   education: Education;
   onPress?: () => void;
-};
+}
 
 const EducationCard = ({ education, onPress }: Props) => {
   return (
@@ -21,8 +21,7 @@ const EducationCard = ({ education, onPress }: Props) => {
       </Text>
 
       <Text className="mt-[5px] typo-body-15-semibold">
-        {formatToShortDate(education.startDate)} -{' '}
-        {formatToShortDate(education.endDate)}{' '}
+        {`${formatToShortDate(education.startDate)} - ${formatToShortDate(education.endDate)}`}
         <Text>({GraduationStatusEnumToLabel[education.graduationStatus]})</Text>
       </Text>
 

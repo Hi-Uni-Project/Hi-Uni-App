@@ -25,7 +25,7 @@ interface AchievementFormFields {
   achievementDescription: string;
 }
 
-export default function useAchievementEdit() {
+const useAchievementEdit = () => {
   const navigation = useNavigation();
   const route = useRoute<EditAchievementRouteProp>();
   const { resumeData, addAchievement, updateAchievement, deleteAchievement } =
@@ -124,4 +124,6 @@ export default function useAchievementEdit() {
     handleSubmit,
     handleDelete,
   };
-}
+};
+
+export default useAchievementEdit;

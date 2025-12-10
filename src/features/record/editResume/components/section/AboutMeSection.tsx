@@ -31,10 +31,8 @@ const AboutMeSection = ({
 
   const handleGenerateButtonPress = () => {
     if (aboutMe.trim().length > 0) {
-      // 기존 내용이 있는 경우 - 삭제 경고 모달
       setIsConfirmModalVisible(true);
     } else {
-      // 기존 내용이 없는 경우 - 생성 확인 모달
       setIsGenerateModalVisible(true);
     }
   };

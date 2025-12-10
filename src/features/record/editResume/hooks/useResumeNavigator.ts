@@ -17,7 +17,7 @@ import {
  * 생성 화면으로 이동
  * goToCreateEducation();
  */
-export default function useResumeNavigator() {
+const useResumeNavigator = () => {
   const navigation = useNavigation<RecordStackNavigationProp>();
 
   const goToCreateCareer = () => navigation.navigate('CreateCareer');
@@ -82,14 +82,13 @@ export default function useResumeNavigator() {
   };
 
   return {
-    // Create
     goToCreateCareer,
     goToCreateEducation,
     goToCreateLanguage,
     goToCreateAchievement,
     goToCreateProject,
     goToCreateLink,
-    // Edit
+
     goToEditCareer,
     goToEditEducation,
     goToEditLanguage,
@@ -97,4 +96,6 @@ export default function useResumeNavigator() {
     goToEditProject,
     goToEditLink,
   };
-}
+};
+
+export default useResumeNavigator;

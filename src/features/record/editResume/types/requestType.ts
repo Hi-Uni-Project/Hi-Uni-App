@@ -5,8 +5,6 @@ import {
   LanguageLevel,
 } from './enum/resumeEnum';
 
-// Request용 엔티티 타입 (tempId 제외, Date는 ISO string)
-
 export interface CareerRequest {
   careerId: number | null;
   companyName: string;

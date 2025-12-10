@@ -52,7 +52,6 @@ export const getImageSource = (photo: string | null) => {
     return { uri: photo };
   }
 
-  // 서버 이미지: baseURL 추가 + 인증 헤더
   const accessToken = useUserStore.getState().accessToken;
   return {
     uri: `${Config.API_KEY}${photo}`,
@@ -76,7 +75,6 @@ export const photoToAsset = (photo: string) => {
     };
   }
 
-  // 서버 이미지: ImagePicker의 getImageSource와 동일한 방식
   const accessToken = useUserStore.getState().accessToken;
   return {
     uri: `${Config.API_KEY}${photo}`,

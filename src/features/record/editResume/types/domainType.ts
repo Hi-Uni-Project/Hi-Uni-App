@@ -5,7 +5,6 @@ import {
   AchievementType,
 } from './enum/resumeEnum';
 
-// enum은 ./enum/resumeEnum.ts에서 관리
 export { Gender, GraduationStatus, LanguageLevel, AchievementType };
 
 export interface Career {

@@ -13,7 +13,7 @@ interface LinkFormFields {
   linkUrl: string;
 }
 
-export default function useLinkEdit() {
+const useLinkEdit = () => {
   const navigation = useNavigation();
   const route = useRoute<EditLinkRouteProp>();
   const { resumeData, addLink, updateLink, deleteLink } = useResumeEdit();
@@ -81,4 +81,6 @@ export default function useLinkEdit() {
     handleSubmit,
     handleDelete,
   };
-}
+};
+
+export default useLinkEdit;

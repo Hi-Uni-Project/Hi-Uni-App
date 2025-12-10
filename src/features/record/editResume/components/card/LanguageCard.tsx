@@ -6,11 +6,11 @@ import { Language } from '@/features/record/editResume/types/domainType';
 import { LanguageLevelEnumToLabel } from '@/features/record/editResume/utils/labelMapper';
 import { cn } from '@/shared/lib/cn';
 
-type Props = {
+interface Props {
   language: Language;
   onPress?: () => void;
   isLeft?: boolean;
-};
+}
 
 const LanguageCard = ({ language, onPress, isLeft }: Props) => {
   return (
