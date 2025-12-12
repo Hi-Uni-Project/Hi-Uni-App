@@ -44,7 +44,7 @@ const BoardInputHeader = ({
             onSubmitEditing={onSubmitEditing}
             onFocus={onFocus}
             onPress={onClose}
-            maxLength={15}
+            maxLength={16}
             returnKeyType="search"
             length={searchText.length}
           />
