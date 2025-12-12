@@ -10,6 +10,7 @@ import {
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Toast from 'react-native-toast-message';
 
+import { createComment } from '@/features/board/boardDetail/api/comments/createComment';
 import CommentInput from '@/features/board/boardDetail/components/CommentInput';
 import CommentList from '@/features/board/boardDetail/components/CommentList';
 import BoardDetailHeader from '@/features/board/boardDetail/components/layouts/BoardHeader';
@@ -50,6 +51,8 @@ const BoardDetailPosts = () => {
   const { data: comments = [], isLoading: isCommentsLoading } =
     usePostCommentsQuery(3328);
 
+  console.log(comments);
+
   // 상태관리 state
   const [comment, setComment] = useState('');
   const [isPostOptionVisible, setIsPostOptionVisible] = useState(false);
@@ -75,12 +78,11 @@ const BoardDetailPosts = () => {
   } = usePostInteractions();
 
   // API 호출 관련 핸들러
-  const handleSendComment = () => {
+  const handleSendComment = (postId: number) => {
     if (comment.trim()) {
-      console.log('댓글 전송:', comment);
+      createComment(comment, postId).catch(err => console.log(err.response));
       setComment('');
       Keyboard.dismiss();
-      // TODO: 댓글 작성 API 호출 후 refetch
     }
   };
 
@@ -184,7 +186,7 @@ const BoardDetailPosts = () => {
         <CommentInput
           value={comment}
           onChangeText={setComment}
-          onSubmit={handleSendComment}
+          onSubmit={() => handleSendComment(post.id)}
           keyboardHeight={keyboardHeight}
           bottomInset={insets.bottom}
         />
