@@ -10,12 +10,27 @@ import NextYear from '@/static/icons/next-year.svg';
 const WEEK_DAYS = ['일', '월', '화', '수', '목', '금', '토'];
 
 interface Props {
-  onSelectDate?: (isoDate: string) => void;
+  mode: 'start' | 'end';
+  startDate?: Date;
+  endDate?: Date;
+  onSelectDate: (date: Date) => void;
+  onClose?: () => void;
 }
 
-const TemplateCalendar = ({ onSelectDate }: Props) => {
-  const [currentDate, setCurrentDate] = useState<Date>(new Date());
-  const [selectedDay, setSelectedDay] = useState<number | null>(null);
+const TemplateCalendar = ({
+  mode,
+  startDate,
+  endDate,
+  onSelectDate,
+  onClose,
+}: Props) => {
+  const [currentDate, setCurrentDate] = useState<Date>(
+    mode === 'start' && startDate
+      ? startDate
+      : mode === 'end' && endDate
+        ? endDate
+        : new Date(),
+  );
 
   const year = currentDate.getFullYear();
   const month = currentDate.getMonth();
@@ -40,14 +55,54 @@ const TemplateCalendar = ({ onSelectDate }: Props) => {
   const lastDate = new Date(year, month + 1, 0).getDate();
   const daysArray = Array.from({ length: lastDate }, (_, i) => i + 1);
 
+  const isDateDisabled = (day: number): boolean => {
+    if (mode === 'end' && startDate) {
+      const startDateOnly = new Date(
+        startDate.getFullYear(),
+        startDate.getMonth(),
+        startDate.getDate(),
+      );
+      const currentDayOnly = new Date(year, month, day);
+      return currentDayOnly < startDateOnly;
+    }
+
+    return false;
+  };
+
+  const isDateSelected = (day: number): boolean => {
+    const currentDay = new Date(year, month, day);
+
+    if (mode === 'start' && startDate) {
+      return (
+        currentDay.getFullYear() === startDate.getFullYear() &&
+        currentDay.getMonth() === startDate.getMonth() &&
+        currentDay.getDate() === startDate.getDate()
+      );
+    }
+
+    if (mode === 'end' && endDate) {
+      return (
+        currentDay.getFullYear() === endDate.getFullYear() &&
+        currentDay.getMonth() === endDate.getMonth() &&
+        currentDay.getDate() === endDate.getDate()
+      );
+    }
+
+    return false;
+  };
+
   const handleDateSelect = (day: number) => {
+    if (isDateDisabled(day)) {
+      return;
+    }
+
     const selected = new Date(year, month, day);
-    setSelectedDay(day);
-    onSelectDate?.(selected.toISOString());
+    onSelectDate(selected);
+    onClose?.();
   };
 
   return (
-    <View className="flex rounded-2xl bg-white p-3 shadow">
+    <View className="rounded-2xl bg-white p-3 shadow-lg">
       <View className="mb-3 flex-row items-center justify-center space-x-3">
         <Pressable onPress={goPrevYear}>
           <BackYear />
@@ -86,18 +141,23 @@ const TemplateCalendar = ({ onSelectDate }: Props) => {
         ))}
 
         {daysArray.map(day => {
-          const isSelected = selectedDay === day;
+          const isSelected = isDateSelected(day);
+          const isDisabled = isDateDisabled(day);
 
           return (
             <Pressable
               key={day}
               onPress={() => handleDateSelect(day)}
+              disabled={isDisabled}
               className="h-[40px] w-[40px] items-center justify-center">
               <View
                 className={`h-[35px] w-[35px] items-center justify-center rounded-md ${
-                  isSelected ? 'bg-surface-200' : ''
+                  isSelected ? 'bg-primary-purple' : ''
                 }`}>
-                <Text className="text-main-text typo-caption-14-medium">
+                <Text
+                  className={`typo-caption-14-medium ${
+                    isSelected ? 'text-white' : 'text-main-text'
+                  }`}>
                   {day}
                 </Text>
               </View>

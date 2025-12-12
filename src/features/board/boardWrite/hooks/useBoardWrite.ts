@@ -4,12 +4,14 @@ import { useNavigation } from '@react-navigation/native';
 
 import { ModalState } from '../types';
 
+import { usePostSubmit } from './usePostSubmit';
 import { useReviewTemplate } from './useReviewTemplate';
 
 import { PostType } from '@/features/board/shared/types/enum/postEnum';
+import { HomeStackNavigationProp } from '@/navigation/types/navigationTypes';
 
 const useBoardWrite = () => {
-  const navigation = useNavigation();
+  const navigation = useNavigation<HomeStackNavigationProp>();
 
   const [selectedPostType, setSelectedPostType] = useState<PostType | null>(
     null,
@@ -22,6 +24,16 @@ const useBoardWrite = () => {
 
   const reviewTemplate = useReviewTemplate(selectedPostType);
   const { hasReviewContent, resetForm } = reviewTemplate;
+
+  // 게시글 제출 훅 (일반 글 + 후기 글)
+  const { handleSubmit } = usePostSubmit({
+    selectedPostType,
+    title,
+    content,
+    isReview,
+    reviewFormData: reviewTemplate.formData,
+    navigation,
+  });
 
   useEffect(() => {
     if (selectedPostType && isReview) {
@@ -133,6 +145,7 @@ const useBoardWrite = () => {
     toggleDropdown,
     handlePostTypeSelect,
     handleConfirmPostTypeChange,
+    handleSubmit,
   };
 };
 

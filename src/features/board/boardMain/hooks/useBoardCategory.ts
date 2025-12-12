@@ -20,7 +20,11 @@ export const useBoardCategory = ({ selectedSort }: Props) => {
     JOB_CATEGORY_CHIPS[selectedCategoryIdx],
   );
 
-  const { data: posts = [], isLoading } = usePostsByCategoryQuery(
+  const {
+    data: posts = [],
+    isLoading,
+    refetch,
+  } = usePostsByCategoryQuery(
     PostCategory.JOB_INFORMATION,
     selectedPostType,
     selectedSort,
@@ -31,5 +35,6 @@ export const useBoardCategory = ({ selectedSort }: Props) => {
     setSelectedCategoryIdx,
     posts,
     isLoading,
+    refetch,
   };
 };
