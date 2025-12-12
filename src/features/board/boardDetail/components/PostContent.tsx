@@ -2,6 +2,8 @@ import React from 'react';
 
 import { View, Text } from 'react-native';
 
+import { formatDateOrTime, formatMajor } from '@/shared/utils/formatter';
+
 interface ReviewQuestion {
   label: string;
   value: string;
@@ -9,7 +11,7 @@ interface ReviewQuestion {
 
 interface Post {
   id: number;
-  univ: string;
+  major: string;
   date: string;
   title: string;
   content: string;
@@ -30,7 +32,8 @@ const PostDetailContent = ({ post }: Props) => {
         <View>
           <Text className="text-main-text typo-body-15-semibold">익명</Text>
           <Text className="text-surface-500 typo-caption-13-light">
-            {post.univ} · {post.date}
+            {/* 과 2개 들어와야함 -> 백엔드 요청 */}
+            {formatMajor(post.major)} · {formatDateOrTime(post.date)}
           </Text>
         </View>
       </View>
