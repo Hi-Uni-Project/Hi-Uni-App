@@ -11,6 +11,7 @@ import ReplyItem from './ReplyItem';
 import { OptionItem } from '@/shared/components/Board/OptionPopup';
 import OptionPopup from '@/shared/components/Board/OptionPopup';
 import BoardActionIcons from '@/shared/icons/BoardActionIcons';
+import { formatMajor } from '@/shared/utils/formatter';
 
 interface Props {
   comment: Comment;
@@ -59,10 +60,10 @@ const CommentItem = ({
             <View className="flex-row items-center">
               <View className="mr-3 h-8 w-8 rounded-full bg-surface-300" />
               <Text className="mr-2 text-main-text typo-caption-14-semibold">
-                {comment.author}
+                익명{comment.id}
               </Text>
               <Text className="text-surface-500 typo-caption-14-regular">
-                · {comment.univ}
+                · {formatMajor(comment.majorName)}
               </Text>
             </View>
 

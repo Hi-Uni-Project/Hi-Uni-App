@@ -80,7 +80,7 @@ const BoardDetailPosts = () => {
   // API 호출 관련 핸들러
   const handleSendComment = (postId: number) => {
     if (comment.trim()) {
-      createComment(comment, postId).catch(err => console.log(err.response));
+      createComment(comment, postId);
       setComment('');
       Keyboard.dismiss();
     }

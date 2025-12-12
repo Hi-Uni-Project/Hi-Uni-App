@@ -13,6 +13,7 @@ export interface Comment {
   content: string;
   date: string;
   likes: number;
+  majorName: string;
   replies?: Comment[];
 }
 
@@ -30,6 +31,7 @@ export const convertToComment = (response: CommentResponse): Comment => {
     id: response.id,
     author: response.nickname,
     univ: response.majorName,
+    majorName: response.majorName,
     content: response.content,
     date: '방금 전', // createdAt이 없어서 임시로 설정
     likes: response.likeCount,
