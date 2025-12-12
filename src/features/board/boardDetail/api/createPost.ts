@@ -1,5 +1,5 @@
-import { ReviewFormData } from '../boardWrite/types';
-import { PostType } from '../shared/types/enum/postEnum';
+import { ReviewFormData } from '../../boardWrite/types';
+import { PostType } from '../../shared/types/enum/postEnum';
 
 import { CreatePostRequest, PostData } from './types';
 import { convertReviewFormToRequest } from './util/convertReviewFormToRequest';

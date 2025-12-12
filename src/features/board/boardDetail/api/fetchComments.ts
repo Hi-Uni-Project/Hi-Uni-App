@@ -1,4 +1,4 @@
-import { CommentResponse } from '../boardDetail/types/comment';
+import { CommentResponse } from '../types/comment';
 
 import { axiosInstance } from '@/shared/api/axiosInstance';
 import { ResponseTypes } from '@/shared/api/types';

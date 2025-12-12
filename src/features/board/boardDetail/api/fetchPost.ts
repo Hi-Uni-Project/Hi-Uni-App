@@ -1,4 +1,4 @@
-import { NoReviewPostResponse, ReviewPostResponse } from '../boardDetail/types';
+import { NoReviewPostResponse, ReviewPostResponse } from '../types';
 
 import { axiosInstance } from '@/shared/api/axiosInstance';
 import { ResponseTypes } from '@/shared/api/types';
