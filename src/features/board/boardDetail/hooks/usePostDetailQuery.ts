@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 
-import { fetchNoReviewPost, fetchReviewPost } from '../../api/fetchPost';
+import { fetchNoReviewPost, fetchReviewPost } from '../api/post/fetchPost';
 import {
   convertNoReviewToPostDetail,
   convertReviewToPostDetail,

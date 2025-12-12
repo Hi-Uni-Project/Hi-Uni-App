@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 
-import { fetchComments } from '../api/comments/fetchComments';
+import { fetchComments } from '../api/comment/fetchComments';
 import { convertToComment } from '../types/comment';
 import type { Comment } from '../types/comment';
 
