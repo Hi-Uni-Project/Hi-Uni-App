@@ -3,7 +3,7 @@ import React from 'react';
 import clsx from 'clsx';
 import { View, Text } from 'react-native';
 
-import { Comment } from '../types';
+import { Comment } from '../types/comment';
 
 import CommentActionBox from './CommentActionBox';
 import ReplyItem from './ReplyItem';
@@ -62,7 +62,7 @@ const CommentItem = ({
                 {comment.author}
               </Text>
               <Text className="text-surface-500 typo-caption-14-regular">
-                · {comment.school}
+                · {comment.univ}
               </Text>
             </View>
 

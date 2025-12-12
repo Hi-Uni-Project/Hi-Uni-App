@@ -20,10 +20,10 @@ import { toastConfig } from '@/features/board/boardDetail/config/toast';
 import {
   createCommentOptions,
   createPostOptions,
-  MOCK_COMMENTS,
   TOP_OFFSET,
 } from '@/features/board/boardDetail/constants';
 import { useKeyboard } from '@/features/board/boardDetail/hooks/useKeyboard';
+import { usePostCommentsQuery } from '@/features/board/boardDetail/hooks/usePostCommentsQuery';
 import { usePostDetailQuery } from '@/features/board/boardDetail/hooks/usePostDetailQuery';
 import { usePostInteractions } from '@/features/board/boardDetail/hooks/usePostInteractions';
 import OptionPopup from '@/shared/components/Board/OptionPopup';
@@ -32,7 +32,7 @@ import Loading from '@/shared/ui/organisms/Loading';
 
 // type BoardDetailRouteParams = {
 //   postId: number;
-//   isReview: boolean; // 후기 글 여부
+//   isReview: boolean;
 // };
 
 const BoardDetailPosts = () => {
@@ -41,9 +41,14 @@ const BoardDetailPosts = () => {
   // const { postId, isReview } = route.params || { postId: 0, isReview: false };
 
   // 게시글 데이터 조회
-  const { data: post, isLoading } = usePostDetailQuery(3328, false);
+  const { data: post, isLoading: isPostLoading } = usePostDetailQuery(
+    3328,
+    false,
+  );
 
-  console.log(post);
+  // 댓글 데이터 조회
+  const { data: comments = [], isLoading: isCommentsLoading } =
+    usePostCommentsQuery(3328);
 
   // 상태관리 state
   const [comment, setComment] = useState('');
@@ -75,6 +80,7 @@ const BoardDetailPosts = () => {
       console.log('댓글 전송:', comment);
       setComment('');
       Keyboard.dismiss();
+      // TODO: 댓글 작성 API 호출 후 refetch
     }
   };
 
@@ -91,7 +97,7 @@ const BoardDetailPosts = () => {
     setDeleteCommentModalVisible(true),
   );
 
-  if (isLoading || !post) {
+  if (isPostLoading || !post) {
     return (
       <View className="flex-1 bg-white">
         <BoardDetailHeader
@@ -153,19 +159,25 @@ const BoardDetailPosts = () => {
               style={{ marginLeft: -20, marginRight: -20 }}
             />
 
-            <CommentList
-              comments={MOCK_COMMENTS}
-              commentCount={post.commentCount}
-              activeOption={activeCommentOption}
-              commentOptions={commentOptions}
-              scrollY={scrollY}
-              topOffset={TOP_OFFSET}
-              topInset={insets.top}
-              commentLayouts={commentLayouts}
-              onCommentLayout={handleCommentLayout}
-              onToggleOption={handleToggleCommentOption}
-              onCloseOption={() => setActiveCommentOption(null)}
-            />
+            {isCommentsLoading ? (
+              <View className="py-10">
+                <Loading />
+              </View>
+            ) : (
+              <CommentList
+                comments={comments}
+                commentCount={post.commentCount}
+                activeOption={activeCommentOption}
+                commentOptions={commentOptions}
+                scrollY={scrollY}
+                topOffset={TOP_OFFSET}
+                topInset={insets.top}
+                commentLayouts={commentLayouts}
+                onCommentLayout={handleCommentLayout}
+                onToggleOption={handleToggleCommentOption}
+                onCloseOption={() => setActiveCommentOption(null)}
+              />
+            )}
           </View>
         </ScrollView>
 
