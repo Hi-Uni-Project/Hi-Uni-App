@@ -2,7 +2,21 @@ import React from 'react';
 
 import { View, Text } from 'react-native';
 
-import { Post } from '../types';
+interface ReviewQuestion {
+  label: string;
+  value: string;
+}
+
+interface Post {
+  id: number;
+  univ: string;
+  date: string;
+  title: string;
+  content: string;
+  isReview?: boolean;
+  reviewQuestions?: ReviewQuestion[];
+  additionalReview?: string;
+}
 
 interface Props {
   post: Post;
@@ -16,7 +30,7 @@ const PostDetailContent = ({ post }: Props) => {
         <View>
           <Text className="text-main-text typo-body-15-semibold">익명</Text>
           <Text className="text-surface-500 typo-caption-13-light">
-            {post.school} · {post.date}
+            {post.univ} · {post.date}
           </Text>
         </View>
       </View>
@@ -25,9 +39,51 @@ const PostDetailContent = ({ post }: Props) => {
         {post.title}
       </Text>
 
-      <Text className="mb-6 leading-6 text-main-text typo-body-15-regular-post-detail">
-        {post.content}
-      </Text>
+      {/* 일반 글일 경우 */}
+      {!post.isReview && (
+        <Text className="leading-6 text-main-text typo-body-15-regular-post-detail">
+          {post.content}
+        </Text>
+      )}
+
+      {/* 후기 글일 경우 */}
+      {post.isReview && post.reviewQuestions && (
+        <View className="space-y-2">
+          {post.reviewQuestions.map((question, index) => (
+            <View key={index} className="flex-row">
+              <Text className="w-[70px] text-surface-700 typo-body-16-medium">
+                {question.label}
+              </Text>
+              <Text
+                className="flex-1 text-main-text typo-body-16-bold"
+                numberOfLines={0}>
+                {question.value}
+              </Text>
+            </View>
+          ))}
+
+          {post.content && (
+            <View className="flex-row">
+              <Text className="w-[70px] text-surface-700 typo-body-16-medium">
+                느낀 점
+              </Text>
+              <Text
+                className="flex-1 text-main-text typo-body-16-bold"
+                numberOfLines={0}>
+                {post.content}
+              </Text>
+            </View>
+          )}
+        </View>
+      )}
+
+      {post.isReview && post.additionalReview && (
+        <View className="mt-4 rounded-[15px] border border-gray-200 p-4">
+          <Text className="text-main-text typo-body-15-regular">
+            {post.additionalReview}
+          </Text>
+        </View>
+      )}
     </View>
   );
 };

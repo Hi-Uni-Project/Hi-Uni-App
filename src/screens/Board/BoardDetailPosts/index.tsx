@@ -21,26 +21,31 @@ import {
   createCommentOptions,
   createPostOptions,
   MOCK_COMMENTS,
-  MOCK_POST,
   TOP_OFFSET,
 } from '@/features/board/boardDetail/constants';
 import { useKeyboard } from '@/features/board/boardDetail/hooks/useKeyboard';
+import { usePostDetailQuery } from '@/features/board/boardDetail/hooks/usePostDetailQuery';
 import { usePostInteractions } from '@/features/board/boardDetail/hooks/usePostInteractions';
 import OptionPopup from '@/shared/components/Board/OptionPopup';
 import ConfirmModal from '@/shared/ui/organisms/ConfirmModal';
+import Loading from '@/shared/ui/organisms/Loading';
 
-/**
- * 게시글 상세 화면 navigation 연결 필요
- * 추후 진행
- * rp 작업
- * 서버와 API 연결하면서 route.params or data 값을 어떻게 내려줄지 로직 설계 필요
- */
+// type BoardDetailRouteParams = {
+//   postId: number;
+//   isReview: boolean; // 후기 글 여부
+// };
 
 const BoardDetailPosts = () => {
   const insets = useSafeAreaInsets();
+  // const route = useRoute<RouteProp<{ params: BoardDetailRouteParams }>>();
+  // const { postId, isReview } = route.params || { postId: 0, isReview: false };
+
+  // 게시글 데이터 조회
+  const { data: post, isLoading } = usePostDetailQuery(3328, false);
+
+  console.log(post);
 
   // 상태관리 state
-  // 추후 서버와 연결하면서 리팩토링 진행
   const [comment, setComment] = useState('');
   const [isPostOptionVisible, setIsPostOptionVisible] = useState(false);
   const [activeCommentOption, setActiveCommentOption] = useState<string | null>(
@@ -65,7 +70,6 @@ const BoardDetailPosts = () => {
   } = usePostInteractions();
 
   // API 호출 관련 핸들러
-  // 추후 서버와 연결하면서 리팩토링 진행
   const handleSendComment = () => {
     if (comment.trim()) {
       console.log('댓글 전송:', comment);
@@ -87,6 +91,20 @@ const BoardDetailPosts = () => {
     setDeleteCommentModalVisible(true),
   );
 
+  if (isLoading || !post) {
+    return (
+      <View className="flex-1 bg-white">
+        <BoardDetailHeader
+          univ=""
+          paddingTop={insets.top}
+          onBackPress={() => console.log('뒤로가기')}
+          onMorePress={() => {}}
+        />
+        <Loading />
+      </View>
+    );
+  }
+
   return (
     <View className="flex-1 bg-white">
       <KeyboardInputBackdrop
@@ -95,8 +113,8 @@ const BoardDetailPosts = () => {
       />
 
       <BoardDetailHeader
-        category={MOCK_POST.category}
-        subcategory={MOCK_POST.subcategory}
+        univ={post.univ}
+        subcategory={post.postType}
         paddingTop={insets.top}
         onBackPress={() => console.log('뒤로가기')}
         onMorePress={() => setIsPostOptionVisible(!isPostOptionVisible)}
@@ -116,12 +134,12 @@ const BoardDetailPosts = () => {
           scrollEventThrottle={16}
           keyboardShouldPersistTaps="handled">
           <View className="p-5">
-            <PostDetailContent post={MOCK_POST} />
+            <PostDetailContent post={post} />
 
             <PostDetailStats
-              views={MOCK_POST.views}
-              likes={MOCK_POST.likes}
-              bookmarks={MOCK_POST.bookmarks}
+              views={post.views}
+              likes={post.likes}
+              bookmarks={post.bookmarks}
               isLiked={isLiked}
               isBookmarked={isBookmarked}
               likeScale={likeScale}
@@ -137,7 +155,7 @@ const BoardDetailPosts = () => {
 
             <CommentList
               comments={MOCK_COMMENTS}
-              commentCount={MOCK_POST.commentCount}
+              commentCount={post.commentCount}
               activeOption={activeCommentOption}
               commentOptions={commentOptions}
               scrollY={scrollY}
