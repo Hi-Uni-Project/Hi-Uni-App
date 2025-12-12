@@ -1,5 +1,8 @@
-import { createPost, createReviewPost } from '../../api/createPost';
-import { CreatePostRequest, PostData } from '../../api/types';
+import {
+  createPost,
+  createReviewPost,
+} from '../../boardDetail/api/post/createPost';
+import { CreatePostRequest, PostData } from '../../boardDetail/api/types';
 import { ReviewFormData } from '../types';
 
 import { PostType } from '@/features/board/shared/types/enum/postEnum';
