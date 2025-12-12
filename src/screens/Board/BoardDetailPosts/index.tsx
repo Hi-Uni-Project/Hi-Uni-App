@@ -48,8 +48,11 @@ const BoardDetailPosts = () => {
   );
 
   // 댓글 데이터 조회
-  const { data: comments = [], isLoading: isCommentsLoading } =
-    usePostCommentsQuery(3328);
+  const {
+    data: comments = [],
+    isLoading: isCommentsLoading,
+    refetch: commentRefetch,
+  } = usePostCommentsQuery(3328);
 
   console.log(comments);
 
@@ -81,6 +84,7 @@ const BoardDetailPosts = () => {
   const handleSendComment = (postId: number) => {
     if (comment.trim()) {
       createComment(comment, postId);
+      commentRefetch();
       setComment('');
       Keyboard.dismiss();
     }
@@ -168,7 +172,6 @@ const BoardDetailPosts = () => {
             ) : (
               <CommentList
                 comments={comments}
-                commentCount={post.commentCount}
                 activeOption={activeCommentOption}
                 commentOptions={commentOptions}
                 scrollY={scrollY}

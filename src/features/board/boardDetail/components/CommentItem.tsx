@@ -59,7 +59,7 @@ const CommentItem = ({
           <View className="mb-3 flex-row items-center justify-between">
             <View className="flex-row items-center">
               <View className="mr-3 h-8 w-8 rounded-full bg-surface-300" />
-              <Text className="mr-2 text-main-text typo-caption-14-semibold">
+              <Text className="mr-1 text-main-text typo-caption-14-semibold">
                 익명{comment.id}
               </Text>
               <Text className="text-surface-500 typo-caption-14-regular">
