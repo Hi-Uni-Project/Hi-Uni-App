@@ -1,12 +1,15 @@
 import React from 'react';
 
-import { View, Text } from 'react-native';
+import BoardListScreen from '@/shared/components/Board/BoardList';
+import { useMyScrabQuery } from '@/shared/hooks/useBoardQuery';
 
 const MyScrab = () => {
   return (
-    <View>
-      <Text>MyScrab</Text>
-    </View>
+    <BoardListScreen
+      title="내 스크랩"
+      emptyDescription="아직 스크랩한 글이"
+      useQuery={useMyScrabQuery}
+    />
   );
 };
 
