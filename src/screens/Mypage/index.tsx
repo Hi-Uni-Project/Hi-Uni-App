@@ -1,6 +1,5 @@
 import React from 'react';
 
-import { useNavigation } from '@react-navigation/native';
 import { View } from 'react-native';
 
 import {
@@ -10,18 +9,18 @@ import {
   ProfileSection,
   QuickMenuSection,
 } from '@/features/mypage/main/components';
-import { MypageStackNavigationProp } from '@/navigation/types/navigationTypes';
-import { useRegisterStore } from '@/shared/stores/register';
+import { useMypageMainService } from '@/features/mypage/main/hooks/mypageMainService';
 
 const MypageMain = () => {
-  const navigation = useNavigation<MypageStackNavigationProp>();
-  const { univ } = useRegisterStore();
-
-  const handleScrabPress = () => navigation.navigate('MyScrab');
-  const handleAccountManagePress = () => navigation.navigate('AccountManage');
-  const handleTermsPress = () => console.log('노션 링킹');
-  const handleRulesPress = () => console.log('노션 링킹');
-  const handlePrivacyPress = () => console.log('노션 링킹');
+  const {
+    univ,
+    navigation,
+    handleAccountManagePress,
+    handlePrivacyPress,
+    handleRulesPress,
+    handleScrabPress,
+    handleTermsPress,
+  } = useMypageMainService();
 
   return (
     <View className="flex-1 bg-surface-100">
