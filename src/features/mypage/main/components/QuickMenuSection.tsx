@@ -2,7 +2,7 @@ import React from 'react';
 
 import { View } from 'react-native';
 
-import { MenuItem } from './MenuItem';
+import MenuItem from './MenuItem';
 
 import BoardActionIcons from '@/shared/icons/BoardActionIcons';
 
@@ -10,7 +10,7 @@ interface Props {
   onScrabPress: () => void;
 }
 
-export const QuickMenuSection = ({ onScrabPress }: Props) => (
+const QuickMenuSection = ({ onScrabPress }: Props) => (
   <View className="px-4">
     <View className="mb-2 rounded-[20px] border border-surface-200 bg-white py-1">
       <MenuItem
@@ -21,3 +21,5 @@ export const QuickMenuSection = ({ onScrabPress }: Props) => (
     </View>
   </View>
 );
+
+export default QuickMenuSection;

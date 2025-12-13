@@ -11,7 +11,7 @@ interface Props {
   rightText?: string | null;
 }
 
-export const MenuItem = ({ icon, label, onPress, rightText = null }: Props) => (
+const MenuItem = ({ icon, label, onPress, rightText = null }: Props) => (
   <View className="flex-row items-center justify-between px-4 py-3">
     <View className="flex-row items-center space-x-2">
       {icon && icon}
@@ -34,3 +34,5 @@ export const MenuItem = ({ icon, label, onPress, rightText = null }: Props) => (
     )}
   </View>
 );
+
+export default MenuItem;

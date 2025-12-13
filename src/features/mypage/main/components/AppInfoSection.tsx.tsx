@@ -2,8 +2,8 @@ import React from 'react';
 
 import { View } from 'react-native';
 
-import { MenuItem } from './MenuItem';
-import { SectionTitle } from './SectionTitle';
+import MenuItem from './MenuItem';
+import SectionTitle from './SectionTitle';
 
 interface Props {
   onTermsPress: () => void;
@@ -12,7 +12,7 @@ interface Props {
   appVersion: string;
 }
 
-export const AppInfoSection = ({
+const AppInfoSection = ({
   onTermsPress,
   onRulesPress,
   onPrivacyPress,
@@ -33,3 +33,5 @@ export const AppInfoSection = ({
     </View>
   </View>
 );
+
+export default AppInfoSection;

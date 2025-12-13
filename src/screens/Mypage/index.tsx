@@ -2,13 +2,11 @@ import React from 'react';
 
 import { View } from 'react-native';
 
-import {
-  AppInfoSection,
-  MypageHeader,
-  OtherSection,
-  ProfileSection,
-  QuickMenuSection,
-} from '@/features/mypage/main/components';
+import AppInfoSection from '@/features/mypage/main/components/AppInfoSection.tsx';
+import MypageHeader from '@/features/mypage/main/components/MypageHeader';
+import OtherSection from '@/features/mypage/main/components/OtherSection';
+import ProfileSection from '@/features/mypage/main/components/ProfileSection';
+import QuickMenuSection from '@/features/mypage/main/components/QuickMenuSection';
 import { useMypageMainService } from '@/features/mypage/main/hooks/mypageMainService';
 
 const MypageMain = () => {
@@ -23,8 +21,11 @@ const MypageMain = () => {
   } = useMypageMainService();
 
   return (
-    <View className="flex-1 bg-surface-100">
-      <MypageHeader onBackPress={() => navigation.goBack()} />
+    <View className="flex-1 bg-surface-50">
+      <MypageHeader
+        title="마이페이지"
+        onBackPress={() => navigation.goBack()}
+      />
 
       <View className="flex-1">
         <ProfileSection

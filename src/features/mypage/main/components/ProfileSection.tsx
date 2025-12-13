@@ -11,7 +11,7 @@ interface Props {
   secondMajorName?: string;
 }
 
-export const ProfileSection = ({
+const ProfileSection = ({
   univName,
   firstMajorName,
   secondMajorName,
@@ -45,3 +45,5 @@ export const ProfileSection = ({
     </View>
   </View>
 );
+
+export default ProfileSection;

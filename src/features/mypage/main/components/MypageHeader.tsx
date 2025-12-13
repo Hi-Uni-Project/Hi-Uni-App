@@ -7,10 +7,11 @@ import ArrowIcons from '@/shared/icons/ArrowIcons';
 import { shadowStyleSheet } from '@/shared/styles/shadow';
 
 interface Props {
+  title: string;
   onBackPress: () => void;
 }
 
-export const MypageHeader = ({ onBackPress }: Props) => (
+const MypageHeader = ({ title, onBackPress }: Props) => (
   <>
     <BoardHeaderColorGround />
     <View
@@ -22,9 +23,11 @@ export const MypageHeader = ({ onBackPress }: Props) => (
         </Pressable>
 
         <Text className="text-main-text typo-sub-title-20-semibold">
-          마이페이지
+          {title}
         </Text>
       </View>
     </View>
   </>
 );
+
+export default MypageHeader;
