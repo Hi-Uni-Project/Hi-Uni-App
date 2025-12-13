@@ -12,6 +12,7 @@ export type MainNavigationProps = {
   SignupRoute: undefined;
   HomeRoute: undefined;
   BoardRoute: NavigatorScreenParams<BoardNavigationProps>;
+  MyPageRoute: undefined;
 };
 
 export type SignupNavigationProps = {
@@ -36,6 +37,8 @@ export type HomeNavigationProps = {
   HotBoard: undefined;
   Detail: undefined;
   Profile: undefined;
+
+  MyPageRoute: undefined;
 
   EditSchedule: Schedule;
   CreateSchedule: ScheduleDatePayload;
@@ -62,6 +65,12 @@ export type CalendarNavigationProps = {
   CreateSchedule: ScheduleDatePayload;
 };
 
+export type MypageNavigationProps = {
+  MypageMain: undefined;
+  MyScrab: undefined;
+  AccountManage: undefined;
+};
+
 export type MainStackNavigationProp =
   NativeStackNavigationProp<MainNavigationProps>;
 
@@ -79,5 +88,8 @@ export type CalendarStackNavigationProp =
 
 export type BoardStackNavigationProp =
   NativeStackNavigationProp<BoardNavigationProps>;
+
+export type MypageStackNavigationProp =
+  NativeStackNavigationProp<MypageNavigationProps>;
 
 export type HomeTabNavigationProp = BottomTabNavigationProp<TabNavigationProps>;

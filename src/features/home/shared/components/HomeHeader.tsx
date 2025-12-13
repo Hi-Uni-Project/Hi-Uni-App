@@ -33,7 +33,9 @@ const HomeHeader = () => {
           onPress={() => navigation.navigate('HomeSearch')}>
           <SearchIcon width={26} height={26} color="#1E2128" />
         </TouchableOpacity>
-        <TouchableOpacity className="p-[10px]">
+        <TouchableOpacity
+          className="p-[10px]"
+          onPress={() => navigation.navigate('MyPageRoute')}>
           <ProfileIcon width={26} height={26} color="#1E2128" />
         </TouchableOpacity>
       </View>
