@@ -17,7 +17,13 @@ const OnboardRoute = () => {
     <Stack.Navigator
       initialRouteName="Onboarding"
       screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="Onboarding" component={OnboardingScreen} />
+      <Stack.Screen
+        name="Onboarding"
+        component={OnboardingScreen}
+        options={{
+          gestureEnabled: false,
+        }}
+      />
       <Stack.Screen name="Login" component={LoginScreen} />
 
       <Stack.Screen name="SignupRoute" component={SignupRoute} />
