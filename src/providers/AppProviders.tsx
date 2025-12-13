@@ -1,7 +1,6 @@
 import React, { ReactNode } from 'react';
 
 import { PortalProvider } from '@gorhom/portal';
-import { NavigationContainer } from '@react-navigation/native';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
@@ -21,9 +20,7 @@ export const AppProviders = ({ children }: AppProvidersProps) => {
     <QueryClientProvider client={queryClient}>
       <SafeAreaProvider>
         <GestureHandlerRootView style={{ flex: 1 }}>
-          <PortalProvider>
-            <NavigationContainer>{children}</NavigationContainer>
-          </PortalProvider>
+          <PortalProvider>{children}</PortalProvider>
         </GestureHandlerRootView>
       </SafeAreaProvider>
     </QueryClientProvider>
