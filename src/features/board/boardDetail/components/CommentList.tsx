@@ -2,7 +2,7 @@ import React from 'react';
 
 import { View, Text } from 'react-native';
 
-import { Comment } from '../types';
+import { Comment } from '../types/comment';
 
 import CommentItem from './CommentItem';
 
@@ -10,7 +10,6 @@ import { OptionItem } from '@/shared/components/Board/OptionPopup';
 
 interface Props {
   comments: Comment[];
-  commentCount: number;
   activeOption: string | null;
   commentOptions: OptionItem[];
   scrollY: number;
@@ -24,7 +23,6 @@ interface Props {
 
 const CommentList = ({
   comments,
-  commentCount,
   activeOption,
   commentOptions,
   scrollY,
@@ -38,7 +36,7 @@ const CommentList = ({
   return (
     <View className="border-surface-200 pt-5">
       <Text className="mb-6 text-main-text typo-body-16-semibold">
-        댓글 {commentCount}
+        댓글 {comments.length}
       </Text>
 
       {comments.map((comment, idx) => (

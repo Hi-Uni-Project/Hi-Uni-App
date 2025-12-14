@@ -34,5 +34,6 @@ export const fetchPosts = async (
 
 export const fetchMyPosts = () => fetchPosts('/posts/my-posts');
 export const fetchMyComments = () => fetchPosts('/comments/my-comments');
+export const fetchMyScrab = () => fetchPosts('bookmarks/my');
 export const fetchWeeklyHotPosts = (sort: SortType = SortType.LATEST) =>
   fetchPosts('/posts/weekly-hot', { sort });

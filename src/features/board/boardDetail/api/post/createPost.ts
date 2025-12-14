@@ -1,9 +1,8 @@
-import { ReviewFormData } from '../boardWrite/types';
-import { PostType } from '../shared/types/enum/postEnum';
+import { ReviewFormData } from '../../../boardWrite/types';
+import { CreatePostRequest, PostData } from '../types';
+import { convertReviewFormToRequest } from '../util/convertReviewFormToRequest';
 
-import { CreatePostRequest, PostData } from './types';
-import { convertReviewFormToRequest } from './util/convertReviewFormToRequest';
-
+import { PostType } from '@/features/board/shared/types/enum/postEnum';
 import { axiosInstance } from '@/shared/api/axiosInstance';
 import { ResponseTypes } from '@/shared/api/types';
 

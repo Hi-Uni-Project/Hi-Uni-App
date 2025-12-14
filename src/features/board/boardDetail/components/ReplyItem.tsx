@@ -2,7 +2,7 @@ import React from 'react';
 
 import { View, Text } from 'react-native';
 
-import { Reply } from '../types';
+import { Reply } from '../types/comment';
 
 import CommentActionBox from './CommentActionBox';
 
@@ -53,10 +53,10 @@ const ReplyItem = ({
           <View className="flex-row items-center">
             <View className="mr-3 h-8 w-8 rounded-full bg-surface-300" />
             <Text className="mr-2 text-main-text typo-caption-14-semibold">
-              {reply.author}
+              익명{reply.id}
             </Text>
             <Text className="text-surface-500 typo-caption-14-regular">
-              · {reply.school}
+              · {reply.univ}
             </Text>
           </View>
 
@@ -87,6 +87,7 @@ const ReplyItem = ({
       </View>
 
       {/* 답글 옵션 팝업 */}
+      {/* 게시글 컨텐츠가 길어지면 절대값이 달라지는 이슈 수정 필요 */}
       <OptionPopup
         visible={isActive}
         onClose={onCloseOption}

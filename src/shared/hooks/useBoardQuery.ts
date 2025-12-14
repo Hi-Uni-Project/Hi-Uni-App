@@ -6,6 +6,7 @@ import {
   fetchWeeklyHotPosts,
   fetchMyPosts,
   fetchMyComments,
+  fetchMyScrab,
 } from '@/shared/api/board/boardFetchApi';
 
 const useBoardQuery = (
@@ -32,3 +33,6 @@ export const useMyPostsQuery = () =>
 
 export const useMyCommentsQuery = () =>
   useBoardQuery(['myComments'], fetchMyComments, 1000 * 60);
+
+export const useMyScrabQuery = () =>
+  useBoardQuery(['myScrab'], fetchMyScrab, 1000 * 60);

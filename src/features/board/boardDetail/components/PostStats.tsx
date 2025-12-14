@@ -30,7 +30,7 @@ const PostDetailStats = ({
   onBookmarkPress,
 }: Props) => {
   return (
-    <View className="mb-6 flex-row items-center justify-between space-x-6">
+    <View className="flex-row items-center justify-between space-x-6 py-6">
       <View className="flex-row items-center">
         <ToggleIcons
           type="eyeOpenStroke"

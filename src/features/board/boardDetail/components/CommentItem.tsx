@@ -3,7 +3,7 @@ import React from 'react';
 import clsx from 'clsx';
 import { View, Text } from 'react-native';
 
-import { Comment } from '../types';
+import { Comment } from '../types/comment';
 
 import CommentActionBox from './CommentActionBox';
 import ReplyItem from './ReplyItem';
@@ -11,6 +11,7 @@ import ReplyItem from './ReplyItem';
 import { OptionItem } from '@/shared/components/Board/OptionPopup';
 import OptionPopup from '@/shared/components/Board/OptionPopup';
 import BoardActionIcons from '@/shared/icons/BoardActionIcons';
+import { formatMajor } from '@/shared/utils/formatter';
 
 interface Props {
   comment: Comment;
@@ -58,11 +59,11 @@ const CommentItem = ({
           <View className="mb-3 flex-row items-center justify-between">
             <View className="flex-row items-center">
               <View className="mr-3 h-8 w-8 rounded-full bg-surface-300" />
-              <Text className="mr-2 text-main-text typo-caption-14-semibold">
-                {comment.author}
+              <Text className="mr-1 text-main-text typo-caption-14-semibold">
+                익명{comment.id}
               </Text>
               <Text className="text-surface-500 typo-caption-14-regular">
-                · {comment.school}
+                · {formatMajor(comment.majorName)}
               </Text>
             </View>
 

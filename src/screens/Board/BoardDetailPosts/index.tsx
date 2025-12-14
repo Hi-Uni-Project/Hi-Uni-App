@@ -10,6 +10,7 @@ import {
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Toast from 'react-native-toast-message';
 
+import { createComment } from '@/features/board/boardDetail/api/comment/createComment';
 import CommentInput from '@/features/board/boardDetail/components/CommentInput';
 import CommentList from '@/features/board/boardDetail/components/CommentList';
 import BoardDetailHeader from '@/features/board/boardDetail/components/layouts/BoardHeader';
@@ -20,27 +21,42 @@ import { toastConfig } from '@/features/board/boardDetail/config/toast';
 import {
   createCommentOptions,
   createPostOptions,
-  MOCK_COMMENTS,
-  MOCK_POST,
   TOP_OFFSET,
 } from '@/features/board/boardDetail/constants';
 import { useKeyboard } from '@/features/board/boardDetail/hooks/useKeyboard';
+import { usePostCommentsQuery } from '@/features/board/boardDetail/hooks/usePostCommentsQuery';
+import { usePostDetailQuery } from '@/features/board/boardDetail/hooks/usePostDetailQuery';
 import { usePostInteractions } from '@/features/board/boardDetail/hooks/usePostInteractions';
 import OptionPopup from '@/shared/components/Board/OptionPopup';
 import ConfirmModal from '@/shared/ui/organisms/ConfirmModal';
+import Loading from '@/shared/ui/organisms/Loading';
 
-/**
- * 게시글 상세 화면 navigation 연결 필요
- * 추후 진행
- * rp 작업
- * 서버와 API 연결하면서 route.params or data 값을 어떻게 내려줄지 로직 설계 필요
- */
+// type BoardDetailRouteParams = {
+//   postId: number;
+//   isReview: boolean;
+// };
 
 const BoardDetailPosts = () => {
   const insets = useSafeAreaInsets();
+  // const route = useRoute<RouteProp<{ params: BoardDetailRouteParams }>>();
+  // const { postId, isReview } = route.params || { postId: 0, isReview: false };
+
+  // 게시글 데이터 조회
+  const { data: post, isLoading: isPostLoading } = usePostDetailQuery(
+    3328,
+    false,
+  );
+
+  // 댓글 데이터 조회
+  const {
+    data: comments = [],
+    isLoading: isCommentsLoading,
+    refetch: commentRefetch,
+  } = usePostCommentsQuery(3328);
+
+  console.log(comments);
 
   // 상태관리 state
-  // 추후 서버와 연결하면서 리팩토링 진행
   const [comment, setComment] = useState('');
   const [isPostOptionVisible, setIsPostOptionVisible] = useState(false);
   const [activeCommentOption, setActiveCommentOption] = useState<string | null>(
@@ -65,10 +81,10 @@ const BoardDetailPosts = () => {
   } = usePostInteractions();
 
   // API 호출 관련 핸들러
-  // 추후 서버와 연결하면서 리팩토링 진행
-  const handleSendComment = () => {
+  const handleSendComment = (postId: number) => {
     if (comment.trim()) {
-      console.log('댓글 전송:', comment);
+      createComment(comment, postId);
+      commentRefetch();
       setComment('');
       Keyboard.dismiss();
     }
@@ -87,6 +103,20 @@ const BoardDetailPosts = () => {
     setDeleteCommentModalVisible(true),
   );
 
+  if (isPostLoading || !post) {
+    return (
+      <View className="flex-1 bg-white">
+        <BoardDetailHeader
+          univ=""
+          paddingTop={insets.top}
+          onBackPress={() => console.log('뒤로가기')}
+          onMorePress={() => {}}
+        />
+        <Loading />
+      </View>
+    );
+  }
+
   return (
     <View className="flex-1 bg-white">
       <KeyboardInputBackdrop
@@ -95,8 +125,8 @@ const BoardDetailPosts = () => {
       />
 
       <BoardDetailHeader
-        category={MOCK_POST.category}
-        subcategory={MOCK_POST.subcategory}
+        univ={post.univ}
+        subcategory={post.postType}
         paddingTop={insets.top}
         onBackPress={() => console.log('뒤로가기')}
         onMorePress={() => setIsPostOptionVisible(!isPostOptionVisible)}
@@ -116,12 +146,12 @@ const BoardDetailPosts = () => {
           scrollEventThrottle={16}
           keyboardShouldPersistTaps="handled">
           <View className="p-5">
-            <PostDetailContent post={MOCK_POST} />
+            <PostDetailContent post={post} />
 
             <PostDetailStats
-              views={MOCK_POST.views}
-              likes={MOCK_POST.likes}
-              bookmarks={MOCK_POST.bookmarks}
+              views={post.views}
+              likes={post.likes}
+              bookmarks={post.bookmarks}
               isLiked={isLiked}
               isBookmarked={isBookmarked}
               likeScale={likeScale}
@@ -135,26 +165,31 @@ const BoardDetailPosts = () => {
               style={{ marginLeft: -20, marginRight: -20 }}
             />
 
-            <CommentList
-              comments={MOCK_COMMENTS}
-              commentCount={MOCK_POST.commentCount}
-              activeOption={activeCommentOption}
-              commentOptions={commentOptions}
-              scrollY={scrollY}
-              topOffset={TOP_OFFSET}
-              topInset={insets.top}
-              commentLayouts={commentLayouts}
-              onCommentLayout={handleCommentLayout}
-              onToggleOption={handleToggleCommentOption}
-              onCloseOption={() => setActiveCommentOption(null)}
-            />
+            {isCommentsLoading ? (
+              <View className="py-10">
+                <Loading />
+              </View>
+            ) : (
+              <CommentList
+                comments={comments}
+                activeOption={activeCommentOption}
+                commentOptions={commentOptions}
+                scrollY={scrollY}
+                topOffset={TOP_OFFSET}
+                topInset={insets.top}
+                commentLayouts={commentLayouts}
+                onCommentLayout={handleCommentLayout}
+                onToggleOption={handleToggleCommentOption}
+                onCloseOption={() => setActiveCommentOption(null)}
+              />
+            )}
           </View>
         </ScrollView>
 
         <CommentInput
           value={comment}
           onChangeText={setComment}
-          onSubmit={handleSendComment}
+          onSubmit={() => handleSendComment(post.id)}
           keyboardHeight={keyboardHeight}
           bottomInset={insets.bottom}
         />

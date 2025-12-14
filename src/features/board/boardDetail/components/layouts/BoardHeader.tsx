@@ -2,19 +2,23 @@ import React from 'react';
 
 import { View, Text, Pressable } from 'react-native';
 
+import {
+  POST_TYPE_DISPLAY_NAME,
+  PostType,
+} from '@/features/board/shared/types/enum/postEnum';
 import ArrowIcons from '@/shared/icons/ArrowIcons';
 import MoreIcon from '@/static/icons/more.svg';
 
 interface Props {
-  category: string;
-  subcategory: string;
+  univ: string;
+  subcategory?: PostType;
   paddingTop: number;
   onBackPress: () => void;
   onMorePress: () => void;
 }
 
 const BoardDetailHeader = ({
-  category,
+  univ,
   subcategory,
   paddingTop,
   onBackPress,
@@ -28,10 +32,11 @@ const BoardDetailHeader = ({
         </Pressable>
         <View className="flex-1 items-center">
           <Text className="text-main-text typo-body-16-semibold">
-            {category}
+            {POST_TYPE_DISPLAY_NAME[subcategory]} 게시판
           </Text>
+
           <Text className="text-surface-500 typo-caption-14-medium">
-            {subcategory}
+            {univ}
           </Text>
         </View>
         <Pressable onPress={onMorePress}>

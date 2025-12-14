@@ -24,7 +24,7 @@ const viewVariants = cva('w-full flex-row items-center', {
   },
 });
 const inputVariants = cva(
-  'flex-1 font-normal text-[16px] text-secondary-black',
+  'flex-1 font-normal text-[16px] text-secondary-black text-start',
   {
     variants: {
       variant: {

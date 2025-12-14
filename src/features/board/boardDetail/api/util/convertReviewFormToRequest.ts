@@ -1,3 +1,5 @@
+import { CreateReviewPostRequest } from '../types';
+
 import {
   InternshipFormData,
   InterviewFormData,
@@ -5,10 +7,8 @@ import {
   LicenseFormData,
   ReviewFormData,
   WorkStoryFormData,
-} from '../../boardWrite/types';
-import { PostType } from '../../shared/types/enum/postEnum';
-import { CreateReviewPostRequest } from '../types';
-
+} from '@/features/board/boardWrite/types';
+import { PostType } from '@/features/board/shared/types/enum/postEnum';
 import { formatDateTime } from '@/shared/utils/formatter';
 
 export const convertReviewFormToRequest = (
