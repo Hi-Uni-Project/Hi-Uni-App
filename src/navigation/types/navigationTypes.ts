@@ -88,7 +88,7 @@ export type RecordNavigationProps = {
   EditProject: { projectId?: number; tempId?: string };
 
   CreateCoverLetter: undefined;
-  EditCoverLetter: { coverLetterId?: number; tempId?: string };
+  EditCoverLetter: { coverLetterId: number };
 };
 
 export type MainStackNavigationProp =

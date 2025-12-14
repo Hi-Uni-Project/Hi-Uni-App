@@ -1,8 +1,10 @@
 import React from 'react';
 
+import { useNavigation } from '@react-navigation/native';
 import { View, Text, Pressable } from 'react-native';
 
 import CoverLetterList from '@/features/record/coverLetterList/components/CoverLetterList';
+import { MainStackNavigationProp } from '@/navigation/types/navigationTypes';
 import PlusIcon from '@/static/icons/add.svg';
 
 interface Props {
@@ -11,6 +13,8 @@ interface Props {
 }
 
 const CoverLetterSection = ({ coverLetters, isExist }: Props) => {
+  const navigation = useNavigation<MainStackNavigationProp>();
+
   return (
     <View className="w-full">
       <View className="mt-[42px] flex-row items-center px-5">
@@ -25,7 +29,13 @@ const CoverLetterSection = ({ coverLetters, isExist }: Props) => {
             아직 작성한 자기소개서가 없어요.
           </Text>
 
-          <Pressable className="mt-[15px] flex-row items-center rounded-full bg-primary-purple px-[27px] py-[14px]">
+          <Pressable
+            className="mt-[15px] flex-row items-center rounded-full bg-primary-purple px-[27px] py-[14px]"
+            onPress={() =>
+              navigation.navigate('RecordRoute', {
+                screen: 'CreateCoverLetter',
+              })
+            }>
             <PlusIcon width={16} height={16} color="#DADADA" />
             <Text className="ml-[7px] text-surface-200 typo-body-17-semibold">
               새 자기소개서 작성하기

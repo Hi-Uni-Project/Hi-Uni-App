@@ -1,10 +1,10 @@
 import React from 'react';
 
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { Text } from 'react-native';
 
 import { RecordNavigationProps } from '../types/navigationTypes';
 
+import EditCoverLetter from '@/features/record/editCoverLetter/types/components/EditCoverLetter';
 import AchievementEditView from '@/screens/Record/EditView/AchievementEditView';
 import CareerEditView from '@/screens/Record/EditView/CareerEditView';
 import EducationEditView from '@/screens/Record/EditView/EducationEditView';
@@ -32,8 +32,8 @@ const RecordRoute = () => {
       <Stack.Screen name="CreateProject" component={ProjectEditView} />
       <Stack.Screen name="EditProject" component={ProjectEditView} />
 
-      <Stack.Screen name="CreateCoverLetter" component={() => <Text />} />
-      <Stack.Screen name="EditCoverLetter" component={() => <Text />} />
+      <Stack.Screen name="CreateCoverLetter" component={EditCoverLetter} />
+      <Stack.Screen name="EditCoverLetter" component={EditCoverLetter} />
     </Stack.Navigator>
   );
 };
