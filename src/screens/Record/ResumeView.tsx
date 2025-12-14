@@ -5,7 +5,6 @@ import { View, Text, Pressable, Image } from 'react-native';
 
 import { MainStackNavigationProp } from '@/navigation/types/navigationTypes';
 import PlusIcon from '@/static/icons/add.svg';
-import ChevronRightIcon from '@/static/icons/right_chevron.svg';
 
 interface Props {
   title?: string;
@@ -20,15 +19,6 @@ const ResumeSection = ({ title, imageUrl, isExist }: Props) => {
     <View className="w-full">
       <View className="mt-[50px] flex-row items-center px-5">
         <Text className="text-main-text typo-sub-title-22-bold">내 이력서</Text>
-
-        {isExist && (
-          <ChevronRightIcon
-            height={14}
-            width={8}
-            color="#B7B7B7"
-            className="ml-3"
-          />
-        )}
       </View>
 
       {!isExist && (

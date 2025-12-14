@@ -4,7 +4,6 @@ import { View, Text, Pressable } from 'react-native';
 
 import CoverLetterList from '@/features/record/coverLetterList/components/CoverLetterList';
 import PlusIcon from '@/static/icons/add.svg';
-import ChevronRightIcon from '@/static/icons/right_chevron.svg';
 
 interface Props {
   coverLetters: { question: string; answer: string }[];
@@ -18,15 +17,6 @@ const CoverLetterSection = ({ coverLetters, isExist }: Props) => {
         <Text className="text-main-text typo-sub-title-22-bold">
           내 자기소개서
         </Text>
-
-        {isExist && (
-          <ChevronRightIcon
-            height={14}
-            width={8}
-            color="#B7B7B7"
-            className="ml-3"
-          />
-        )}
       </View>
 
       {!isExist && (
