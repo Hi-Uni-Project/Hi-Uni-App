@@ -48,6 +48,10 @@ export const coverLetterReducer = (state: State, action: Action): State => {
     }
 
     case 'ADD_ITEM':
+      if (state.coverLetters.length >= 10) {
+        return state;
+      }
+
       return {
         coverLetters: [...state.coverLetters, action.payload],
         currentIndex: state.currentIndex + 1,

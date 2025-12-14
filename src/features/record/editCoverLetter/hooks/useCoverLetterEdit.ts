@@ -89,14 +89,12 @@ const useCoverLetterEdit = () => {
   }, [state.coverLetters]);
 
   return {
-    // 상태
     coverLetters: state.coverLetters,
     currentIndex: state.currentIndex,
     currentItem,
     isEditMode,
     coverLetterId,
 
-    // 액션
     initializeFromServer,
     handleQuestionChange,
     handleAnswerChange,
