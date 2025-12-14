@@ -13,6 +13,7 @@ export type MainNavigationProps = {
   HomeRoute: undefined;
   BoardRoute: NavigatorScreenParams<BoardNavigationProps>;
   MyPageRoute: undefined;
+  RecordRoute: NavigatorScreenParams<RecordNavigationProps>;
 };
 
 export type SignupNavigationProps = {
@@ -71,6 +72,22 @@ export type MypageNavigationProps = {
   AccountManage: undefined;
 };
 
+export type RecordNavigationProps = {
+  ResumeEdit: undefined;
+  CreateEducation: undefined;
+  EditEducation: { educationId?: number; tempId?: string };
+  CreateLink: undefined;
+  EditLink: { linkId?: number; tempId?: string };
+  CreateAchievement: undefined;
+  EditAchievement: { achievementId?: number; tempId?: string };
+  CreateLanguage: undefined;
+  EditLanguage: { languageId?: number; tempId?: string };
+  CreateCareer: undefined;
+  EditCareer: { careerId?: number; tempId?: string };
+  CreateProject: undefined;
+  EditProject: { projectId?: number; tempId?: string };
+};
+
 export type MainStackNavigationProp =
   NativeStackNavigationProp<MainNavigationProps>;
 
@@ -91,5 +108,8 @@ export type BoardStackNavigationProp =
 
 export type MypageStackNavigationProp =
   NativeStackNavigationProp<MypageNavigationProps>;
+
+export type RecordStackNavigationProp =
+  NativeStackNavigationProp<RecordNavigationProps>;
 
 export type HomeTabNavigationProp = BottomTabNavigationProp<TabNavigationProps>;

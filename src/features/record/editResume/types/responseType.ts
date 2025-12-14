@@ -1,0 +1,110 @@
+import { ResponseTypes } from '@/shared/api/types';
+
+export type GenderResponse = 'MALE' | 'FEMALE' | 'OTHER';
+
+export type GraduationStatusResponse =
+  | 'GRADUATED'
+  | 'EXPECTED'
+  | 'ENROLLED'
+  | 'DROPOUT'
+  | 'COMPLETED'
+  | 'LEAVE';
+
+export type LanguageLevelResponse =
+  | 'BASIC'
+  | 'BUSINESS'
+  | 'PROFESSIONAL'
+  | 'FLUENT';
+
+export type AchievementTypeResponse =
+  | 'AWARD'
+  | 'CERTIFICATE'
+  | 'TRAINING'
+  | 'OTHER';
+
+export interface CareerResponse {
+  careerId: number;
+  companyName: string;
+  startDate: string;
+  endDate: string;
+  role: string;
+  position: string;
+  jobDescription: string;
+}
+
+export interface ProjectResponse {
+  projectId: number;
+  projectName: string;
+  startDate: string;
+  endDate: string;
+  role: string;
+  experienceDescription: string;
+}
+
+export interface EducationResponse {
+  educationId: number;
+  universityName: string;
+  startDate: string;
+  endDate: string;
+  graduationStatus: GraduationStatusResponse;
+  major: string;
+}
+
+export interface LanguageResponse {
+  languageId: number;
+  language: string;
+  level: LanguageLevelResponse;
+}
+
+export interface AchievementResponse {
+  achievementId: number;
+  activityName: string;
+  periodDate: string;
+  type: AchievementTypeResponse;
+  achievementDescription: string;
+}
+
+export interface LinkResponse {
+  linkId: number;
+  linkName: string;
+  linkUrl: string;
+}
+
+export interface SkillResponse {
+  skillId: number;
+  name: string;
+}
+
+export interface ResumeDataResponse {
+  name: string;
+  gender: GenderResponse;
+  birthYear: number;
+  imageUrl: string;
+  title: string;
+  aboutMe: string;
+  aboutMeCnt: number;
+  careers: CareerResponse[];
+  projects: ProjectResponse[];
+  educations: EducationResponse[];
+  languages: LanguageResponse[];
+  achievements: AchievementResponse[];
+  links: LinkResponse[];
+  skills: SkillResponse[];
+  projectsSize: number;
+  educationsSize: number;
+  languagesSize: number;
+  achievementsSize: number;
+  linksSize: number;
+  skillsSize: number;
+  careersSize: number;
+}
+
+export type ResumeResponse = ResponseTypes<ResumeDataResponse>;
+export type SkillSearchResponse = ResponseTypes<SkillResponse[]>;
+
+export interface AiAboutMeDataResponse {
+  aboutMeCnt: number;
+  aboutMe: string;
+}
+
+export type AiAboutMeResponse = ResponseTypes<AiAboutMeDataResponse>;

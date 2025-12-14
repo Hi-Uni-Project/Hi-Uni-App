@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
+import { DropdownProvider } from '@/shared/components/DropdownProvider';
 import { useBootSplash } from '@/shared/hooks/useBootSplash';
 
 const queryClient = new QueryClient();
@@ -20,7 +21,9 @@ export const AppProviders = ({ children }: AppProvidersProps) => {
     <QueryClientProvider client={queryClient}>
       <SafeAreaProvider>
         <GestureHandlerRootView style={{ flex: 1 }}>
-          <PortalProvider>{children}</PortalProvider>
+          <PortalProvider>
+            <DropdownProvider>{children}</DropdownProvider>
+          </PortalProvider>
         </GestureHandlerRootView>
       </SafeAreaProvider>
     </QueryClientProvider>

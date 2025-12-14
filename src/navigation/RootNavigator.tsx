@@ -6,6 +6,7 @@ import BoardRoute from './stacks/BoardStackNavigation';
 import HomeRoute from './stacks/HomeStackNavigator';
 import MypageRoute from './stacks/MypageStackNavigation';
 import OnboardRoute from './stacks/OnboardStackNavigation';
+import RecordRoute from './stacks/RecordStackNavigation';
 import { MainNavigationProps } from './types/navigationTypes';
 
 const Stack = createNativeStackNavigator<MainNavigationProps>();
@@ -23,7 +24,7 @@ const MainStack = () => {
 
       <Stack.Screen name="MyPageRoute" component={MypageRoute} />
 
-      {/* <Stack.Screen name="RecordRoute" component={RecordRoute} /> */}
+      <Stack.Screen name="RecordRoute" component={RecordRoute} />
     </Stack.Navigator>
   );
 };
