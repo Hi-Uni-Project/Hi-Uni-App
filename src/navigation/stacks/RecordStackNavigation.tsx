@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { Text } from 'react-native';
 
 import { RecordNavigationProps } from '../types/navigationTypes';
 
@@ -30,6 +31,9 @@ const RecordRoute = () => {
       <Stack.Screen name="EditCareer" component={CareerEditView} />
       <Stack.Screen name="CreateProject" component={ProjectEditView} />
       <Stack.Screen name="EditProject" component={ProjectEditView} />
+
+      <Stack.Screen name="CreateCoverLetter" component={() => <Text />} />
+      <Stack.Screen name="EditCoverLetter" component={() => <Text />} />
     </Stack.Navigator>
   );
 };
