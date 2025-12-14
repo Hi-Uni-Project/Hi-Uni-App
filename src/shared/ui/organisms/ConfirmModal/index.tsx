@@ -16,6 +16,7 @@ type Props = {
   onConfirm: () => void;
   onCancel?: () => void;
   status?: 'caution';
+  icon?: boolean;
 };
 
 const ConfirmModal = ({
@@ -27,6 +28,7 @@ const ConfirmModal = ({
   cancelText,
   onConfirm,
   onCancel,
+  icon = true,
   status = 'caution',
 }: Props) => {
   return (
@@ -37,14 +39,16 @@ const ConfirmModal = ({
       onRequestClose={onClose}>
       <View className="flex-1 items-center justify-center bg-black/50">
         <View className="w-[85%] rounded-2xl bg-white p-5">
-          <View className="mb-3 items-center">
-            <StatusIcons
-              status={status}
-              width={30}
-              height={30}
-              color="#5B5B5B"
-            />
-          </View>
+          {icon && (
+            <View className="mb-3 items-center">
+              <StatusIcons
+                status={status}
+                width={30}
+                height={30}
+                color="#5B5B5B"
+              />
+            </View>
+          )}
 
           <Text
             className={cn(
