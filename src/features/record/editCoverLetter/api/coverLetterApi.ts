@@ -39,3 +39,11 @@ export const deleteCoverLetter = async (coverLetterId: number) => {
 
   return response.data;
 };
+
+export const getAiGenerateCount = async () => {
+  const response = await axiosInstance.get(
+    '/cover-letter/ai-cover-letter/remaining',
+  );
+
+  return response.data;
+};

@@ -3,6 +3,7 @@ import { useReducer, useCallback, useEffect, useState } from 'react';
 import { RouteProp, useRoute } from '@react-navigation/native';
 import { AxiosError } from 'axios';
 
+import { getAiGenerateCount } from '../api/coverLetterApi';
 import { AiCoverLetterResponse, CoverLetter } from '../types/CoverLetterType';
 
 import { coverLetterReducer } from './coverLetterReducer';
@@ -52,6 +53,12 @@ const useCoverLetterEdit = () => {
       });
     }
   }, [coverLetterData]);
+
+  useEffect(() => {
+    getAiGenerateCount().then(data => {
+      setAiGenerateCount(data.data.coverletterCnt);
+    });
+  }, []);
 
   const currentItem = state.coverLetters[state.currentIndex];
 

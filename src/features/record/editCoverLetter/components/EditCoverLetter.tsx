@@ -18,6 +18,8 @@ import AiGenerateModal from './AiGenerateModal';
 import CoverLetterHeader from './CoverLetterHeader';
 
 import useCoverLetterEdit from '@/features/record/editCoverLetter/hooks/useCoverLetterEdit';
+import { cn } from '@/shared/lib/cn';
+import ConfirmModal from '@/shared/ui/organisms/ConfirmModal';
 import PlusIcon from '@/static/icons/add.svg';
 import TrashIcon from '@/static/icons/trash.svg';
 
@@ -138,8 +140,20 @@ const EditCoverLetter = () => {
 
                   <Pressable
                     onPress={openAiModal}
-                    className="mt-4 rounded-full bg-primary-purple px-[27px] py-[14px]">
-                    <Text className="text-surface-200 typo-body-16-medium">
+                    disabled={aiGenerateCount === 0}
+                    className={cn(
+                      'mt-4 rounded-full px-[27px] py-[14px]',
+                      aiGenerateCount === 0
+                        ? 'bg-surface-300'
+                        : 'bg-primary-purple',
+                    )}>
+                    <Text
+                      className={cn(
+                        'typo-body-16-medium',
+                        aiGenerateCount === 0
+                          ? 'text-white'
+                          : 'text-surface-200',
+                      )}>
                       AI 자기소개서 생성 ({aiGenerateCount}/5)
                     </Text>
                   </Pressable>
@@ -174,6 +188,13 @@ const EditCoverLetter = () => {
         visible={aiErrorType !== null}
         errorType={aiErrorType}
         onClose={closeAiErrorModal}
+      />
+
+      <ConfirmModal
+        visible={true}
+        title={'저장이 완료되었어요.'}
+        confirmText={'네, 확인했어요.'}
+        onConfirm={() => {}}
       />
     </View>
   );
