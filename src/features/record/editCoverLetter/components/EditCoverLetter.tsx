@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
+import { useNavigation } from '@react-navigation/native';
 import {
   Keyboard,
   KeyboardAvoidingView,
@@ -18,6 +19,7 @@ import AiGenerateModal from './AiGenerateModal';
 import CoverLetterHeader from './CoverLetterHeader';
 
 import useCoverLetterEdit from '@/features/record/editCoverLetter/hooks/useCoverLetterEdit';
+import { MainStackNavigationProp } from '@/navigation/types/navigationTypes';
 import { cn } from '@/shared/lib/cn';
 import ConfirmModal from '@/shared/ui/organisms/ConfirmModal';
 import PlusIcon from '@/static/icons/add.svg';
@@ -25,6 +27,7 @@ import TrashIcon from '@/static/icons/trash.svg';
 
 const EditCoverLetter = () => {
   const insets = useSafeAreaInsets();
+  const navigation = useNavigation<MainStackNavigationProp>();
 
   const {
     coverLetters,
@@ -52,6 +55,8 @@ const EditCoverLetter = () => {
   const [isSaveSuccessModalVisible, setIsSaveSuccessModalVisible] =
     useState(false);
 
+  const [isOnWritingModalVisible, setIsOnWritingModalVisible] = useState(false);
+
   useEffect(() => {
     if (isSaveSuccess) {
       setIsSaveSuccessModalVisible(true);
@@ -65,6 +70,9 @@ const EditCoverLetter = () => {
         rightButtonText={isSaving ? '저장 중...' : '저장'}
         isRightButtonDisabled={isSaving || !isDirty}
         onRightButtonPress={handleSave}
+        onBackButtonPress={() => {
+          setIsOnWritingModalVisible(true);
+        }}
       />
 
       <KeyboardAvoidingView
@@ -210,6 +218,24 @@ const EditCoverLetter = () => {
           setIsSaveSuccessModalVisible(false);
         }}
       />
+
+      {isOnWritingModalVisible && (
+        <ConfirmModal
+          visible={isOnWritingModalVisible}
+          title={'작성 중인 내용이 있어요.\n이대로 나갈까요?'}
+          confirmText={'아니요, 계속 작성할래요.'}
+          cancelText={'네, 이대로 나갈게요.'}
+          onClose={() => {
+            navigation.goBack();
+          }}
+          onConfirm={() => {
+            setIsOnWritingModalVisible(false);
+          }}
+          onCancel={() => {
+            setIsOnWritingModalVisible(false);
+          }}
+        />
+      )}
     </View>
   );
 };

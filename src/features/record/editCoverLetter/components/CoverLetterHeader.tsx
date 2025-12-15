@@ -1,10 +1,8 @@
 import React from 'react';
 
-import { useNavigation } from '@react-navigation/native';
 import { View, StatusBar, Pressable, Text } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { MainStackNavigationProp } from '@/navigation/types/navigationTypes';
 import ArrowIcons from '@/shared/icons/ArrowIcons';
 import { cn } from '@/shared/lib/cn';
 
@@ -13,6 +11,7 @@ interface CoverLetterHeaderProps {
   rightButtonText?: string;
   isRightButtonDisabled?: boolean;
   onRightButtonPress?: () => void;
+  onBackButtonPress: () => void;
 }
 
 const CoverLetterHeader = ({
@@ -20,9 +19,9 @@ const CoverLetterHeader = ({
   rightButtonText,
   isRightButtonDisabled,
   onRightButtonPress,
+  onBackButtonPress,
 }: CoverLetterHeaderProps) => {
   const insets = useSafeAreaInsets();
-  const navigation = useNavigation<MainStackNavigationProp>();
 
   return (
     <>
@@ -37,11 +36,7 @@ const CoverLetterHeader = ({
         <StatusBar barStyle="dark-content" />
 
         <View className="h-full flex-row items-center justify-between px-5">
-          <Pressable
-            hitSlop={14}
-            onPress={() => {
-              navigation.goBack();
-            }}>
+          <Pressable hitSlop={14} onPress={onBackButtonPress}>
             <ArrowIcons
               direction="left"
               width={24}
