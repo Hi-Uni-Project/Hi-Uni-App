@@ -1,4 +1,11 @@
-import { useReducer, useCallback, useEffect, useState } from 'react';
+import {
+  useReducer,
+  useCallback,
+  useEffect,
+  useState,
+  useRef,
+  useMemo,
+} from 'react';
 
 import { RouteProp, useRoute } from '@react-navigation/native';
 import { AxiosError } from 'axios';
@@ -44,6 +51,8 @@ const useCoverLetterEdit = () => {
     currentIndex: 0,
   });
 
+  const initialCoverLettersRef = useRef<CoverLetter[] | null>(null);
+
   // 서버 데이터로 초기화
   useEffect(() => {
     if (coverLetterData?.data.coverLetters) {
@@ -51,6 +60,26 @@ const useCoverLetterEdit = () => {
         type: 'INIT_FROM_SERVER',
         payload: coverLetterData.data.coverLetters,
       });
+
+      initialCoverLettersRef.current = coverLetterData.data.coverLetters.map(
+        item => {
+          if (item.coverLetterId !== null) {
+            return {
+              tempId: undefined,
+              coverLetterId: item.coverLetterId,
+              question: item.question,
+              answer: item.answer,
+            };
+          } else {
+            return {
+              tempId: item.tempId,
+              coverLetterId: null,
+              question: item.question,
+              answer: item.answer,
+            };
+          }
+        },
+      );
     }
   }, [coverLetterData]);
 
@@ -61,6 +90,17 @@ const useCoverLetterEdit = () => {
   }, []);
 
   const currentItem = state.coverLetters[state.currentIndex];
+
+  const isDirty = useMemo(() => {
+    if (!initialCoverLettersRef.current) {
+      return false;
+    }
+
+    return (
+      JSON.stringify(initialCoverLettersRef.current) !==
+      JSON.stringify(state.coverLetters)
+    );
+  }, [state.coverLetters]);
 
   // 서버에서 불러온 CoverLetter로 초기화
   const initializeFromServer = useCallback((data: CoverLetter[]) => {
@@ -233,6 +273,8 @@ const useCoverLetterEdit = () => {
     selectItem,
     getRequestData,
     handleSave,
+
+    isDirty,
   };
 };
 

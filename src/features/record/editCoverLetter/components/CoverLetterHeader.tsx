@@ -6,16 +6,19 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { MainStackNavigationProp } from '@/navigation/types/navigationTypes';
 import ArrowIcons from '@/shared/icons/ArrowIcons';
+import { cn } from '@/shared/lib/cn';
 
 interface CoverLetterHeaderProps {
   title: string;
   rightButtonText?: string;
+  isRightButtonDisabled?: boolean;
   onRightButtonPress?: () => void;
 }
 
 const CoverLetterHeader = ({
   title,
   rightButtonText,
+  isRightButtonDisabled,
   onRightButtonPress,
 }: CoverLetterHeaderProps) => {
   const insets = useSafeAreaInsets();
@@ -54,8 +57,14 @@ const CoverLetterHeader = ({
           </View>
 
           {rightButtonText && onRightButtonPress && (
-            <Pressable onPress={onRightButtonPress}>
-              <Text className="text-primary-purple typo-sub-title-18-medium">
+            <Pressable
+              onPress={onRightButtonPress}
+              disabled={isRightButtonDisabled}>
+              <Text
+                className={cn(
+                  'text-primary-purple typo-sub-title-18-medium',
+                  isRightButtonDisabled && 'text-surface-300',
+                )}>
                 {rightButtonText}
               </Text>
             </Pressable>

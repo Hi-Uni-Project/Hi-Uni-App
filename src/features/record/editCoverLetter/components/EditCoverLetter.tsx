@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import {
   Keyboard,
@@ -37,6 +37,7 @@ const EditCoverLetter = () => {
     selectItem,
     handleSave,
     isSaving,
+    isSaveSuccess,
     isGenerating,
     isAiModalVisible,
     aiGenerateCount,
@@ -45,13 +46,24 @@ const EditCoverLetter = () => {
     closeAiModal,
     closeAiErrorModal,
     handleGenerateAiCoverLetter,
+    isDirty,
   } = useCoverLetterEdit();
+
+  const [isSaveSuccessModalVisible, setIsSaveSuccessModalVisible] =
+    useState(false);
+
+  useEffect(() => {
+    if (isSaveSuccess) {
+      setIsSaveSuccessModalVisible(true);
+    }
+  }, [isSaveSuccess]);
 
   return (
     <View className="flex-1 bg-surface-50">
       <CoverLetterHeader
         title="내 자기소개서"
         rightButtonText={isSaving ? '저장 중...' : '저장'}
+        isRightButtonDisabled={isSaving || !isDirty}
         onRightButtonPress={handleSave}
       />
 
@@ -191,10 +203,12 @@ const EditCoverLetter = () => {
       />
 
       <ConfirmModal
-        visible={true}
+        visible={isSaveSuccessModalVisible}
         title={'저장이 완료되었어요.'}
         confirmText={'네, 확인했어요.'}
-        onConfirm={() => {}}
+        onConfirm={() => {
+          setIsSaveSuccessModalVisible(false);
+        }}
       />
     </View>
   );
