@@ -207,7 +207,6 @@ const EditCoverLetter = () => {
         onClose={closeAiModal}
         onGenerate={handleGenerateAiCoverLetter}
         isLoading={isGenerating}
-        aiGenerateCount={aiGenerateCount}
       />
 
       {/* AI 에러 모달 */}
@@ -217,6 +216,7 @@ const EditCoverLetter = () => {
         onClose={closeAiErrorModal}
       />
 
+      {/* 저장 성공 모달 */}
       <ConfirmModal
         visible={isSaveSuccessModalVisible}
         title={'저장이 완료되었어요.'}
@@ -226,6 +226,7 @@ const EditCoverLetter = () => {
         }}
       />
 
+      {/* 작성중 모달 */}
       {isOnWritingModalVisible && (
         <ConfirmModal
           visible={isOnWritingModalVisible}
@@ -244,6 +245,7 @@ const EditCoverLetter = () => {
         />
       )}
 
+      {/* 문항 삭제 모달 */}
       {isDeleteModalVisible && (
         <ConfirmModal
           visible={isDeleteModalVisible}

@@ -16,7 +16,6 @@ type Props = {
   onClose: () => void;
   onGenerate: (params: { role: string; question: string }) => void;
   isLoading: boolean;
-  aiGenerateCount: number;
 };
 
 const AiGenerateModal = ({
@@ -24,7 +23,6 @@ const AiGenerateModal = ({
   onClose,
   onGenerate,
   isLoading,
-  aiGenerateCount: _aiGenerateCount,
 }: Props) => {
   const [role, setRole] = useState('');
   const [question, setQuestion] = useState('');
@@ -59,7 +57,6 @@ const AiGenerateModal = ({
       <View className="flex-1 items-center justify-center bg-black/50">
         <View className="w-[85%] rounded-2xl bg-white p-5">
           {isLoading ? (
-            // 로딩 상태
             <View className="items-center py-8">
               <View className="mb-4 flex-row">
                 <ActivityIndicator size="small" color="#7248D9" />
@@ -72,7 +69,6 @@ const AiGenerateModal = ({
               </Text>
             </View>
           ) : (
-            // 입력 폼 상태
             <>
               {/* 닫기 버튼 */}
               <View className="items-end">

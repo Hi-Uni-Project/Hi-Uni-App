@@ -2,9 +2,9 @@ import React from 'react';
 
 import { Modal, Pressable, Text, View } from 'react-native';
 
-import StatusIcons from '@/shared/icons/StatusIcons';
+import { AiErrorType } from '../hooks/useAiCoverLetter';
 
-type AiErrorType = 'limitExceeded' | 'noReview' | null;
+import StatusIcons from '@/shared/icons/StatusIcons';
 
 interface Props {
   visible: boolean;
@@ -29,7 +29,9 @@ const AiErrorModal = ({ visible, errorType, onClose }: Props) => {
     if (errorType === 'noReview') {
       return {
         title: (
-          <Text className="text-center text-surface-600 typo-caption-14-regular">
+          <Text
+            className="mb-5 text-center text-main-text typo-sub-title-22-semibold"
+            style={{ lineHeight: 27.5 }}>
             현재 내 후기글이 없어{'\n'}자기소개서를 생성할 수 없어요.{'\n'}
             <Text className="font-semibold text-primary-purple">
               후기를 1개 이상
@@ -63,11 +65,7 @@ const AiErrorModal = ({ visible, errorType, onClose }: Props) => {
             />
           </View>
 
-          <Text
-            className="mb-5 text-center text-main-text typo-sub-title-22-semibold"
-            style={{ lineHeight: 27.5 }}>
-            {title}
-          </Text>
+          {title}
 
           <Pressable
             onPress={onClose}

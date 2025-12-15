@@ -54,7 +54,7 @@ export const coverLetterReducer = (state: State, action: Action): State => {
 
       return {
         coverLetters: [...state.coverLetters, action.payload],
-        currentIndex: state.currentIndex + 1,
+        currentIndex: state.coverLetters.length,
       };
 
     case 'DELETE_ITEM': {
