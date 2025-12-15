@@ -1,4 +1,8 @@
-import { CoverLetter, CoverLetterResponse } from '../types/CoverLetterType';
+import {
+  AiCoverLetterResponse,
+  CoverLetter,
+  CoverLetterResponse,
+} from '../types/CoverLetterType';
 
 import { axiosInstance } from '@/shared/api/axiosInstance';
 
@@ -15,7 +19,7 @@ export const generateCoverLetterByAI = async ({
 }: {
   role: string;
   question: string;
-}) => {
+}): Promise<AiCoverLetterResponse> => {
   const response = await axiosInstance.post('/cover-letter/ai-cover-letter', {
     role,
     question,

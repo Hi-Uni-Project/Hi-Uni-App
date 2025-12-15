@@ -6,8 +6,8 @@ import {
   saveCoverLetter,
 } from '../api/coverLetterApi';
 import {
-  AiCoverLetterDataResponse,
   AiCoverLetterRequest,
+  AiCoverLetterResponse,
   CoverLetter,
 } from '../types/CoverLetterType';
 
@@ -35,7 +35,7 @@ const useCoverLetterMutation = () => {
   });
 
   const generateAiCoverLetterMutation = useMutation<
-    AiCoverLetterDataResponse,
+    AiCoverLetterResponse,
     Error,
     AiCoverLetterRequest
   >({
@@ -67,7 +67,6 @@ const useCoverLetterMutation = () => {
     isGenerating: generateAiCoverLetterMutation.isPending,
     generateError: generateAiCoverLetterMutation.error,
     isGenerateSuccess: generateAiCoverLetterMutation.isSuccess,
-    generatedAnswer: generateAiCoverLetterMutation.data?.answer,
   };
 };
 

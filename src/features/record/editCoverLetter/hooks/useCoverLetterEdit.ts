@@ -1,8 +1,9 @@
 import { useReducer, useCallback, useEffect, useState } from 'react';
 
 import { RouteProp, useRoute } from '@react-navigation/native';
+import { AxiosError } from 'axios';
 
-import { CoverLetter } from '../types/CoverLetterType';
+import { AiCoverLetterResponse, CoverLetter } from '../types/CoverLetterType';
 
 import { coverLetterReducer } from './coverLetterReducer';
 import useCoverLetterMutation from './useCoverLetterMutation';
@@ -15,15 +16,27 @@ type EditCoverLetterRouteProp = RouteProp<
   'EditCoverLetter'
 >;
 
+type AiErrorType = 'limitExceeded' | 'noReview' | null;
+
 const useCoverLetterEdit = () => {
   const route = useRoute<EditCoverLetterRouteProp>();
   const coverLetterId = route.params?.coverLetterId;
   const isEditMode = coverLetterId !== undefined;
   const [deleteIdList, setDeleteIdList] = useState<number[]>([]);
 
+  const [isAiModalVisible, setIsAiModalVisible] = useState(false);
+  const [aiGenerateCount, setAiGenerateCount] = useState(5);
+  const [aiErrorType, setAiErrorType] = useState<AiErrorType>(null);
+
   const { coverLetterData, coverLetterLoading } = useCoverLetterQueries();
-  const { saveCoverLetter, isSaving, isSaveSuccess, deleteCoverLetter } =
-    useCoverLetterMutation();
+  const {
+    saveCoverLetter,
+    isSaving,
+    isSaveSuccess,
+    deleteCoverLetter,
+    generateAiCoverLetterAsync,
+    isGenerating,
+  } = useCoverLetterMutation();
 
   const [state, dispatch] = useReducer(coverLetterReducer, {
     coverLetters: [createNewCoverLetter()],
@@ -129,6 +142,63 @@ const useCoverLetterEdit = () => {
     });
   }, [getRequestData, saveCoverLetter, deleteCoverLetter, deleteIdList]);
 
+  // AI 모달 열기
+  const openAiModal = useCallback(() => {
+    setIsAiModalVisible(true);
+  }, []);
+
+  // AI 모달 닫기
+  const closeAiModal = useCallback(() => {
+    setIsAiModalVisible(false);
+  }, []);
+
+  // 에러 모달 닫기
+  const closeAiErrorModal = useCallback(() => {
+    setAiErrorType(null);
+  }, []);
+
+  // AI 자기소개서 생성
+  const handleGenerateAiCoverLetter = useCallback(
+    async ({ role, question }: { role: string; question: string }) => {
+      try {
+        const result: AiCoverLetterResponse = await generateAiCoverLetterAsync({
+          role,
+          question,
+        });
+
+        if (result?.data?.answer) {
+          handleAnswerChange(result.data.answer);
+        }
+        if (result?.data?.coverletterCnt !== undefined) {
+          setAiGenerateCount(result.data.coverletterCnt);
+        }
+        setIsAiModalVisible(false);
+
+        return result;
+      } catch (e) {
+        console.error('AI generate error:', e);
+        setIsAiModalVisible(false);
+
+        if (e instanceof AxiosError && e.response) {
+          const status = e.response.status;
+
+          if (status === 403) {
+            setAiErrorType('limitExceeded');
+            return;
+          }
+
+          if (status === 404) {
+            setAiErrorType('noReview');
+            return;
+          }
+        }
+
+        throw e;
+      }
+    },
+    [generateAiCoverLetterAsync, handleAnswerChange],
+  );
+
   return {
     coverLetters: state.coverLetters,
     currentIndex: state.currentIndex,
@@ -138,6 +208,15 @@ const useCoverLetterEdit = () => {
     isLoading: coverLetterLoading,
     isSaving,
     isSaveSuccess,
+    isGenerating,
+
+    isAiModalVisible,
+    aiGenerateCount,
+    aiErrorType,
+    openAiModal,
+    closeAiModal,
+    closeAiErrorModal,
+    handleGenerateAiCoverLetter,
 
     initializeFromServer,
     handleQuestionChange,

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import {
   Keyboard,
@@ -13,6 +13,8 @@ import {
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import AiErrorModal from './AiErrorModal';
+import AiGenerateModal from './AiGenerateModal';
 import CoverLetterHeader from './CoverLetterHeader';
 
 import useCoverLetterEdit from '@/features/record/editCoverLetter/hooks/useCoverLetterEdit';
@@ -33,13 +35,15 @@ const EditCoverLetter = () => {
     selectItem,
     handleSave,
     isSaving,
+    isGenerating,
+    isAiModalVisible,
+    aiGenerateCount,
+    aiErrorType,
+    openAiModal,
+    closeAiModal,
+    closeAiErrorModal,
+    handleGenerateAiCoverLetter,
   } = useCoverLetterEdit();
-
-  const [aiGenerateCount] = useState(5);
-
-  const handleAiGenerate = () => {
-    console.log('AI 자기소개서 생성');
-  };
 
   return (
     <View className="flex-1 bg-surface-50">
@@ -133,9 +137,9 @@ const EditCoverLetter = () => {
                   </Text>
 
                   <Pressable
-                    onPress={handleAiGenerate}
-                    className="mt-4 rounded-full bg-primary-purple px-6 py-3">
-                    <Text className="text-white typo-body-15-semibold">
+                    onPress={openAiModal}
+                    className="mt-4 rounded-full bg-primary-purple px-[27px] py-[14px]">
+                    <Text className="text-surface-200 typo-body-16-medium">
                       AI 자기소개서 생성 ({aiGenerateCount}/5)
                     </Text>
                   </Pressable>
@@ -145,8 +149,8 @@ const EditCoverLetter = () => {
                 <Pressable
                   onPress={handleDeleteItem}
                   className="mt-6 flex-row items-center justify-center">
-                  <TrashIcon width={16} height={16} color="#B7B7B7" />
-                  <Text className="typo-body-14-regular ml-1 text-surface-400">
+                  <TrashIcon width={18} height={18} color="#B7B7B7" />
+                  <Text className="ml-1 text-surface-400 typo-body-15-medium">
                     문항 삭제하기
                   </Text>
                 </Pressable>
@@ -155,6 +159,22 @@ const EditCoverLetter = () => {
           </TouchableWithoutFeedback>
         </ScrollView>
       </KeyboardAvoidingView>
+
+      {/* AI 생성 모달 */}
+      <AiGenerateModal
+        visible={isAiModalVisible}
+        onClose={closeAiModal}
+        onGenerate={handleGenerateAiCoverLetter}
+        isLoading={isGenerating}
+        aiGenerateCount={aiGenerateCount}
+      />
+
+      {/* AI 에러 모달 */}
+      <AiErrorModal
+        visible={aiErrorType !== null}
+        errorType={aiErrorType}
+        onClose={closeAiErrorModal}
+      />
     </View>
   );
 };
