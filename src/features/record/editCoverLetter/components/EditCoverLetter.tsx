@@ -57,6 +57,8 @@ const EditCoverLetter = () => {
 
   const [isOnWritingModalVisible, setIsOnWritingModalVisible] = useState(false);
 
+  const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
+
   useEffect(() => {
     if (isSaveSuccess) {
       setIsSaveSuccessModalVisible(true);
@@ -71,7 +73,12 @@ const EditCoverLetter = () => {
         isRightButtonDisabled={isSaving || !isDirty}
         onRightButtonPress={handleSave}
         onBackButtonPress={() => {
-          setIsOnWritingModalVisible(true);
+          if (isDirty) {
+            setIsOnWritingModalVisible(true);
+            return;
+          } else {
+            navigation.goBack();
+          }
         }}
       />
 
@@ -181,7 +188,7 @@ const EditCoverLetter = () => {
 
                 {/* 문항 삭제 버튼 */}
                 <Pressable
-                  onPress={handleDeleteItem}
+                  onPress={() => setIsDeleteModalVisible(true)}
                   className="mt-6 flex-row items-center justify-center">
                   <TrashIcon width={18} height={18} color="#B7B7B7" />
                   <Text className="ml-1 text-surface-400 typo-body-15-medium">
@@ -233,6 +240,22 @@ const EditCoverLetter = () => {
           }}
           onCancel={() => {
             setIsOnWritingModalVisible(false);
+          }}
+        />
+      )}
+
+      {isDeleteModalVisible && (
+        <ConfirmModal
+          visible={isDeleteModalVisible}
+          title={'해당 문항을 삭제할까요?'}
+          confirmText={'네, 삭제할래요.'}
+          cancelText={'아니요, 그대로 둘게요.'}
+          onConfirm={() => {
+            handleDeleteItem();
+            setIsDeleteModalVisible(false);
+          }}
+          onClose={() => {
+            setIsDeleteModalVisible(false);
           }}
         />
       )}
