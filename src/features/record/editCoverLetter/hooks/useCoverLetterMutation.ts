@@ -41,9 +41,6 @@ const useCoverLetterMutation = () => {
   >({
     mutationFn: ({ role, question }: AiCoverLetterRequest) =>
       generateCoverLetterByAI({ role, question }),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['coverLetter'] });
-    },
     onError: error => {
       console.error('AI 자기소개서 생성 실패:', error);
     },

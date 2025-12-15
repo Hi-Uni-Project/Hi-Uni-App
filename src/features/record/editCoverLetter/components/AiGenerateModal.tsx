@@ -34,6 +34,8 @@ const AiGenerateModal = ({
       return;
     }
     onGenerate({ role: role.trim(), question: question.trim() });
+    setRole('');
+    setQuestion('');
   };
 
   const handleClose = () => {

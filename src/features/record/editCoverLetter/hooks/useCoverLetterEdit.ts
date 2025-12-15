@@ -214,6 +214,7 @@ const useCoverLetterEdit = () => {
         });
 
         if (result?.data?.answer) {
+          handleQuestionChange(question);
           handleAnswerChange(result.data.answer);
         }
         if (result?.data?.coverletterCnt !== undefined) {
