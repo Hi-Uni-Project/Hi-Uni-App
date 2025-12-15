@@ -25,7 +25,7 @@ export interface CoverLetterDataResponse {
   coverletterCnt: number;
 }
 
-export type CoverLetterResponse = ResponseTypes<CoverLetterRequest[]>;
+export type CoverLetterResponse = ResponseTypes<CoverLetterDataResponse>;
 
 export interface AiCoverLetterRequest {
   role: string;

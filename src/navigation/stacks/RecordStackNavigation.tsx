@@ -4,7 +4,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import { RecordNavigationProps } from '../types/navigationTypes';
 
-import EditCoverLetter from '@/features/record/editCoverLetter/types/components/EditCoverLetter';
+import EditCoverLetter from '@/features/record/editCoverLetter/components/EditCoverLetter';
 import AchievementEditView from '@/screens/Record/EditView/AchievementEditView';
 import CareerEditView from '@/screens/Record/EditView/CareerEditView';
 import EducationEditView from '@/screens/Record/EditView/EducationEditView';

@@ -31,7 +31,8 @@ const EditCoverLetter = () => {
     handleAddItem,
     handleDeleteItem,
     selectItem,
-    getRequestData,
+    handleSave,
+    isSaving,
   } = useCoverLetterEdit();
 
   const [aiGenerateCount] = useState(5);
@@ -40,16 +41,11 @@ const EditCoverLetter = () => {
     console.log('AI 자기소개서 생성');
   };
 
-  const handleSave = () => {
-    const requestData = getRequestData();
-    console.log('저장:', requestData);
-  };
-
   return (
     <View className="flex-1 bg-surface-50">
       <CoverLetterHeader
         title="내 자기소개서"
-        rightButtonText="저장"
+        rightButtonText={isSaving ? '저장 중...' : '저장'}
         onRightButtonPress={handleSave}
       />
 
