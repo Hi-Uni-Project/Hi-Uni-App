@@ -1,39 +1,27 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
 import { useNavigation } from '@react-navigation/native';
-import { FlatList, Text, View } from 'react-native';
+import { FlatList, View } from 'react-native';
 import Animated, { LinearTransition } from 'react-native-reanimated';
 
-import mockHotPosts from '../mocks/mockHotPosts';
+import HotPostWidgetItem from './HotPostItem';
+import HotPostsWidgetTitle from './HotPostsWidgetTitle';
 
-import HotPostItem from './HotPostItem';
-
+import { Post } from '@/features/board/shared/types/DefaultPostType';
 import { HomeStackNavigationProp } from '@/navigation/types/navigationTypes';
 import CardView from '@/shared/components/CardView';
 import SectionHeader from '@/shared/components/layouts/SectionHeader';
-import FireIcon from '@/static/icons/fire.svg';
-const Separator = () => <View className="h-[1px] bg-[#EAEAEA]" />;
+import Loading from '@/shared/ui/organisms/Loading';
 
-const HotPostsWidgetTitle = () => (
-  <View className="flex-row items-center">
-    <Text className="text-main-text typo-sub-title-22-bold">주간 HOT</Text>
-    <FireIcon width={18} height={20} className="ml-[6px]" />
-  </View>
-);
+const Separator = () => <View className="h-[1px] bg-surface-200" />;
 
-const HotPostsWidget = () => {
-  const [isLoading, setIsLoading] = useState(true);
+interface Props {
+  hotPosts: Post[];
+  isLoading: boolean;
+}
 
+const HotPostsWidget = ({ hotPosts, isLoading }: Props) => {
   const navigation = useNavigation<HomeStackNavigationProp>();
-
-  useEffect(() => {
-    const fetchData = async () => {
-      setTimeout(() => {
-        setIsLoading(false);
-      }, 2000);
-    };
-    fetchData();
-  }, []);
 
   return (
     <Animated.View layout={LinearTransition} className="mt-8">
@@ -45,12 +33,12 @@ const HotPostsWidget = () => {
       />
       <CardView className="mx-5">
         {isLoading ? (
-          <Text>로딩중..</Text>
+          <Loading />
         ) : (
           <FlatList
-            data={mockHotPosts.filter((_, index) => index < 4)}
-            renderItem={({ item }) => <HotPostItem item={item} />}
-            keyExtractor={item => item.id}
+            data={hotPosts.filter((_, index) => index < 4)}
+            renderItem={({ item }) => <HotPostWidgetItem item={item} />}
+            keyExtractor={item => item.id.toString()}
             ItemSeparatorComponent={Separator}
             scrollEnabled={false}
           />

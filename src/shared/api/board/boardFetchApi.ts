@@ -37,3 +37,5 @@ export const fetchMyComments = () => fetchPosts('/comments/my-comments');
 export const fetchMyScrab = () => fetchPosts('bookmarks/my');
 export const fetchWeeklyHotPosts = (sort: SortType = SortType.LATEST) =>
   fetchPosts('/posts/weekly-hot', { sort });
+export const fetchWeeklyHotPostsWidget = (sort: SortType = SortType.LIKE) =>
+  fetchPosts('/posts/top-four-weekly-hot', { sort });

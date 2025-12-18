@@ -7,6 +7,7 @@ import {
   fetchMyPosts,
   fetchMyComments,
   fetchMyScrab,
+  fetchWeeklyHotPostsWidget,
 } from '@/shared/api/board/boardFetchApi';
 
 const useBoardQuery = (
@@ -25,6 +26,13 @@ export const useWeeklyHotPosts = (sort: SortType = SortType.LATEST) =>
   useBoardQuery(
     ['weeklyHotPosts', sort],
     () => fetchWeeklyHotPosts(sort),
+    1000 * 60,
+  );
+
+export const useWeeklyHotPostsWidget = (sort: SortType = SortType.LIKE) =>
+  useBoardQuery(
+    ['weeklyHotPostsWidget', sort],
+    () => fetchWeeklyHotPostsWidget(sort),
     1000 * 60,
   );
 

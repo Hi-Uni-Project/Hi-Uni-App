@@ -2,14 +2,19 @@ import React from 'react';
 
 import Animated, { LinearTransition } from 'react-native-reanimated';
 
+import { SortType } from '@/features/board/shared/types/enum/sortEnum';
 import ScheduleWidget from '@/features/home/scheduleWidget/components/ScheduleWidget';
 import HomeScrollLayout from '@/features/home/shared/layouts/HomeScrollLayout';
 import UnivMajorBadge from '@/features/home/univMajorBadge/components/UnivMajorBadge';
 import HotPostsWidget from '@/features/home/weeklyHotPosts/components/HotPostsWidget';
+import { useWeeklyHotPostsWidget } from '@/shared/hooks/useBoardQuery';
 import { useRegisterStore } from '@/shared/stores/register';
 
 const HomeScreen = () => {
   const { univ } = useRegisterStore();
+  const { data: hotPosts = [], isLoading } = useWeeklyHotPostsWidget(
+    SortType.LIKE,
+  );
 
   return (
     <HomeScrollLayout>
@@ -22,7 +27,7 @@ const HomeScreen = () => {
         }}
       /> */}
       <ScheduleWidget />
-      <HotPostsWidget />
+      <HotPostsWidget hotPosts={hotPosts} isLoading={isLoading} />
       <Animated.View
         style={{ rowGap: 38, marginTop: 38, marginBottom: 20 }}
         layout={LinearTransition}>
