@@ -94,7 +94,15 @@ const BoardScreen = () => {
               setSortSheetVisible={setSortSheetVisible}
               sortSheetVisible={sortSheetVisible}
               data={posts}
-              onPostPress={post => console.log('Post clicked:', post.title)}
+              onPostPress={post =>
+                navigation.navigate('BoardRoute', {
+                  screen: 'BoardDetailPosts',
+                  params: {
+                    postId: post.id,
+                    isReview: post.isReview,
+                  },
+                })
+              }
             />
           </View>
         ) : (

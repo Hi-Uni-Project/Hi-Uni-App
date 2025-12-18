@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 
+import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import {
   View,
   ScrollView,
@@ -27,24 +28,26 @@ import { useKeyboard } from '@/features/board/boardDetail/hooks/useKeyboard';
 import { usePostCommentsQuery } from '@/features/board/boardDetail/hooks/usePostCommentsQuery';
 import { usePostDetailQuery } from '@/features/board/boardDetail/hooks/usePostDetailQuery';
 import { usePostInteractions } from '@/features/board/boardDetail/hooks/usePostInteractions';
+import { BoardNavigationProps } from '@/navigation/types/navigationTypes';
 import OptionPopup from '@/shared/components/Board/OptionPopup';
 import ConfirmModal from '@/shared/ui/organisms/ConfirmModal';
 import Loading from '@/shared/ui/organisms/Loading';
 
-// type BoardDetailRouteParams = {
-//   postId: number;
-//   isReview: boolean;
-// };
+type BoardDetailRouteParams = RouteProp<
+  BoardNavigationProps,
+  'BoardDetailPosts'
+>;
 
 const BoardDetailPosts = () => {
   const insets = useSafeAreaInsets();
-  // const route = useRoute<RouteProp<{ params: BoardDetailRouteParams }>>();
-  // const { postId, isReview } = route.params || { postId: 0, isReview: false };
+  const navigation = useNavigation();
+  const route = useRoute<BoardDetailRouteParams>();
+  const { postId, isReview } = route.params || { postId: 0, isReview: false };
 
   // 게시글 데이터 조회
   const { data: post, isLoading: isPostLoading } = usePostDetailQuery(
-    3328,
-    false,
+    postId,
+    isReview,
   );
 
   // 댓글 데이터 조회
@@ -81,7 +84,7 @@ const BoardDetailPosts = () => {
   } = usePostInteractions();
 
   // API 호출 관련 핸들러
-  const handleSendComment = (postId: number) => {
+  const handleSendComment = () => {
     if (comment.trim()) {
       createComment(comment, postId);
       commentRefetch();
@@ -109,7 +112,7 @@ const BoardDetailPosts = () => {
         <BoardDetailHeader
           univ=""
           paddingTop={insets.top}
-          onBackPress={() => console.log('뒤로가기')}
+          onBackPress={() => navigation.goBack()}
           onMorePress={() => {}}
         />
         <Loading />
@@ -128,7 +131,7 @@ const BoardDetailPosts = () => {
         univ={post.univ}
         subcategory={post.postType}
         paddingTop={insets.top}
-        onBackPress={() => console.log('뒤로가기')}
+        onBackPress={() => navigation.goBack()}
         onMorePress={() => setIsPostOptionVisible(!isPostOptionVisible)}
       />
 
@@ -189,7 +192,7 @@ const BoardDetailPosts = () => {
         <CommentInput
           value={comment}
           onChangeText={setComment}
-          onSubmit={() => handleSendComment(post.id)}
+          onSubmit={handleSendComment}
           keyboardHeight={keyboardHeight}
           bottomInset={insets.bottom}
         />

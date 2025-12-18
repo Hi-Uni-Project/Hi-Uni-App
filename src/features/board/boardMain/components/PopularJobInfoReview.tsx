@@ -11,11 +11,18 @@ import Loading from '@/shared/ui/organisms/Loading';
 interface Props {
   posts: Post[];
   onPress: () => void;
+  onPostPress?: (post: Post) => void;
   title: string;
   isLoading: boolean;
 }
 
-const PopularJobInfoReview = ({ posts, onPress, title, isLoading }: Props) => {
+const PopularJobInfoReview = ({
+  posts,
+  onPress,
+  onPostPress,
+  title,
+  isLoading,
+}: Props) => {
   if (isLoading) {
     return (
       <View className="bg-primary-purple pb-5 pt-[23px]">
@@ -40,10 +47,7 @@ const PopularJobInfoReview = ({ posts, onPress, title, isLoading }: Props) => {
           className="flex-row px-5"
           renderItem={({ item }) => (
             <View className="mr-4">
-              <BoardPostCardLG
-                {...item}
-                onPress={() => console.log('Card clicked:', item.title)}
-              />
+              <BoardPostCardLG {...item} onPress={() => onPostPress?.(item)} />
             </View>
           )}
         />

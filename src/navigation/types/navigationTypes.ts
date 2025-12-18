@@ -50,6 +50,7 @@ export type BoardNavigationProps = {
   MyPosts: undefined;
   PopularReviews: { title: string };
   BoardWrite: undefined;
+  BoardDetailPosts: { postId: number; isReview: boolean };
 };
 
 export type TabNavigationProps = {

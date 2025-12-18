@@ -48,6 +48,15 @@ const JobInformationScreen = ({
               },
             })
           }
+          onPostPress={post =>
+            navigation.navigate('BoardRoute', {
+              screen: 'BoardDetailPosts',
+              params: {
+                postId: post.id,
+                isReview: post.isReview,
+              },
+            })
+          }
         />
       )}
     </View>
