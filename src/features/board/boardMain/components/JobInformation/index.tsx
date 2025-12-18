@@ -15,6 +15,7 @@ interface Props {
   resetSort: () => void;
   weeklyHotPosts: Post[];
   isWeeklyHotLoading: boolean;
+  onPostPress?: (post: Post) => void;
 }
 
 const JobInformationScreen = ({
@@ -23,6 +24,7 @@ const JobInformationScreen = ({
   resetSort,
   weeklyHotPosts,
   isWeeklyHotLoading,
+  onPostPress,
 }: Props) => {
   const navigation = useNavigation<MainStackNavigationProp>();
 
@@ -48,15 +50,7 @@ const JobInformationScreen = ({
               },
             })
           }
-          onPostPress={post =>
-            navigation.navigate('BoardRoute', {
-              screen: 'BoardDetailPosts',
-              params: {
-                postId: post.id,
-                isReview: post.isReview,
-              },
-            })
-          }
+          onPostPress={onPostPress}
         />
       )}
     </View>

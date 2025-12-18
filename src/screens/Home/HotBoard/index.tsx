@@ -16,7 +16,6 @@ const HotBoardScreen = () => {
       description="이번 주 인기 게시물이"
       posts={posts}
       isLoading={isLoading}
-      onPostPress={() => console.log('post clicked')}
       sortBoardState={sortBoardState}
     />
   );

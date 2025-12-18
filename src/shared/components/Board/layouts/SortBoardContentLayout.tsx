@@ -16,7 +16,6 @@ interface Props {
   description?: string;
   posts: Post[] | undefined;
   isLoading: boolean;
-  onPostPress: (post: Post) => void;
   sortBoardState: ReturnType<typeof useSortBoard>;
 }
 
@@ -26,7 +25,6 @@ const SortBoardContentLayout = ({
   description,
   posts,
   isLoading,
-  onPostPress,
   sortBoardState,
 }: Props) => {
   const {
@@ -61,7 +59,6 @@ const SortBoardContentLayout = ({
           setSortSheetVisible={setSortSheetVisible}
           sortSheetVisible={sortSheetVisible}
           data={posts}
-          onPostPress={onPostPress}
         />
       </View>
     </SortBoardHeaderLayout>

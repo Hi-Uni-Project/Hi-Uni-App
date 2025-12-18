@@ -37,7 +37,6 @@ const PopularReviews = ({ route }: Props) => {
       description={`아직 ${title} 인기글이`}
       posts={posts}
       isLoading={isLoading}
-      onPostPress={() => console.log('post clicked')}
     />
   );
 };

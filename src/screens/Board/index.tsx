@@ -10,6 +10,7 @@ import NoPosts from '@/features/board/boardMain/components/NoPost';
 import { useBoardCategory } from '@/features/board/boardMain/hooks/useBoardCategory';
 import { useCategoryWeeklyHotQuery } from '@/features/board/boardMain/hooks/useWeeklyHotQuery';
 import BoardHeader from '@/features/board/shared/components/BoardHeader';
+import { Post } from '@/features/board/shared/types/DefaultPostType';
 import {
   getPostTypeByDisplayName,
   JOB_CATEGORY_CHIPS,
@@ -26,6 +27,16 @@ const BoardScreen = () => {
 
   const handleNavigation = () => {
     navigation.navigate('BoardRoute', { screen: 'BoardWrite' });
+  };
+
+  const handlePostPress = (post: Post) => {
+    navigation.navigate('BoardRoute', {
+      screen: 'BoardDetailPosts',
+      params: {
+        postId: post.id,
+        isReview: post.isReview,
+      },
+    });
   };
 
   const {
@@ -75,6 +86,7 @@ const BoardScreen = () => {
             setSelectedCategoryIdx={setSelectedCategoryIdx}
             weeklyHotPosts={weeklyHotPosts}
             isWeeklyHotLoading={isWeeklyHotLoading}
+            onPostPress={handlePostPress}
           />
         </View>
 
@@ -94,15 +106,6 @@ const BoardScreen = () => {
               setSortSheetVisible={setSortSheetVisible}
               sortSheetVisible={sortSheetVisible}
               data={posts}
-              onPostPress={post =>
-                navigation.navigate('BoardRoute', {
-                  screen: 'BoardDetailPosts',
-                  params: {
-                    postId: post.id,
-                    isReview: post.isReview,
-                  },
-                })
-              }
             />
           </View>
         ) : (
