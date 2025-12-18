@@ -10,7 +10,7 @@ import {
 } from '../api/post/toggleBookmark';
 import { addPostLike, removePostLike } from '../api/post/togglePostLike';
 
-interface UsePostInteractionsProps {
+interface Props {
   postId: number;
   initialIsLiked: boolean;
   initialIsBookmarked: boolean;
@@ -22,14 +22,13 @@ export const usePostInteractions = ({
   initialIsLiked,
   initialIsBookmarked,
   onRefetch,
-}: UsePostInteractionsProps) => {
+}: Props) => {
   const insets = useSafeAreaInsets();
   const [isLiked, setIsLiked] = useState(initialIsLiked);
   const [isBookmarked, setIsBookmarked] = useState(initialIsBookmarked);
   const [likeScale] = useState(new Animated.Value(1));
   const [bookmarkScale] = useState(new Animated.Value(1));
 
-  // Props 변경 시 상태 동기화
   useEffect(() => {
     setIsLiked(initialIsLiked);
   }, [initialIsLiked]);
@@ -55,7 +54,6 @@ export const usePostInteractions = ({
   };
 
   const handleLikePress = async () => {
-    // 낙관적 업데이트
     const previousState = isLiked;
     setIsLiked(!isLiked);
     animateScale(likeScale);
@@ -66,7 +64,6 @@ export const usePostInteractions = ({
       } else {
         await addPostLike(postId);
       }
-      // API 성공 후 데이터 새로고침
       if (onRefetch) {
         await onRefetch();
       }
@@ -78,7 +75,6 @@ export const usePostInteractions = ({
   };
 
   const handleBookmarkPress = async () => {
-    // 낙관적 업데이트
     const previousState = isBookmarked;
     const newBookmarkState = !isBookmarked;
     setIsBookmarked(newBookmarkState);
@@ -101,7 +97,6 @@ export const usePostInteractions = ({
       } else {
         await addPostBookmark(postId);
       }
-      // API 성공 후 데이터 새로고침
       if (onRefetch) {
         await onRefetch();
       }
