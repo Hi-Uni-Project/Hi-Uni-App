@@ -13,6 +13,10 @@ import Toast from 'react-native-toast-message';
 
 import { createComment } from '@/features/board/boardDetail/api/comment/createComment';
 import { createReply } from '@/features/board/boardDetail/api/comment/createReply';
+import {
+  addCommentLike,
+  removeCommentLike,
+} from '@/features/board/boardDetail/api/comment/toggleCommentLike';
 import CommentInput, {
   CommentInputRef,
 } from '@/features/board/boardDetail/components/CommentInput';
@@ -49,10 +53,11 @@ const BoardDetailPosts = () => {
   const commentInputRef = useRef<CommentInputRef>(null);
 
   // 게시글 데이터 조회
-  const { data: post, isLoading: isPostLoading } = usePostDetailQuery(
-    postId,
-    isReview,
-  );
+  const {
+    data: post,
+    isLoading: isPostLoading,
+    refetch: postRefetch,
+  } = usePostDetailQuery(postId, isReview);
 
   // 댓글 데이터 조회
   const {
@@ -60,8 +65,6 @@ const BoardDetailPosts = () => {
     isLoading: isCommentsLoading,
     refetch: commentRefetch,
   } = usePostCommentsQuery(postId);
-
-  console.log(post, comments);
 
   // 상태관리 state
   const [comment, setComment] = useState('');
@@ -88,11 +91,17 @@ const BoardDetailPosts = () => {
     bookmarkScale,
     handleLikePress,
     handleBookmarkPress,
-  } = usePostInteractions();
+  } = usePostInteractions({
+    postId,
+    initialIsLiked: post?.isLiked || false,
+    initialIsBookmarked: post?.isBookmarked || false,
+    onRefetch: postRefetch,
+  });
 
   // API 호출 관련 핸들러
   const handleReplyPress = (commentId: number) => {
     setReplyingToCommentId(commentId);
+    // 입력창 포커스
     setTimeout(() => {
       commentInputRef.current?.focus();
     }, 100);
@@ -100,15 +109,37 @@ const BoardDetailPosts = () => {
 
   const handleSendComment = async () => {
     if (comment.trim()) {
-      if (replyingToCommentId !== null) {
-        await createReply(postId, replyingToCommentId, comment);
-        setReplyingToCommentId(null);
+      try {
+        if (replyingToCommentId !== null) {
+          // 답글 작성
+          await createReply(postId, replyingToCommentId, comment);
+          setReplyingToCommentId(null);
+        } else {
+          // 댓글 작성
+          await createComment(comment, postId);
+        }
+        await commentRefetch();
+        setComment('');
+        Keyboard.dismiss();
+      } catch (error) {
+        console.error('댓글/답글 작성 실패:', error);
+      }
+    }
+  };
+
+  const handleCommentLikePress = async (
+    commentId: number,
+    currentIsLiked: boolean,
+  ) => {
+    try {
+      if (currentIsLiked) {
+        await removeCommentLike(commentId);
       } else {
-        await createComment(comment, postId);
+        await addCommentLike(commentId);
       }
       await commentRefetch();
-      setComment('');
-      Keyboard.dismiss();
+    } catch (error) {
+      console.error('댓글 좋아요 처리 실패:', error);
     }
   };
 
@@ -204,6 +235,7 @@ const BoardDetailPosts = () => {
                 onToggleOption={handleToggleCommentOption}
                 onCloseOption={() => setActiveCommentOption(null)}
                 onReplyPress={handleReplyPress}
+                onCommentLikePress={handleCommentLikePress}
               />
             )}
           </View>

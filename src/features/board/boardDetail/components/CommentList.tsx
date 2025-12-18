@@ -20,6 +20,7 @@ interface Props {
   onToggleOption: (id: string) => void;
   onCloseOption: () => void;
   onReplyPress: (commentId: number) => void;
+  onCommentLikePress: (commentId: number, currentIsLiked: boolean) => void;
 }
 
 const CommentList = ({
@@ -34,6 +35,7 @@ const CommentList = ({
   onToggleOption,
   onCloseOption,
   onReplyPress,
+  onCommentLikePress,
 }: Props) => {
   return (
     <View className="border-surface-200 pt-5">
@@ -56,6 +58,7 @@ const CommentList = ({
           onToggleOption={onToggleOption}
           onCloseOption={onCloseOption}
           onReplyPress={onReplyPress}
+          onCommentLikePress={onCommentLikePress}
         />
       ))}
     </View>

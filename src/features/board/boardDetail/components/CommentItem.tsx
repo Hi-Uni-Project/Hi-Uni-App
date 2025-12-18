@@ -26,6 +26,7 @@ interface Props {
   onToggleOption: (id: string) => void;
   onCloseOption: () => void;
   onReplyPress: (commentId: number) => void;
+  onCommentLikePress: (commentId: number, currentIsLiked: boolean) => void;
 }
 
 const CommentItem = ({
@@ -41,6 +42,7 @@ const CommentItem = ({
   onToggleOption,
   onCloseOption,
   onReplyPress,
+  onCommentLikePress,
 }: Props) => {
   const commentId = `comment-${comment.id}`;
   const isActive = activeOption === commentId;
@@ -71,7 +73,9 @@ const CommentItem = ({
 
             <CommentActionBox
               onCommentPress={() => onReplyPress(comment.id)}
-              onLikePress={() => console.log('좋아요')}
+              onLikePress={() =>
+                onCommentLikePress(comment.id, comment.isLiked)
+              }
               onTogglePress={() => onToggleOption(commentId)}
             />
           </View>

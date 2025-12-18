@@ -18,11 +18,13 @@ export interface NoReviewPostResponse {
   type: PostType;
   category: string;
   imageUrl: string;
-  likecount: number;
+  likeCount: number;
   commentCount: number;
   bookmarkCount: number;
   viewCount: number;
   createdAt: string;
+  isLiked: boolean;
+  isScrap: boolean;
 }
 
 // 후기 게시글 상세 응답 (review) - JOB
@@ -40,6 +42,8 @@ export interface JobReviewResponse {
   likeCount: number;
   commentCount: number;
   bookmarkCount: number;
+  isLiked: boolean;
+  isScrap: boolean;
   viewCount: number;
   createdAt: string;
   companyName: string;
@@ -67,6 +71,8 @@ export interface InternshipReviewResponse {
   likeCount: number;
   commentCount: number;
   bookmarkCount: number;
+  isLiked: boolean;
+  isScrap: boolean;
   viewCount: number;
   createdAt: string;
   companyName: string;
@@ -94,6 +100,8 @@ export interface InterviewReviewResponse {
   likeCount: number;
   commentCount: number;
   bookmarkCount: number;
+  isLiked: boolean;
+  isScrap: boolean;
   viewCount: number;
   createdAt: string;
   companyName: string;
@@ -119,6 +127,8 @@ export interface ExperienceReviewResponse {
   category: string;
   imageUrl: string;
   likeCount: number;
+  isLiked: boolean;
+  isScrap: boolean;
   commentCount: number;
   bookmarkCount: number;
   viewCount: number;
@@ -148,6 +158,8 @@ export interface LicenseReviewResponse {
   category: string;
   imageUrl: string;
   likeCount: number;
+  isLiked: boolean;
+  isScrap: boolean;
   commentCount: number;
   bookmarkCount: number;
   viewCount: number;
@@ -189,6 +201,8 @@ export interface PostDetail {
   category: string;
   subcategory?: string;
   postType: PostType;
+  isLiked: boolean;
+  isBookmarked: boolean;
 }
 
 /**
@@ -219,11 +233,13 @@ export const convertNoReviewToPostDetail = (
     content: response.content,
     isReview: false,
     views: response.viewCount,
-    likes: response.likecount,
+    likes: response.likeCount,
     bookmarks: response.bookmarkCount,
     commentCount: response.commentCount,
     category: response.category,
     postType: response.type,
+    isLiked: response.isLiked,
+    isBookmarked: response.isScrap,
   };
 };
 
@@ -315,5 +331,7 @@ export const convertReviewToPostDetail = (
     commentCount: response.commentCount,
     category: response.category,
     postType,
+    isLiked: response.isLiked,
+    isBookmarked: response.isScrap,
   };
 };
