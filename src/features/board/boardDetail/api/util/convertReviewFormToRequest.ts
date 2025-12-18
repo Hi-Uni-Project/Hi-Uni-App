@@ -1,4 +1,11 @@
-import { CreateReviewPostRequest } from '../types';
+import {
+  CreateExperienceReviewRequest,
+  CreateInternshipReviewRequest,
+  CreateInterviewReviewRequest,
+  CreateJobReviewRequest,
+  CreateLicenseReviewRequest,
+  CreateReviewPostRequest,
+} from '../types';
 
 import {
   InternshipFormData,
@@ -16,78 +23,99 @@ export const convertReviewFormToRequest = (
   type: PostType,
   formData: ReviewFormData,
 ): CreateReviewPostRequest => {
-  const request: CreateReviewPostRequest = {
-    title,
-    content: formData.feelings || '',
-    type,
-  };
-
   switch (type) {
-    case 'INTERNSHIP': {
-      const data = formData as InternshipFormData;
-      request.firstQuestion = data.companyName;
-      request.secondQuestion = formatDateTime(data.startDate);
-      request.thirdQuestion = formatDateTime(data.endDate);
-      request.fourthQuestion = data.position;
-      request.fifthQuestion = data.tasks;
-      request.sixthQuestion = data.learnings;
-      request.seventhQuestion = data.additionalExperience;
-      request.startDate = formatDateTime(data.startDate);
-      request.endDate = formatDateTime(data.endDate);
-      break;
-    }
-
     case 'JOB': {
       const data = formData as JobFormData;
-      request.firstQuestion = data.companyName;
-      request.secondQuestion = data.position;
-      request.thirdQuestion = data.applicationMethod;
-      request.fourthQuestion = data.focusArea;
-      request.fifthQuestion = data.preparation;
-      request.sixthQuestion = data.result;
-      request.seventhQuestion = data.additionalExperience;
-      break;
+      const request: CreateJobReviewRequest = {
+        title,
+        content: data.feelings || '',
+        type: 'JOB',
+        companyName: data.companyName,
+        appliedPosition: data.position,
+        applyMethod: data.applicationMethod,
+        interviewQuestions: data.focusArea,
+        preparation: data.preparation,
+        result: data.result,
+        feelings: data.feelings,
+        additional: data.additionalExperience || undefined,
+      };
+      return request;
+    }
+
+    case 'INTERNSHIP': {
+      const data = formData as InternshipFormData;
+      const request: CreateInternshipReviewRequest = {
+        title,
+        content: data.feelings || '',
+        type: 'INTERNSHIP',
+        companyName: data.companyName,
+        department: data.position,
+        tasks: data.tasks,
+        learned: data.learnings,
+        feelings: data.feelings,
+        additional: data.additionalExperience || undefined,
+        startDate: formatDateTime(data.startDate),
+        endDate: formatDateTime(data.endDate),
+      };
+      return request;
     }
 
     case 'INTERVIEW': {
       const data = formData as InterviewFormData;
-      request.firstQuestion = data.companyName;
-      request.secondQuestion = data.position;
-      request.thirdQuestion = data.interviewType;
-      request.fourthQuestion = data.questions;
-      request.fifthQuestion = data.answerPreparation;
-      request.sixthQuestion = data.atmosphere;
-      request.seventhQuestion = data.additionalExperience;
-      break;
+      const request: CreateInterviewReviewRequest = {
+        title,
+        content: data.feelings || '',
+        type: 'INTERVIEW',
+        companyName: data.companyName,
+        appliedPosition: data.position,
+        interviewFormat: data.interviewType,
+        interviewQuestions: data.questions,
+        preparation: data.answerPreparation,
+        atmosphere: data.atmosphere,
+        feelings: data.feelings,
+        additional: data.additionalExperience || undefined,
+      };
+      return request;
     }
 
     case 'EXPERIENCE': {
       const data = formData as WorkStoryFormData;
-      request.firstQuestion = data.companyName;
-      request.secondQuestion = formatDateTime(data.startDate);
-      request.thirdQuestion = formatDateTime(data.endDate);
-      request.fourthQuestion = data.position;
-      request.fifthQuestion = data.jobLevel;
-      request.sixthQuestion = data.tasks;
-      request.seventhQuestion = data.requiredSkills;
-      request.eighthQuestion = data.additionalExperience;
-      request.startDate = formatDateTime(data.startDate);
-      request.endDate = formatDateTime(data.endDate);
-      break;
+      const request: CreateExperienceReviewRequest = {
+        title,
+        content: data.feelings || '',
+        type: 'EXPERIENCE',
+        organizationName: data.companyName,
+        position: data.position,
+        positionRank: data.jobLevel,
+        whatWork: data.tasks,
+        requiredSkills: data.requiredSkills,
+        feelings: data.feelings,
+        additional: data.additionalExperience || undefined,
+        startDate: formatDateTime(data.startDate),
+        endDate: formatDateTime(data.endDate),
+      };
+      return request;
     }
 
     case 'LICENSE': {
       const data = formData as LicenseFormData;
-      request.firstQuestion = data.licenseName;
-      request.secondQuestion = data.preparationPeriod;
-      request.thirdQuestion = data.materials;
-      request.fourthQuestion = data.difficulty;
-      request.fifthQuestion = data.studyMethod;
-      request.sixthQuestion = data.tips;
-      request.seventhQuestion = data.additionalExperience;
-      break;
+      const request: CreateLicenseReviewRequest = {
+        title,
+        content: data.feelings || '',
+        type: 'LICENSE',
+        certificationName: data.licenseName,
+        prepDuration: data.preparationPeriod,
+        materials: data.materials,
+        difficulty: data.difficulty,
+        studyMethod: data.studyMethod,
+        tips: data.tips,
+        feelings: data.feelings,
+        additional: data.additionalExperience || undefined,
+      };
+      return request;
     }
-  }
 
-  return request;
+    default:
+      throw new Error(`Unsupported post type: ${type}`);
+  }
 };

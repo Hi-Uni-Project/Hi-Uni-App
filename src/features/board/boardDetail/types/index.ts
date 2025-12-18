@@ -6,43 +6,43 @@ export interface ReviewQuestion {
   value: string;
 }
 
-// 일반 게시글 상세 응답 (no-review)
-export interface NoReviewPostResponse {
+// 공통 게시글 필드
+interface BasePostResponse {
   nickname: string;
   univName: string;
-  majorName: string;
-  userImageUrl: string;
   id: number;
   title: string;
   content: string;
-  type: PostType;
   category: string;
-  imageUrl: string;
-  likecount: number;
+  isReview: boolean;
+  isLiked: boolean;
+  isScrap: boolean;
+  likeCount: number;
   commentCount: number;
   bookmarkCount: number;
   viewCount: number;
   createdAt: string;
 }
 
+// 일반 게시글 상세 응답 (no-review)
+export interface NoReviewPostResponse extends BasePostResponse {
+  type: PostType;
+  majorName?: string;
+  firstMajorName?: string;
+  secondMajorName?: string;
+  userImageUrl?: string;
+  imageUrl?: string;
+  isReview: false;
+}
+
 // 후기 게시글 상세 응답 (review) - JOB
-export interface JobReviewResponse {
-  nickname: string;
-  univName: string;
+export interface JobReviewResponse extends BasePostResponse {
   firstMajorName: string;
   secondMajorName?: string;
-  userImageUrl: string;
-  id: number;
-  title: string;
-  content: string;
+  userImageUrl?: string;
+  imageUrl?: string;
   type: 'JOB';
-  category: string;
-  imageUrl: string;
-  likeCount: number;
-  commentCount: number;
-  bookmarkCount: number;
-  viewCount: number;
-  createdAt: string;
+  isReview: true;
   companyName: string;
   appliedPosition: string;
   applyMethod: string;
@@ -54,51 +54,31 @@ export interface JobReviewResponse {
 }
 
 // 후기 게시글 상세 응답 (review) - INTERNSHIP
-export interface InternshipReviewResponse {
-  nickname: string;
-  univName: string;
-  firstMajorName: string;
+export interface InternshipReviewResponse extends BasePostResponse {
+  majorName?: string;
+  firstMajorName?: string;
   secondMajorName?: string;
-  userImageUrl: string;
-  id: number;
-  title: string;
-  content: string;
+  userImageUrl?: string;
+  imageUrl?: string;
   type: 'INTERNSHIP';
-  category: string;
-  imageUrl: string;
-  likeCount: number;
-  commentCount: number;
-  bookmarkCount: number;
-  viewCount: number;
-  createdAt: string;
+  isReview: true;
   companyName: string;
-  department: string;
-  tasks: string;
-  learned: string;
-  feelings: string;
-  additional?: string;
   startDate: string;
   endDate: string;
+  userPosition: string;
+  whatLearn: string;
+  feelings: string;
+  additional?: string;
 }
 
 // 후기 게시글 상세 응답 (review) - INTERVIEW
-export interface InterviewReviewResponse {
-  nickname: string;
-  univName: string;
+export interface InterviewReviewResponse extends BasePostResponse {
   firstMajorName: string;
   secondMajorName?: string;
-  userImageUrl: string;
-  id: number;
-  title: string;
-  content: string;
+  userImageUrl?: string;
+  imageUrl?: string;
   type: 'INTERVIEW';
-  category: string;
-  imageUrl: string;
-  likeCount: number;
-  commentCount: number;
-  bookmarkCount: number;
-  viewCount: number;
-  createdAt: string;
+  isReview: true;
   companyName: string;
   appliedPosition: string;
   interviewFormat: string;
@@ -110,23 +90,13 @@ export interface InterviewReviewResponse {
 }
 
 // 후기 게시글 상세 응답 (review) - EXPERIENCE
-export interface ExperienceReviewResponse {
-  nickname: string;
-  univName: string;
+export interface ExperienceReviewResponse extends BasePostResponse {
   firstMajorName: string;
   secondMajorName?: string;
-  userImageUrl: string;
-  id: number;
-  title: string;
-  content: string;
+  userImageUrl?: string;
+  imageUrl?: string;
   type: 'EXPERIENCE';
-  category: string;
-  imageUrl: string;
-  likeCount: number;
-  commentCount: number;
-  bookmarkCount: number;
-  viewCount: number;
-  createdAt: string;
+  isReview: true;
   organizationName: string;
   position: string;
   positionRank: string;
@@ -140,23 +110,13 @@ export interface ExperienceReviewResponse {
 }
 
 // 후기 게시글 상세 응답 (review) - LICENSE
-export interface LicenseReviewResponse {
-  nickname: string;
-  univName: string;
+export interface LicenseReviewResponse extends BasePostResponse {
   firstMajorName: string;
   secondMajorName?: string;
-  userImageUrl: string;
-  id: number;
-  title: string;
-  content: string;
+  userImageUrl?: string;
+  imageUrl?: string;
   type: 'LICENSE';
-  category: string;
-  imageUrl: string;
-  likeCount: number;
-  commentCount: number;
-  bookmarkCount: number;
-  viewCount: number;
-  createdAt: string;
+  isReview: true;
   certificationName: string;
   prepDuration: string;
   materials: string;
@@ -173,6 +133,19 @@ export type ReviewPostResponse =
   | InterviewReviewResponse
   | ExperienceReviewResponse
   | LicenseReviewResponse;
+
+// 통합 게시글 응답 타입
+export type PostResponse = NoReviewPostResponse | ReviewPostResponse;
+
+/**
+ * 게시글 응답을 UI 데이터로 변환 (통합 함수)
+ */
+export const convertPostToPostDetail = (response: PostResponse): PostDetail => {
+  if (response.isReview) {
+    return convertReviewToPostDetail(response as ReviewPostResponse);
+  }
+  return convertNoReviewToPostDetail(response as NoReviewPostResponse);
+};
 
 // 게시글 상세 UI 타입
 export interface PostDetail {
@@ -213,18 +186,24 @@ const formatDate = (dateString: string): string => {
 export const convertNoReviewToPostDetail = (
   response: NoReviewPostResponse,
 ): PostDetail => {
+  // majorName 또는 firstMajorName/secondMajorName 처리
+  const major = response.majorName
+    ? response.majorName
+    : response.firstMajorName +
+      (response.secondMajorName ? ` · ${response.secondMajorName}` : '');
+
   return {
     id: response.id,
     nickname: response.nickname,
     univ: response.univName,
-    major: response.majorName,
-    userImageUrl: response.userImageUrl,
+    major,
+    userImageUrl: response.userImageUrl || '',
     date: formatDate(response.createdAt),
     title: response.title,
     content: response.content,
     isReview: false,
     views: response.viewCount,
-    likes: response.likecount,
+    likes: response.likeCount,
     bookmarks: response.bookmarkCount,
     commentCount: response.commentCount,
     category: response.category,
@@ -257,9 +236,8 @@ export const convertReviewToPostDetail = (
         { label: '회사명', value: response.companyName },
         { label: '시작일', value: formatDate(response.startDate) },
         { label: '종료일', value: formatDate(response.endDate) },
-        { label: '부서/직무', value: response.department },
-        { label: '담당 업무', value: response.tasks },
-        { label: '실무 내용', value: response.learned },
+        { label: '부서/직무', value: response.userPosition },
+        { label: '배운 점', value: response.whatLearn },
       ];
       break;
 
@@ -302,14 +280,19 @@ export const convertReviewToPostDetail = (
   // PostType으로 변환
   const postType: PostType = response.type as PostType;
 
+  // majorName 또는 firstMajorName/secondMajorName 처리
+  const major =
+    'majorName' in response && response.majorName
+      ? response.majorName
+      : response.firstMajorName +
+        (response.secondMajorName ? ` · ${response.secondMajorName}` : '');
+
   return {
     id: response.id,
     nickname: response.nickname,
     univ: response.univName,
-    major:
-      response.firstMajorName +
-      (response.secondMajorName ? ` · ${response.secondMajorName}` : ''),
-    userImageUrl: response.userImageUrl,
+    major,
+    userImageUrl: response.userImageUrl || '',
     date: formatDate(response.createdAt),
     title: response.title,
     content: response.feelings,
