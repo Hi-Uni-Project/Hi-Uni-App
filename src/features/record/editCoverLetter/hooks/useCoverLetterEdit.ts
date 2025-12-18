@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
 
 import { RouteProp, useRoute } from '@react-navigation/native';
 
@@ -17,8 +17,8 @@ type EditCoverLetterRouteProp = RouteProp<
 
 const useCoverLetterEdit = () => {
   const route = useRoute<EditCoverLetterRouteProp>();
-  const coverLetterId = route.params?.coverLetterId;
-  const isEditMode = coverLetterId !== undefined;
+  const coverLetterIdx = route.params?.coverLetterIdx;
+  const isEditMode = coverLetterIdx !== undefined;
 
   const { coverLetterData, coverLetterLoading } = useCoverLetterQueries();
 
@@ -49,12 +49,16 @@ const useCoverLetterEdit = () => {
     }
   }, [list, save]);
 
+  useEffect(() => {
+    list.selectItem(coverLetterIdx ?? 0);
+  }, [coverLetterIdx]);
+
   return {
     coverLetters: list.coverLetters,
     currentIndex: list.currentIndex,
     currentItem: list.currentItem,
     isEditMode,
-    coverLetterId,
+    coverLetterIdx,
     isLoading: coverLetterLoading,
     isSaving: save.isSaving,
     isSaveSuccess: save.isSaveSuccess,

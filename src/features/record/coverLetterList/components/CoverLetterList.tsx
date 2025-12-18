@@ -38,7 +38,7 @@ const CoverLetterList = ({ coverLetters }: CoverLetterListProps) => {
               onPress={() =>
                 navigation.navigate('RecordRoute', {
                   screen: 'EditCoverLetter',
-                  params: { coverLetterId: index },
+                  params: { coverLetterIdx: index },
                 })
               }>
               <CoverLetterCard title={item.question} content={item.answer} />
