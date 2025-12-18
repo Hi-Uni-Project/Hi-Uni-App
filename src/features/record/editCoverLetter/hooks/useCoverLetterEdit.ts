@@ -51,7 +51,7 @@ const useCoverLetterEdit = () => {
 
   useEffect(() => {
     list.selectItem(coverLetterIdx ?? 0);
-  }, [coverLetterIdx]);
+  }, [coverLetterIdx, list.coverLetters.length]);
 
   return {
     coverLetters: list.coverLetters,

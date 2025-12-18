@@ -2,8 +2,8 @@ import React from 'react';
 
 import { useNavigation } from '@react-navigation/native';
 import { View, Text, Pressable, Image } from 'react-native';
-import Config from 'react-native-config';
 
+import { getImageSource } from '@/features/record/editResume/utils/imageUtils';
 import { MainStackNavigationProp } from '@/navigation/types/navigationTypes';
 import PlusIcon from '@/static/icons/add.svg';
 
@@ -54,7 +54,7 @@ const ResumeSection = ({ title, imageUrl, isExist }: Props) => {
           </View>
 
           <Image
-            source={{ uri: Config.API_KEY + imageUrl }}
+            source={getImageSource(imageUrl ?? null)}
             resizeMode="cover"
             className="absolute right-[40px] top-[-29px] h-[72px] w-[72px] rounded-full border-2 border-white"
           />
