@@ -50,7 +50,7 @@ const ReviewView = ({
             placeholderTextColor="#979797"
             value={title}
             onChangeText={onTitleChange}
-            className="w-72 pl-4 text-main-text typo-sub-title-20-semibold"
+            className="w-60 pl-4 text-main-text typo-sub-title-20-semibold"
           />
         </View>
       </View>
