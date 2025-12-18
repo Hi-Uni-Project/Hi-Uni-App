@@ -7,7 +7,5 @@ export const createComment = async (content: string, postId: number) => {
     { content },
   );
 
-  console.log(response);
-
   return response.data.data;
 };
