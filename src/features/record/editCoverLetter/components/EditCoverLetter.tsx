@@ -135,6 +135,7 @@ const EditCoverLetter = () => {
                     className="rounded-[15px] border border-surface-200 bg-white px-4 py-3 typo-body-15-regular"
                     placeholder="질문을 작성해주세요."
                     placeholderTextColor="#B7B7B7"
+                    maxLength={2000}
                     value={currentItem?.question || ''}
                     onChangeText={handleQuestionChange}
                   />
@@ -147,6 +148,7 @@ const EditCoverLetter = () => {
                     placeholder="답변을 작성해주세요."
                     placeholderTextColor="#B7B7B7"
                     multiline
+                    maxLength={2000}
                     textAlignVertical="top"
                     value={currentItem?.answer || ''}
                     onChangeText={handleAnswerChange}
