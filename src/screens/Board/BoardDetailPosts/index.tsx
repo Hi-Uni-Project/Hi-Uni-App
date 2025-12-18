@@ -55,9 +55,9 @@ const BoardDetailPosts = () => {
     data: comments = [],
     isLoading: isCommentsLoading,
     refetch: commentRefetch,
-  } = usePostCommentsQuery(3328);
+  } = usePostCommentsQuery(postId);
 
-  console.log(comments);
+  console.log(post, comments);
 
   // 상태관리 state
   const [comment, setComment] = useState('');
@@ -84,10 +84,10 @@ const BoardDetailPosts = () => {
   } = usePostInteractions();
 
   // API 호출 관련 핸들러
-  const handleSendComment = () => {
+  const handleSendComment = async () => {
     if (comment.trim()) {
-      createComment(comment, postId);
-      commentRefetch();
+      await createComment(comment, postId);
+      await commentRefetch();
       setComment('');
       Keyboard.dismiss();
     }
