@@ -16,6 +16,7 @@ const useResumeMutation = () => {
       postResume({ resumeData, photo }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['resumeData'] });
+      queryClient.invalidateQueries({ queryKey: ['record'] });
     },
     onError: error => {
       console.error('이력서 저장 실패:', error);

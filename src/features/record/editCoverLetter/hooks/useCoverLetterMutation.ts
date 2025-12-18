@@ -18,6 +18,7 @@ const useCoverLetterMutation = () => {
     mutationFn: (data: CoverLetter[]) => saveCoverLetter(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['coverLetter'] });
+      queryClient.invalidateQueries({ queryKey: ['record'] });
     },
     onError: error => {
       console.error('자기소개서 저장 실패:', error);
@@ -28,6 +29,7 @@ const useCoverLetterMutation = () => {
     mutationFn: (coverLetterId: number) => deleteCoverLetter(coverLetterId),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['coverLetter'] });
+      queryClient.invalidateQueries({ queryKey: ['record'] });
     },
     onError: error => {
       console.error('자기소개서 삭제 실패:', error);
