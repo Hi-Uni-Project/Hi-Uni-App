@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import {
@@ -12,7 +12,10 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Toast from 'react-native-toast-message';
 
 import { createComment } from '@/features/board/boardDetail/api/comment/createComment';
-import CommentInput from '@/features/board/boardDetail/components/CommentInput';
+import { createReply } from '@/features/board/boardDetail/api/comment/createReply';
+import CommentInput, {
+  CommentInputRef,
+} from '@/features/board/boardDetail/components/CommentInput';
 import CommentList from '@/features/board/boardDetail/components/CommentList';
 import BoardDetailHeader from '@/features/board/boardDetail/components/layouts/BoardHeader';
 import KeyboardInputBackdrop from '@/features/board/boardDetail/components/modal/KeyboardBackdrop';
@@ -43,6 +46,7 @@ const BoardDetailPosts = () => {
   const navigation = useNavigation();
   const route = useRoute<BoardDetailRouteParams>();
   const { postId, isReview } = route.params || { postId: 0, isReview: false };
+  const commentInputRef = useRef<CommentInputRef>(null);
 
   // 게시글 데이터 조회
   const { data: post, isLoading: isPostLoading } = usePostDetailQuery(
@@ -61,6 +65,9 @@ const BoardDetailPosts = () => {
 
   // 상태관리 state
   const [comment, setComment] = useState('');
+  const [replyingToCommentId, setReplyingToCommentId] = useState<number | null>(
+    null,
+  );
   const [isPostOptionVisible, setIsPostOptionVisible] = useState(false);
   const [activeCommentOption, setActiveCommentOption] = useState<string | null>(
     null,
@@ -84,9 +91,21 @@ const BoardDetailPosts = () => {
   } = usePostInteractions();
 
   // API 호출 관련 핸들러
+  const handleReplyPress = (commentId: number) => {
+    setReplyingToCommentId(commentId);
+    setTimeout(() => {
+      commentInputRef.current?.focus();
+    }, 100);
+  };
+
   const handleSendComment = async () => {
     if (comment.trim()) {
-      await createComment(comment, postId);
+      if (replyingToCommentId !== null) {
+        await createReply(postId, replyingToCommentId, comment);
+        setReplyingToCommentId(null);
+      } else {
+        await createComment(comment, postId);
+      }
       await commentRefetch();
       setComment('');
       Keyboard.dismiss();
@@ -184,12 +203,14 @@ const BoardDetailPosts = () => {
                 onCommentLayout={handleCommentLayout}
                 onToggleOption={handleToggleCommentOption}
                 onCloseOption={() => setActiveCommentOption(null)}
+                onReplyPress={handleReplyPress}
               />
             )}
           </View>
         </ScrollView>
 
         <CommentInput
+          ref={commentInputRef}
           value={comment}
           onChangeText={setComment}
           onSubmit={handleSendComment}

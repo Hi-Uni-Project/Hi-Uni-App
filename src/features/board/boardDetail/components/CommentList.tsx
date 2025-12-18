@@ -19,6 +19,7 @@ interface Props {
   onCommentLayout: (id: string, y: number) => void;
   onToggleOption: (id: string) => void;
   onCloseOption: () => void;
+  onReplyPress: (commentId: number) => void;
 }
 
 const CommentList = ({
@@ -32,6 +33,7 @@ const CommentList = ({
   onCommentLayout,
   onToggleOption,
   onCloseOption,
+  onReplyPress,
 }: Props) => {
   return (
     <View className="border-surface-200 pt-5">
@@ -53,6 +55,7 @@ const CommentList = ({
           onLayout={onCommentLayout}
           onToggleOption={onToggleOption}
           onCloseOption={onCloseOption}
+          onReplyPress={onReplyPress}
         />
       ))}
     </View>

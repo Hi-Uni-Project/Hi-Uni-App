@@ -25,6 +25,7 @@ interface Props {
   onLayout: (id: string, y: number) => void;
   onToggleOption: (id: string) => void;
   onCloseOption: () => void;
+  onReplyPress: (commentId: number) => void;
 }
 
 const CommentItem = ({
@@ -39,6 +40,7 @@ const CommentItem = ({
   onLayout,
   onToggleOption,
   onCloseOption,
+  onReplyPress,
 }: Props) => {
   const commentId = `comment-${comment.id}`;
   const isActive = activeOption === commentId;
@@ -68,7 +70,7 @@ const CommentItem = ({
             </View>
 
             <CommentActionBox
-              onCommentPress={() => console.log('답글 작성')}
+              onCommentPress={() => onReplyPress(comment.id)}
               onLikePress={() => console.log('좋아요')}
               onTogglePress={() => onToggleOption(commentId)}
             />

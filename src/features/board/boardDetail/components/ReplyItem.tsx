@@ -9,6 +9,7 @@ import CommentActionBox from './CommentActionBox';
 import OptionPopup from '@/shared/components/Board/OptionPopup';
 import { OptionItem } from '@/shared/components/Board/OptionPopup';
 import BoardActionIcons from '@/shared/icons/BoardActionIcons';
+import { formatDateOrTime, formatMajor } from '@/shared/utils/formatter';
 import CommentArrowIcon from '@/static/icons/comment-arrow.svg';
 
 interface Props {
@@ -56,7 +57,7 @@ const ReplyItem = ({
               익명{reply.id}
             </Text>
             <Text className="text-surface-500 typo-caption-14-regular">
-              · {reply.univ}
+              · {formatMajor(reply.firstMajorName, reply.secondMajorName)}
             </Text>
           </View>
 
@@ -75,9 +76,9 @@ const ReplyItem = ({
 
         <View className="flex-row items-center space-x-2">
           <Text className="text-surface-500 typo-caption-13-light">
-            {reply.date}
+            {formatDateOrTime(reply.date)}
           </Text>
-          {reply.likes && reply.likes > 0 && (
+          {reply.likes > 0 && (
             <View className="flex-row items-center">
               <BoardActionIcons width={14} height={14} action="like" />
               <Text className="ml-1 text-xs text-red-500">{reply.likes}</Text>
