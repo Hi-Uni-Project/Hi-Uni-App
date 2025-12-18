@@ -53,7 +53,7 @@ const PostDetailStats = ({
           style={({ pressed }) => [{ opacity: pressed ? 0.7 : 1 }]}>
           <Animated.View style={{ transform: [{ scale: likeScale }] }}>
             <BoardActionIcons
-              action={isLiked ? 'like' : 'like-gray'}
+              action={isLiked ? 'like-fill' : 'like-gray'}
               width={20}
               height={20}
             />
