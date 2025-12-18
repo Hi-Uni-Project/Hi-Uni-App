@@ -4,6 +4,10 @@ import { Animated } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Toast from 'react-native-toast-message';
 
+import {
+  addPostBookmark,
+  removePostBookmark,
+} from '../api/post/toggleBookmark';
 import { addPostLike, removePostLike } from '../api/post/togglePostLike';
 
 interface UsePostInteractionsProps {
@@ -25,6 +29,7 @@ export const usePostInteractions = ({
   const [likeScale] = useState(new Animated.Value(1));
   const [bookmarkScale] = useState(new Animated.Value(1));
 
+  // Props 변경 시 상태 동기화
   useEffect(() => {
     setIsLiked(initialIsLiked);
   }, [initialIsLiked]);
@@ -50,6 +55,7 @@ export const usePostInteractions = ({
   };
 
   const handleLikePress = async () => {
+    // 낙관적 업데이트
     const previousState = isLiked;
     setIsLiked(!isLiked);
     animateScale(likeScale);
@@ -60,16 +66,20 @@ export const usePostInteractions = ({
       } else {
         await addPostLike(postId);
       }
+      // API 성공 후 데이터 새로고침
       if (onRefetch) {
         await onRefetch();
       }
     } catch (error) {
+      // 실패 시 원래 상태로 복구
       setIsLiked(previousState);
       console.error('좋아요 처리 실패:', error);
     }
   };
 
-  const handleBookmarkPress = () => {
+  const handleBookmarkPress = async () => {
+    // 낙관적 업데이트
+    const previousState = isBookmarked;
     const newBookmarkState = !isBookmarked;
     setIsBookmarked(newBookmarkState);
     animateScale(bookmarkScale);
@@ -83,6 +93,22 @@ export const usePostInteractions = ({
         visibilityTime: 2500,
         bottomOffset: insets.bottom + 200,
       });
+    }
+
+    try {
+      if (previousState) {
+        await removePostBookmark(postId);
+      } else {
+        await addPostBookmark(postId);
+      }
+      // API 성공 후 데이터 새로고침
+      if (onRefetch) {
+        await onRefetch();
+      }
+    } catch (error) {
+      // 실패 시 원래 상태로 복구
+      setIsBookmarked(previousState);
+      console.error('북마크 처리 실패:', error);
     }
   };
 
