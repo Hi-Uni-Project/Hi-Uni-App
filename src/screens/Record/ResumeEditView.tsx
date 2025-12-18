@@ -29,6 +29,7 @@ import useResumeMutation from '@/features/record/editResume/hooks/useResumeMutat
 import useResumeNavigator from '@/features/record/editResume/hooks/useResumeNavigator';
 import { useResumeQueries } from '@/features/record/editResume/hooks/useResumeQueries';
 import useSkillSearch from '@/features/record/editResume/hooks/useSkillSearch';
+import { Gender } from '@/features/record/editResume/types/domainType';
 import { mapResumeToEditForm } from '@/features/record/editResume/utils/responseToDomainMapper';
 
 const ResumeEditView = () => {
@@ -140,6 +141,8 @@ const ResumeEditView = () => {
               <ProfileSection
                 photo={resumeData?.photo || null}
                 name={resumeData?.name || ''}
+                gender={resumeData?.gender || Gender.OTHER}
+                birthYear={resumeData?.birthYear || 0}
                 onPhotoChange={photo => {
                   updateField('photo', photo);
                   updateField('updateImage', true);
