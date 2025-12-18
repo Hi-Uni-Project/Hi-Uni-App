@@ -20,6 +20,7 @@ import {
   GraduationStatusLabelToEnum,
 } from '@/features/record/editResume/utils/labelMapper';
 import HUDropdown from '@/shared/ui/atoms/HUDropdown';
+import TrashIcon from '@/static/icons/trash.svg';
 
 const EducationEditView = () => {
   const insets = useSafeAreaInsets();
@@ -54,8 +55,11 @@ const EducationEditView = () => {
         </Pressable>
 
         {isEditMode && (
-          <Pressable className="mt-3" onPress={handleDelete}>
-            <Text className="text-surface-400 typo-body-15-medium">
+          <Pressable
+            className="mt-3 flex-row items-center"
+            onPress={handleDelete}>
+            <TrashIcon className="mt-[2px] text-surface-400" />
+            <Text className="ml-2 text-surface-400 typo-body-15-medium">
               학력 삭제하기
             </Text>
           </Pressable>

@@ -58,13 +58,15 @@ const LinkSection = ({ links, onAddPress, onEditPress }: LinkSectionProps) => {
             const key = link.linkId ?? link.tempId ?? link.linkUrl;
 
             return (
-              <LinkCard
-                key={key}
-                link={link}
-                onPress={() => onEditPress(link.linkId ?? link.tempId)}
-                isCopied={copiedLinks[key]}
-                onCopyPress={() => handleCopy(link)}
-              />
+              <View className="mt-2">
+                <LinkCard
+                  key={key}
+                  link={link}
+                  onPress={() => onEditPress(link.linkId ?? link.tempId)}
+                  isCopied={copiedLinks[key]}
+                  onCopyPress={() => handleCopy(link)}
+                />
+              </View>
             );
           })}
         </View>

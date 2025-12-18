@@ -14,6 +14,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import ResumeHeader from '@/features/record/editResume/components/ResumeHeader';
 import useLinkEdit from '@/features/record/editResume/hooks/useLinkEdit';
+import TrashIcon from '@/static/icons/trash.svg';
 
 const LinkEditView = () => {
   const insets = useSafeAreaInsets();
@@ -46,8 +47,11 @@ const LinkEditView = () => {
         </Pressable>
 
         {isEditMode && (
-          <Pressable className="mt-3" onPress={handleDelete}>
-            <Text className="text-surface-400 typo-body-15-medium">
+          <Pressable
+            className="mt-3 flex-row items-center"
+            onPress={handleDelete}>
+            <TrashIcon className="mt-[2px] text-surface-400" />
+            <Text className="ml-2 text-surface-400 typo-body-15-medium">
               링크 삭제하기
             </Text>
           </Pressable>
