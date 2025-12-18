@@ -10,7 +10,7 @@ import {
 export type MainNavigationProps = {
   OnboardRoute: undefined;
   SignupRoute: undefined;
-  HomeRoute: undefined;
+  HomeRoute: NavigatorScreenParams<HomeNavigationProps>;
   BoardRoute: NavigatorScreenParams<BoardNavigationProps>;
   MyPageRoute: undefined;
   RecordRoute: NavigatorScreenParams<RecordNavigationProps>;

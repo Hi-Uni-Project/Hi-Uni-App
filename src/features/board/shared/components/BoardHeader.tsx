@@ -61,7 +61,14 @@ const BoardHeader = ({ onTabPress }: BoardHeaderProps) => {
 
         <View className="mr-[10px] flex-row items-center">
           <TouchableOpacity className="p-[10px]">
-            <SearchIcon width={26} height={26} color={'#1E2128'} />
+            <SearchIcon
+              width={26}
+              height={26}
+              color={'#1E2128'}
+              onPress={() =>
+                navigation.navigate('HomeRoute', { screen: 'HomeSearch' })
+              }
+            />
           </TouchableOpacity>
           <TouchableOpacity
             className="p-[10px]"
