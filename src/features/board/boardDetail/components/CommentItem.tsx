@@ -11,7 +11,7 @@ import ReplyItem from './ReplyItem';
 import { OptionItem } from '@/shared/components/Board/OptionPopup';
 import OptionPopup from '@/shared/components/Board/OptionPopup';
 import BoardActionIcons from '@/shared/icons/BoardActionIcons';
-import { formatMajor } from '@/shared/utils/formatter';
+import { formatDateOrTime, formatMajor } from '@/shared/utils/formatter';
 
 interface Props {
   comment: Comment;
@@ -63,7 +63,7 @@ const CommentItem = ({
                 익명{comment.id}
               </Text>
               <Text className="text-surface-500 typo-caption-14-regular">
-                · {formatMajor(comment.majorName)}
+                · {formatMajor(comment.firstMajorName, comment.secondMajorName)}
               </Text>
             </View>
 
@@ -80,7 +80,7 @@ const CommentItem = ({
 
           <View className="flex-row items-center space-x-2">
             <Text className="text-surface-500 typo-caption-13-light">
-              {comment.date}
+              {formatDateOrTime(comment.date)}
             </Text>
             {comment.likes > 0 && (
               <View className="flex-row items-center">
