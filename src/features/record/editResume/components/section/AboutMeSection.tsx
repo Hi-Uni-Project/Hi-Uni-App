@@ -85,10 +85,10 @@ const AboutMeSection = ({
       <ConfirmModal
         visible={isConfirmModalVisible}
         onClose={() => setIsConfirmModalVisible(false)}
-        title={'기존 내용이 삭제되고\n새로운 소개가 생성됩니다'}
-        description="AI가 이력서 정보를 바탕으로 새로운 소개를 작성합니다."
-        confirmText="생성하기"
-        cancelText="취소"
+        title={'기존 내용이 삭제되고,\n새로운 소개가 생성됩니다.'}
+        description={`남은 횟수 : ${aboutMeCnt}회`}
+        confirmText="네, 내 소개를 생성할게요."
+        cancelText="아니요, 계속 작성할래요."
         onConfirm={handleConfirmGenerate}
         onCancel={() => setIsConfirmModalVisible(false)}
       />
