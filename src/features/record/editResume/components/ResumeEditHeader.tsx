@@ -15,6 +15,8 @@ interface ResumeEditHeaderProps {
   isCompleteDisabled: boolean;
   onCompletePress: () => void;
   onDeleteAll?: () => void;
+  onBackPress?: () => void;
+  isDirty?: boolean;
 }
 
 const TOP_OFFSET = Platform.OS === 'ios' ? 60 : 30;
@@ -23,12 +25,15 @@ const ResumeEditHeader = ({
   onCompletePress,
   isCompleteDisabled,
   onDeleteAll,
+  onBackPress,
+  isDirty,
 }: ResumeEditHeaderProps) => {
   const insets = useSafeAreaInsets();
   const navigation = useNavigation<HomeStackNavigationProp>();
   const [isOptionVisible, setIsOptionVisible] = useState(false);
   const [isDeleteConfirmVisible, setIsDeleteConfirmVisible] = useState(false);
   const [isSaveConfirmVisible, setIsSaveConfirmVisible] = useState(false);
+  const [isBackConfirmVisible, setIsBackConfirmVisible] = useState(false);
 
   const options: OptionItem[] = [
     {
@@ -69,7 +74,11 @@ const ResumeEditHeader = ({
           <Pressable
             hitSlop={14}
             onPress={() => {
-              navigation.goBack();
+              if (isDirty) {
+                setIsBackConfirmVisible(true);
+              } else {
+                onBackPress ? onBackPress() : navigation.goBack();
+              }
             }}>
             <ArrowIcons
               direction="left"
@@ -134,10 +143,22 @@ const ResumeEditHeader = ({
         visible={isSaveConfirmVisible}
         onClose={() => setIsSaveConfirmVisible(false)}
         title="이력서를 저장하시겠어요?"
-        confirmText="네, 저장할게요."
-        cancelText="아니오, 저장하지 않을게요."
+        confirmText="네, 저장할게요"
+        cancelText="아니오"
         onConfirm={onCompletePress}
         onCancel={() => setIsSaveConfirmVisible(false)}
+      />
+
+      <ConfirmModal
+        visible={isBackConfirmVisible}
+        onClose={() => setIsBackConfirmVisible(false)}
+        title="작성 중인 내용이 있어요. 나가시겠어요?"
+        confirmText="나가기"
+        cancelText="계속 작성"
+        onConfirm={() => {
+          onBackPress ? onBackPress() : navigation.goBack();
+        }}
+        onCancel={() => setIsBackConfirmVisible(false)}
       />
     </>
   );

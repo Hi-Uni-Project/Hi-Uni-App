@@ -4,6 +4,7 @@ import { ResumeEditForm } from '../types/domainType';
 
 interface ResumeEditStore {
   resumeData: ResumeEditForm;
+  initialResumeData: ResumeEditForm | null;
 
   setResumeData: (data: ResumeEditForm) => void;
   updateField: <K extends keyof ResumeEditForm>(
@@ -11,6 +12,7 @@ interface ResumeEditStore {
     value: ResumeEditForm[K],
   ) => void;
   resetStore: () => void;
+  isDirty: () => boolean;
 }
 
 const initialState: ResumeEditForm = {
@@ -31,10 +33,12 @@ const initialState: ResumeEditForm = {
   updateImage: false,
 };
 
-export const useResumeEditStore = create<ResumeEditStore>(set => ({
+export const useResumeEditStore = create<ResumeEditStore>((set, get) => ({
   resumeData: initialState,
+  initialResumeData: null,
 
-  setResumeData: data => set({ resumeData: data }),
+  setResumeData: data =>
+    set({ resumeData: data, initialResumeData: { ...data } }),
 
   updateField: (field, value) =>
     set(state => ({
@@ -44,5 +48,16 @@ export const useResumeEditStore = create<ResumeEditStore>(set => ({
       },
     })),
 
-  resetStore: () => set({ resumeData: initialState }),
+  resetStore: () => set({ resumeData: initialState, initialResumeData: null }),
+
+  isDirty: () => {
+    const state = get();
+    if (!state.initialResumeData) {
+      return false;
+    }
+    return (
+      JSON.stringify(state.resumeData) !==
+      JSON.stringify(state.initialResumeData)
+    );
+  },
 }));

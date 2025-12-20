@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
+import { useNavigation } from '@react-navigation/native';
 import {
   Keyboard,
   KeyboardAvoidingView,
@@ -29,6 +30,7 @@ import useResumeMutation from '@/features/record/editResume/hooks/useResumeMutat
 import useResumeNavigator from '@/features/record/editResume/hooks/useResumeNavigator';
 import { useResumeQueries } from '@/features/record/editResume/hooks/useResumeQueries';
 import useSkillSearch from '@/features/record/editResume/hooks/useSkillSearch';
+import { useResumeEditStore } from '@/features/record/editResume/stores/useResumeEditStore';
 import { Gender } from '@/features/record/editResume/types/domainType';
 import { mapResumeToEditForm } from '@/features/record/editResume/utils/responseToDomainMapper';
 
@@ -38,6 +40,10 @@ const ResumeEditView = () => {
     useState(false);
 
   const { resumeData: serverResumeData } = useResumeQueries();
+
+  const isDirty = useResumeEditStore(state => state.isDirty());
+
+  const navigation = useNavigation();
 
   const {
     resumeData,
@@ -58,7 +64,7 @@ const ResumeEditView = () => {
     }
   }, [serverResumeData, setResumeData]);
 
-  const { submitResume, isSubmitting } = useResumeMutation();
+  const { submitResume, isSubmitting, isSuccess } = useResumeMutation();
 
   const [isPostNotFoundError, setIsPostNotFoundError] = useState(false);
 
@@ -122,12 +128,22 @@ const ResumeEditView = () => {
     });
   };
 
+  useEffect(() => {
+    if (isSuccess) {
+      navigation.goBack();
+    }
+  }, [isSuccess]);
+
   return (
     <View className="flex-1 bg-surface-50">
       <ResumeEditHeader
-        isCompleteDisabled={isSubmitting || !resumeData.title?.trim()}
+        isCompleteDisabled={
+          isSubmitting || !isDirty || !resumeData.title?.trim()
+        }
         onCompletePress={handleCompletePress}
         onDeleteAll={resetStore}
+        onBackPress={() => navigation.goBack()}
+        isDirty={isDirty}
       />
 
       <KeyboardAvoidingView
