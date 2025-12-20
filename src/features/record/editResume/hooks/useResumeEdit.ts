@@ -21,8 +21,8 @@ const useResumeEdit = () => {
     (link: Omit<Link, 'linkId' | 'tempId'>) => {
       const { links } = resumeData;
       updateField('links', [
-        ...links,
         { ...link, linkId: null, tempId: Date.now().toString() },
+        ...links,
       ]);
     },
     [resumeData, updateField],
@@ -52,8 +52,8 @@ const useResumeEdit = () => {
     (language: Omit<Language, 'languageId' | 'tempId'>) => {
       const { languages } = resumeData;
       updateField('languages', [
-        ...languages,
         { ...language, languageId: null, tempId: Date.now().toString() },
+        ...languages,
       ]);
     },
     [resumeData, updateField],
@@ -85,8 +85,8 @@ const useResumeEdit = () => {
     (achievement: Omit<Achievement, 'achievementId' | 'tempId'>) => {
       const { achievements } = resumeData;
       updateField('achievements', [
-        ...achievements,
         { ...achievement, achievementId: null, tempId: Date.now().toString() },
+        ...achievements,
       ]);
     },
     [resumeData, updateField],
@@ -119,8 +119,8 @@ const useResumeEdit = () => {
     (education: Omit<Education, 'educationId' | 'tempId'>) => {
       const { educations } = resumeData;
       updateField('educations', [
-        ...educations,
         { ...education, educationId: null, tempId: Date.now().toString() },
+        ...educations,
       ]);
     },
     [resumeData, updateField],
@@ -152,8 +152,8 @@ const useResumeEdit = () => {
     (career: Omit<Career, 'careerId' | 'tempId'>) => {
       const { careers } = resumeData;
       updateField('careers', [
-        ...careers,
         { ...career, careerId: null, tempId: Date.now().toString() },
+        ...careers,
       ]);
     },
     [resumeData, updateField],
@@ -185,8 +185,8 @@ const useResumeEdit = () => {
     (project: Omit<Project, 'projectId' | 'tempId'>) => {
       const { projects } = resumeData;
       updateField('projects', [
-        ...projects,
         { ...project, projectId: null, tempId: Date.now().toString() },
+        ...projects,
       ]);
     },
     [resumeData, updateField],
