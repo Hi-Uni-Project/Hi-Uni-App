@@ -28,6 +28,7 @@ const ResumeEditHeader = ({
   const navigation = useNavigation<HomeStackNavigationProp>();
   const [isOptionVisible, setIsOptionVisible] = useState(false);
   const [isDeleteConfirmVisible, setIsDeleteConfirmVisible] = useState(false);
+  const [isSaveConfirmVisible, setIsSaveConfirmVisible] = useState(false);
 
   const options: OptionItem[] = [
     {
@@ -85,7 +86,9 @@ const ResumeEditHeader = ({
           </View>
 
           <View className="flex-row">
-            <Pressable onPress={onCompletePress} disabled={isCompleteDisabled}>
+            <Pressable
+              onPress={() => setIsSaveConfirmVisible(true)}
+              disabled={isCompleteDisabled}>
               <Text
                 className={cn(
                   'typo-sub-title-18-medium',
@@ -125,6 +128,16 @@ const ResumeEditHeader = ({
         cancelText="아니요, 계속 작성할래요."
         onConfirm={handleDeleteConfirm}
         onCancel={() => setIsDeleteConfirmVisible(false)}
+      />
+
+      <ConfirmModal
+        visible={isSaveConfirmVisible}
+        onClose={() => setIsSaveConfirmVisible(false)}
+        title="이력서를 저장하시겠어요?"
+        confirmText="네, 저장할게요."
+        cancelText="아니오, 저장하지 않을게요."
+        onConfirm={onCompletePress}
+        onCancel={() => setIsSaveConfirmVisible(false)}
       />
     </>
   );
