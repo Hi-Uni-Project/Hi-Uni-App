@@ -4,6 +4,7 @@ import { Pressable, Text } from 'react-native';
 
 import { Project } from '@/features/record/editResume/types/domainType';
 import { formatToShortDate } from '@/features/record/editResume/utils/dateUtils';
+import { truncateText } from '@/shared/utils/text/truncateText';
 
 interface Props {
   project: Project;
@@ -19,24 +20,36 @@ const ProjectCard = ({ project, onPress }: Props) => {
         프로젝트
       </Text>
 
-      <Text className="mt-1 text-main-text typo-body-16-semibold">
-        {project.projectName}
+      <Text
+        className="mt-1 text-main-text typo-body-16-semibold"
+        numberOfLines={1}
+        ellipsizeMode="tail">
+        {truncateText(project.projectName, 25)}
       </Text>
 
-      <Text className="mt-[5px] typo-body-15-semibold">
+      <Text
+        className="mt-[5px] typo-body-15-semibold"
+        numberOfLines={1}
+        ellipsizeMode="tail">
         {`${formatToShortDate(project.startDate)} - ${formatToShortDate(project.endDate)}`}
       </Text>
 
       {project.role && project.role.trim() !== '' && (
-        <Text className="mt-[7px] text-gray-800 typo-caption-14-regular">
-          {project.role}
+        <Text
+          className="mt-[7px] text-gray-800 typo-caption-14-regular"
+          numberOfLines={1}
+          ellipsizeMode="tail">
+          {truncateText(project.role, 25)}
         </Text>
       )}
 
       {project.experienceDescription &&
         project.experienceDescription.trim() !== '' && (
-          <Text className="mt-[3px] text-gray-800 typo-caption-14-regular">
-            {project.experienceDescription}
+          <Text
+            className="mt-[3px] text-gray-800 typo-caption-14-regular"
+            numberOfLines={1}
+            ellipsizeMode="tail">
+            {truncateText(project.experienceDescription, 25)}
           </Text>
         )}
     </Pressable>
