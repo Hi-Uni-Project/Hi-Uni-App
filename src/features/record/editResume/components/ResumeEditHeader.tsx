@@ -15,6 +15,8 @@ interface ResumeEditHeaderProps {
   isCompleteDisabled: boolean;
   onCompletePress: () => void;
   onDeleteAll?: () => void;
+  onPreviewPress?: () => void;
+  onExportPress?: () => void;
   onBackPress?: () => void;
   isDirty?: boolean;
 }

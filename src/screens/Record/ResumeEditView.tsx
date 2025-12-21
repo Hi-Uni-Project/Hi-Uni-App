@@ -66,17 +66,16 @@ const ResumeEditView = () => {
 
   const { submitResume, isSubmitting, isSuccess } = useResumeMutation();
 
-  const [isPostNotFoundError, setIsPostNotFoundError] = useState(false);
-
-  const { generateAboutMe, isGenerating } = useAiAboutMeMutation({
+  const {
+    generateAboutMe,
+    isGenerating,
+    isPostNotFound,
+    isQuotaExceeded,
+    reset: resetAiMutation,
+  } = useAiAboutMeMutation({
     onSuccess: data => {
       updateField('aboutMe', data.aboutMe);
       updateField('aboutMeCnt', data.aboutMeCnt);
-    },
-    onError: (_error, statusCode) => {
-      if (statusCode === 'POST_NOT_FOUND') {
-        setIsPostNotFoundError(true);
-      }
     },
   });
 
@@ -177,10 +176,11 @@ const ResumeEditView = () => {
                 aboutMe={resumeData?.aboutMe || ''}
                 aboutMeCnt={resumeData?.aboutMeCnt ?? 5}
                 isGenerating={isGenerating}
-                isPostNotFoundError={isPostNotFoundError}
+                isPostNotFoundError={isPostNotFound}
+                isQuotaExceededError={isQuotaExceeded}
                 onAboutMeChange={text => updateField('aboutMe', text)}
                 onGeneratePress={generateAboutMe}
-                onErrorModalClose={() => setIsPostNotFoundError(false)}
+                onErrorModalClose={resetAiMutation}
               />
 
               <CareerSection

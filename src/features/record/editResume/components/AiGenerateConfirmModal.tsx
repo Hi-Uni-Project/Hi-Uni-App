@@ -38,7 +38,7 @@ const AiGenerateConfirmModal = ({
           <Text
             className="mb-[11px] text-center text-main-text typo-sub-title-22-semibold"
             style={{ lineHeight: 27.5 }}>
-            {'AI가 내 소개를\n생성해 드릴까요?'}
+            {'새로운 내 소개를\n생성합니다.'}
           </Text>
 
           <Text className="mb-6 text-center text-surface-600 typo-caption-14-regular">
