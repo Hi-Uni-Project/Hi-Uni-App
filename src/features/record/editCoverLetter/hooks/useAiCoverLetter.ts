@@ -71,8 +71,6 @@ const useAiCoverLetter = ({ onSuccess }: UseAiCoverLetterParams) => {
             return;
           }
         }
-
-        throw e;
       }
     },
     [generateAiCoverLetterAsync, onSuccess],
