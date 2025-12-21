@@ -48,7 +48,8 @@ export const useResumeEditStore = create<ResumeEditStore>((set, get) => ({
       },
     })),
 
-  resetStore: () => set({ resumeData: initialState, initialResumeData: null }),
+  resetStore: () =>
+    set({ resumeData: initialState, initialResumeData: { ...initialState } }),
 
   isDirty: () => {
     const state = get();

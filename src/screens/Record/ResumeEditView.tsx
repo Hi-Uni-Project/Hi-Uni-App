@@ -47,6 +47,7 @@ const ResumeEditView = () => {
 
   const {
     resumeData,
+    isValid,
     setResumeData,
     updateField,
     addSkill,
@@ -136,9 +137,7 @@ const ResumeEditView = () => {
   return (
     <View className="flex-1 bg-surface-50">
       <ResumeEditHeader
-        isCompleteDisabled={
-          isSubmitting || !isDirty || !resumeData.title?.trim()
-        }
+        isCompleteDisabled={isSubmitting || !isDirty || !isValid()}
         onCompletePress={handleCompletePress}
         onDeleteAll={resetStore}
         onBackPress={() => navigation.goBack()}
@@ -207,9 +206,10 @@ const ResumeEditView = () => {
                 onInputChange={setInputValue}
                 onSearch={handleSearch}
                 onClearSearch={clearSearch}
-                onSelectSkill={skill =>
-                  addSkill({ skillId: skill.skillId, name: skill.name })
-                }
+                onSelectSkill={skill => {
+                  addSkill({ skillId: skill.skillId, name: skill.name });
+                  clearSearch();
+                }}
                 onRemoveSkill={deleteSkill}
               />
 

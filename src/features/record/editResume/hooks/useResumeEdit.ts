@@ -17,6 +17,14 @@ const useResumeEdit = () => {
   const { resumeData, setResumeData, updateField, resetStore } =
     useResumeEditStore();
 
+  const isValid = useCallback(() => {
+    return (
+      resumeData.name.trim() &&
+      resumeData.birthYear !== 0 &&
+      resumeData.title.trim()
+    );
+  }, [resumeData]);
+
   const addLink = useCallback(
     (link: Omit<Link, 'linkId' | 'tempId'>) => {
       const { links } = resumeData;
@@ -249,6 +257,8 @@ const useResumeEdit = () => {
 
   return {
     resumeData,
+
+    isValid,
     setResumeData,
     updateField,
     resetStore,
