@@ -1,11 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 
-import { useNavigation } from '@react-navigation/native';
 import {
   Keyboard,
   KeyboardAvoidingView,
   Platform,
-  Pressable,
   ScrollView,
   Text,
   TextInput,
@@ -14,15 +12,15 @@ import {
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import EditDeleteButton from '@/features/record/editResume/components/EditDeleteButton';
+import EditSubmitButton from '@/features/record/editResume/components/EditSubmitButton';
 import ResumeHeader from '@/features/record/editResume/components/ResumeHeader';
 import useLinkEdit from '@/features/record/editResume/hooks/useLinkEdit';
+import { useBackModal } from '@/shared/hooks/useBackModal';
 import ConfirmModal from '@/shared/ui/organisms/ConfirmModal';
-import TrashIcon from '@/static/icons/trash.svg';
 
 const LinkEditView = () => {
   const insets = useSafeAreaInsets();
-  const navigation = useNavigation();
-  const [isBackModalVisible, setIsBackModalVisible] = useState(false);
   const {
     fields,
     setField,
@@ -33,13 +31,12 @@ const LinkEditView = () => {
     handleDelete,
   } = useLinkEdit();
 
-  const handleBackPress = () => {
-    if (isDirty) {
-      setIsBackModalVisible(true);
-    } else {
-      navigation.goBack();
-    }
-  };
+  const {
+    isBackModalVisible,
+    handleBackPress,
+    handleConfirmBack,
+    handleCloseModal,
+  } = useBackModal(isDirty);
 
   return (
     <View className="flex-1 bg-surface-50">
@@ -97,27 +94,17 @@ const LinkEditView = () => {
       <View
         className="items-center px-5"
         style={{ paddingTop: 16, paddingBottom: insets.bottom + 16 }}>
-        <Pressable onPress={handleSubmit} disabled={!isFormValid}>
-          <View
-            className={`flex-row items-center rounded-full px-[27px] py-[14px] ${
-              isFormValid ? 'bg-main-text' : 'bg-surface-300'
-            }`}>
-            <Text className="text-surface-200 typo-body-16-medium">
-              {isEditMode ? '링크 수정하기' : '링크 추가하기'}
-            </Text>
-          </View>
-        </Pressable>
-
-        {isEditMode && (
-          <Pressable
-            className="mt-3 flex-row items-center"
-            onPress={handleDelete}>
-            <TrashIcon className="mt-[2px] text-surface-400" />
-            <Text className="ml-2 text-surface-400 typo-body-15-medium">
-              링크 삭제하기
-            </Text>
-          </Pressable>
-        )}
+        <EditSubmitButton
+          text={isEditMode ? '링크 수정하기' : '링크 추가하기'}
+          onPress={handleSubmit}
+          disabled={!isFormValid}
+          isFormValid={isFormValid}
+        />
+        <EditDeleteButton
+          text="링크 삭제하기"
+          onPress={handleDelete}
+          isEditMode={isEditMode}
+        />
       </View>
 
       <ConfirmModal
@@ -125,11 +112,8 @@ const LinkEditView = () => {
         title="작성 중인 내용이 있어요. 나가시겠어요?"
         confirmText="나가기"
         cancelText="계속 작성"
-        onConfirm={() => {
-          setIsBackModalVisible(false);
-          navigation.goBack();
-        }}
-        onClose={() => setIsBackModalVisible(false)}
+        onConfirm={handleConfirmBack}
+        onClose={handleCloseModal}
       />
     </View>
   );

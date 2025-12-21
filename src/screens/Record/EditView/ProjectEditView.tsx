@@ -1,11 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 
-import { useNavigation } from '@react-navigation/native';
 import {
   Keyboard,
   KeyboardAvoidingView,
   Platform,
-  Pressable,
   ScrollView,
   Text,
   TextInput,
@@ -15,15 +13,15 @@ import {
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import DatePickerInput from '@/features/record/editResume/components/DatePickerInput';
+import EditDeleteButton from '@/features/record/editResume/components/EditDeleteButton';
+import EditSubmitButton from '@/features/record/editResume/components/EditSubmitButton';
 import ResumeHeader from '@/features/record/editResume/components/ResumeHeader';
 import useProjectEdit from '@/features/record/editResume/hooks/useProjectEdit';
+import { useBackModal } from '@/shared/hooks/useBackModal';
 import ConfirmModal from '@/shared/ui/organisms/ConfirmModal';
-import TrashIcon from '@/static/icons/trash.svg';
 
 const ProjectEditView = () => {
   const insets = useSafeAreaInsets();
-  const navigation = useNavigation();
-  const [isBackModalVisible, setIsBackModalVisible] = useState(false);
   const {
     fields,
     setField,
@@ -34,13 +32,12 @@ const ProjectEditView = () => {
     handleDelete,
   } = useProjectEdit();
 
-  const handleBackPress = () => {
-    if (isDirty) {
-      setIsBackModalVisible(true);
-    } else {
-      navigation.goBack();
-    }
-  };
+  const {
+    isBackModalVisible,
+    handleBackPress,
+    handleConfirmBack,
+    handleCloseModal,
+  } = useBackModal(isDirty);
 
   return (
     <View className="flex-1 bg-surface-50">
@@ -139,27 +136,17 @@ const ProjectEditView = () => {
       <View
         className="items-center px-5"
         style={{ paddingTop: 16, paddingBottom: insets.bottom + 16 }}>
-        <Pressable onPress={handleSubmit} disabled={!isFormValid}>
-          <View
-            className={`flex-row items-center rounded-full px-[27px] py-[14px] ${
-              isFormValid ? 'bg-main-text' : 'bg-surface-300'
-            }`}>
-            <Text className="text-surface-200 typo-body-16-medium">
-              {isEditMode ? '프로젝트 수정하기' : '프로젝트 추가하기'}
-            </Text>
-          </View>
-        </Pressable>
-
-        {isEditMode && (
-          <Pressable
-            className="mt-3 flex-row items-center"
-            onPress={handleDelete}>
-            <TrashIcon className="mt-[2px] text-surface-400" />
-            <Text className="ml-2 text-surface-400 typo-body-15-medium">
-              프로젝트 삭제하기
-            </Text>
-          </Pressable>
-        )}
+        <EditSubmitButton
+          text={isEditMode ? '프로젝트 수정하기' : '프로젝트 추가하기'}
+          onPress={handleSubmit}
+          disabled={!isFormValid}
+          isFormValid={isFormValid}
+        />
+        <EditDeleteButton
+          text="프로젝트 삭제하기"
+          onPress={handleDelete}
+          isEditMode={isEditMode}
+        />
       </View>
 
       <ConfirmModal
@@ -167,11 +154,8 @@ const ProjectEditView = () => {
         title="작성 중인 내용이 있어요. 나가시겠어요?"
         confirmText="나가기"
         cancelText="계속 작성"
-        onConfirm={() => {
-          setIsBackModalVisible(false);
-          navigation.goBack();
-        }}
-        onClose={() => setIsBackModalVisible(false)}
+        onConfirm={handleConfirmBack}
+        onClose={handleCloseModal}
       />
     </View>
   );
