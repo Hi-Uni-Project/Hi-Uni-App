@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 
+import { useNavigation } from '@react-navigation/native';
 import {
   Keyboard,
   KeyboardAvoidingView,
@@ -21,24 +22,36 @@ import {
   GraduationStatusLabelToEnum,
 } from '@/features/record/editResume/utils/labelMapper';
 import HUDropdown from '@/shared/ui/atoms/HUDropdown';
+import ConfirmModal from '@/shared/ui/organisms/ConfirmModal';
 import TrashIcon from '@/static/icons/trash.svg';
 
 const EducationEditView = () => {
   const insets = useSafeAreaInsets();
+  const navigation = useNavigation();
+  const [isBackModalVisible, setIsBackModalVisible] = useState(false);
   const {
     fields,
     setField,
     isEditMode,
     isFormValid,
+    isDirty,
     isEndDateDisabled,
     endDateDisplayText,
     handleSubmit,
     handleDelete,
   } = useEducationEdit();
 
+  const handleBackPress = () => {
+    if (isDirty) {
+      setIsBackModalVisible(true);
+    } else {
+      navigation.goBack();
+    }
+  };
+
   return (
     <View className="flex-1 bg-surface-50">
-      <ResumeHeader title="학력" />
+      <ResumeHeader title="학력" onBackPress={handleBackPress} />
       <KeyboardAvoidingView
         style={{ flex: 1 }}
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -173,6 +186,18 @@ const EducationEditView = () => {
           </Pressable>
         )}
       </View>
+
+      <ConfirmModal
+        visible={isBackModalVisible}
+        title="작성 중인 내용이 있어요. 나가시겠어요?"
+        confirmText="나가기"
+        cancelText="계속 작성"
+        onConfirm={() => {
+          setIsBackModalVisible(false);
+          navigation.goBack();
+        }}
+        onClose={() => setIsBackModalVisible(false)}
+      />
     </View>
   );
 };

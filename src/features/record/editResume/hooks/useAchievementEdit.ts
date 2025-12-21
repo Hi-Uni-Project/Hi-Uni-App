@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 
@@ -62,6 +62,23 @@ const useAchievementEdit = () => {
     achievementDescription,
   };
 
+  const initialFields = useMemo(
+    () => ({
+      type: editTarget?.type || null,
+      activityName: editTarget?.activityName || '',
+      periodDateStr: editTarget?.periodDate
+        ? formatToShortDate(editTarget.periodDate)
+        : '',
+      achievementDescription: editTarget?.achievementDescription || '',
+    }),
+    [editTarget],
+  );
+
+  const isDirty = useMemo(
+    () => JSON.stringify(fields) !== JSON.stringify(initialFields),
+    [fields, initialFields],
+  );
+
   const setField = <K extends keyof AchievementFormFields>(
     key: K,
     value: AchievementFormFields[K],
@@ -121,6 +138,7 @@ const useAchievementEdit = () => {
     setField,
     isEditMode,
     isFormValid,
+    isDirty,
     handleSubmit,
     handleDelete,
   };

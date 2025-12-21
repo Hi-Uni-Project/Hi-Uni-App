@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 
@@ -33,6 +33,19 @@ const useLinkEdit = () => {
   const [linkUrl, setLinkUrl] = useState(editTarget?.linkUrl || '');
 
   const fields: LinkFormFields = { linkName, linkUrl };
+
+  const initialFields = useMemo(
+    () => ({
+      linkName: editTarget?.linkName || '',
+      linkUrl: editTarget?.linkUrl || '',
+    }),
+    [editTarget],
+  );
+
+  const isDirty = useMemo(
+    () => JSON.stringify(fields) !== JSON.stringify(initialFields),
+    [fields, initialFields],
+  );
 
   const setField = <K extends keyof LinkFormFields>(
     key: K,
@@ -78,6 +91,7 @@ const useLinkEdit = () => {
     setField,
     isEditMode,
     isFormValid,
+    isDirty,
     handleSubmit,
     handleDelete,
   };

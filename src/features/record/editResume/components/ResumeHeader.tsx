@@ -11,12 +11,14 @@ interface ResumeHeaderProps {
   title: string;
   rightButtonText?: string;
   onRightButtonPress?: () => void;
+  onBackPress?: () => void;
 }
 
 const ResumeHeader = ({
   title,
   rightButtonText,
   onRightButtonPress,
+  onBackPress,
 }: ResumeHeaderProps) => {
   const insets = useSafeAreaInsets();
   const navigation = useNavigation<HomeStackNavigationProp>();
@@ -37,7 +39,11 @@ const ResumeHeader = ({
           <Pressable
             hitSlop={14}
             onPress={() => {
-              navigation.goBack();
+              if (onBackPress) {
+                onBackPress();
+              } else {
+                navigation.goBack();
+              }
             }}>
             <ArrowIcons
               direction="left"
