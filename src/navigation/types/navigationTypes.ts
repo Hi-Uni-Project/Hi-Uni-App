@@ -86,6 +86,9 @@ export type RecordNavigationProps = {
   EditCareer: { careerId?: number; tempId?: string };
   CreateProject: undefined;
   EditProject: { projectId?: number; tempId?: string };
+
+  CreateCoverLetter: undefined;
+  EditCoverLetter: { coverLetterIdx: number };
 };
 
 export type MainStackNavigationProp =

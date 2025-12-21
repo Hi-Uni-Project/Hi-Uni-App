@@ -1,5 +1,6 @@
 import React from 'react';
 
+import Clipboard from '@react-native-clipboard/clipboard';
 import { Pressable, Text, View } from 'react-native';
 
 import { shadowStyleSheet } from '@/shared/styles/shadow';
@@ -17,7 +18,7 @@ const CoverLetterCard = ({ title, content }: CoverLetterCardProps) => {
       style={shadowStyleSheet.dropShadow}>
       <View className="flex-row items-center justify-between">
         <Text className="text-surface-500 typo-caption-13-medium">{title}</Text>
-        <Pressable hitSlop={14}>
+        <Pressable hitSlop={14} onPress={() => Clipboard.setString(content)}>
           <CopyIcon width={14} height={14} color="#B7B7B7" />
         </Pressable>
       </View>
