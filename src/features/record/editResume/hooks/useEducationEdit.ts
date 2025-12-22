@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 
@@ -70,6 +70,26 @@ const useEducationEdit = () => {
     endDateStr,
     major,
   };
+
+  const initialFields = useMemo(
+    () => ({
+      universityName: editTarget?.universityName || '',
+      graduationStatus: editTarget?.graduationStatus || null,
+      startDateStr: editTarget?.startDate
+        ? formatToShortDate(editTarget.startDate)
+        : '',
+      endDateStr: editTarget?.endDate
+        ? formatToShortDate(editTarget.endDate)
+        : '',
+      major: editTarget?.major || '',
+    }),
+    [editTarget],
+  );
+
+  const isDirty = useMemo(
+    () => JSON.stringify(fields) !== JSON.stringify(initialFields),
+    [fields, initialFields],
+  );
 
   const setField = <K extends keyof EducationFormFields>(
     key: K,
@@ -159,6 +179,7 @@ const useEducationEdit = () => {
     setField,
     isEditMode,
     isFormValid,
+    isDirty,
     isEndDateDisabled,
     endDateDisplayText,
     handleSubmit,

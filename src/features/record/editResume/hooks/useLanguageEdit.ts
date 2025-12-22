@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 
@@ -39,6 +39,19 @@ const useLanguageEdit = () => {
   );
 
   const fields: LanguageFormFields = { language, level };
+
+  const initialFields = useMemo(
+    () => ({
+      language: editTarget?.language || '',
+      level: editTarget?.level || null,
+    }),
+    [editTarget],
+  );
+
+  const isDirty = useMemo(
+    () => JSON.stringify(fields) !== JSON.stringify(initialFields),
+    [fields, initialFields],
+  );
 
   const setField = <K extends keyof LanguageFormFields>(
     key: K,
@@ -84,6 +97,7 @@ const useLanguageEdit = () => {
     setField,
     isEditMode,
     isFormValid,
+    isDirty,
     handleSubmit,
     handleDelete,
   };

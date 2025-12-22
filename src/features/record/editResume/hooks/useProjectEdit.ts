@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 
@@ -56,6 +56,26 @@ const useProjectEdit = () => {
     role,
     experienceDescription,
   };
+
+  const initialFields = useMemo(
+    () => ({
+      projectName: editTarget?.projectName || '',
+      startDateStr: editTarget?.startDate
+        ? formatToShortDate(editTarget.startDate)
+        : '',
+      endDateStr: editTarget?.endDate
+        ? formatToShortDate(editTarget.endDate)
+        : '',
+      role: editTarget?.role || '',
+      experienceDescription: editTarget?.experienceDescription || '',
+    }),
+    [editTarget],
+  );
+
+  const isDirty = useMemo(
+    () => JSON.stringify(fields) !== JSON.stringify(initialFields),
+    [fields, initialFields],
+  );
 
   const setField = <K extends keyof ProjectFormFields>(
     key: K,
@@ -127,6 +147,7 @@ const useProjectEdit = () => {
     setField,
     isEditMode,
     isFormValid,
+    isDirty,
     handleSubmit,
     handleDelete,
   };
