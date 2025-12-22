@@ -23,6 +23,7 @@ const BoardWrite = () => {
     content,
     modalState,
     reviewTemplate,
+    editMode,
     setTitle,
     setContent,
     setSelectedPostType,
@@ -36,12 +37,15 @@ const BoardWrite = () => {
     handlePostTypeSelect,
     handleConfirmPostTypeChange,
     handleSubmit,
+    hasChanges,
   } = useBoardWrite();
   const { validateRequiredFields } = reviewTemplate;
 
-  const isSubmitEnabled = isReview
-    ? title.trim() && validateRequiredFields()
-    : title.trim() && content.trim() && selectedPostType;
+  const isSubmitEnabled = editMode
+    ? hasChanges() // 수정 모드: 변경사항이 있을 때만 활성화
+    : isReview
+      ? title.trim() && validateRequiredFields()
+      : title.trim() && content.trim() && selectedPostType;
 
   const displayName = POST_TYPE_DISPLAY_NAME[selectedPostType] ?? '선택';
   const placeholder = selectedPostType

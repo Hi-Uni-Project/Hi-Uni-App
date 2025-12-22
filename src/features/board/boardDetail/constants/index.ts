@@ -7,12 +7,13 @@ export const TOP_OFFSET = Platform.OS === 'ios' ? 70 : 50;
 export const createPostOptions = (
   isUser: boolean,
   onDeletePost?: () => void,
+  onEditPost?: () => void,
 ): OptionItem[] => {
   if (isUser) {
     return [
       {
         label: '수정하기',
-        onPress: () => console.log('게시글 수정하기'),
+        onPress: onEditPost,
       },
       {
         label: '삭제하기',

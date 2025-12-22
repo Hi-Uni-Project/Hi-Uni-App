@@ -43,7 +43,10 @@ import { useKeyboard } from '@/features/board/boardDetail/hooks/useKeyboard';
 import { usePostCommentsQuery } from '@/features/board/boardDetail/hooks/usePostCommentsQuery';
 import { usePostDetailQuery } from '@/features/board/boardDetail/hooks/usePostDetailQuery';
 import { usePostInteractions } from '@/features/board/boardDetail/hooks/usePostInteractions';
-import { BoardNavigationProps } from '@/navigation/types/navigationTypes';
+import {
+  BoardNavigationProps,
+  BoardStackNavigationProp,
+} from '@/navigation/types/navigationTypes';
 import OptionPopup from '@/shared/components/Board/OptionPopup';
 import ConfirmModal from '@/shared/ui/organisms/ConfirmModal';
 import Loading from '@/shared/ui/organisms/Loading';
@@ -55,7 +58,7 @@ type BoardDetailRouteParams = RouteProp<
 
 const BoardDetailPosts = () => {
   const insets = useSafeAreaInsets();
-  const navigation = useNavigation();
+  const navigation = useNavigation<BoardStackNavigationProp>();
   const route = useRoute<BoardDetailRouteParams>();
   const { postId, isReview } = route.params || { postId: 0, isReview: false };
   const commentInputRef = useRef<CommentInputRef>(null);
@@ -265,8 +268,23 @@ const BoardDetailPosts = () => {
     }, 100);
   };
 
-  const postOptions = createPostOptions(post?.isUser || false, () =>
-    setDeletePostModalVisible(true),
+  // 게시글 수정 핸들러
+  const handleEditPost = () => {
+    if (!post) {
+      return;
+    }
+
+    navigation.navigate('BoardWrite', {
+      editMode: true,
+      postId: post.id,
+      postData: post,
+    });
+  };
+
+  const postOptions = createPostOptions(
+    post?.isUser || false,
+    () => setDeletePostModalVisible(true),
+    handleEditPost,
   );
 
   if (isPostLoading || !post) {

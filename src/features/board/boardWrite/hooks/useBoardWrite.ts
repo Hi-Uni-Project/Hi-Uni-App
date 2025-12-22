@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
 
 import { ModalState } from '../types';
 
@@ -8,10 +8,20 @@ import { usePostSubmit } from './usePostSubmit';
 import { useReviewTemplate } from './useReviewTemplate';
 
 import { PostType } from '@/features/board/shared/types/enum/postEnum';
-import { HomeStackNavigationProp } from '@/navigation/types/navigationTypes';
+import {
+  BoardNavigationProps,
+  HomeStackNavigationProp,
+} from '@/navigation/types/navigationTypes';
+
+type BoardWriteRouteProp = RouteProp<BoardNavigationProps, 'BoardWrite'>;
 
 const useBoardWrite = () => {
   const navigation = useNavigation<HomeStackNavigationProp>();
+  const route = useRoute<BoardWriteRouteProp>();
+
+  const editMode = route.params?.editMode || false;
+  const postId = route.params?.postId;
+  const postData = route.params?.postData;
 
   const [selectedPostType, setSelectedPostType] = useState<PostType | null>(
     null,
@@ -21,6 +31,15 @@ const useBoardWrite = () => {
   const [content, setContent] = useState('');
   const [modalState, setModalState] = useState<ModalState>({ type: 'none' });
   const [changeType, setChangeType] = useState<PostType | null>(null);
+
+  // 수정 모드 초기 데이터 설정
+  const [initialData, setInitialData] = useState({
+    title: '',
+    content: '',
+    postType: null as PostType | null,
+    isReview: false,
+    reviewData: null as any,
+  });
 
   const reviewTemplate = useReviewTemplate(selectedPostType);
   const { hasReviewContent, resetForm } = reviewTemplate;
@@ -33,7 +52,39 @@ const useBoardWrite = () => {
     isReview,
     reviewFormData: reviewTemplate.formData,
     navigation,
+    editMode,
+    postId,
   });
+
+  // 수정 모드 초기화
+  useEffect(() => {
+    if (editMode && postData) {
+      setTitle(postData.title);
+      setSelectedPostType(postData.postType);
+      setIsReview(postData.isReview);
+
+      if (postData.isReview && postData.reviewQuestions) {
+        // 후기 글 데이터 설정
+        setInitialData({
+          title: postData.title,
+          content: '',
+          postType: postData.postType,
+          isReview: true,
+          reviewData: postData.reviewQuestions,
+        });
+      } else {
+        // 일반 글 데이터 설정
+        setContent(postData.content || '');
+        setInitialData({
+          title: postData.title,
+          content: postData.content || '',
+          postType: postData.postType,
+          isReview: false,
+          reviewData: null,
+        });
+      }
+    }
+  }, [editMode, postData]);
 
   useEffect(() => {
     if (selectedPostType && isReview) {
@@ -120,6 +171,31 @@ const useBoardWrite = () => {
     );
   };
 
+  // 변경 감지 함수
+  const hasChanges = () => {
+    if (!editMode) {
+      return false;
+    }
+
+    if (title !== initialData.title) {
+      return true;
+    }
+    if (selectedPostType !== initialData.postType) {
+      return true;
+    }
+
+    if (isReview) {
+      // 후기 글 변경 감지 - reviewTemplate의 formData와 비교
+      return true; // TODO: 후기 데이터 비교 로직
+    } else {
+      if (content !== initialData.content) {
+        return true;
+      }
+    }
+
+    return false;
+  };
+
   return {
     // State
     selectedPostType,
@@ -128,6 +204,8 @@ const useBoardWrite = () => {
     content,
     modalState,
     reviewTemplate,
+    editMode,
+    initialData,
 
     // Setters
     setTitle,
@@ -146,6 +224,7 @@ const useBoardWrite = () => {
     handlePostTypeSelect,
     handleConfirmPostTypeChange,
     handleSubmit,
+    hasChanges,
   };
 };
 
