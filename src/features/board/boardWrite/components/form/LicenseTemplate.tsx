@@ -84,6 +84,7 @@ const LicenseTemplate = ({ reviewForm }: TemplateProps) => {
           value={formData.feelings}
           onChangeText={text => updateField('feelings', text)}
           multiline
+          required
           height={65}
         />
       </View>
