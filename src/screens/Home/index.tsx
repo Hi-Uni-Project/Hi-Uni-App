@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 
+import { useFocusEffect } from '@react-navigation/native';
 import Animated, { LinearTransition } from 'react-native-reanimated';
 
 import { SortType } from '@/features/board/shared/types/enum/sortEnum';
@@ -12,8 +13,16 @@ import { useRegisterStore } from '@/shared/stores/register';
 
 const HomeScreen = () => {
   const { univ } = useRegisterStore();
-  const { data: hotPosts = [], isLoading } = useWeeklyHotPostsWidget(
-    SortType.LIKE,
+  const {
+    data: hotPosts = [],
+    isLoading,
+    refetch,
+  } = useWeeklyHotPostsWidget(SortType.LIKE);
+
+  useFocusEffect(
+    useCallback(() => {
+      refetch();
+    }, [refetch]),
   );
 
   return (

@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 
+import { useFocusEffect } from '@react-navigation/native';
 import { Keyboard, TouchableWithoutFeedback, View } from 'react-native';
 
 import SearchActionModal from '@/features/home/searchBoard/components/SearchActionModal';
@@ -33,6 +34,7 @@ const HomeSearchScreen = () => {
     hasSearchResults,
     hasRecentSearches,
     isFetching,
+    refetch,
     handleSearch,
     handleSelectRecentItem,
     handleInputFocus,
@@ -42,6 +44,14 @@ const HomeSearchScreen = () => {
     handleBackPress,
     handlePostPress,
   } = useSearchBoard({ sortType: selectedSort, resetSort });
+
+  useFocusEffect(
+    useCallback(() => {
+      if (hasSearched) {
+        refetch();
+      }
+    }, [hasSearched, refetch]),
+  );
 
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>

@@ -123,6 +123,7 @@ const BoardDetailPosts = () => {
     onRefetch: postRefetch,
   });
 
+  // 화면 포커스 시 데이터 refetch (수정 후 돌아왔을 때 반영)
   useFocusEffect(
     useCallback(() => {
       postRefetch();
@@ -168,7 +169,7 @@ const BoardDetailPosts = () => {
           // 댓글 작성
           await createComment(comment, postId);
         }
-        await commentRefetch();
+        await Promise.all([commentRefetch(), postRefetch()]);
         setComment('');
         Keyboard.dismiss();
       } catch (error) {
@@ -241,7 +242,7 @@ const BoardDetailPosts = () => {
         // 댓글 삭제
         await deleteComment(deletingCommentInfo.commentId);
       }
-      await commentRefetch();
+      await Promise.all([commentRefetch(), postRefetch()]);
       setDeleteCommentModalVisible(false);
       setDeletingCommentInfo(null);
     } catch (error) {
