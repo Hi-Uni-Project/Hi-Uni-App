@@ -29,6 +29,11 @@ interface Props {
     currentIsLiked: boolean,
   ) => void;
   onDeleteComment: (commentId: number, parentId?: number) => void;
+  onEditComment: (
+    commentId: number,
+    content: string,
+    parentId?: number,
+  ) => void;
 }
 
 const CommentList = ({
@@ -43,6 +48,7 @@ const CommentList = ({
   onCommentLikePress,
   onReplyLikePress,
   onDeleteComment,
+  onEditComment,
 }: Props) => {
   return (
     <View className="border-surface-200 pt-5">
@@ -56,8 +62,10 @@ const CommentList = ({
           comment={comment}
           isLast={idx === comments.length - 1}
           activeOption={activeOption}
-          commentOptions={createCommentOptions(comment.isUser || false, () =>
-            onDeleteComment(comment.id),
+          commentOptions={createCommentOptions(
+            comment.isUser || false,
+            () => onDeleteComment(comment.id),
+            () => onEditComment(comment.id, comment.content),
           )}
           scrollY={scrollY}
           commentLayouts={commentLayouts}
@@ -68,6 +76,7 @@ const CommentList = ({
           onCommentLikePress={onCommentLikePress}
           onReplyLikePress={onReplyLikePress}
           onDeleteComment={onDeleteComment}
+          onEditComment={onEditComment}
         />
       ))}
     </View>

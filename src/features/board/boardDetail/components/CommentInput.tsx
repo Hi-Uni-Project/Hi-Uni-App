@@ -11,6 +11,8 @@ interface Props {
   onSubmit: () => void;
   keyboardHeight: number;
   bottomInset: number;
+  isEditing?: boolean;
+  originalContent?: string;
 }
 
 export interface CommentInputRef {
@@ -18,7 +20,18 @@ export interface CommentInputRef {
 }
 
 const CommentInput = forwardRef<CommentInputRef, Props>(
-  ({ value, onChangeText, onSubmit, keyboardHeight, bottomInset }, ref) => {
+  (
+    {
+      value,
+      onChangeText,
+      onSubmit,
+      keyboardHeight,
+      bottomInset,
+      isEditing = false,
+      originalContent = '',
+    },
+    ref,
+  ) => {
     const inputRef = useRef<TextInput>(null);
 
     useImperativeHandle(ref, () => ({
@@ -26,6 +39,11 @@ const CommentInput = forwardRef<CommentInputRef, Props>(
         inputRef.current?.focus();
       },
     }));
+
+    // 수정 모드에서는 원본과 다른 내용이 있을 때만 submit 활성화
+    const isSubmitEnabled = isEditing
+      ? value.trim() && value !== originalContent
+      : value.trim();
 
     return (
       <View
@@ -58,9 +76,12 @@ const CommentInput = forwardRef<CommentInputRef, Props>(
               multiline
             />
           </View>
-          <Pressable onPress={onSubmit} className="ml-2">
+          <Pressable
+            onPress={onSubmit}
+            className="ml-2"
+            disabled={!isSubmitEnabled}>
             <CommentActionIcons
-              action={value.trim() ? 'send-on' : 'send'}
+              action={isSubmitEnabled ? 'send-on' : 'send'}
               width={24}
               height={24}
             />

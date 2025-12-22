@@ -16,7 +16,7 @@ export const createPostOptions = (
       },
       {
         label: '삭제하기',
-        onPress: onDeletePost || (() => console.log('게시글 삭제하기')),
+        onPress: onDeletePost,
       },
     ];
   }
@@ -40,16 +40,17 @@ export const createPostOptions = (
 export const createCommentOptions = (
   isUser: boolean,
   onDeleteComment?: () => void,
+  onEditComment?: () => void,
 ): OptionItem[] => {
   if (isUser) {
     return [
       {
         label: '수정하기',
-        onPress: () => console.log('댓글 수정하기'),
+        onPress: onEditComment,
       },
       {
         label: '삭제하기',
-        onPress: onDeleteComment || (() => console.log('댓글 삭제하기')),
+        onPress: onDeleteComment,
       },
     ];
   }

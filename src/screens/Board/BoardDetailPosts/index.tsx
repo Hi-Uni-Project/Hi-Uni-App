@@ -79,6 +79,11 @@ const BoardDetailPosts = () => {
   const [replyingToCommentId, setReplyingToCommentId] = useState<number | null>(
     null,
   );
+  const [editingCommentInfo, setEditingCommentInfo] = useState<{
+    commentId: number;
+    parentId?: number;
+    originalContent: string;
+  } | null>(null);
   const [isPostOptionVisible, setIsPostOptionVisible] = useState(false);
   const [activeCommentOption, setActiveCommentOption] = useState<string | null>(
     null,
@@ -122,7 +127,25 @@ const BoardDetailPosts = () => {
   const handleSendComment = async () => {
     if (comment.trim()) {
       try {
-        if (replyingToCommentId !== null) {
+        if (editingCommentInfo) {
+          // 댓글/답글 수정
+          const { updateComment, updateReply } = await import(
+            '../../../features/board/boardDetail/api/comment/updateComment'
+          );
+
+          if (editingCommentInfo.parentId) {
+            // 답글 수정
+            await updateReply(
+              editingCommentInfo.parentId,
+              editingCommentInfo.commentId,
+              comment,
+            );
+          } else {
+            // 댓글 수정
+            await updateComment(editingCommentInfo.commentId, comment);
+          }
+          setEditingCommentInfo(null);
+        } else if (replyingToCommentId !== null) {
           // 답글 작성
           await createReply(postId, replyingToCommentId, comment);
           setReplyingToCommentId(null);
@@ -134,7 +157,7 @@ const BoardDetailPosts = () => {
         setComment('');
         Keyboard.dismiss();
       } catch (error) {
-        console.error('댓글/답글 작성 실패:', error);
+        console.error('댓글/답글 작성/수정 실패:', error);
       }
     }
   };
@@ -228,6 +251,20 @@ const BoardDetailPosts = () => {
     setActiveCommentOption(activeCommentOption === id ? null : id);
   };
 
+  // 댓글/답글 수정 핸들러
+  const handleEditComment = (
+    commentId: number,
+    content: string,
+    parentId?: number,
+  ) => {
+    setEditingCommentInfo({ commentId, parentId, originalContent: content });
+    setComment(content);
+    setReplyingToCommentId(null);
+    setTimeout(() => {
+      commentInputRef.current?.focus();
+    }, 100);
+  };
+
   const postOptions = createPostOptions(post?.isUser || false, () =>
     setDeletePostModalVisible(true),
   );
@@ -314,6 +351,7 @@ const BoardDetailPosts = () => {
                   setDeletingCommentInfo({ commentId, parentId });
                   setDeleteCommentModalVisible(true);
                 }}
+                onEditComment={handleEditComment}
               />
             )}
           </View>
@@ -326,6 +364,8 @@ const BoardDetailPosts = () => {
           onSubmit={handleSendComment}
           keyboardHeight={keyboardHeight}
           bottomInset={insets.bottom}
+          isEditing={!!editingCommentInfo}
+          originalContent={editingCommentInfo?.originalContent || ''}
         />
       </KeyboardAvoidingView>
 

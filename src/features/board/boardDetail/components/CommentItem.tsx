@@ -34,6 +34,11 @@ interface Props {
     currentIsLiked: boolean,
   ) => void;
   onDeleteComment: (commentId: number, parentId?: number) => void;
+  onEditComment: (
+    commentId: number,
+    content: string,
+    parentId?: number,
+  ) => void;
 }
 
 const CommentItem = ({
@@ -50,6 +55,7 @@ const CommentItem = ({
   onCommentLikePress,
   onReplyLikePress,
   onDeleteComment,
+  onEditComment,
 }: Props) => {
   const commentId = `comment-${comment.id}`;
   const isActive = activeOption === commentId;
@@ -126,8 +132,10 @@ const CommentItem = ({
               reply={reply}
               parentCommentId={comment.id}
               activeOption={activeOption}
-              commentOptions={createCommentOptions(reply.isUser || false, () =>
-                onDeleteComment(reply.id, comment.id),
+              commentOptions={createCommentOptions(
+                reply.isUser || false,
+                () => onDeleteComment(reply.id, comment.id),
+                () => onEditComment(reply.id, reply.content, comment.id),
               )}
               scrollY={scrollY}
               commentLayouts={commentLayouts}
