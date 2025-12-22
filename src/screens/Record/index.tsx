@@ -13,7 +13,7 @@ const RecordScreen = () => {
     return null;
   }
 
-  const isResumeExist = (records?.data.title?.length ?? 0) > 0;
+  const isResumeExist = records?.data.title !== null;
   const isCoverLetterExist = (records?.data.coverLetters?.length ?? 0) > 0;
 
   return (
