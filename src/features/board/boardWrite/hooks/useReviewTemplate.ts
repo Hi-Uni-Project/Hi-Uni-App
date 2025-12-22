@@ -186,6 +186,7 @@ export const useReviewTemplate = (selectedPostType: PostType | null) => {
     // Methods
     formatDate,
     updateField,
+    setFormData,
     resetForm,
     openCalendar,
     closeCalendar,

@@ -1,6 +1,11 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useCallback } from 'react';
 
-import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
+import {
+  RouteProp,
+  useFocusEffect,
+  useNavigation,
+  useRoute,
+} from '@react-navigation/native';
 import {
   View,
   ScrollView,
@@ -117,6 +122,13 @@ const BoardDetailPosts = () => {
     initialIsBookmarked: post?.isBookmarked || false,
     onRefetch: postRefetch,
   });
+
+  useFocusEffect(
+    useCallback(() => {
+      postRefetch();
+      commentRefetch();
+    }, [postRefetch, commentRefetch]),
+  );
 
   // API 호출 관련 핸들러
   const handleReplyPress = (commentId: number) => {

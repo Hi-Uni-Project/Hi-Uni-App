@@ -42,7 +42,9 @@ const BoardWrite = () => {
   const { validateRequiredFields } = reviewTemplate;
 
   const isSubmitEnabled = editMode
-    ? hasChanges() // 수정 모드: 변경사항이 있을 때만 활성화
+    ? isReview
+      ? title.trim() && validateRequiredFields() && hasChanges()
+      : title.trim() && content.trim() && selectedPostType && hasChanges()
     : isReview
       ? title.trim() && validateRequiredFields()
       : title.trim() && content.trim() && selectedPostType;
@@ -70,6 +72,7 @@ const BoardWrite = () => {
           title={title}
           isReview={isReview}
           reviewForm={reviewTemplate}
+          editMode={editMode}
           onPostTypeSelectorPress={toggleDropdown}
           onTitleChange={setTitle}
           onReviewToggle={handleReviewToggle}
@@ -83,6 +86,7 @@ const BoardWrite = () => {
           content={content}
           isReview={isReview}
           placeholder={placeholder}
+          editMode={editMode}
           onPostTypeSelectorPress={toggleDropdown}
           onTitleChange={setTitle}
           onContentChange={setContent}

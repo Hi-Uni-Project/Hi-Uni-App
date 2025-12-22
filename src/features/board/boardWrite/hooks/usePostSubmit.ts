@@ -11,13 +11,13 @@ import { convertReviewFormToRequest } from '../../boardDetail/api/util/convertRe
 import { ReviewFormData } from '../types';
 
 import { PostType } from '@/features/board/shared/types/enum/postEnum';
-import { HomeStackNavigationProp } from '@/navigation/types/navigationTypes';
+import { BoardStackNavigationProp } from '@/navigation/types/navigationTypes';
 
 interface UsePostSubmitProps {
   selectedPostType: PostType | null;
   title: string;
   content: string;
-  navigation: HomeStackNavigationProp;
+  navigation: BoardStackNavigationProp;
   isReview: boolean;
   reviewFormData?: ReviewFormData;
   editMode?: boolean;

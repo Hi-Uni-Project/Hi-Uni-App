@@ -9,12 +9,20 @@ interface Props {
   isReview: boolean;
   onPress: () => void;
   description?: string;
+  disabled?: boolean;
 }
 
-const ReviewCheckbox = ({ isReview, onPress, description }: Props) => {
+const ReviewCheckbox = ({
+  isReview,
+  onPress,
+  description,
+  disabled = false,
+}: Props) => {
   return (
-    <View className="flex-row items-start justify-start pt-5">
-      <Pressable className="mt-[3px]" onPress={onPress}>
+    <View
+      className="flex-row items-start justify-start pt-5"
+      style={{ opacity: disabled ? 0.5 : 1 }}>
+      <Pressable className="mt-[3px]" onPress={onPress} disabled={disabled}>
         {isReview ? (
           <Checked color="#6568ea" />
         ) : (
