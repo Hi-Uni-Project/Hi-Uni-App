@@ -85,7 +85,7 @@ const BoardDetailPosts = () => {
   );
   const [scrollY, setScrollY] = useState(0);
   const [commentLayouts, setCommentLayouts] = useState<{
-    [key: string]: number;
+    [key: string]: { actionBoxY: number; actionBoxHeight: number };
   }>({});
   const [deleteCommentModalVisible, setDeleteCommentModalVisible] =
     useState(false);
@@ -213,8 +213,15 @@ const BoardDetailPosts = () => {
     }
   };
 
-  const handleCommentLayout = (id: string, y: number) => {
-    setCommentLayouts(prev => ({ ...prev, [id]: y }));
+  const handleCommentLayout = (
+    id: string,
+    actionBoxY: number,
+    actionBoxHeight: number,
+  ) => {
+    setCommentLayouts(prev => ({
+      ...prev,
+      [id]: { actionBoxY, actionBoxHeight },
+    }));
   };
 
   const handleToggleCommentOption = (id: string) => {
@@ -296,8 +303,6 @@ const BoardDetailPosts = () => {
                 comments={comments}
                 activeOption={activeCommentOption}
                 scrollY={scrollY}
-                topOffset={TOP_OFFSET}
-                topInset={insets.top}
                 commentLayouts={commentLayouts}
                 onCommentLayout={handleCommentLayout}
                 onToggleOption={handleToggleCommentOption}

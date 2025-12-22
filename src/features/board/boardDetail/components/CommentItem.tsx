@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 
 import clsx from 'clsx';
-import { View, Text } from 'react-native';
+import { View, Text, Platform } from 'react-native';
 
 import { createCommentOptions } from '../constants';
 import { Comment } from '../types/comment';
@@ -20,10 +20,10 @@ interface Props {
   activeOption: string | null;
   commentOptions: OptionItem[];
   scrollY: number;
-  topOffset: number;
-  topInset: number;
-  commentLayouts: { [key: string]: number };
-  onLayout: (id: string, y: number) => void;
+  commentLayouts: {
+    [key: string]: { actionBoxY: number; actionBoxHeight: number };
+  };
+  onLayout: (id: string, actionBoxY: number, actionBoxHeight: number) => void;
   onToggleOption: (id: string) => void;
   onCloseOption: () => void;
   onReplyPress: (commentId: number) => void;
@@ -42,8 +42,6 @@ const CommentItem = ({
   activeOption,
   commentOptions,
   scrollY,
-  topOffset,
-  topInset,
   commentLayouts,
   onLayout,
   onToggleOption,
@@ -55,21 +53,35 @@ const CommentItem = ({
 }: Props) => {
   const commentId = `comment-${comment.id}`;
   const isActive = activeOption === commentId;
+  const actionBoxRef = useRef<View>(null);
+  const TOP_OFF_SET = Platform.OS === 'ios' ? 10 : 25;
+
+  const handleActionBoxLayout = () => {
+    if (actionBoxRef.current) {
+      actionBoxRef.current.measureInWindow((y, height) => {
+        onLayout(commentId, y, height);
+      });
+    }
+  };
+
+  useEffect(() => {
+    if (isActive) {
+      handleActionBoxLayout();
+    }
+  }, [scrollY, isActive]);
 
   return (
-    <View
-      className="pb-6"
-      onLayout={event => {
-        const layout = event.nativeEvent.layout;
-        onLayout(commentId, layout.y);
-      }}>
+    <View className="pb-6">
       <View
         className={clsx(
           !isLast && 'border-b border-b-surface-200',
           'flex-col justify-between pb-6',
         )}>
         <View className="w-full">
-          <View className="mb-3 flex-row items-center justify-between">
+          <View
+            ref={actionBoxRef}
+            className="mb-3 flex-row items-center justify-between"
+            onLayout={handleActionBoxLayout}>
             <View className="flex-row items-center">
               <View className="mr-3 h-8 w-8 rounded-full bg-surface-300" />
               <Text className="mr-1 text-main-text typo-caption-14-semibold">
@@ -119,8 +131,6 @@ const CommentItem = ({
                 onDeleteComment(reply.id, comment.id),
               )}
               scrollY={scrollY}
-              topOffset={topOffset}
-              topInset={topInset}
               commentLayouts={commentLayouts}
               onLayout={onLayout}
               onToggleOption={onToggleOption}
@@ -136,11 +146,9 @@ const CommentItem = ({
         options={commentOptions}
         position={{
           top:
-            topInset +
-            topOffset +
-            (commentLayouts[commentId] || 0) -
-            scrollY +
-            420,
+            (commentLayouts[commentId]?.actionBoxY || 0) +
+            (commentLayouts[commentId]?.actionBoxHeight || 0) +
+            TOP_OFF_SET,
           right: 20,
         }}
       />

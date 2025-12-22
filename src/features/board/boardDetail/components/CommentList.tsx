@@ -11,10 +11,14 @@ interface Props {
   comments: Comment[];
   activeOption: string | null;
   scrollY: number;
-  topOffset: number;
-  topInset: number;
-  commentLayouts: { [key: string]: number };
-  onCommentLayout: (id: string, y: number) => void;
+  commentLayouts: {
+    [key: string]: { actionBoxY: number; actionBoxHeight: number };
+  };
+  onCommentLayout: (
+    id: string,
+    actionBoxY: number,
+    actionBoxHeight: number,
+  ) => void;
   onToggleOption: (id: string) => void;
   onCloseOption: () => void;
   onReplyPress: (commentId: number) => void;
@@ -31,8 +35,6 @@ const CommentList = ({
   comments,
   activeOption,
   scrollY,
-  topOffset,
-  topInset,
   commentLayouts,
   onCommentLayout,
   onToggleOption,
@@ -58,8 +60,6 @@ const CommentList = ({
             onDeleteComment(comment.id),
           )}
           scrollY={scrollY}
-          topOffset={topOffset}
-          topInset={topInset}
           commentLayouts={commentLayouts}
           onLayout={onCommentLayout}
           onToggleOption={onToggleOption}
