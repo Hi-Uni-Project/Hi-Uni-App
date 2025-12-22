@@ -1,6 +1,6 @@
 import React, { useRef, useEffect } from 'react';
 
-import { View, Text, Platform } from 'react-native';
+import { View, Text } from 'react-native';
 
 import { Reply } from '../types/comment';
 
@@ -46,7 +46,6 @@ const ReplyItem = ({
   const replyId = `reply-${reply.id}`;
   const isActive = activeOption === replyId;
   const actionBoxRef = useRef<View>(null);
-  const TOP_OFF_SET = Platform.OS === 'ios' ? 10 : -20;
 
   const handleActionBoxLayout = () => {
     if (actionBoxRef.current) {
@@ -117,7 +116,7 @@ const ReplyItem = ({
           top:
             (commentLayouts[replyId]?.actionBoxY || 0) +
             (commentLayouts[replyId]?.actionBoxHeight || 0) +
-            TOP_OFF_SET,
+            -20,
           right: 35,
         }}
       />

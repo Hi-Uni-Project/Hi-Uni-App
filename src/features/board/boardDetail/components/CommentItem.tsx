@@ -1,7 +1,7 @@
 import React, { useRef, useEffect } from 'react';
 
 import clsx from 'clsx';
-import { View, Text, Platform } from 'react-native';
+import { View, Text } from 'react-native';
 
 import { createCommentOptions } from '../constants';
 import { Comment } from '../types/comment';
@@ -54,7 +54,6 @@ const CommentItem = ({
   const commentId = `comment-${comment.id}`;
   const isActive = activeOption === commentId;
   const actionBoxRef = useRef<View>(null);
-  const TOP_OFF_SET = Platform.OS === 'ios' ? 10 : 25;
 
   const handleActionBoxLayout = () => {
     if (actionBoxRef.current) {
@@ -148,7 +147,7 @@ const CommentItem = ({
           top:
             (commentLayouts[commentId]?.actionBoxY || 0) +
             (commentLayouts[commentId]?.actionBoxHeight || 0) +
-            TOP_OFF_SET,
+            25,
           right: 20,
         }}
       />
