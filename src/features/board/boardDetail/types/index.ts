@@ -25,6 +25,7 @@ export interface NoReviewPostResponse {
   createdAt: string;
   isLiked: boolean;
   isScrap: boolean;
+  isUser?: boolean;
 }
 
 // 공통 필드
@@ -145,6 +146,7 @@ export interface PostDetail {
   postType: PostType;
   isLiked: boolean;
   isBookmarked: boolean;
+  isUser?: boolean;
 }
 
 const formatDate = (dateString: string): string => {
@@ -155,6 +157,7 @@ const formatDate = (dateString: string): string => {
   return `${year}.${month}.${day}`;
 };
 
+//  일반 게시글 응답을 UI 데이터로 변환
 export const convertNoReviewToPostDetail = (
   response: NoReviewPostResponse,
 ): PostDetail => {
@@ -176,6 +179,7 @@ export const convertNoReviewToPostDetail = (
     postType: response.type,
     isLiked: response.isLiked,
     isBookmarked: response.isScrap,
+    isUser: response.isUser,
   };
 };
 
@@ -263,5 +267,6 @@ export const convertReviewToPostDetail = (
     postType: response.type,
     isLiked: response.isLiked,
     isBookmarked: response.isScrap,
+    isUser: response.isUser,
   };
 };

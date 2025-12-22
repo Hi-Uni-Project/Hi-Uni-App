@@ -2,16 +2,14 @@ import React from 'react';
 
 import { View, Text } from 'react-native';
 
+import { createCommentOptions } from '../constants';
 import { Comment } from '../types/comment';
 
 import CommentItem from './CommentItem';
 
-import { OptionItem } from '@/shared/components/Board/OptionPopup';
-
 interface Props {
   comments: Comment[];
   activeOption: string | null;
-  commentOptions: OptionItem[];
   scrollY: number;
   topOffset: number;
   topInset: number;
@@ -21,12 +19,12 @@ interface Props {
   onCloseOption: () => void;
   onReplyPress: (commentId: number) => void;
   onCommentLikePress: (commentId: number, currentIsLiked: boolean) => void;
+  onDeleteComment: () => void;
 }
 
 const CommentList = ({
   comments,
   activeOption,
-  commentOptions,
   scrollY,
   topOffset,
   topInset,
@@ -36,6 +34,7 @@ const CommentList = ({
   onCloseOption,
   onReplyPress,
   onCommentLikePress,
+  onDeleteComment,
 }: Props) => {
   return (
     <View className="border-surface-200 pt-5">
@@ -49,7 +48,10 @@ const CommentList = ({
           comment={comment}
           isLast={idx === comments.length - 1}
           activeOption={activeOption}
-          commentOptions={commentOptions}
+          commentOptions={createCommentOptions(
+            comment.isUser || false,
+            onDeleteComment,
+          )}
           scrollY={scrollY}
           topOffset={topOffset}
           topInset={topInset}
@@ -59,6 +61,7 @@ const CommentList = ({
           onCloseOption={onCloseOption}
           onReplyPress={onReplyPress}
           onCommentLikePress={onCommentLikePress}
+          onDeleteComment={onDeleteComment}
         />
       ))}
     </View>

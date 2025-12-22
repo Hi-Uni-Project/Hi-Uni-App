@@ -3,6 +3,7 @@ import React from 'react';
 import clsx from 'clsx';
 import { View, Text } from 'react-native';
 
+import { createCommentOptions } from '../constants';
 import { Comment } from '../types/comment';
 
 import CommentActionBox from './CommentActionBox';
@@ -27,6 +28,7 @@ interface Props {
   onCloseOption: () => void;
   onReplyPress: (commentId: number) => void;
   onCommentLikePress: (commentId: number, currentIsLiked: boolean) => void;
+  onDeleteComment: () => void;
 }
 
 const CommentItem = ({
@@ -43,6 +45,7 @@ const CommentItem = ({
   onCloseOption,
   onReplyPress,
   onCommentLikePress,
+  onDeleteComment,
 }: Props) => {
   const commentId = `comment-${comment.id}`;
   const isActive = activeOption === commentId;
@@ -105,7 +108,10 @@ const CommentItem = ({
               key={reply.id}
               reply={reply}
               activeOption={activeOption}
-              commentOptions={commentOptions}
+              commentOptions={createCommentOptions(
+                reply.isUser || false,
+                onDeleteComment,
+              )}
               scrollY={scrollY}
               topOffset={topOffset}
               topInset={topInset}

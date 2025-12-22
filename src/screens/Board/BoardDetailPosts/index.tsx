@@ -27,7 +27,6 @@ import PostDetailContent from '@/features/board/boardDetail/components/PostConte
 import PostDetailStats from '@/features/board/boardDetail/components/PostStats';
 import { toastConfig } from '@/features/board/boardDetail/config/toast';
 import {
-  createCommentOptions,
   createPostOptions,
   TOP_OFFSET,
 } from '@/features/board/boardDetail/constants';
@@ -137,6 +136,7 @@ const BoardDetailPosts = () => {
       } else {
         await addCommentLike(commentId);
       }
+      // API 호출 성공 후 댓글 목록 새로고침
       await commentRefetch();
     } catch (error) {
       console.error('댓글 좋아요 처리 실패:', error);
@@ -151,9 +151,8 @@ const BoardDetailPosts = () => {
     setActiveCommentOption(activeCommentOption === id ? null : id);
   };
 
-  const postOptions = createPostOptions(() => setDeletePostModalVisible(true));
-  const commentOptions = createCommentOptions(() =>
-    setDeleteCommentModalVisible(true),
+  const postOptions = createPostOptions(post?.isUser || false, () =>
+    setDeletePostModalVisible(true),
   );
 
   if (isPostLoading || !post) {
@@ -226,7 +225,6 @@ const BoardDetailPosts = () => {
               <CommentList
                 comments={comments}
                 activeOption={activeCommentOption}
-                commentOptions={commentOptions}
                 scrollY={scrollY}
                 topOffset={TOP_OFFSET}
                 topInset={insets.top}
@@ -236,6 +234,7 @@ const BoardDetailPosts = () => {
                 onCloseOption={() => setActiveCommentOption(null)}
                 onReplyPress={handleReplyPress}
                 onCommentLikePress={handleCommentLikePress}
+                onDeleteComment={() => setDeleteCommentModalVisible(true)}
               />
             )}
           </View>
