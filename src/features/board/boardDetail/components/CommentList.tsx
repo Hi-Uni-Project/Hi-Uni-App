@@ -14,6 +14,7 @@ interface Props {
   commentLayouts: {
     [key: string]: { actionBoxY: number; actionBoxHeight: number };
   };
+  commentCount: number;
   onCommentLayout: (
     id: string,
     actionBoxY: number,
@@ -38,6 +39,7 @@ interface Props {
 
 const CommentList = ({
   comments,
+  commentCount,
   activeOption,
   scrollY,
   commentLayouts,
@@ -53,7 +55,7 @@ const CommentList = ({
   return (
     <View className="border-surface-200 pt-5">
       <Text className="mb-6 text-main-text typo-body-16-semibold">
-        댓글 {comments.length}
+        댓글 {commentCount}
       </Text>
 
       {comments.map((comment, idx) => (

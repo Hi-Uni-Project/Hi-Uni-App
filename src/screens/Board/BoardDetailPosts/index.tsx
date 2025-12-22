@@ -356,6 +356,7 @@ const BoardDetailPosts = () => {
             ) : (
               <CommentList
                 comments={comments}
+                commentCount={post.commentCount}
                 activeOption={activeCommentOption}
                 scrollY={scrollY}
                 commentLayouts={commentLayouts}
