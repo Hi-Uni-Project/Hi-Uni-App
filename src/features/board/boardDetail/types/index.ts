@@ -27,8 +27,8 @@ export interface NoReviewPostResponse {
   isScrap: boolean;
 }
 
-// 후기 게시글 상세 응답 (review) - JOB
-export interface JobReviewResponse {
+// 공통 필드
+interface BaseReviewPostResponse {
   nickname: string;
   univName: string;
   firstMajorName: string;
@@ -36,16 +36,22 @@ export interface JobReviewResponse {
   id: number;
   title: string;
   content: string;
-  type: 'JOB';
   category: string;
-  imageUrl: string;
+  imageUrl?: string;
   likeCount: number;
   commentCount: number;
   bookmarkCount: number;
-  isLiked: boolean;
-  isScrap: boolean;
   viewCount: number;
   createdAt: string;
+  isLiked: boolean;
+  isScrap: boolean;
+  isReview: boolean;
+  isUser?: boolean;
+}
+
+// JOB 후기 응답
+export interface JobReviewResponse extends BaseReviewPostResponse {
+  type: PostType.JOB;
   companyName: string;
   appliedPosition: string;
   applyMethod: string;
@@ -56,25 +62,9 @@ export interface JobReviewResponse {
   additional?: string;
 }
 
-// 후기 게시글 상세 응답 (review) - INTERNSHIP
-export interface InternshipReviewResponse {
-  nickname: string;
-  univName: string;
-  firstMajorName: string;
-  secondMajorName?: string;
-  id: number;
-  title: string;
-  content: string;
-  type: 'INTERNSHIP';
-  category: string;
-  imageUrl: string;
-  likeCount: number;
-  commentCount: number;
-  bookmarkCount: number;
-  isLiked: boolean;
-  isScrap: boolean;
-  viewCount: number;
-  createdAt: string;
+// INTERNSHIP 후기 응답
+export interface InternshipReviewResponse extends BaseReviewPostResponse {
+  type: PostType.INTERNSHIP;
   companyName: string;
   department: string;
   tasks: string;
@@ -85,25 +75,9 @@ export interface InternshipReviewResponse {
   endDate: string;
 }
 
-// 후기 게시글 상세 응답 (review) - INTERVIEW
-export interface InterviewReviewResponse {
-  nickname: string;
-  univName: string;
-  firstMajorName: string;
-  secondMajorName?: string;
-  id: number;
-  title: string;
-  content: string;
-  type: 'INTERVIEW';
-  category: string;
-  imageUrl: string;
-  likeCount: number;
-  commentCount: number;
-  bookmarkCount: number;
-  isLiked: boolean;
-  isScrap: boolean;
-  viewCount: number;
-  createdAt: string;
+// INTERVIEW 후기 응답
+export interface InterviewReviewResponse extends BaseReviewPostResponse {
+  type: PostType.INTERVIEW;
   companyName: string;
   appliedPosition: string;
   interviewFormat: string;
@@ -114,25 +88,9 @@ export interface InterviewReviewResponse {
   additional?: string;
 }
 
-// 후기 게시글 상세 응답 (review) - EXPERIENCE
-export interface ExperienceReviewResponse {
-  nickname: string;
-  univName: string;
-  firstMajorName: string;
-  secondMajorName?: string;
-  id: number;
-  title: string;
-  content: string;
-  type: 'EXPERIENCE';
-  category: string;
-  imageUrl: string;
-  likeCount: number;
-  isLiked: boolean;
-  isScrap: boolean;
-  commentCount: number;
-  bookmarkCount: number;
-  viewCount: number;
-  createdAt: string;
+// EXPERIENCE 후기 응답
+export interface ExperienceReviewResponse extends BaseReviewPostResponse {
+  type: PostType.EXPERIENCE;
   organizationName: string;
   position: string;
   positionRank: string;
@@ -145,25 +103,9 @@ export interface ExperienceReviewResponse {
   endDate: string;
 }
 
-// 후기 게시글 상세 응답 (review) - LICENSE
-export interface LicenseReviewResponse {
-  nickname: string;
-  univName: string;
-  firstMajorName: string;
-  secondMajorName?: string;
-  id: number;
-  title: string;
-  content: string;
-  type: 'LICENSE';
-  category: string;
-  imageUrl: string;
-  likeCount: number;
-  isLiked: boolean;
-  isScrap: boolean;
-  commentCount: number;
-  bookmarkCount: number;
-  viewCount: number;
-  createdAt: string;
+// LICENSE 후기 응답
+export interface LicenseReviewResponse extends BaseReviewPostResponse {
+  type: PostType.LICENSE;
   certificationName: string;
   prepDuration: string;
   materials: string;
@@ -205,9 +147,6 @@ export interface PostDetail {
   isBookmarked: boolean;
 }
 
-/**
- * 날짜 포맷 변환 (yyyy.MM.dd)
- */
 const formatDate = (dateString: string): string => {
   const date = new Date(dateString);
   const year = date.getFullYear();
@@ -216,9 +155,6 @@ const formatDate = (dateString: string): string => {
   return `${year}.${month}.${day}`;
 };
 
-/**
- * 일반 게시글 응답을 UI 데이터로 변환
- */
 export const convertNoReviewToPostDetail = (
   response: NoReviewPostResponse,
 ): PostDetail => {
@@ -243,16 +179,13 @@ export const convertNoReviewToPostDetail = (
   };
 };
 
-/**
- * 후기 게시글 응답을 UI 데이터로 변환
- */
 export const convertReviewToPostDetail = (
   response: ReviewPostResponse,
 ): PostDetail => {
   let reviewQuestions: ReviewQuestion[] = [];
 
   switch (response.type) {
-    case 'JOB':
+    case PostType.JOB:
       reviewQuestions = [
         { label: '회사명', value: response.companyName },
         { label: '직무', value: response.appliedPosition },
@@ -263,18 +196,18 @@ export const convertReviewToPostDetail = (
       ];
       break;
 
-    case 'INTERNSHIP':
+    case PostType.INTERNSHIP:
       reviewQuestions = [
         { label: '회사명', value: response.companyName },
-        { label: '시작일', value: formatDate(response.startDate) },
-        { label: '종료일', value: formatDate(response.endDate) },
         { label: '부서/직무', value: response.department },
         { label: '담당 업무', value: response.tasks },
         { label: '실무 내용', value: response.learned },
+        { label: '시작일', value: formatDate(response.startDate) },
+        { label: '종료일', value: formatDate(response.endDate) },
       ];
       break;
 
-    case 'INTERVIEW':
+    case PostType.INTERVIEW:
       reviewQuestions = [
         { label: '회사명', value: response.companyName },
         { label: '직무', value: response.appliedPosition },
@@ -285,20 +218,20 @@ export const convertReviewToPostDetail = (
       ];
       break;
 
-    case 'EXPERIENCE':
+    case PostType.EXPERIENCE:
       reviewQuestions = [
         { label: '조직명', value: response.organizationName },
-        { label: '시작일', value: formatDate(response.startDate) },
-        { label: '종료일', value: formatDate(response.endDate) },
         { label: '직무', value: response.position },
         { label: '직급', value: response.positionRank },
         { label: '담당 업무', value: response.whatWork },
         { label: '필수 스킬', value: response.requiredSkills },
         { label: '특징', value: response.characteristics },
+        { label: '시작일', value: formatDate(response.startDate) },
+        { label: '종료일', value: formatDate(response.endDate) },
       ];
       break;
 
-    case 'LICENSE':
+    case PostType.LICENSE:
       reviewQuestions = [
         { label: '자격증명', value: response.certificationName },
         { label: '준비 기간', value: response.prepDuration },
@@ -310,15 +243,12 @@ export const convertReviewToPostDetail = (
       break;
   }
 
-  // PostType으로 변환
-  const postType: PostType = response.type as PostType;
-
   return {
     id: response.id,
     nickname: response.nickname,
     univ: response.univName,
     firstMajorName: response.firstMajorName,
-    secondMajorName: response.secondMajorName,
+    secondMajorName: response.secondMajorName || '',
     date: response.createdAt,
     title: response.title,
     content: response.feelings,
@@ -330,7 +260,7 @@ export const convertReviewToPostDetail = (
     bookmarks: response.bookmarkCount,
     commentCount: response.commentCount,
     category: response.category,
-    postType,
+    postType: response.type,
     isLiked: response.isLiked,
     isBookmarked: response.isScrap,
   };
