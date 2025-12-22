@@ -60,7 +60,7 @@ const PostDetailStats = ({
           </Animated.View>
           <Text
             className={clsx(
-              'ml-1 typo-caption-14-semibold',
+              'ml-1 min-w-[18px] text-right typo-caption-14-semibold',
               isLiked ? 'text-main-red' : 'text-surface-600',
             )}>
             {likes}
@@ -85,7 +85,7 @@ const PostDetailStats = ({
           </Animated.View>
           <Text
             className={clsx(
-              'ml-1 typo-caption-14-semibold',
+              'ml-1 min-w-[18px] text-right typo-caption-14-semibold',
               isBookmarked ? 'text-tertiary-yellow' : 'text-surface-600',
             )}>
             {bookmarks}
