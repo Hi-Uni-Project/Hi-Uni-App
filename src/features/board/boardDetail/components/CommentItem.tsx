@@ -28,7 +28,7 @@ interface Props {
   onCloseOption: () => void;
   onReplyPress: (commentId: number) => void;
   onCommentLikePress: (commentId: number, currentIsLiked: boolean) => void;
-  onDeleteComment: () => void;
+  onDeleteComment: (commentId: number, parentId?: number) => void;
 }
 
 const CommentItem = ({
@@ -108,9 +108,8 @@ const CommentItem = ({
               key={reply.id}
               reply={reply}
               activeOption={activeOption}
-              commentOptions={createCommentOptions(
-                reply.isUser || false,
-                onDeleteComment,
+              commentOptions={createCommentOptions(reply.isUser || false, () =>
+                onDeleteComment(reply.id, comment.id),
               )}
               scrollY={scrollY}
               topOffset={topOffset}

@@ -14,9 +14,14 @@ import Toast from 'react-native-toast-message';
 import { createComment } from '@/features/board/boardDetail/api/comment/createComment';
 import { createReply } from '@/features/board/boardDetail/api/comment/createReply';
 import {
+  deleteComment,
+  deleteReply,
+} from '@/features/board/boardDetail/api/comment/deleteComment';
+import {
   addCommentLike,
   removeCommentLike,
 } from '@/features/board/boardDetail/api/comment/toggleCommentLike';
+import { deletePost } from '@/features/board/boardDetail/api/post/deletePost';
 import CommentInput, {
   CommentInputRef,
 } from '@/features/board/boardDetail/components/CommentInput';
@@ -81,6 +86,10 @@ const BoardDetailPosts = () => {
   const [deleteCommentModalVisible, setDeleteCommentModalVisible] =
     useState(false);
   const [deletePostModalVisible, setDeletePostModalVisible] = useState(false);
+  const [deletingCommentInfo, setDeletingCommentInfo] = useState<{
+    commentId: number;
+    parentId?: number;
+  } | null>(null);
 
   const { isKeyboardVisible, keyboardHeight, backdropOpacity } = useKeyboard();
   const {
@@ -140,6 +149,45 @@ const BoardDetailPosts = () => {
       await commentRefetch();
     } catch (error) {
       console.error('댓글 좋아요 처리 실패:', error);
+    }
+  };
+
+  // 게시글 삭제
+  const handleDeletePost = async () => {
+    try {
+      await deletePost(postId);
+      setDeletePostModalVisible(false);
+      navigation.goBack();
+    } catch (error) {
+      console.error('게시글 삭제 실패:', error);
+      setDeletePostModalVisible(false);
+    }
+  };
+
+  // 댓글/답글 삭제
+  const handleDeleteComment = async () => {
+    if (!deletingCommentInfo) {
+      return;
+    }
+
+    try {
+      if (deletingCommentInfo.parentId) {
+        // 답글 삭제
+        await deleteReply(
+          deletingCommentInfo.parentId,
+          deletingCommentInfo.commentId,
+        );
+      } else {
+        // 댓글 삭제
+        await deleteComment(deletingCommentInfo.commentId);
+      }
+      await commentRefetch();
+      setDeleteCommentModalVisible(false);
+      setDeletingCommentInfo(null);
+    } catch (error) {
+      console.error('댓글/답글 삭제 실패:', error);
+      setDeleteCommentModalVisible(false);
+      setDeletingCommentInfo(null);
     }
   };
 
@@ -234,7 +282,10 @@ const BoardDetailPosts = () => {
                 onCloseOption={() => setActiveCommentOption(null)}
                 onReplyPress={handleReplyPress}
                 onCommentLikePress={handleCommentLikePress}
-                onDeleteComment={() => setDeleteCommentModalVisible(true)}
+                onDeleteComment={(commentId: number, parentId?: number) => {
+                  setDeletingCommentInfo({ commentId, parentId });
+                  setDeleteCommentModalVisible(true);
+                }}
               />
             )}
           </View>
@@ -262,16 +313,19 @@ const BoardDetailPosts = () => {
 
       <ConfirmModal
         visible={deleteCommentModalVisible}
-        onClose={() => setDeleteCommentModalVisible(false)}
+        onClose={() => {
+          setDeleteCommentModalVisible(false);
+          setDeletingCommentInfo(null);
+        }}
         title="댓글을 삭제할까요?"
         confirmText="네, 삭제할래요."
         cancelText="아니요, 그대로 둘게요."
         status="caution"
-        onConfirm={() => {
-          console.log('댓글 삭제');
+        onConfirm={handleDeleteComment}
+        onCancel={() => {
           setDeleteCommentModalVisible(false);
+          setDeletingCommentInfo(null);
         }}
-        onCancel={() => setDeleteCommentModalVisible(false)}
       />
 
       <ConfirmModal
@@ -281,10 +335,7 @@ const BoardDetailPosts = () => {
         confirmText="네, 삭제할래요."
         cancelText="아니요, 그대로 둘게요."
         status="caution"
-        onConfirm={() => {
-          console.log('게시글 삭제');
-          setDeletePostModalVisible(false);
-        }}
+        onConfirm={handleDeletePost}
         onCancel={() => setDeletePostModalVisible(false)}
       />
 
