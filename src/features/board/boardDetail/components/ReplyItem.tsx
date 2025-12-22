@@ -14,6 +14,7 @@ import CommentArrowIcon from '@/static/icons/comment-arrow.svg';
 
 interface Props {
   reply: Reply;
+  parentCommentId: number;
   activeOption: string | null;
   commentOptions: OptionItem[];
   scrollY: number;
@@ -23,10 +24,16 @@ interface Props {
   onLayout: (id: string, y: number) => void;
   onToggleOption: (id: string) => void;
   onCloseOption: () => void;
+  onReplyLikePress: (
+    commentId: number,
+    replyId: number,
+    currentIsLiked: boolean,
+  ) => void;
 }
 
 const ReplyItem = ({
   reply,
+  parentCommentId,
   activeOption,
   commentOptions,
   scrollY,
@@ -36,6 +43,7 @@ const ReplyItem = ({
   onLayout,
   onToggleOption,
   onCloseOption,
+  onReplyLikePress,
 }: Props) => {
   const replyId = `reply-${reply.id}`;
   const isActive = activeOption === replyId;
@@ -64,7 +72,9 @@ const ReplyItem = ({
           <View className="flex-row items-center rounded-[100px]">
             <CommentActionBox
               hasReply={false}
-              onLikePress={() => console.log('답글 좋아요')}
+              onLikePress={() =>
+                onReplyLikePress(parentCommentId, reply.id, reply.isLiked)
+              }
               onTogglePress={() => onToggleOption(replyId)}
             />
           </View>

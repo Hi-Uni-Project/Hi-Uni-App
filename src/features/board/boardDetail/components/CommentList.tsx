@@ -19,6 +19,11 @@ interface Props {
   onCloseOption: () => void;
   onReplyPress: (commentId: number) => void;
   onCommentLikePress: (commentId: number, currentIsLiked: boolean) => void;
+  onReplyLikePress: (
+    commentId: number,
+    replyId: number,
+    currentIsLiked: boolean,
+  ) => void;
   onDeleteComment: (commentId: number, parentId?: number) => void;
 }
 
@@ -34,6 +39,7 @@ const CommentList = ({
   onCloseOption,
   onReplyPress,
   onCommentLikePress,
+  onReplyLikePress,
   onDeleteComment,
 }: Props) => {
   return (
@@ -60,6 +66,7 @@ const CommentList = ({
           onCloseOption={onCloseOption}
           onReplyPress={onReplyPress}
           onCommentLikePress={onCommentLikePress}
+          onReplyLikePress={onReplyLikePress}
           onDeleteComment={onDeleteComment}
         />
       ))}

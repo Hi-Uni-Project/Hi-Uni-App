@@ -21,6 +21,10 @@ import {
   addCommentLike,
   removeCommentLike,
 } from '@/features/board/boardDetail/api/comment/toggleCommentLike';
+import {
+  addReplyLike,
+  removeReplyLike,
+} from '@/features/board/boardDetail/api/comment/toggleReplyLike';
 import { deletePost } from '@/features/board/boardDetail/api/post/deletePost';
 import CommentInput, {
   CommentInputRef,
@@ -149,6 +153,24 @@ const BoardDetailPosts = () => {
       await commentRefetch();
     } catch (error) {
       console.error('댓글 좋아요 처리 실패:', error);
+    }
+  };
+
+  const handleReplyLikePress = async (
+    commentId: number,
+    replyId: number,
+    currentIsLiked: boolean,
+  ) => {
+    try {
+      if (currentIsLiked) {
+        await removeReplyLike(commentId, replyId);
+      } else {
+        await addReplyLike(commentId, replyId);
+      }
+      // API 호출 성공 후 댓글 목록 새로고침
+      await commentRefetch();
+    } catch (error) {
+      console.error('답글 좋아요 처리 실패:', error);
     }
   };
 
@@ -282,6 +304,7 @@ const BoardDetailPosts = () => {
                 onCloseOption={() => setActiveCommentOption(null)}
                 onReplyPress={handleReplyPress}
                 onCommentLikePress={handleCommentLikePress}
+                onReplyLikePress={handleReplyLikePress}
                 onDeleteComment={(commentId: number, parentId?: number) => {
                   setDeletingCommentInfo({ commentId, parentId });
                   setDeleteCommentModalVisible(true);

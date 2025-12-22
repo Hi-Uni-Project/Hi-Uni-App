@@ -28,6 +28,11 @@ interface Props {
   onCloseOption: () => void;
   onReplyPress: (commentId: number) => void;
   onCommentLikePress: (commentId: number, currentIsLiked: boolean) => void;
+  onReplyLikePress: (
+    commentId: number,
+    replyId: number,
+    currentIsLiked: boolean,
+  ) => void;
   onDeleteComment: (commentId: number, parentId?: number) => void;
 }
 
@@ -45,6 +50,7 @@ const CommentItem = ({
   onCloseOption,
   onReplyPress,
   onCommentLikePress,
+  onReplyLikePress,
   onDeleteComment,
 }: Props) => {
   const commentId = `comment-${comment.id}`;
@@ -107,6 +113,7 @@ const CommentItem = ({
             <ReplyItem
               key={reply.id}
               reply={reply}
+              parentCommentId={comment.id}
               activeOption={activeOption}
               commentOptions={createCommentOptions(reply.isUser || false, () =>
                 onDeleteComment(reply.id, comment.id),
@@ -118,6 +125,7 @@ const CommentItem = ({
               onLayout={onLayout}
               onToggleOption={onToggleOption}
               onCloseOption={onCloseOption}
+              onReplyLikePress={onReplyLikePress}
             />
           ))}
       </View>
