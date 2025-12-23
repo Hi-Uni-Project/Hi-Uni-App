@@ -1,7 +1,8 @@
-import React, { useRef, useEffect } from 'react';
+import React from 'react';
 
 import { View, Text } from 'react-native';
 
+import { useCommentLayout } from '../hooks/useCommentLayout';
 import { Reply } from '../types/comment';
 
 import CommentActionBox from './CommentActionBox';
@@ -45,21 +46,13 @@ const ReplyItem = ({
 }: Props) => {
   const replyId = `reply-${reply.id}`;
   const isActive = activeOption === replyId;
-  const actionBoxRef = useRef<View>(null);
 
-  const handleActionBoxLayout = () => {
-    if (actionBoxRef.current) {
-      actionBoxRef.current.measureInWindow((y, height) => {
-        onLayout(replyId, y, height);
-      });
-    }
-  };
-
-  useEffect(() => {
-    if (isActive) {
-      handleActionBoxLayout();
-    }
-  }, [scrollY, isActive]);
+  const { actionBoxRef, handleActionBoxLayout } = useCommentLayout({
+    id: replyId,
+    isActive,
+    scrollY,
+    onLayout,
+  });
 
   return (
     <View className="flex-row space-x-2 px-5 pl-2 pt-4">

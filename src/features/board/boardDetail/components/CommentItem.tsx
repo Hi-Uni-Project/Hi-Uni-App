@@ -1,9 +1,10 @@
-import React, { useRef, useEffect } from 'react';
+import React from 'react';
 
 import clsx from 'clsx';
 import { View, Text } from 'react-native';
 
 import { createCommentOptions } from '../constants';
+import { useCommentLayout } from '../hooks/useCommentLayout';
 import { Comment } from '../types/comment';
 
 import CommentActionBox from './CommentActionBox';
@@ -59,21 +60,13 @@ const CommentItem = ({
 }: Props) => {
   const commentId = `comment-${comment.id}`;
   const isActive = activeOption === commentId;
-  const actionBoxRef = useRef<View>(null);
 
-  const handleActionBoxLayout = () => {
-    if (actionBoxRef.current) {
-      actionBoxRef.current.measureInWindow((y, height) => {
-        onLayout(commentId, y, height);
-      });
-    }
-  };
-
-  useEffect(() => {
-    if (isActive) {
-      handleActionBoxLayout();
-    }
-  }, [scrollY, isActive]);
+  const { actionBoxRef, handleActionBoxLayout } = useCommentLayout({
+    id: commentId,
+    isActive,
+    scrollY,
+    onLayout,
+  });
 
   return (
     <View className="pb-6">
