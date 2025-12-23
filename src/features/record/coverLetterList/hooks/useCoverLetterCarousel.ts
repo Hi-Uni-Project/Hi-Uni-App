@@ -1,3 +1,5 @@
+import { useEffect } from 'react';
+
 import { PanResponder } from 'react-native';
 import {
   useAnimatedStyle,
@@ -65,6 +67,10 @@ export const useCoverLetterCarousel = ({
   const animatedStyle = useAnimatedStyle(() => ({
     transform: [{ translateX: translateX.value }],
   }));
+
+  useEffect(() => {
+    moveToPage(0);
+  }, [coverLetters]);
 
   return {
     progress,

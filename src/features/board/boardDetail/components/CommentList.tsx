@@ -2,45 +2,60 @@ import React from 'react';
 
 import { View, Text } from 'react-native';
 
+import { createCommentOptions } from '../constants';
 import { Comment } from '../types/comment';
 
 import CommentItem from './CommentItem';
 
-import { OptionItem } from '@/shared/components/Board/OptionPopup';
-
 interface Props {
   comments: Comment[];
   activeOption: string | null;
-  commentOptions: OptionItem[];
   scrollY: number;
-  topOffset: number;
-  topInset: number;
-  commentLayouts: { [key: string]: number };
-  onCommentLayout: (id: string, y: number) => void;
+  commentLayouts: {
+    [key: string]: { actionBoxY: number; actionBoxHeight: number };
+  };
+  commentCount: number;
+  onCommentLayout: (
+    id: string,
+    actionBoxY: number,
+    actionBoxHeight: number,
+  ) => void;
   onToggleOption: (id: string) => void;
   onCloseOption: () => void;
   onReplyPress: (commentId: number) => void;
   onCommentLikePress: (commentId: number, currentIsLiked: boolean) => void;
+  onReplyLikePress: (
+    commentId: number,
+    replyId: number,
+    currentIsLiked: boolean,
+  ) => void;
+  onDeleteComment: (commentId: number, parentId?: number) => void;
+  onEditComment: (
+    commentId: number,
+    content: string,
+    parentId?: number,
+  ) => void;
 }
 
 const CommentList = ({
   comments,
+  commentCount,
   activeOption,
-  commentOptions,
   scrollY,
-  topOffset,
-  topInset,
   commentLayouts,
   onCommentLayout,
   onToggleOption,
   onCloseOption,
   onReplyPress,
   onCommentLikePress,
+  onReplyLikePress,
+  onDeleteComment,
+  onEditComment,
 }: Props) => {
   return (
     <View className="border-surface-200 pt-5">
       <Text className="mb-6 text-main-text typo-body-16-semibold">
-        댓글 {comments.length}
+        댓글 {commentCount}
       </Text>
 
       {comments.map((comment, idx) => (
@@ -49,16 +64,21 @@ const CommentList = ({
           comment={comment}
           isLast={idx === comments.length - 1}
           activeOption={activeOption}
-          commentOptions={commentOptions}
+          commentOptions={createCommentOptions(
+            comment.isUser || false,
+            () => onDeleteComment(comment.id),
+            () => onEditComment(comment.id, comment.content),
+          )}
           scrollY={scrollY}
-          topOffset={topOffset}
-          topInset={topInset}
           commentLayouts={commentLayouts}
           onLayout={onCommentLayout}
           onToggleOption={onToggleOption}
           onCloseOption={onCloseOption}
           onReplyPress={onReplyPress}
           onCommentLikePress={onCommentLikePress}
+          onReplyLikePress={onReplyLikePress}
+          onDeleteComment={onDeleteComment}
+          onEditComment={onEditComment}
         />
       ))}
     </View>

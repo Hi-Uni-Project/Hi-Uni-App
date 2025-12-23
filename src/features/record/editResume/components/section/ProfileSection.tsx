@@ -13,6 +13,8 @@ import HUDropdown from '@/shared/ui/atoms/HUDropdown';
 interface ProfileSectionProps {
   photo: string | null;
   name: string;
+  gender: Gender;
+  birthYear: number;
   onPhotoChange: (photoUri: string | null) => void;
   onNameChange: (name: string) => void;
   onGenderChange: (gender: Gender) => void;
@@ -22,6 +24,8 @@ interface ProfileSectionProps {
 const ProfileSection = ({
   photo,
   name,
+  gender,
+  birthYear,
   onPhotoChange,
   onNameChange,
   onGenderChange,
@@ -43,6 +47,7 @@ const ProfileSection = ({
         <View className="mt-[10px] flex-row">
           <HUDropdown
             categoryName="성별"
+            selectedValue={GenderEnumToLabel[gender]}
             dropdownItems={Object.values(GenderEnumToLabel)}
             onSelectItem={item => {
               onGenderChange(GenderLabelToEnum[item]);
@@ -52,6 +57,7 @@ const ProfileSection = ({
 
           <HUDropdown
             categoryName="출생년도"
+            selectedValue={birthYear ? `${birthYear}년` : null}
             dropdownItems={Array.from(
               { length: 2008 - 1980 + 1 },
               (_, i) => `${2008 - i}년`,

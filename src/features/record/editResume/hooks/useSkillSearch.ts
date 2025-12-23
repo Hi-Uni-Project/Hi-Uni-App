@@ -22,7 +22,7 @@ const useSkillSearch = () => {
   }, []);
 
   const isSearchResultVisible =
-    searchKeyword.length > 0 && (skillSearchData?.length ?? 0) > 0;
+    inputValue.length >= 2 && (skillSearchData?.length ?? 0) > 0;
 
   return {
     inputValue,

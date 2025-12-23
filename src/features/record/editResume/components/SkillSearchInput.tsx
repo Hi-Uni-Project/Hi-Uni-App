@@ -17,7 +17,7 @@ const SkillSearchInput = ({
   onChangeText,
   onSubmit,
   onClear,
-  placeholder = '내 스킬을 입력하여 추가하세요',
+  placeholder = '내 스킬을 입력해주세요',
 }: Props) => {
   return (
     <View className="h-[60px] w-full flex-row items-center rounded-full bg-[#F2F2F2]">
@@ -33,7 +33,7 @@ const SkillSearchInput = ({
         placeholder={placeholder}
         placeholderTextColor="#979797"
         returnKeyType="search"
-        maxLength={18}
+        maxLength={30}
         autoCapitalize="none"
         autoCorrect={false}
       />

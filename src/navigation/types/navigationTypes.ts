@@ -2,6 +2,7 @@ import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 import { NavigatorScreenParams } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
+import { PostDetail } from '@/features/board/boardDetail/types';
 import {
   Schedule,
   ScheduleDatePayload,
@@ -49,7 +50,11 @@ export type BoardNavigationProps = {
   MyComments: undefined;
   MyPosts: undefined;
   PopularReviews: { title: string };
-  BoardWrite: undefined;
+  BoardWrite: {
+    editMode?: boolean;
+    postId?: number;
+    postData?: PostDetail;
+  };
   BoardDetailPosts: { postId: number; isReview: boolean };
 };
 
@@ -87,6 +92,9 @@ export type RecordNavigationProps = {
   EditCareer: { careerId?: number; tempId?: string };
   CreateProject: undefined;
   EditProject: { projectId?: number; tempId?: string };
+
+  CreateCoverLetter: undefined;
+  EditCoverLetter: { coverLetterIdx: number };
 };
 
 export type MainStackNavigationProp =

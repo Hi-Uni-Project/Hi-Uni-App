@@ -2,6 +2,7 @@ import React from 'react';
 
 import { View, Text } from 'react-native';
 
+import { useCommentLayout } from '../hooks/useCommentLayout';
 import { Reply } from '../types/comment';
 
 import CommentActionBox from './CommentActionBox';
@@ -14,43 +15,54 @@ import CommentArrowIcon from '@/static/icons/comment-arrow.svg';
 
 interface Props {
   reply: Reply;
+  parentCommentId: number;
   activeOption: string | null;
   commentOptions: OptionItem[];
   scrollY: number;
-  topOffset: number;
-  topInset: number;
-  commentLayouts: { [key: string]: number };
-  onLayout: (id: string, y: number) => void;
+  commentLayouts: {
+    [key: string]: { actionBoxY: number; actionBoxHeight: number };
+  };
+  onLayout: (id: string, actionBoxY: number, actionBoxHeight: number) => void;
   onToggleOption: (id: string) => void;
   onCloseOption: () => void;
+  onReplyLikePress: (
+    commentId: number,
+    replyId: number,
+    currentIsLiked: boolean,
+  ) => void;
 }
 
 const ReplyItem = ({
   reply,
+  parentCommentId,
   activeOption,
   commentOptions,
   scrollY,
-  topOffset,
-  topInset,
   commentLayouts,
   onLayout,
   onToggleOption,
   onCloseOption,
+  onReplyLikePress,
 }: Props) => {
   const replyId = `reply-${reply.id}`;
   const isActive = activeOption === replyId;
 
+  const { actionBoxRef, handleActionBoxLayout } = useCommentLayout({
+    id: replyId,
+    isActive,
+    scrollY,
+    onLayout,
+  });
+
   return (
-    <View
-      className="flex-row space-x-2 px-5 pl-2 pt-4"
-      onLayout={event => {
-        const layout = event.nativeEvent.layout;
-        onLayout(replyId, layout.y);
-      }}>
+    <View className="flex-row space-x-2 px-5 pl-2 pt-4">
       <CommentArrowIcon className="top-2" />
 
       <View className="w-full flex-col rounded-[10px] bg-surface-100 p-3.5">
-        <View className="mb-3 flex-row justify-between">
+        <View
+          ref={actionBoxRef}
+          className="mb-3 flex-row justify-between"
+          onLayout={handleActionBoxLayout}>
           <View className="flex-row items-center">
             <View className="mr-3 h-8 w-8 rounded-full bg-surface-300" />
             <Text className="mr-2 text-main-text typo-caption-14-semibold">
@@ -64,7 +76,9 @@ const ReplyItem = ({
           <View className="flex-row items-center rounded-[100px]">
             <CommentActionBox
               hasReply={false}
-              onLikePress={() => console.log('답글 좋아요')}
+              onLikePress={() =>
+                onReplyLikePress(parentCommentId, reply.id, reply.isLiked)
+              }
               onTogglePress={() => onToggleOption(replyId)}
             />
           </View>
@@ -87,19 +101,15 @@ const ReplyItem = ({
         </View>
       </View>
 
-      {/* 답글 옵션 팝업 */}
-      {/* 게시글 컨텐츠가 길어지면 절대값이 달라지는 이슈 수정 필요 */}
       <OptionPopup
         visible={isActive}
         onClose={onCloseOption}
         options={commentOptions}
         position={{
           top:
-            topInset +
-            topOffset +
-            (commentLayouts[replyId] || 0) -
-            scrollY +
-            665,
+            (commentLayouts[replyId]?.actionBoxY || 0) +
+            (commentLayouts[replyId]?.actionBoxHeight || 0) +
+            -20,
           right: 35,
         }}
       />

@@ -116,6 +116,7 @@ const InternshipTemplate = ({ reviewForm }: TemplateProps) => {
           value={formData.feelings}
           onChangeText={text => updateField('feelings', text)}
           multiline
+          required
           height={115}
         />
       </View>

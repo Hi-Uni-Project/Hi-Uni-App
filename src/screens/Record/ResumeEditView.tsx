@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
+import { useNavigation } from '@react-navigation/native';
 import {
   Keyboard,
   KeyboardAvoidingView,
@@ -29,6 +30,8 @@ import useResumeMutation from '@/features/record/editResume/hooks/useResumeMutat
 import useResumeNavigator from '@/features/record/editResume/hooks/useResumeNavigator';
 import { useResumeQueries } from '@/features/record/editResume/hooks/useResumeQueries';
 import useSkillSearch from '@/features/record/editResume/hooks/useSkillSearch';
+import { useResumeEditStore } from '@/features/record/editResume/stores/useResumeEditStore';
+import { Gender } from '@/features/record/editResume/types/domainType';
 import { mapResumeToEditForm } from '@/features/record/editResume/utils/responseToDomainMapper';
 
 const ResumeEditView = () => {
@@ -38,8 +41,13 @@ const ResumeEditView = () => {
 
   const { resumeData: serverResumeData } = useResumeQueries();
 
+  const isDirty = useResumeEditStore(state => state.isDirty());
+
+  const navigation = useNavigation();
+
   const {
     resumeData,
+    isValid,
     setResumeData,
     updateField,
     addSkill,
@@ -57,19 +65,18 @@ const ResumeEditView = () => {
     }
   }, [serverResumeData, setResumeData]);
 
-  const { submitResume, isSubmitting } = useResumeMutation();
+  const { submitResume, isSubmitting, isSuccess } = useResumeMutation();
 
-  const [isPostNotFoundError, setIsPostNotFoundError] = useState(false);
-
-  const { generateAboutMe, isGenerating } = useAiAboutMeMutation({
+  const {
+    generateAboutMe,
+    isGenerating,
+    isPostNotFound,
+    isQuotaExceeded,
+    reset: resetAiMutation,
+  } = useAiAboutMeMutation({
     onSuccess: data => {
       updateField('aboutMe', data.aboutMe);
       updateField('aboutMeCnt', data.aboutMeCnt);
-    },
-    onError: (_error, statusCode) => {
-      if (statusCode === 'POST_NOT_FOUND') {
-        setIsPostNotFoundError(true);
-      }
     },
   });
 
@@ -121,12 +128,20 @@ const ResumeEditView = () => {
     });
   };
 
+  useEffect(() => {
+    if (isSuccess) {
+      navigation.goBack();
+    }
+  }, [isSuccess]);
+
   return (
     <View className="flex-1 bg-surface-50">
       <ResumeEditHeader
-        isCompleteDisabled={isSubmitting}
+        isCompleteDisabled={isSubmitting || !isDirty || !isValid()}
         onCompletePress={handleCompletePress}
         onDeleteAll={resetStore}
+        onBackPress={() => navigation.goBack()}
+        isDirty={isDirty}
       />
 
       <KeyboardAvoidingView
@@ -140,6 +155,8 @@ const ResumeEditView = () => {
               <ProfileSection
                 photo={resumeData?.photo || null}
                 name={resumeData?.name || ''}
+                gender={resumeData?.gender || Gender.OTHER}
+                birthYear={resumeData?.birthYear || 0}
                 onPhotoChange={photo => {
                   updateField('photo', photo);
                   updateField('updateImage', true);
@@ -158,10 +175,11 @@ const ResumeEditView = () => {
                 aboutMe={resumeData?.aboutMe || ''}
                 aboutMeCnt={resumeData?.aboutMeCnt ?? 5}
                 isGenerating={isGenerating}
-                isPostNotFoundError={isPostNotFoundError}
+                isPostNotFoundError={isPostNotFound}
+                isQuotaExceededError={isQuotaExceeded}
                 onAboutMeChange={text => updateField('aboutMe', text)}
                 onGeneratePress={generateAboutMe}
-                onErrorModalClose={() => setIsPostNotFoundError(false)}
+                onErrorModalClose={resetAiMutation}
               />
 
               <CareerSection
@@ -188,9 +206,10 @@ const ResumeEditView = () => {
                 onInputChange={setInputValue}
                 onSearch={handleSearch}
                 onClearSearch={clearSearch}
-                onSelectSkill={skill =>
-                  addSkill({ skillId: skill.skillId, name: skill.name })
-                }
+                onSelectSkill={skill => {
+                  addSkill({ skillId: skill.skillId, name: skill.name });
+                  clearSearch();
+                }}
                 onRemoveSkill={deleteSkill}
               />
 

@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 
-import { RouteProp } from '@react-navigation/native';
+import { RouteProp, useFocusEffect } from '@react-navigation/native';
 
 import { useCategoryWeeklyHotQuery } from '@/features/board/boardMain/hooks/useWeeklyHotQuery';
 import {
@@ -24,10 +24,20 @@ const PopularReviews = ({ route }: Props) => {
   const sortBoardState = useSortBoard();
   const selectedPostType = getPostTypeByDisplayName(title);
 
-  const { data: posts = [], isLoading } = useCategoryWeeklyHotQuery(
+  const {
+    data: posts = [],
+    isLoading,
+    refetch,
+  } = useCategoryWeeklyHotQuery(
     PostCategory.JOB_INFORMATION,
     selectedPostType,
     sortBoardState.selectedSort,
+  );
+
+  useFocusEffect(
+    useCallback(() => {
+      refetch();
+    }, [refetch]),
   );
 
   return (

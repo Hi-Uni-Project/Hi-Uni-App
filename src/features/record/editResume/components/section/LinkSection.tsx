@@ -54,17 +54,19 @@ const LinkSection = ({ links, onAddPress, onEditPress }: LinkSectionProps) => {
 
       {links.length > 0 && (
         <View className="mt-3 px-5">
-          {links.map(link => {
+          {links.map((link, idx) => {
             const key = link.linkId ?? link.tempId ?? link.linkUrl;
 
             return (
-              <LinkCard
-                key={key}
-                link={link}
-                onPress={() => onEditPress(link.linkId ?? link.tempId)}
-                isCopied={copiedLinks[key]}
-                onCopyPress={() => handleCopy(link)}
-              />
+              <View className="mt-2">
+                <LinkCard
+                  key={idx}
+                  link={link}
+                  onPress={() => onEditPress(link.linkId ?? link.tempId)}
+                  isCopied={copiedLinks[key]}
+                  onCopyPress={() => handleCopy(link)}
+                />
+              </View>
             );
           })}
         </View>

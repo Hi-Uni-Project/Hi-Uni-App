@@ -116,6 +116,7 @@ export const useSearchBoard = ({ sortType, resetSort }: Props) => {
     isFetching,
 
     // Handlers
+    refetch,
     handleSearch,
     handleSelectRecentItem,
     handleInputFocus,

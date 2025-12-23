@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 
@@ -50,6 +50,22 @@ const useCareerEdit = () => {
     editTarget?.jobDescription || '',
   );
 
+  const initialFields = useMemo(
+    () => ({
+      companyName: editTarget?.companyName || '',
+      startDateStr: editTarget?.startDate
+        ? formatToShortDate(editTarget.startDate)
+        : '',
+      endDateStr: editTarget?.endDate
+        ? formatToShortDate(editTarget.endDate)
+        : '',
+      role: editTarget?.role || '',
+      position: editTarget?.position || '',
+      jobDescription: editTarget?.jobDescription || '',
+    }),
+    [editTarget],
+  );
+
   const fields: CareerFormFields = {
     companyName,
     startDateStr,
@@ -58,6 +74,11 @@ const useCareerEdit = () => {
     position,
     jobDescription,
   };
+
+  const isDirty = useMemo(
+    () => JSON.stringify(fields) !== JSON.stringify(initialFields),
+    [fields, initialFields],
+  );
 
   const setField = <K extends keyof CareerFormFields>(
     key: K,
@@ -134,6 +155,7 @@ const useCareerEdit = () => {
     setField,
     isEditMode,
     isFormValid,
+    isDirty,
     handleSubmit,
     handleDelete,
   };

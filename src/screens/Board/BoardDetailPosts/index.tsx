@@ -1,25 +1,16 @@
-import React, { useState, useRef } from 'react';
+import React, { useCallback } from 'react';
 
-import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import {
-  View,
-  ScrollView,
-  KeyboardAvoidingView,
-  Platform,
-  Keyboard,
-} from 'react-native';
+  RouteProp,
+  useNavigation,
+  useRoute,
+  useFocusEffect,
+} from '@react-navigation/native';
+import { View, ScrollView, KeyboardAvoidingView, Platform } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Toast from 'react-native-toast-message';
 
-import { createComment } from '@/features/board/boardDetail/api/comment/createComment';
-import { createReply } from '@/features/board/boardDetail/api/comment/createReply';
-import {
-  addCommentLike,
-  removeCommentLike,
-} from '@/features/board/boardDetail/api/comment/toggleCommentLike';
-import CommentInput, {
-  CommentInputRef,
-} from '@/features/board/boardDetail/components/CommentInput';
+import CommentInput from '@/features/board/boardDetail/components/CommentInput';
 import CommentList from '@/features/board/boardDetail/components/CommentList';
 import BoardDetailHeader from '@/features/board/boardDetail/components/layouts/BoardHeader';
 import KeyboardInputBackdrop from '@/features/board/boardDetail/components/modal/KeyboardBackdrop';
@@ -27,15 +18,21 @@ import PostDetailContent from '@/features/board/boardDetail/components/PostConte
 import PostDetailStats from '@/features/board/boardDetail/components/PostStats';
 import { toastConfig } from '@/features/board/boardDetail/config/toast';
 import {
-  createCommentOptions,
   createPostOptions,
   TOP_OFFSET,
 } from '@/features/board/boardDetail/constants';
+import { useCommentManagement } from '@/features/board/boardDetail/hooks/useCommentManagement';
+import { useCommentUI } from '@/features/board/boardDetail/hooks/useCommentUI';
 import { useKeyboard } from '@/features/board/boardDetail/hooks/useKeyboard';
+import { usePostActions } from '@/features/board/boardDetail/hooks/usePostActions';
 import { usePostCommentsQuery } from '@/features/board/boardDetail/hooks/usePostCommentsQuery';
+import { usePostDetailModals } from '@/features/board/boardDetail/hooks/usePostDetailModals';
 import { usePostDetailQuery } from '@/features/board/boardDetail/hooks/usePostDetailQuery';
 import { usePostInteractions } from '@/features/board/boardDetail/hooks/usePostInteractions';
-import { BoardNavigationProps } from '@/navigation/types/navigationTypes';
+import {
+  BoardNavigationProps,
+  BoardStackNavigationProp,
+} from '@/navigation/types/navigationTypes';
 import OptionPopup from '@/shared/components/Board/OptionPopup';
 import ConfirmModal from '@/shared/ui/organisms/ConfirmModal';
 import Loading from '@/shared/ui/organisms/Loading';
@@ -47,43 +44,24 @@ type BoardDetailRouteParams = RouteProp<
 
 const BoardDetailPosts = () => {
   const insets = useSafeAreaInsets();
-  const navigation = useNavigation();
+  const navigation = useNavigation<BoardStackNavigationProp>();
   const route = useRoute<BoardDetailRouteParams>();
   const { postId, isReview } = route.params || { postId: 0, isReview: false };
-  const commentInputRef = useRef<CommentInputRef>(null);
 
-  // 게시글 데이터 조회
   const {
     data: post,
     isLoading: isPostLoading,
     refetch: postRefetch,
   } = usePostDetailQuery(postId, isReview);
 
-  // 댓글 데이터 조회
   const {
     data: comments = [],
     isLoading: isCommentsLoading,
     refetch: commentRefetch,
   } = usePostCommentsQuery(postId);
 
-  // 상태관리 state
-  const [comment, setComment] = useState('');
-  const [replyingToCommentId, setReplyingToCommentId] = useState<number | null>(
-    null,
-  );
-  const [isPostOptionVisible, setIsPostOptionVisible] = useState(false);
-  const [activeCommentOption, setActiveCommentOption] = useState<string | null>(
-    null,
-  );
-  const [scrollY, setScrollY] = useState(0);
-  const [commentLayouts, setCommentLayouts] = useState<{
-    [key: string]: number;
-  }>({});
-  const [deleteCommentModalVisible, setDeleteCommentModalVisible] =
-    useState(false);
-  const [deletePostModalVisible, setDeletePostModalVisible] = useState(false);
-
   const { isKeyboardVisible, keyboardHeight, backdropOpacity } = useKeyboard();
+
   const {
     isLiked,
     isBookmarked,
@@ -98,62 +76,62 @@ const BoardDetailPosts = () => {
     onRefetch: postRefetch,
   });
 
-  // API 호출 관련 핸들러
-  const handleReplyPress = (commentId: number) => {
-    setReplyingToCommentId(commentId);
-    // 입력창 포커스
-    setTimeout(() => {
-      commentInputRef.current?.focus();
-    }, 100);
-  };
+  const commentManagement = useCommentManagement({
+    postId,
+    onRefetch: async () => {
+      await Promise.all([commentRefetch(), postRefetch()]);
+    },
+  });
 
-  const handleSendComment = async () => {
-    if (comment.trim()) {
-      try {
-        if (replyingToCommentId !== null) {
-          // 답글 작성
-          await createReply(postId, replyingToCommentId, comment);
-          setReplyingToCommentId(null);
-        } else {
-          // 댓글 작성
-          await createComment(comment, postId);
-        }
-        await commentRefetch();
-        setComment('');
-        Keyboard.dismiss();
-      } catch (error) {
-        console.error('댓글/답글 작성 실패:', error);
-      }
+  const commentUI = useCommentUI();
+
+  const modals = usePostDetailModals();
+
+  const postActions = usePostActions({
+    postId,
+    post,
+    navigation,
+  });
+
+  // 화면 포커스 시 데이터 refetch
+  useFocusEffect(
+    useCallback(() => {
+      postRefetch();
+      commentRefetch();
+    }, [postRefetch, commentRefetch]),
+  );
+
+  // 댓글/답글 삭제 핸들러 (모달 포함)
+  const handleConfirmDeleteComment = async () => {
+    if (!modals.deletingCommentInfo) {
+      return;
     }
-  };
 
-  const handleCommentLikePress = async (
-    commentId: number,
-    currentIsLiked: boolean,
-  ) => {
     try {
-      if (currentIsLiked) {
-        await removeCommentLike(commentId);
-      } else {
-        await addCommentLike(commentId);
-      }
-      await commentRefetch();
+      await commentManagement.handleDeleteComment(
+        modals.deletingCommentInfo.commentId,
+        modals.deletingCommentInfo.parentId,
+      );
+      modals.closeDeleteCommentModal();
     } catch (error) {
-      console.error('댓글 좋아요 처리 실패:', error);
+      modals.closeDeleteCommentModal();
     }
   };
 
-  const handleCommentLayout = (id: string, y: number) => {
-    setCommentLayouts(prev => ({ ...prev, [id]: y }));
+  // 게시글 삭제 핸들러 (모달 포함)
+  const handleConfirmDeletePost = async () => {
+    try {
+      await postActions.handleDeletePost();
+      modals.closeDeletePostModal();
+    } catch (error) {
+      modals.closeDeletePostModal();
+    }
   };
 
-  const handleToggleCommentOption = (id: string) => {
-    setActiveCommentOption(activeCommentOption === id ? null : id);
-  };
-
-  const postOptions = createPostOptions(() => setDeletePostModalVisible(true));
-  const commentOptions = createCommentOptions(() =>
-    setDeleteCommentModalVisible(true),
+  const postOptions = createPostOptions(
+    post?.isUser || false,
+    modals.openDeletePostModal,
+    postActions.handleEditPost,
   );
 
   if (isPostLoading || !post) {
@@ -182,7 +160,7 @@ const BoardDetailPosts = () => {
         subcategory={post.postType}
         paddingTop={insets.top}
         onBackPress={() => navigation.goBack()}
-        onMorePress={() => setIsPostOptionVisible(!isPostOptionVisible)}
+        onMorePress={modals.togglePostOption}
       />
 
       <KeyboardAvoidingView
@@ -194,7 +172,7 @@ const BoardDetailPosts = () => {
           contentContainerStyle={{ paddingBottom: 80 }}
           showsVerticalScrollIndicator={false}
           onScroll={event => {
-            setScrollY(event.nativeEvent.contentOffset.y);
+            commentUI.setScrollY(event.nativeEvent.contentOffset.y);
           }}
           scrollEventThrottle={16}
           keyboardShouldPersistTaps="handled">
@@ -202,7 +180,7 @@ const BoardDetailPosts = () => {
             <PostDetailContent post={post} />
 
             <PostDetailStats
-              views={post.views}
+              // views={post.views}
               likes={post.likes}
               bookmarks={post.bookmarks}
               isLiked={isLiked}
@@ -225,35 +203,40 @@ const BoardDetailPosts = () => {
             ) : (
               <CommentList
                 comments={comments}
-                activeOption={activeCommentOption}
-                commentOptions={commentOptions}
-                scrollY={scrollY}
-                topOffset={TOP_OFFSET}
-                topInset={insets.top}
-                commentLayouts={commentLayouts}
-                onCommentLayout={handleCommentLayout}
-                onToggleOption={handleToggleCommentOption}
-                onCloseOption={() => setActiveCommentOption(null)}
-                onReplyPress={handleReplyPress}
-                onCommentLikePress={handleCommentLikePress}
+                commentCount={post.commentCount}
+                activeOption={commentUI.activeCommentOption}
+                scrollY={commentUI.scrollY}
+                commentLayouts={commentUI.commentLayouts}
+                onCommentLayout={commentUI.handleCommentLayout}
+                onToggleOption={commentUI.handleToggleCommentOption}
+                onCloseOption={commentUI.handleCloseCommentOption}
+                onReplyPress={commentManagement.handleReplyPress}
+                onCommentLikePress={commentManagement.handleCommentLikePress}
+                onReplyLikePress={commentManagement.handleReplyLikePress}
+                onDeleteComment={modals.openDeleteCommentModal}
+                onEditComment={commentManagement.handleEditComment}
               />
             )}
           </View>
         </ScrollView>
 
         <CommentInput
-          ref={commentInputRef}
-          value={comment}
-          onChangeText={setComment}
-          onSubmit={handleSendComment}
+          ref={commentManagement.commentInputRef}
+          value={commentManagement.comment}
+          onChangeText={commentManagement.setComment}
+          onSubmit={commentManagement.handleSendComment}
           keyboardHeight={keyboardHeight}
           bottomInset={insets.bottom}
+          isEditing={!!commentManagement.editingCommentInfo}
+          originalContent={
+            commentManagement.editingCommentInfo?.originalContent || ''
+          }
         />
       </KeyboardAvoidingView>
 
       <OptionPopup
-        visible={isPostOptionVisible}
-        onClose={() => setIsPostOptionVisible(false)}
+        visible={modals.isPostOptionVisible}
+        onClose={modals.closePostOption}
         options={postOptions}
         position={{
           top: insets.top + TOP_OFFSET,
@@ -262,31 +245,25 @@ const BoardDetailPosts = () => {
       />
 
       <ConfirmModal
-        visible={deleteCommentModalVisible}
-        onClose={() => setDeleteCommentModalVisible(false)}
+        visible={modals.deleteCommentModalVisible}
+        onClose={modals.closeDeleteCommentModal}
         title="댓글을 삭제할까요?"
         confirmText="네, 삭제할래요."
         cancelText="아니요, 그대로 둘게요."
         status="caution"
-        onConfirm={() => {
-          console.log('댓글 삭제');
-          setDeleteCommentModalVisible(false);
-        }}
-        onCancel={() => setDeleteCommentModalVisible(false)}
+        onConfirm={handleConfirmDeleteComment}
+        onCancel={modals.closeDeleteCommentModal}
       />
 
       <ConfirmModal
-        visible={deletePostModalVisible}
-        onClose={() => setDeletePostModalVisible(false)}
+        visible={modals.deletePostModalVisible}
+        onClose={modals.closeDeletePostModal}
         title="게시글을 삭제할까요?"
         confirmText="네, 삭제할래요."
         cancelText="아니요, 그대로 둘게요."
         status="caution"
-        onConfirm={() => {
-          console.log('게시글 삭제');
-          setDeletePostModalVisible(false);
-        }}
-        onCancel={() => setDeletePostModalVisible(false)}
+        onConfirm={handleConfirmDeletePost}
+        onCancel={modals.closeDeletePostModal}
       />
 
       <Toast config={toastConfig} />

@@ -23,6 +23,9 @@ interface HUCategoryDropdownProps {
   // selected값이 null 일 경우 보여질 기본 텍스트를 말함
   categoryName?: string;
 
+  // selected 값이 있을 경우 보여질 텍스트
+  selectedValue?: string | null;
+
   // selected 값이 있을 경우 보여질 컴포넌트
   selectedComponentStyle?: StyleProp<ViewStyle>;
 
@@ -36,15 +39,22 @@ const HUDropdown = ({
   dropdownItems,
   onSelectItem,
   categoryName = '선택',
+  selectedValue = null,
   containerStyle,
   dropdownWidth = 122,
 }: HUCategoryDropdownProps) => {
-  const [selectedItem, setSelectedItem] = useState<string | null>(null);
+  const [selectedItem, setSelectedItem] = useState<string | null>(
+    selectedValue,
+  );
   const [isVisible, setIsVisible] = useState(false);
   const [anchor, setAnchor] = useState({ x: 0, y: 0 });
   const triggerRef = useRef<View>(null);
 
   const rotation = useRef(new Animated.Value(0)).current;
+
+  useEffect(() => {
+    setSelectedItem(selectedValue);
+  }, [selectedValue]);
 
   useEffect(() => {
     Animated.timing(rotation, {

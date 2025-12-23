@@ -8,6 +8,7 @@ export interface CommentResponse {
   likeCount: number;
   createdAt: string;
   commentReplies: CommentResponse[];
+  isUser?: boolean;
 }
 
 export interface Comment {
@@ -20,6 +21,7 @@ export interface Comment {
   firstMajorName: string;
   secondMajorName: string;
   replies?: Comment[];
+  isUser?: boolean;
 }
 
 export interface Reply {
@@ -32,12 +34,13 @@ export interface Reply {
   date: string;
   likes: number;
   replies?: Comment[];
+  isUser?: boolean;
 }
 
 export const convertToComment = (response: CommentResponse): Comment => {
   return {
     id: response.id,
-    author: response.nickname || '익명',
+    author: response.nickname || '알 수 없음',
     firstMajorName: response.firstMajorName || '',
     secondMajorName: response.secondMajorName || '',
     content: response.content,
@@ -45,5 +48,6 @@ export const convertToComment = (response: CommentResponse): Comment => {
     isLiked: response.isLiked,
     likes: response.likeCount,
     replies: response.commentReplies.map(convertToComment),
+    isUser: response.isUser,
   };
 };
