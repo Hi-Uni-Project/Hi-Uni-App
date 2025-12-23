@@ -180,7 +180,7 @@ const BoardDetailPosts = () => {
             <PostDetailContent post={post} />
 
             <PostDetailStats
-              views={post.views}
+              // views={post.views}
               likes={post.likes}
               bookmarks={post.bookmarks}
               isLiked={isLiked}
