@@ -1,5 +1,8 @@
 import { useNavigation } from '@react-navigation/native';
 
+import { EXTERNAL_URLS } from '../../constants/externalURL';
+import { createExternalLinkHandler } from '../../hooks/openURL';
+
 import { MypageStackNavigationProp } from '@/navigation/types/navigationTypes';
 import { useRegisterStore } from '@/shared/stores/register';
 
@@ -9,9 +12,10 @@ export const useMypageMainService = () => {
 
   const handleScrabPress = () => navigation.navigate('MyScrab');
   const handleAccountManagePress = () => navigation.navigate('AccountManage');
-  const handleTermsPress = () => console.log('노션 링킹');
-  const handleRulesPress = () => console.log('노션 링킹');
-  const handlePrivacyPress = () => console.log('노션 링킹');
+
+  const handleTermsPress = createExternalLinkHandler(EXTERNAL_URLS.TERMS);
+  const handleRulesPress = createExternalLinkHandler(EXTERNAL_URLS.RULES);
+  const handlePrivacyPress = createExternalLinkHandler(EXTERNAL_URLS.PRIVACY);
 
   return {
     univ,

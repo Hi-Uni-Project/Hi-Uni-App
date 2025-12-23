@@ -1,10 +1,12 @@
 import React from 'react';
 
+import { useNavigation } from '@react-navigation/native';
 import { FlatList } from 'react-native';
 
 import BoardPostCardMD from '../BoardPostCard/md';
 
 import { Post } from '@/features/board/shared/types/DefaultPostType';
+import { MainStackNavigationProp } from '@/navigation/types/navigationTypes';
 import NoBoardLayout from '@/shared/components/Board/layouts/NoBoardLayout';
 import Loading from '@/shared/ui/organisms/Loading';
 
@@ -15,6 +17,8 @@ interface Props {
 }
 
 const BoardContentLayout = ({ data, isLoading, des }: Props) => {
+  const navigation = useNavigation<MainStackNavigationProp>();
+
   if (isLoading) {
     return <Loading />;
   }
@@ -27,7 +31,20 @@ const BoardContentLayout = ({ data, isLoading, des }: Props) => {
     <FlatList
       data={data}
       keyExtractor={item => item.id.toString()}
-      renderItem={({ item }) => <BoardPostCardMD {...item} />}
+      renderItem={({ item }) => (
+        <BoardPostCardMD
+          {...item}
+          onPress={() =>
+            navigation.navigate('BoardRoute', {
+              screen: 'BoardDetailPosts',
+              params: {
+                postId: item.id,
+                isReview: item.isReview,
+              },
+            })
+          }
+        />
+      )}
       contentContainerStyle={{ paddingVertical: 20, gap: 8, paddingBottom: 50 }}
       showsVerticalScrollIndicator={false}
     />

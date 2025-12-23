@@ -23,6 +23,7 @@ const BoardWrite = () => {
     content,
     modalState,
     reviewTemplate,
+    editMode,
     setTitle,
     setContent,
     setSelectedPostType,
@@ -36,12 +37,17 @@ const BoardWrite = () => {
     handlePostTypeSelect,
     handleConfirmPostTypeChange,
     handleSubmit,
+    hasChanges,
   } = useBoardWrite();
   const { validateRequiredFields } = reviewTemplate;
 
-  const isSubmitEnabled = isReview
-    ? title.trim() && validateRequiredFields()
-    : title.trim() && content.trim() && selectedPostType;
+  const isSubmitEnabled = editMode
+    ? isReview
+      ? title.trim() && validateRequiredFields() && hasChanges()
+      : title.trim() && content.trim() && selectedPostType && hasChanges()
+    : isReview
+      ? title.trim() && validateRequiredFields()
+      : title.trim() && content.trim() && selectedPostType;
 
   const displayName = POST_TYPE_DISPLAY_NAME[selectedPostType] ?? '선택';
   const placeholder = selectedPostType
@@ -66,6 +72,7 @@ const BoardWrite = () => {
           title={title}
           isReview={isReview}
           reviewForm={reviewTemplate}
+          editMode={editMode}
           onPostTypeSelectorPress={toggleDropdown}
           onTitleChange={setTitle}
           onReviewToggle={handleReviewToggle}
@@ -79,6 +86,7 @@ const BoardWrite = () => {
           content={content}
           isReview={isReview}
           placeholder={placeholder}
+          editMode={editMode}
           onPostTypeSelectorPress={toggleDropdown}
           onTitleChange={setTitle}
           onContentChange={setContent}

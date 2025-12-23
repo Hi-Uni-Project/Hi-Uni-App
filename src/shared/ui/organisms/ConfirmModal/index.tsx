@@ -35,6 +35,8 @@ const ConfirmModal = ({
     <Modal
       visible={visible}
       transparent
+      statusBarTranslucent
+      navigationBarTranslucent
       animationType="fade"
       onRequestClose={onClose}>
       <View className="flex-1 items-center justify-center bg-black/50">

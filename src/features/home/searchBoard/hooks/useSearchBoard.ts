@@ -7,6 +7,7 @@ import { Post } from '@/features/board/shared/types/DefaultPostType';
 import { SortType } from '@/features/board/shared/types/enum/sortEnum';
 import { MAX_ITEMS } from '@/features/home/searchBoard/constants/lines';
 import { useSearchBoardQuery } from '@/features/home/searchBoard/hooks/useSearchBoardQuery';
+import { MainStackNavigationProp } from '@/navigation/types/navigationTypes';
 
 interface Props {
   sortType: SortType;
@@ -15,7 +16,7 @@ interface Props {
 
 export const useSearchBoard = ({ sortType, resetSort }: Props) => {
   const inputRef = useRef<TextInput>(null);
-  const navigation = useNavigation();
+  const navigation = useNavigation<MainStackNavigationProp>();
   const [searchText, setSearchText] = useState('');
   const [submittedSearchText, setSubmittedSearchText] = useState('');
   const [recentSearches, setRecentSearches] = useState<string[]>([]);
@@ -87,8 +88,13 @@ export const useSearchBoard = ({ sortType, resetSort }: Props) => {
   const handleBackPress = () => navigation.goBack();
 
   const handlePostPress = (post: Post) => {
-    console.log(`${post.title} 클릭됨`, post);
-    // navigation.navigate('PostDetail', { postId: post.id });
+    navigation.navigate('BoardRoute', {
+      screen: 'BoardDetailPosts',
+      params: {
+        postId: post.id,
+        isReview: post.isReview,
+      },
+    });
   };
 
   return {
@@ -110,6 +116,7 @@ export const useSearchBoard = ({ sortType, resetSort }: Props) => {
     isFetching,
 
     // Handlers
+    refetch,
     handleSearch,
     handleSelectRecentItem,
     handleInputFocus,

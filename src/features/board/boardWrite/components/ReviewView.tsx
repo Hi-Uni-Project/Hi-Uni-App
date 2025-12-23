@@ -15,6 +15,7 @@ interface Props {
   title: string;
   isReview: boolean;
   reviewForm: any;
+  editMode?: boolean;
   onPostTypeSelectorPress: () => void;
   onTitleChange: (text: string) => void;
   onReviewToggle: () => void;
@@ -27,6 +28,7 @@ const ReviewView = ({
   title,
   isReview,
   reviewForm,
+  editMode = false,
   onPostTypeSelectorPress,
   onTitleChange,
   onReviewToggle,
@@ -43,6 +45,7 @@ const ReviewView = ({
             displayName={displayName}
             isDropdownOpen={isDropdownOpen}
             onPress={onPostTypeSelectorPress}
+            disabled={editMode}
           />
 
           <TextInput
@@ -58,6 +61,7 @@ const ReviewView = ({
       <ReviewCheckbox
         isReview={isReview}
         onPress={onReviewToggle}
+        disabled={editMode}
         description={
           '후기 글의 경우 기록에 자동 저장되어 포트폴리오,\n이력서, 자기소개서가 자동으로 작성돼요.'
         }

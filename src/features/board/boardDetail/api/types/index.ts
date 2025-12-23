@@ -4,22 +4,21 @@ export interface CreatePostRequest {
   title: string;
   content: string;
   type: PostType;
-  imageUrl?: string; // 삭제 예정
 }
 
+// 후기 게시글 생성 요청 (새 API 명세)
 export interface CreateReviewPostRequest {
   title: string;
   content: string;
-  imageUrl?: string; // 삭제 예정
   type: PostType;
-  firstQuestion?: string;
-  secondQuestion?: string;
-  thirdQuestion?: string;
-  fourthQuestion?: string;
-  fifthQuestion?: string;
-  sixthQuestion?: string;
-  seventhQuestion?: string;
-  eighthQuestion?: string;
+  firstQuestion: string;
+  secondQuestion: string;
+  thirdQuestion: string;
+  fourthQuestion: string;
+  fifthQuestion: string;
+  sixthQuestion: string;
+  seventhQuestion: string;
+  eighthQuestion: string;
   startDate?: string;
   endDate?: string;
 }

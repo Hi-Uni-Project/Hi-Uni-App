@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 
+import { useFocusEffect } from '@react-navigation/native';
 import { UseQueryResult } from '@tanstack/react-query';
 import { View } from 'react-native';
 
@@ -22,7 +23,13 @@ const BoardListScreen = ({
   showHeaderIcon = false,
   useQuery,
 }: Props) => {
-  const { data, isLoading } = useQuery();
+  const { data, isLoading, refetch } = useQuery();
+
+  useFocusEffect(
+    useCallback(() => {
+      refetch();
+    }, [refetch]),
+  );
 
   return (
     <View className="flex-1">

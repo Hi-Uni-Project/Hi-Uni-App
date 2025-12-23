@@ -1,5 +1,6 @@
 import React, { Dispatch, SetStateAction } from 'react';
 
+import { useNavigation } from '@react-navigation/native';
 import { FlatList, FlatListProps } from 'react-native';
 
 import BoardPostCardMD from '../BoardPostCard/md';
@@ -8,10 +9,10 @@ import SortBottomSheet from './SortBottomSheet';
 import SortHeader from './SortHeader';
 
 import { Post } from '@/features/board/shared/types/DefaultPostType';
+import { MainStackNavigationProp } from '@/navigation/types/navigationTypes';
 
 interface SortPostListProps {
   data: Post[];
-  onPostPress?: (post: Post) => void;
   contentContainerStyle?: FlatListProps<Post>['contentContainerStyle'];
   selectedSortLabel: string;
   sortSheetVisible: boolean;
@@ -25,7 +26,6 @@ interface SortPostListProps {
 
 const SortPostList = ({
   data,
-  onPostPress,
   classname = '-mt-6',
   contentContainerStyle = { paddingVertical: 20, paddingBottom: 50, gap: 8 },
   selectedSortLabel,
@@ -36,6 +36,8 @@ const SortPostList = ({
   scrollEnabled = true,
   typeHide = false,
 }: SortPostListProps) => {
+  const navigation = useNavigation<MainStackNavigationProp>();
+
   return (
     <>
       <FlatList
@@ -46,7 +48,15 @@ const SortPostList = ({
         renderItem={({ item }) => (
           <BoardPostCardMD
             {...item}
-            onPress={() => onPostPress?.(item)}
+            onPress={() =>
+              navigation.navigate('BoardRoute', {
+                screen: 'BoardDetailPosts',
+                params: {
+                  postId: item.id,
+                  isReview: item.isReview,
+                },
+              })
+            }
             vertical={vertical}
             typeHide={typeHide}
           />

@@ -2,6 +2,7 @@ import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 import { NavigatorScreenParams } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
+import { PostDetail } from '@/features/board/boardDetail/types';
 import {
   Schedule,
   ScheduleDatePayload,
@@ -10,7 +11,7 @@ import {
 export type MainNavigationProps = {
   OnboardRoute: undefined;
   SignupRoute: undefined;
-  HomeRoute: undefined;
+  HomeRoute: NavigatorScreenParams<HomeNavigationProps>;
   BoardRoute: NavigatorScreenParams<BoardNavigationProps>;
   MyPageRoute: undefined;
   RecordRoute: NavigatorScreenParams<RecordNavigationProps>;
@@ -49,7 +50,12 @@ export type BoardNavigationProps = {
   MyComments: undefined;
   MyPosts: undefined;
   PopularReviews: { title: string };
-  BoardWrite: undefined;
+  BoardWrite: {
+    editMode?: boolean;
+    postId?: number;
+    postData?: PostDetail;
+  };
+  BoardDetailPosts: { postId: number; isReview: boolean };
 };
 
 export type TabNavigationProps = {

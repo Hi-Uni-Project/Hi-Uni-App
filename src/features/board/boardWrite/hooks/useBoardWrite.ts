@@ -1,17 +1,35 @@
 import { useState, useEffect } from 'react';
 
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
 
-import { ModalState } from '../types';
+import {
+  ModalState,
+  ReviewFormData,
+  JobFormData,
+  InternshipFormData,
+  InterviewFormData,
+  WorkStoryFormData,
+  LicenseFormData,
+} from '../types';
 
 import { usePostSubmit } from './usePostSubmit';
 import { useReviewTemplate } from './useReviewTemplate';
 
 import { PostType } from '@/features/board/shared/types/enum/postEnum';
-import { HomeStackNavigationProp } from '@/navigation/types/navigationTypes';
+import {
+  BoardNavigationProps,
+  BoardStackNavigationProp,
+} from '@/navigation/types/navigationTypes';
+
+type BoardWriteRouteProp = RouteProp<BoardNavigationProps, 'BoardWrite'>;
 
 const useBoardWrite = () => {
-  const navigation = useNavigation<HomeStackNavigationProp>();
+  const navigation = useNavigation<BoardStackNavigationProp>();
+  const route = useRoute<BoardWriteRouteProp>();
+
+  const editMode = route.params?.editMode || false;
+  const postId = route.params?.postId;
+  const postData = route.params?.postData;
 
   const [selectedPostType, setSelectedPostType] = useState<PostType | null>(
     null,
@@ -22,8 +40,17 @@ const useBoardWrite = () => {
   const [modalState, setModalState] = useState<ModalState>({ type: 'none' });
   const [changeType, setChangeType] = useState<PostType | null>(null);
 
+  // 수정 모드 초기 데이터 설정
+  const [initialData, setInitialData] = useState({
+    title: '',
+    content: '',
+    postType: null as PostType | null,
+    isReview: false,
+    reviewData: null as any,
+  });
+
   const reviewTemplate = useReviewTemplate(selectedPostType);
-  const { hasReviewContent, resetForm } = reviewTemplate;
+  const { hasReviewContent, resetForm, setFormData } = reviewTemplate;
 
   // 게시글 제출 훅 (일반 글 + 후기 글)
   const { handleSubmit } = usePostSubmit({
@@ -33,13 +60,153 @@ const useBoardWrite = () => {
     isReview,
     reviewFormData: reviewTemplate.formData,
     navigation,
+    editMode,
+    postId,
   });
 
+  const convertReviewQuestionsToFormData = (
+    questions: { label: string; value: string }[],
+    type: PostType,
+  ): ReviewFormData => {
+    const questionMap: { [key: string]: string } = {};
+    questions.forEach(q => {
+      questionMap[q.label] = q.value;
+    });
+
+    const feelings = postData?.content || '';
+    const additionalExperience = postData?.additionalReview || '';
+
+    switch (type) {
+      case PostType.JOB:
+        return {
+          companyName: questionMap['회사명'] || '',
+          position: questionMap['직무'] || '',
+          applicationMethod: questionMap['지원 방법'] || '',
+          focusArea: questionMap['면접 질문'] || '',
+          preparation: questionMap['준비 사항'] || '',
+          result: questionMap['결과'] || '',
+          feelings,
+          additionalExperience,
+        } as JobFormData;
+      case PostType.INTERNSHIP:
+        return {
+          companyName: questionMap['회사명'] || '',
+          position: questionMap['부서/직무'] || '',
+          tasks: questionMap['담당 업무'] || '',
+          learnings: questionMap['실무 내용'] || '',
+          startDate: questionMap['시작일']
+            ? new Date(questionMap['시작일'])
+            : new Date(),
+          endDate: questionMap['종료일']
+            ? new Date(questionMap['종료일'])
+            : new Date(),
+          feelings,
+          additionalExperience,
+        } as InternshipFormData;
+      case PostType.INTERVIEW:
+        return {
+          companyName: questionMap['회사명'] || '',
+          position: questionMap['직무'] || '',
+          interviewType: questionMap['면접 유형'] || '',
+          questions: questionMap['질문 내용'] || '',
+          answerPreparation: questionMap['답변 준비'] || '',
+          atmosphere: questionMap['면접 분위기'] || '',
+          feelings,
+          additionalExperience,
+        } as InterviewFormData;
+      case PostType.EXPERIENCE:
+        return {
+          companyName: questionMap['조직명'] || '',
+          position: questionMap['직무'] || '',
+          jobLevel: questionMap['직급'] || '',
+          tasks: questionMap['담당 업무'] || '',
+          requiredSkills: questionMap['필수 스킬'] || '',
+          startDate: questionMap['시작일']
+            ? new Date(questionMap['시작일'])
+            : new Date(),
+          endDate: questionMap['종료일']
+            ? new Date(questionMap['종료일'])
+            : new Date(),
+          feelings,
+          additionalExperience,
+        } as WorkStoryFormData;
+      case PostType.LICENSE:
+        return {
+          licenseName: questionMap['자격증명'] || '',
+          preparationPeriod: questionMap['준비 기간'] || '',
+          materials: questionMap['교재'] || '',
+          difficulty: questionMap['난이도'] || '',
+          studyMethod: questionMap['학습 방법'] || '',
+          tips: questionMap['합격 팁'] || '',
+          feelings,
+          additionalExperience,
+        } as LicenseFormData;
+      default:
+        return {
+          companyName: '',
+          startDate: new Date(),
+          endDate: new Date(),
+          position: '',
+          tasks: '',
+          learnings: '',
+          feelings: '',
+          additionalExperience: '',
+        } as InternshipFormData;
+    }
+  };
+
+  // 수정 모드 초기화
   useEffect(() => {
-    if (selectedPostType && isReview) {
+    if (editMode && postData) {
+      setTitle(postData.title);
+      setSelectedPostType(postData.postType);
+      setIsReview(postData.isReview);
+
+      if (postData.isReview && postData.reviewQuestions) {
+        // 후기 글 데이터 설정
+        setInitialData({
+          title: postData.title,
+          content: '',
+          postType: postData.postType,
+          isReview: true,
+          reviewData: postData.reviewQuestions,
+        });
+      } else {
+        // 일반 글 데이터 설정
+        setContent(postData.content || '');
+        setInitialData({
+          title: postData.title,
+          content: postData.content || '',
+          postType: postData.postType,
+          isReview: false,
+          reviewData: null,
+        });
+      }
+    }
+  }, [editMode, postData]);
+
+  // 후기 글 수정 모드일 기존 게시글 데이터 로드
+  useEffect(() => {
+    if (
+      editMode &&
+      postData?.isReview &&
+      postData.reviewQuestions &&
+      selectedPostType &&
+      setFormData
+    ) {
+      const formDataFromQuestions = convertReviewQuestionsToFormData(
+        postData.reviewQuestions,
+        postData.postType,
+      );
+      setFormData(formDataFromQuestions);
+    }
+  }, [editMode, postData, selectedPostType, setFormData]);
+
+  useEffect(() => {
+    if (selectedPostType && isReview && !editMode) {
       resetForm();
     }
-  }, [selectedPostType, isReview]);
+  }, [selectedPostType, isReview, editMode]);
 
   const hasContent = () => content.trim() !== '' || title.trim() !== '';
 
@@ -82,6 +249,11 @@ const useBoardWrite = () => {
 
   // review 모드 변경
   const handleReviewToggle = () => {
+    // 수정 모드에서는 일반 ↔ 후기 변경 불가
+    if (editMode) {
+      return;
+    }
+
     if (!isReview && hasContent()) {
       setModalState({ type: 'changeToReview' });
     } else {
@@ -115,9 +287,53 @@ const useBoardWrite = () => {
 
   // dropdown
   const toggleDropdown = () => {
+    // 수정 모드에서는 말머리 변경 불가
+    if (editMode) {
+      return;
+    }
+
     setModalState(prev =>
       prev.type === 'dropdown' ? { type: 'none' } : { type: 'dropdown' },
     );
+  };
+
+  // 변경 감지 함수
+  const hasChanges = () => {
+    if (!editMode) {
+      return false;
+    }
+
+    if (title !== initialData.title) {
+      return true;
+    }
+    if (selectedPostType !== initialData.postType) {
+      return true;
+    }
+
+    if (isReview) {
+      // 후기 글 변경 감지 - reviewTemplate의 formData와 initialData.reviewData 비교
+      if (initialData.isReview && initialData.reviewData) {
+        const initialFormData = convertReviewQuestionsToFormData(
+          initialData.reviewData,
+          initialData.postType!,
+        );
+        const currentData = JSON.stringify(
+          reviewTemplate.formData,
+          (key, value) => (value instanceof Date ? value.toISOString() : value),
+        );
+        const initialDataStr = JSON.stringify(initialFormData, (key, value) =>
+          value instanceof Date ? value.toISOString() : value,
+        );
+        return currentData !== initialDataStr;
+      }
+      return false;
+    } else {
+      if (content !== initialData.content) {
+        return true;
+      }
+    }
+
+    return false;
   };
 
   return {
@@ -128,6 +344,8 @@ const useBoardWrite = () => {
     content,
     modalState,
     reviewTemplate,
+    editMode,
+    initialData,
 
     // Setters
     setTitle,
@@ -146,6 +364,7 @@ const useBoardWrite = () => {
     handlePostTypeSelect,
     handleConfirmPostTypeChange,
     handleSubmit,
+    hasChanges,
   };
 };
 

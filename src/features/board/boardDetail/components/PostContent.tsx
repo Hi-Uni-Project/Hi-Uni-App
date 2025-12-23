@@ -11,7 +11,8 @@ interface ReviewQuestion {
 
 interface Post {
   id: number;
-  major: string;
+  firstMajorName: string;
+  secondMajorName: string;
   date: string;
   title: string;
   content: string;
@@ -32,8 +33,8 @@ const PostDetailContent = ({ post }: Props) => {
         <View>
           <Text className="text-main-text typo-body-15-semibold">익명</Text>
           <Text className="text-surface-500 typo-caption-13-light">
-            {/* 과 2개 들어와야함 -> 백엔드 요청 */}
-            {formatMajor(post.major)} · {formatDateOrTime(post.date)}
+            {formatMajor(post.firstMajorName, post.secondMajorName)} ·{' '}
+            {formatDateOrTime(post.date)}
           </Text>
         </View>
       </View>

@@ -82,7 +82,8 @@ export const useReviewTemplate = (selectedPostType: PostType | null) => {
           data.endDate &&
           data.position?.trim() &&
           data.tasks?.trim() &&
-          data.learnings?.trim()
+          data.learnings?.trim() &&
+          data.feelings?.trim()
         );
       }
 
@@ -94,7 +95,8 @@ export const useReviewTemplate = (selectedPostType: PostType | null) => {
           data.applicationMethod?.trim() &&
           data.focusArea?.trim() &&
           data.preparation?.trim() &&
-          data.result?.trim()
+          data.result?.trim() &&
+          data.feelings?.trim()
         );
       }
 
@@ -106,7 +108,8 @@ export const useReviewTemplate = (selectedPostType: PostType | null) => {
           data.interviewType?.trim() &&
           data.questions?.trim() &&
           data.answerPreparation?.trim() &&
-          data.atmosphere?.trim()
+          data.atmosphere?.trim() &&
+          data.feelings?.trim()
         );
       }
 
@@ -119,7 +122,8 @@ export const useReviewTemplate = (selectedPostType: PostType | null) => {
           data.position?.trim() &&
           data.jobLevel?.trim() &&
           data.tasks?.trim() &&
-          data.requiredSkills?.trim()
+          data.requiredSkills?.trim() &&
+          data.feelings?.trim()
         );
       }
 
@@ -131,7 +135,8 @@ export const useReviewTemplate = (selectedPostType: PostType | null) => {
           data.materials?.trim() &&
           data.difficulty?.trim() &&
           data.studyMethod?.trim() &&
-          data.tips?.trim()
+          data.tips?.trim() &&
+          data.feelings?.trim()
         );
       }
 
@@ -181,6 +186,7 @@ export const useReviewTemplate = (selectedPostType: PostType | null) => {
     // Methods
     formatDate,
     updateField,
+    setFormData,
     resetForm,
     openCalendar,
     closeCalendar,

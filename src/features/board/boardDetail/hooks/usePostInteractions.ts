@@ -1,15 +1,41 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import { Animated } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Toast from 'react-native-toast-message';
 
-export const usePostInteractions = () => {
+import {
+  addPostBookmark,
+  removePostBookmark,
+} from '../api/post/toggleBookmark';
+import { addPostLike, removePostLike } from '../api/post/togglePostLike';
+
+interface Props {
+  postId: number;
+  initialIsLiked: boolean;
+  initialIsBookmarked: boolean;
+  onRefetch?: () => Promise<any>;
+}
+
+export const usePostInteractions = ({
+  postId,
+  initialIsLiked,
+  initialIsBookmarked,
+  onRefetch,
+}: Props) => {
   const insets = useSafeAreaInsets();
-  const [isLiked, setIsLiked] = useState(false);
-  const [isBookmarked, setIsBookmarked] = useState(false);
+  const [isLiked, setIsLiked] = useState(initialIsLiked);
+  const [isBookmarked, setIsBookmarked] = useState(initialIsBookmarked);
   const [likeScale] = useState(new Animated.Value(1));
   const [bookmarkScale] = useState(new Animated.Value(1));
+
+  useEffect(() => {
+    setIsLiked(initialIsLiked);
+  }, [initialIsLiked]);
+
+  useEffect(() => {
+    setIsBookmarked(initialIsBookmarked);
+  }, [initialIsBookmarked]);
 
   const animateScale = (scaleValue: Animated.Value) => {
     Animated.sequence([
@@ -27,12 +53,29 @@ export const usePostInteractions = () => {
     ]).start();
   };
 
-  const handleLikePress = () => {
+  const handleLikePress = async () => {
+    const previousState = isLiked;
     setIsLiked(!isLiked);
     animateScale(likeScale);
+
+    try {
+      if (previousState) {
+        await removePostLike(postId);
+      } else {
+        await addPostLike(postId);
+      }
+      if (onRefetch) {
+        await onRefetch();
+      }
+    } catch (error) {
+      // 실패 시 원래 상태로 복구
+      setIsLiked(previousState);
+      console.error('좋아요 처리 실패:', error);
+    }
   };
 
-  const handleBookmarkPress = () => {
+  const handleBookmarkPress = async () => {
+    const previousState = isBookmarked;
     const newBookmarkState = !isBookmarked;
     setIsBookmarked(newBookmarkState);
     animateScale(bookmarkScale);
@@ -46,6 +89,21 @@ export const usePostInteractions = () => {
         visibilityTime: 2500,
         bottomOffset: insets.bottom + 200,
       });
+    }
+
+    try {
+      if (previousState) {
+        await removePostBookmark(postId);
+      } else {
+        await addPostBookmark(postId);
+      }
+      if (onRefetch) {
+        await onRefetch();
+      }
+    } catch (error) {
+      // 실패 시 원래 상태로 복구
+      setIsBookmarked(previousState);
+      console.error('북마크 처리 실패:', error);
     }
   };
 

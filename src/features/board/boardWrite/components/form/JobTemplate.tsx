@@ -80,6 +80,7 @@ const JobTemplate = ({ reviewForm }: TemplateProps) => {
           value={formData.feelings}
           onChangeText={text => updateField('feelings', text)}
           multiline
+          required
           height={85}
         />
       </View>

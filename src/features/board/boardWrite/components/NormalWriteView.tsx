@@ -20,6 +20,7 @@ interface Props {
   content: string;
   isReview: boolean;
   placeholder: string;
+  editMode?: boolean;
   onPostTypeSelectorPress: () => void;
   onTitleChange: (text: string) => void;
   onContentChange: (text: string) => void;
@@ -34,6 +35,7 @@ const NormalWriteView = ({
   content,
   isReview,
   placeholder,
+  editMode = false,
   onPostTypeSelectorPress,
   onTitleChange,
   onContentChange,
@@ -49,6 +51,7 @@ const NormalWriteView = ({
               displayName={displayName}
               isDropdownOpen={isDropdownOpen}
               onPress={onPostTypeSelectorPress}
+              disabled={editMode}
             />
 
             <TextInput
@@ -67,6 +70,7 @@ const NormalWriteView = ({
           description={
             '후기 글의 경우 기록에 자동 저장되어 자기소개서가 \n자동으로 작성돼요.'
           }
+          disabled={editMode}
         />
 
         <TextInput

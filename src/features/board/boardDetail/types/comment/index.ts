@@ -1,40 +1,53 @@
 export interface CommentResponse {
   id: number;
-  nickname: string;
-  majorName: string;
+  nickname: string | null;
+  firstMajorName: string | null;
+  secondMajorName: string | null;
   content: string;
+  isLiked: boolean;
   likeCount: number;
+  createdAt: string;
+  commentReplies: CommentResponse[];
+  isUser?: boolean;
 }
 
 export interface Comment {
   id: number;
   author: string;
-  univ: string;
   content: string;
+  isLiked: boolean;
   date: string;
   likes: number;
-  majorName: string;
+  firstMajorName: string;
+  secondMajorName: string;
   replies?: Comment[];
+  isUser?: boolean;
 }
 
 export interface Reply {
   id: number;
   author: string;
-  univ: string;
+  firstMajorName: string;
+  secondMajorName: string;
   content: string;
+  isLiked: boolean;
   date: string;
   likes: number;
+  replies?: Comment[];
+  isUser?: boolean;
 }
 
 export const convertToComment = (response: CommentResponse): Comment => {
   return {
     id: response.id,
-    author: response.nickname,
-    univ: response.majorName,
-    majorName: response.majorName,
+    author: response.nickname || '알 수 없음',
+    firstMajorName: response.firstMajorName || '',
+    secondMajorName: response.secondMajorName || '',
     content: response.content,
-    date: '방금 전', // createdAt이 없어서 임시로 설정
+    date: response.createdAt,
+    isLiked: response.isLiked,
     likes: response.likeCount,
-    replies: [], // 답글은 별도 API로 조회 필요
+    replies: response.commentReplies.map(convertToComment),
+    isUser: response.isUser,
   };
 };

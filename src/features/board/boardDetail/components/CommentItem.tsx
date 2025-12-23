@@ -3,6 +3,8 @@ import React from 'react';
 import clsx from 'clsx';
 import { View, Text } from 'react-native';
 
+import { createCommentOptions } from '../constants';
+import { useCommentLayout } from '../hooks/useCommentLayout';
 import { Comment } from '../types/comment';
 
 import CommentActionBox from './CommentActionBox';
@@ -11,7 +13,7 @@ import ReplyItem from './ReplyItem';
 import { OptionItem } from '@/shared/components/Board/OptionPopup';
 import OptionPopup from '@/shared/components/Board/OptionPopup';
 import BoardActionIcons from '@/shared/icons/BoardActionIcons';
-import { formatMajor } from '@/shared/utils/formatter';
+import { formatDateOrTime, formatMajor } from '@/shared/utils/formatter';
 
 interface Props {
   comment: Comment;
@@ -19,12 +21,25 @@ interface Props {
   activeOption: string | null;
   commentOptions: OptionItem[];
   scrollY: number;
-  topOffset: number;
-  topInset: number;
-  commentLayouts: { [key: string]: number };
-  onLayout: (id: string, y: number) => void;
+  commentLayouts: {
+    [key: string]: { actionBoxY: number; actionBoxHeight: number };
+  };
+  onLayout: (id: string, actionBoxY: number, actionBoxHeight: number) => void;
   onToggleOption: (id: string) => void;
   onCloseOption: () => void;
+  onReplyPress: (commentId: number) => void;
+  onCommentLikePress: (commentId: number, currentIsLiked: boolean) => void;
+  onReplyLikePress: (
+    commentId: number,
+    replyId: number,
+    currentIsLiked: boolean,
+  ) => void;
+  onDeleteComment: (commentId: number, parentId?: number) => void;
+  onEditComment: (
+    commentId: number,
+    content: string,
+    parentId?: number,
+  ) => void;
 }
 
 const CommentItem = ({
@@ -33,43 +48,53 @@ const CommentItem = ({
   activeOption,
   commentOptions,
   scrollY,
-  topOffset,
-  topInset,
   commentLayouts,
   onLayout,
   onToggleOption,
   onCloseOption,
+  onReplyPress,
+  onCommentLikePress,
+  onReplyLikePress,
+  onDeleteComment,
+  onEditComment,
 }: Props) => {
   const commentId = `comment-${comment.id}`;
   const isActive = activeOption === commentId;
 
+  const { actionBoxRef, handleActionBoxLayout } = useCommentLayout({
+    id: commentId,
+    isActive,
+    scrollY,
+    onLayout,
+  });
+
   return (
-    <View
-      className="pb-6"
-      onLayout={event => {
-        const layout = event.nativeEvent.layout;
-        onLayout(commentId, layout.y);
-      }}>
+    <View className="pb-6">
       <View
         className={clsx(
           !isLast && 'border-b border-b-surface-200',
           'flex-col justify-between pb-6',
         )}>
         <View className="w-full">
-          <View className="mb-3 flex-row items-center justify-between">
+          <View
+            ref={actionBoxRef}
+            className="mb-3 flex-row items-center justify-between"
+            onLayout={handleActionBoxLayout}>
             <View className="flex-row items-center">
               <View className="mr-3 h-8 w-8 rounded-full bg-surface-300" />
               <Text className="mr-1 text-main-text typo-caption-14-semibold">
                 익명{comment.id}
               </Text>
               <Text className="text-surface-500 typo-caption-14-regular">
-                · {formatMajor(comment.majorName)}
+                · {formatMajor(comment.firstMajorName, comment.secondMajorName)}
               </Text>
             </View>
 
             <CommentActionBox
-              onCommentPress={() => console.log('답글 작성')}
-              onLikePress={() => console.log('좋아요')}
+              onCommentPress={() => onReplyPress(comment.id)}
+              onLikePress={() =>
+                onCommentLikePress(comment.id, comment.isLiked)
+              }
               onTogglePress={() => onToggleOption(commentId)}
             />
           </View>
@@ -80,7 +105,7 @@ const CommentItem = ({
 
           <View className="flex-row items-center space-x-2">
             <Text className="text-surface-500 typo-caption-13-light">
-              {comment.date}
+              {formatDateOrTime(comment.date)}
             </Text>
             {comment.likes > 0 && (
               <View className="flex-row items-center">
@@ -98,15 +123,19 @@ const CommentItem = ({
             <ReplyItem
               key={reply.id}
               reply={reply}
+              parentCommentId={comment.id}
               activeOption={activeOption}
-              commentOptions={commentOptions}
+              commentOptions={createCommentOptions(
+                reply.isUser || false,
+                () => onDeleteComment(reply.id, comment.id),
+                () => onEditComment(reply.id, reply.content, comment.id),
+              )}
               scrollY={scrollY}
-              topOffset={topOffset}
-              topInset={topInset}
               commentLayouts={commentLayouts}
               onLayout={onLayout}
               onToggleOption={onToggleOption}
               onCloseOption={onCloseOption}
+              onReplyLikePress={onReplyLikePress}
             />
           ))}
       </View>
@@ -117,11 +146,9 @@ const CommentItem = ({
         options={commentOptions}
         position={{
           top:
-            topInset +
-            topOffset +
-            (commentLayouts[commentId] || 0) -
-            scrollY +
-            420,
+            (commentLayouts[commentId]?.actionBoxY || 0) +
+            (commentLayouts[commentId]?.actionBoxHeight || 0) +
+            25,
           right: 20,
         }}
       />

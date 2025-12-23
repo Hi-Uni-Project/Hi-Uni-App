@@ -9,85 +9,104 @@ import {
   WorkStoryFormData,
 } from '@/features/board/boardWrite/types';
 import { PostType } from '@/features/board/shared/types/enum/postEnum';
-import { formatDateTime } from '@/shared/utils/formatter';
+
+const formatToISO = (date: Date): string => {
+  return date.toISOString();
+};
 
 export const convertReviewFormToRequest = (
   title: string,
   type: PostType,
   formData: ReviewFormData,
 ): CreateReviewPostRequest => {
-  const request: CreateReviewPostRequest = {
-    title,
-    content: formData.feelings || '',
-    type,
-  };
-
   switch (type) {
-    case 'INTERNSHIP': {
-      const data = formData as InternshipFormData;
-      request.firstQuestion = data.companyName;
-      request.secondQuestion = formatDateTime(data.startDate);
-      request.thirdQuestion = formatDateTime(data.endDate);
-      request.fourthQuestion = data.position;
-      request.fifthQuestion = data.tasks;
-      request.sixthQuestion = data.learnings;
-      request.seventhQuestion = data.additionalExperience;
-      request.startDate = formatDateTime(data.startDate);
-      request.endDate = formatDateTime(data.endDate);
-      break;
-    }
-
     case 'JOB': {
       const data = formData as JobFormData;
-      request.firstQuestion = data.companyName;
-      request.secondQuestion = data.position;
-      request.thirdQuestion = data.applicationMethod;
-      request.fourthQuestion = data.focusArea;
-      request.fifthQuestion = data.preparation;
-      request.sixthQuestion = data.result;
-      request.seventhQuestion = data.additionalExperience;
-      break;
+      return {
+        title,
+        content: data.feelings || '',
+        type,
+        firstQuestion: data.companyName,
+        secondQuestion: data.position,
+        thirdQuestion: data.applicationMethod,
+        fourthQuestion: data.focusArea,
+        fifthQuestion: data.preparation,
+        sixthQuestion: data.result,
+        seventhQuestion: data.feelings,
+        eighthQuestion: data.additionalExperience || '',
+      };
+    }
+
+    case 'INTERNSHIP': {
+      const data = formData as InternshipFormData;
+      return {
+        title,
+        content: data.feelings || '',
+        type,
+        firstQuestion: data.companyName,
+        secondQuestion: data.position,
+        thirdQuestion: data.tasks,
+        fourthQuestion: data.learnings,
+        fifthQuestion: '',
+        sixthQuestion: '',
+        seventhQuestion: data.feelings,
+        eighthQuestion: data.additionalExperience || '',
+        startDate: formatToISO(data.startDate),
+        endDate: formatToISO(data.endDate),
+      };
     }
 
     case 'INTERVIEW': {
       const data = formData as InterviewFormData;
-      request.firstQuestion = data.companyName;
-      request.secondQuestion = data.position;
-      request.thirdQuestion = data.interviewType;
-      request.fourthQuestion = data.questions;
-      request.fifthQuestion = data.answerPreparation;
-      request.sixthQuestion = data.atmosphere;
-      request.seventhQuestion = data.additionalExperience;
-      break;
+      return {
+        title,
+        content: data.feelings || '',
+        type,
+        firstQuestion: data.companyName,
+        secondQuestion: data.position,
+        thirdQuestion: data.interviewType,
+        fourthQuestion: data.questions,
+        fifthQuestion: data.answerPreparation,
+        sixthQuestion: data.atmosphere,
+        seventhQuestion: data.feelings,
+        eighthQuestion: data.additionalExperience || '',
+      };
     }
 
     case 'EXPERIENCE': {
       const data = formData as WorkStoryFormData;
-      request.firstQuestion = data.companyName;
-      request.secondQuestion = formatDateTime(data.startDate);
-      request.thirdQuestion = formatDateTime(data.endDate);
-      request.fourthQuestion = data.position;
-      request.fifthQuestion = data.jobLevel;
-      request.sixthQuestion = data.tasks;
-      request.seventhQuestion = data.requiredSkills;
-      request.eighthQuestion = data.additionalExperience;
-      request.startDate = formatDateTime(data.startDate);
-      request.endDate = formatDateTime(data.endDate);
-      break;
+      return {
+        title,
+        content: data.feelings || '',
+        type,
+        firstQuestion: data.companyName,
+        secondQuestion: data.position,
+        thirdQuestion: data.jobLevel,
+        fourthQuestion: data.tasks,
+        fifthQuestion: data.requiredSkills,
+        sixthQuestion: '',
+        seventhQuestion: data.feelings,
+        eighthQuestion: data.additionalExperience || '',
+        startDate: formatToISO(data.startDate),
+        endDate: formatToISO(data.endDate),
+      };
     }
 
     case 'LICENSE': {
       const data = formData as LicenseFormData;
-      request.firstQuestion = data.licenseName;
-      request.secondQuestion = data.preparationPeriod;
-      request.thirdQuestion = data.materials;
-      request.fourthQuestion = data.difficulty;
-      request.fifthQuestion = data.studyMethod;
-      request.sixthQuestion = data.tips;
-      request.seventhQuestion = data.additionalExperience;
-      break;
+      return {
+        title,
+        content: data.feelings || '',
+        type,
+        firstQuestion: data.licenseName,
+        secondQuestion: data.preparationPeriod,
+        thirdQuestion: data.materials,
+        fourthQuestion: data.difficulty,
+        fifthQuestion: data.studyMethod,
+        sixthQuestion: data.tips,
+        seventhQuestion: data.feelings,
+        eighthQuestion: data.additionalExperience || '',
+      };
     }
   }
-
-  return request;
 };
