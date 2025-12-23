@@ -4,10 +4,9 @@ import clsx from 'clsx';
 import { View, Text, Pressable, Animated } from 'react-native';
 
 import BoardActionIcons from '@/shared/icons/BoardActionIcons';
-import ToggleIcons from '@/shared/icons/ToggleIcons';
 
 interface Props {
-  views: number;
+  // views: number;
   likes: number;
   bookmarks: number;
   isLiked: boolean;
@@ -19,7 +18,7 @@ interface Props {
 }
 
 const PostDetailStats = ({
-  views,
+  // views,
   likes,
   bookmarks,
   isLiked,
@@ -32,7 +31,7 @@ const PostDetailStats = ({
   return (
     <View className="flex-row items-center justify-between space-x-6 py-6">
       <View className="flex-row items-center">
-        <ToggleIcons
+        {/* <ToggleIcons
           type="eyeOpenStroke"
           color="#979797"
           width={24}
@@ -40,7 +39,8 @@ const PostDetailStats = ({
         />
         <Text className="ml-1 text-surface-500 typo-body-15-medium">
           {views}명이 봤어요
-        </Text>
+        </Text> */}
+        {/* 조회수 데이터 이슈로 인한 코멘트처리 */}
       </View>
 
       <View className="flex-row gap-2">
