@@ -21,7 +21,7 @@ const TextView = ({ currentStep }: Props) => {
 
   return (
     <View key={`TextView-${currentStep}`} className="flex-1">
-      <View className="m-5 mt-28">
+      <View className="m-5 mt-16">
         {onboardingProvider[currentStep].title
           .split('\n')
           .map((line, index) => (
@@ -54,7 +54,7 @@ const TextView = ({ currentStep }: Props) => {
           key={`TextView-${currentStep}-Image`}
           entering={FadeInDown.delay(300).duration(800)}
           exiting={FadeOutUp.duration(300)}
-          className="h-[450px] w-[340px]"
+          className="h-[600px] w-[380px]"
           source={onboardingImages[currentStep]}
           width={1}
           height={1}
