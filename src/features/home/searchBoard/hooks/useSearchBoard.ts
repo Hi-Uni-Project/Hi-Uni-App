@@ -3,11 +3,11 @@ import { useRef, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { Keyboard, TextInput } from 'react-native';
 
-import { Post } from '@/features/board/shared/types/DefaultPostType';
 import { SortType } from '@/features/board/shared/types/enum/sortEnum';
 import { MAX_ITEMS } from '@/features/home/searchBoard/constants/lines';
 import { useSearchBoardQuery } from '@/features/home/searchBoard/hooks/useSearchBoardQuery';
 import { MainStackNavigationProp } from '@/navigation/types/navigationTypes';
+import { useSearchHistoryStore } from '@/shared/stores/searchHistory';
 
 interface Props {
   sortType: SortType;
@@ -19,10 +19,12 @@ export const useSearchBoard = ({ sortType, resetSort }: Props) => {
   const navigation = useNavigation<MainStackNavigationProp>();
   const [searchText, setSearchText] = useState('');
   const [submittedSearchText, setSubmittedSearchText] = useState('');
-  const [recentSearches, setRecentSearches] = useState<string[]>([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [hasSearched, setHasSearched] = useState(false);
   const [enableQuery, setEnableQuery] = useState(false);
+
+  const { recentSearches, addSearch, removeSearch, clearAll } =
+    useSearchHistoryStore();
 
   const {
     data: filteredPosts = [],
@@ -46,16 +48,7 @@ export const useSearchBoard = ({ sortType, resetSort }: Props) => {
     setEnableQuery(true);
     await refetch();
 
-    setRecentSearches(prev => {
-      const updated = [
-        trimmedText,
-        ...prev.filter(item => item !== trimmedText),
-      ];
-      if (updated.length > MAX_ITEMS) {
-        updated.pop();
-      }
-      return updated;
-    });
+    addSearch(trimmedText, MAX_ITEMS);
 
     Keyboard.dismiss();
   };
@@ -72,7 +65,7 @@ export const useSearchBoard = ({ sortType, resetSort }: Props) => {
   };
 
   const handleRemoveItem = (item: string) => {
-    setRecentSearches(prev => prev.filter(i => i !== item));
+    removeSearch(item);
   };
 
   const handleClose = () => {
@@ -84,18 +77,8 @@ export const useSearchBoard = ({ sortType, resetSort }: Props) => {
     inputRef.current?.focus();
   };
 
-  const handleClearAll = () => setRecentSearches([]);
+  const handleClearAll = () => clearAll();
   const handleBackPress = () => navigation.goBack();
-
-  const handlePostPress = (post: Post) => {
-    navigation.navigate('BoardRoute', {
-      screen: 'BoardDetailPosts',
-      params: {
-        postId: post.id,
-        isReview: post.isReview,
-      },
-    });
-  };
 
   return {
     // Refs
@@ -124,6 +107,5 @@ export const useSearchBoard = ({ sortType, resetSort }: Props) => {
     handleClose,
     handleClearAll,
     handleBackPress,
-    handlePostPress,
   };
 };
