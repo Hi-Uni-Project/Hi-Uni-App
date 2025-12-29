@@ -1,6 +1,6 @@
 import React, { RefObject } from 'react';
 
-import { Pressable, TextInput, View } from 'react-native';
+import { Platform, Pressable, TextInput, View } from 'react-native';
 
 import ArrowIcons from '@/shared/icons/ArrowIcons';
 import { shadowStyleSheet } from '@/shared/styles/shadow';
@@ -44,7 +44,7 @@ const BoardInputHeader = ({
             onSubmitEditing={onSubmitEditing}
             onFocus={onFocus}
             onPress={onClose}
-            maxLength={16}
+            maxLength={Platform.OS === 'android' ? 12 : 16}
             returnKeyType="search"
             length={searchText.length}
           />
