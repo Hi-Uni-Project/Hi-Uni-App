@@ -32,12 +32,14 @@ const OnboardingScreen = () => {
   return (
     <ScreenLayout className="items-center justify-center">
       <TextView currentStep={currentStep} />
+
       <ButtonView
         currentStep={currentStep}
         onNext={() => {
           movePageByIndex(currentStep + 1);
         }}
       />
+
       <View className="relative w-full items-center justify-center py-5">
         <PaginationView progress={progress} data={onboardingProvider} />
         <Pressable
