@@ -42,7 +42,6 @@ const HomeSearchScreen = () => {
     handleClose,
     handleClearAll,
     handleBackPress,
-    handlePostPress,
   } = useSearchBoard({ sortType: selectedSort, resetSort });
 
   useFocusEffect(
@@ -88,7 +87,6 @@ const HomeSearchScreen = () => {
               recentSearches={recentSearches}
               onSelectRecentItem={handleSelectRecentItem}
               onRemoveItem={handleRemoveItem}
-              onPostPress={handlePostPress}
             />
 
             <SearchActionModal

@@ -15,7 +15,6 @@ interface Props {
   recentSearches: string[];
   onSelectRecentItem: (item: string) => void;
   onRemoveItem: (item: string) => void;
-  onPostPress: (post: Post) => void;
   selectedSortLabel: string;
   sortSheetVisible: boolean;
   setSortSheetVisible: Dispatch<SetStateAction<boolean>>;
@@ -30,7 +29,6 @@ const SearchContent = ({
   recentSearches,
   onSelectRecentItem,
   onRemoveItem,
-  onPostPress,
   selectedSortLabel,
   sortSheetVisible,
   setSortSheetVisible,
@@ -52,7 +50,6 @@ const SearchContent = ({
         setSortSheetVisible={setSortSheetVisible}
         sortSheetVisible={sortSheetVisible}
         data={filteredPosts}
-        onPostPress={onPostPress}
       />
     );
   }
