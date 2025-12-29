@@ -7,8 +7,8 @@ import Animated from 'react-native-reanimated';
 import CoverLetterCard from '../../coverLetter/components/CoverLetterCard';
 import { useCoverLetterCarousel } from '../hooks/useCoverLetterCarousel';
 
+import PaginationView from '@/features/onboarding/components/PaginationView';
 import { MainStackNavigationProp } from '@/navigation/types/navigationTypes';
-import PaginationView from '@/screens/Onboarding/PaginationView';
 
 interface CoverLetterListProps {
   coverLetters: { question: string; answer: string }[];

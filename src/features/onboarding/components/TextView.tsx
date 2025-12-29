@@ -3,7 +3,7 @@ import React from 'react';
 import { ImageSourcePropType, View } from 'react-native';
 import Animated, { FadeOutUp, FadeInDown } from 'react-native-reanimated';
 
-import ONBOARDING_PROVIDER from '../../shared/constants/onboardingProvider';
+import ONBOARDING_PROVIDER from '../../../shared/constants/onboardingProvider';
 
 interface Props {
   currentStep: number;
