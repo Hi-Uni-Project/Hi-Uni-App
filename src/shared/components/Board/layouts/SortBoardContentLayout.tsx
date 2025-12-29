@@ -53,7 +53,7 @@ const SortBoardContentLayout = ({
       <View className="flex-1 bg-surface-50 px-5">
         <SortPostList
           classname=""
-          vertical
+          vertical={false}
           selectedSortLabel={selectedSortLabel}
           setSelectedSort={setSelectedSort}
           setSortSheetVisible={setSortSheetVisible}
