@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { View } from 'react-native';
+import { Platform, ScrollView, View } from 'react-native';
 
 import AppInfoSection from '@/features/mypage/main/components/AppInfoSection.tsx';
 import MypageHeader from '@/features/mypage/main/components/MypageHeader';
@@ -21,7 +21,9 @@ const MypageMain = () => {
   } = useMypageMainService();
 
   return (
-    <View className="flex-1 bg-surface-50">
+    <ScrollView
+      className="flex-1 bg-surface-50"
+      scrollEnabled={Platform.OS === 'ios' ? false : true}>
       <MypageHeader
         title="마이페이지"
         onBackPress={() => navigation.goBack()}
@@ -45,7 +47,7 @@ const MypageMain = () => {
 
         <OtherSection onAccountManagePress={handleAccountManagePress} />
       </View>
-    </View>
+    </ScrollView>
   );
 };
 
