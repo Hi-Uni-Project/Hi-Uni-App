@@ -20,6 +20,7 @@ import {
   BoardNavigationProps,
   BoardStackNavigationProp,
 } from '@/navigation/types/navigationTypes';
+import { parseDateString } from '@/shared/utils/date/parseDateString';
 
 type BoardWriteRouteProp = RouteProp<BoardNavigationProps, 'BoardWrite'>;
 
@@ -64,6 +65,7 @@ const useBoardWrite = () => {
     postId,
   });
 
+  // reviewQuestions를 formData로 변환하는 함수
   const convertReviewQuestionsToFormData = (
     questions: { label: string; value: string }[],
     type: PostType,
@@ -73,6 +75,7 @@ const useBoardWrite = () => {
       questionMap[q.label] = q.value;
     });
 
+    // feelings와 additionalExperience는 postData.content와 postData.additionalReview에서 가져옴
     const feelings = postData?.content || '';
     const additionalExperience = postData?.additionalReview || '';
 
@@ -94,12 +97,8 @@ const useBoardWrite = () => {
           position: questionMap['부서/직무'] || '',
           tasks: questionMap['담당 업무'] || '',
           learnings: questionMap['실무 내용'] || '',
-          startDate: questionMap['시작일']
-            ? new Date(questionMap['시작일'])
-            : new Date(),
-          endDate: questionMap['종료일']
-            ? new Date(questionMap['종료일'])
-            : new Date(),
+          startDate: parseDateString(questionMap['시작일']),
+          endDate: parseDateString(questionMap['종료일']),
           feelings,
           additionalExperience,
         } as InternshipFormData;
@@ -121,12 +120,8 @@ const useBoardWrite = () => {
           jobLevel: questionMap['직급'] || '',
           tasks: questionMap['담당 업무'] || '',
           requiredSkills: questionMap['필수 스킬'] || '',
-          startDate: questionMap['시작일']
-            ? new Date(questionMap['시작일'])
-            : new Date(),
-          endDate: questionMap['종료일']
-            ? new Date(questionMap['종료일'])
-            : new Date(),
+          startDate: parseDateString(questionMap['시작일']),
+          endDate: parseDateString(questionMap['종료일']),
           feelings,
           additionalExperience,
         } as WorkStoryFormData;
@@ -185,7 +180,7 @@ const useBoardWrite = () => {
     }
   }, [editMode, postData]);
 
-  // 후기 글 수정 모드일 기존 게시글 데이터 로드
+  // 후기 글 수정 모드일 때 reviewTemplate이 준비된 후 데이터 로드
   useEffect(() => {
     if (
       editMode &&
@@ -203,6 +198,7 @@ const useBoardWrite = () => {
   }, [editMode, postData, selectedPostType, setFormData]);
 
   useEffect(() => {
+    // 수정 모드가 아닐 때만 resetForm 호출
     if (selectedPostType && isReview && !editMode) {
       resetForm();
     }
@@ -317,6 +313,7 @@ const useBoardWrite = () => {
           initialData.reviewData,
           initialData.postType!,
         );
+        // formData를 JSON으로 변환하여 비교 (Date 객체는 ISO string으로 변환)
         const currentData = JSON.stringify(
           reviewTemplate.formData,
           (key, value) => (value instanceof Date ? value.toISOString() : value),
