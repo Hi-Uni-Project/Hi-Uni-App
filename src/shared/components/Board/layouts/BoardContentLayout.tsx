@@ -14,9 +14,10 @@ interface Props {
   data: Post[] | undefined;
   isLoading: boolean;
   des: string;
+  makeInfoHide: boolean;
 }
 
-const BoardContentLayout = ({ data, isLoading, des }: Props) => {
+const BoardContentLayout = ({ data, isLoading, des, makeInfoHide }: Props) => {
   const navigation = useNavigation<MainStackNavigationProp>();
 
   if (isLoading) {
@@ -34,6 +35,7 @@ const BoardContentLayout = ({ data, isLoading, des }: Props) => {
       renderItem={({ item }) => (
         <BoardPostCardMD
           {...item}
+          makeInfoHide={makeInfoHide}
           onPress={() =>
             navigation.navigate('BoardRoute', {
               screen: 'BoardDetailPosts',

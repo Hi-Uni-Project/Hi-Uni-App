@@ -20,6 +20,7 @@ import {
   BoardNavigationProps,
   BoardStackNavigationProp,
 } from '@/navigation/types/navigationTypes';
+import { parseDateString } from '@/shared/utils/date/parseDateString';
 
 type BoardWriteRouteProp = RouteProp<BoardNavigationProps, 'BoardWrite'>;
 
@@ -40,7 +41,6 @@ const useBoardWrite = () => {
   const [modalState, setModalState] = useState<ModalState>({ type: 'none' });
   const [changeType, setChangeType] = useState<PostType | null>(null);
 
-  // 수정 모드 초기 데이터 설정
   const [initialData, setInitialData] = useState({
     title: '',
     content: '',
@@ -52,7 +52,6 @@ const useBoardWrite = () => {
   const reviewTemplate = useReviewTemplate(selectedPostType);
   const { hasReviewContent, resetForm, setFormData } = reviewTemplate;
 
-  // 게시글 제출 훅 (일반 글 + 후기 글)
   const { handleSubmit } = usePostSubmit({
     selectedPostType,
     title,
@@ -64,6 +63,7 @@ const useBoardWrite = () => {
     postId,
   });
 
+  // reviewQuestions를 formData로 변환하는 함수
   const convertReviewQuestionsToFormData = (
     questions: { label: string; value: string }[],
     type: PostType,
@@ -94,12 +94,8 @@ const useBoardWrite = () => {
           position: questionMap['부서/직무'] || '',
           tasks: questionMap['담당 업무'] || '',
           learnings: questionMap['실무 내용'] || '',
-          startDate: questionMap['시작일']
-            ? new Date(questionMap['시작일'])
-            : new Date(),
-          endDate: questionMap['종료일']
-            ? new Date(questionMap['종료일'])
-            : new Date(),
+          startDate: parseDateString(questionMap['시작일']),
+          endDate: parseDateString(questionMap['종료일']),
           feelings,
           additionalExperience,
         } as InternshipFormData;
@@ -121,12 +117,8 @@ const useBoardWrite = () => {
           jobLevel: questionMap['직급'] || '',
           tasks: questionMap['담당 업무'] || '',
           requiredSkills: questionMap['필수 스킬'] || '',
-          startDate: questionMap['시작일']
-            ? new Date(questionMap['시작일'])
-            : new Date(),
-          endDate: questionMap['종료일']
-            ? new Date(questionMap['종료일'])
-            : new Date(),
+          startDate: parseDateString(questionMap['시작일']),
+          endDate: parseDateString(questionMap['종료일']),
           feelings,
           additionalExperience,
         } as WorkStoryFormData;
@@ -185,7 +177,7 @@ const useBoardWrite = () => {
     }
   }, [editMode, postData]);
 
-  // 후기 글 수정 모드일 기존 게시글 데이터 로드
+  // 후기 글 수정 모드일 때 reviewTemplate이 준비된 후 데이터 로드
   useEffect(() => {
     if (
       editMode &&
@@ -203,6 +195,7 @@ const useBoardWrite = () => {
   }, [editMode, postData, selectedPostType, setFormData]);
 
   useEffect(() => {
+    // 수정 모드가 아닐 때만 resetForm 호출
     if (selectedPostType && isReview && !editMode) {
       resetForm();
     }
@@ -212,10 +205,21 @@ const useBoardWrite = () => {
 
   // X 버튼 핸들러
   const handlePressedClosed = () => {
-    if (hasContent() || hasReviewContent()) {
-      setModalState({ type: 'exit' });
+    // 수정 모드: 변경사항이 있을 때만 모달 표시
+    if (editMode) {
+      const changed = hasChanges();
+      if (changed) {
+        setModalState({ type: 'exit' });
+      } else {
+        navigation.goBack();
+      }
     } else {
-      navigation.goBack();
+      // 작성 모드: 내용이 있을 때만 모달 표시
+      if (hasContent() || hasReviewContent()) {
+        setModalState({ type: 'exit' });
+      } else {
+        navigation.goBack();
+      }
     }
   };
 
@@ -223,7 +227,6 @@ const useBoardWrite = () => {
     setModalState({ type: 'none' });
   };
 
-  // 말머리 관련 핸들러
   const handlePostTypeChange = (newType: PostType) => {
     setSelectedPostType(newType);
     handleModalClose();
@@ -306,6 +309,7 @@ const useBoardWrite = () => {
     if (title !== initialData.title) {
       return true;
     }
+
     if (selectedPostType !== initialData.postType) {
       return true;
     }
@@ -317,6 +321,7 @@ const useBoardWrite = () => {
           initialData.reviewData,
           initialData.postType!,
         );
+        // formData를 JSON으로 변환하여 비교 (Date 객체는 ISO string으로 변환)
         const currentData = JSON.stringify(
           reviewTemplate.formData,
           (key, value) => (value instanceof Date ? value.toISOString() : value),

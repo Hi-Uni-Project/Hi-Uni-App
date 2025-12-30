@@ -8,6 +8,7 @@ const MyPosts = () => {
     <BoardListScreen
       title="내가 쓴 글"
       emptyDescription="아직 작성한 글이"
+      makeInfoHide
       useQuery={useMyPostsQuery}
     />
   );

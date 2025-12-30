@@ -13,9 +13,16 @@ interface Props extends Post {
   onPress?: () => void;
   vertical?: boolean;
   typeHide?: boolean;
+  makeInfoHide: boolean;
 }
 
-const BoardPostCardMD = ({ vertical, typeHide, onPress, ...post }: Props) => {
+const BoardPostCardMD = ({
+  vertical,
+  typeHide,
+  onPress,
+  makeInfoHide,
+  ...post
+}: Props) => {
   return (
     <Pressable
       onPress={onPress}
@@ -32,11 +39,13 @@ const BoardPostCardMD = ({ vertical, typeHide, onPress, ...post }: Props) => {
           vertical={vertical}
         />
 
-        <PostMetadata
-          firstMajorName={post.firstMajorName}
-          secondMajorName={post.secondMajorName}
-          createdAt={post.createdAt}
-        />
+        {!makeInfoHide && (
+          <PostMetadata
+            firstMajorName={post.firstMajorName}
+            secondMajorName={post.secondMajorName}
+            createdAt={post.createdAt}
+          />
+        )}
 
         <PostActions
           likeCount={post.likeCount}
