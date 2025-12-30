@@ -55,9 +55,10 @@ const PostDetailContent = ({ post }: Props) => {
         <View className="space-y-2">
           {post.reviewQuestions.map((question, index) => (
             <View key={index} className="flex-row">
-              <Text className="w-[70px] text-surface-700 typo-body-16-medium">
+              <Text className="w-[80px] text-surface-700 typo-body-16-medium">
                 {question.label}
               </Text>
+
               <Text
                 className="flex-1 text-main-text typo-body-16-bold"
                 numberOfLines={0}>
@@ -68,7 +69,7 @@ const PostDetailContent = ({ post }: Props) => {
 
           {post.content && (
             <View className="flex-row">
-              <Text className="w-[70px] text-surface-700 typo-body-16-medium">
+              <Text className="w-[80px] text-surface-700 typo-body-16-medium">
                 느낀 점
               </Text>
               <Text
