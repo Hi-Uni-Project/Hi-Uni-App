@@ -4,9 +4,9 @@ import { useNavigation } from '@react-navigation/native';
 import { Text, View, Pressable } from 'react-native';
 import { useSharedValue, withSpring } from 'react-native-reanimated';
 
-import ButtonView from './ButtonView';
-import PaginationView from './PaginationView';
-import TextView from './TextView';
+import ButtonView from '../../features/onboarding/components/ButtonView';
+import PaginationView from '../../features/onboarding/components/PaginationView';
+import TextView from '../../features/onboarding/components/TextView';
 
 import { OnboardStackNavigationProp } from '@/navigation/types/navigationTypes';
 import ScreenLayout from '@/shared/components/layouts/ScreenLayout';
@@ -32,12 +32,14 @@ const OnboardingScreen = () => {
   return (
     <ScreenLayout className="items-center justify-center">
       <TextView currentStep={currentStep} />
+
       <ButtonView
         currentStep={currentStep}
         onNext={() => {
           movePageByIndex(currentStep + 1);
         }}
       />
+
       <View className="relative w-full items-center justify-center py-5">
         <PaginationView progress={progress} data={onboardingProvider} />
         <Pressable

@@ -2,7 +2,7 @@ import React, { useCallback } from 'react';
 
 import { useFocusEffect } from '@react-navigation/native';
 import { UseQueryResult } from '@tanstack/react-query';
-import { View } from 'react-native';
+import { Image, View } from 'react-native';
 
 import { Post } from '@/features/board/shared/types/DefaultPostType';
 import BoardHeaderColorGround from '@/features/home/shared/layouts/BoardHeaderColorGround';
@@ -42,6 +42,14 @@ const BoardListScreen = ({
           data={data}
           isLoading={isLoading}
         />
+
+        <View className="flex-1 justify-end">
+          <Image
+            className="h-[420px] w-[230px] self-center"
+            source={require('@/assets/images/no-board-item.png')}
+            resizeMode="contain"
+          />
+        </View>
       </View>
     </View>
   );
