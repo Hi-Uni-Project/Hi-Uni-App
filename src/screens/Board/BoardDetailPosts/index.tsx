@@ -181,6 +181,7 @@ const BoardDetailPosts = () => {
 
             <PostDetailStats
               // views={post.views}
+              isUser={post.isUser}
               likes={post.likes}
               bookmarks={post.bookmarks}
               isLiked={isLiked}
