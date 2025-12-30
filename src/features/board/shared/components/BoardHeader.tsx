@@ -24,7 +24,7 @@ interface BoardHeaderProps {
   onTabPress?: (tabKey: TabKey) => void;
 }
 
-const TOP_OFFSET = Platform.OS === 'ios' ? 60 : 10;
+const TOP_OFFSET = Platform.OS === 'ios' ? 60 : 40;
 
 const BoardHeader = ({ onTabPress }: BoardHeaderProps) => {
   const insets = useSafeAreaInsets();
