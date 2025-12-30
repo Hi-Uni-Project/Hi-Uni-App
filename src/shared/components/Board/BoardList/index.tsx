@@ -15,12 +15,14 @@ interface Props {
   showHeaderIcon?: boolean;
   useQuery: () => UseQueryResult<Post[] | undefined>;
   hideTabBar?: boolean;
+  makeInfoHide?: boolean;
 }
 
 const BoardListScreen = ({
   title,
   emptyDescription,
   showHeaderIcon = false,
+  makeInfoHide = false,
   useQuery,
 }: Props) => {
   const { data, isLoading, refetch } = useQuery();
@@ -38,6 +40,7 @@ const BoardListScreen = ({
 
       <View className="flex-1 bg-surface-50 px-5">
         <BoardContentLayout
+          makeInfoHide={makeInfoHide}
           des={emptyDescription}
           data={data}
           isLoading={isLoading}
