@@ -229,7 +229,6 @@ export const convertReviewToPostDetail = (
         { label: '직급', value: response.positionRank },
         { label: '담당 업무', value: response.whatWork },
         { label: '필수 스킬', value: response.requiredSkills },
-        { label: '특징', value: response.characteristics },
         { label: '시작일', value: formatDate(response.startDate) },
         { label: '종료일', value: formatDate(response.endDate) },
       ];
