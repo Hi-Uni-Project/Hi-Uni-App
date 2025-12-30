@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 
 import { View, Text } from 'react-native';
 
 import { createCommentOptions } from '../constants';
 import { Comment } from '../types/comment';
+import { createAnonymousMap } from '../utils/createAnonymousMap';
 
 import CommentItem from './CommentItem';
 
@@ -52,6 +53,9 @@ const CommentList = ({
   onDeleteComment,
   onEditComment,
 }: Props) => {
+  // 작성자별 익명 번호 매핑 (작성 순서대로 익명1, 익명2, ...)
+  const anonymousMap = useMemo(() => createAnonymousMap(comments), [comments]);
+
   return (
     <View className="border-surface-200 pt-5">
       <Text className="mb-6 text-main-text typo-body-16-semibold">
@@ -62,6 +66,7 @@ const CommentList = ({
         <CommentItem
           key={comment.id}
           comment={comment}
+          anonymousMap={anonymousMap}
           isLast={idx === comments.length - 1}
           activeOption={activeOption}
           commentOptions={createCommentOptions(

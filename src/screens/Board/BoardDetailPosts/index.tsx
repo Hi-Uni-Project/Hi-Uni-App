@@ -118,7 +118,6 @@ const BoardDetailPosts = () => {
     }
   };
 
-  // 게시글 삭제 핸들러 (모달 포함)
   const handleConfirmDeletePost = async () => {
     try {
       await postActions.handleDeletePost();
