@@ -41,7 +41,6 @@ const useBoardWrite = () => {
   const [modalState, setModalState] = useState<ModalState>({ type: 'none' });
   const [changeType, setChangeType] = useState<PostType | null>(null);
 
-  // 수정 모드 초기 데이터 설정
   const [initialData, setInitialData] = useState({
     title: '',
     content: '',
@@ -53,7 +52,6 @@ const useBoardWrite = () => {
   const reviewTemplate = useReviewTemplate(selectedPostType);
   const { hasReviewContent, resetForm, setFormData } = reviewTemplate;
 
-  // 게시글 제출 훅 (일반 글 + 후기 글)
   const { handleSubmit } = usePostSubmit({
     selectedPostType,
     title,
@@ -75,7 +73,6 @@ const useBoardWrite = () => {
       questionMap[q.label] = q.value;
     });
 
-    // feelings와 additionalExperience는 postData.content와 postData.additionalReview에서 가져옴
     const feelings = postData?.content || '';
     const additionalExperience = postData?.additionalReview || '';
 
@@ -208,10 +205,21 @@ const useBoardWrite = () => {
 
   // X 버튼 핸들러
   const handlePressedClosed = () => {
-    if (hasContent() || hasReviewContent()) {
-      setModalState({ type: 'exit' });
+    // 수정 모드: 변경사항이 있을 때만 모달 표시
+    if (editMode) {
+      const changed = hasChanges();
+      if (changed) {
+        setModalState({ type: 'exit' });
+      } else {
+        navigation.goBack();
+      }
     } else {
-      navigation.goBack();
+      // 작성 모드: 내용이 있을 때만 모달 표시
+      if (hasContent() || hasReviewContent()) {
+        setModalState({ type: 'exit' });
+      } else {
+        navigation.goBack();
+      }
     }
   };
 
@@ -219,7 +227,6 @@ const useBoardWrite = () => {
     setModalState({ type: 'none' });
   };
 
-  // 말머리 관련 핸들러
   const handlePostTypeChange = (newType: PostType) => {
     setSelectedPostType(newType);
     handleModalClose();
@@ -302,6 +309,7 @@ const useBoardWrite = () => {
     if (title !== initialData.title) {
       return true;
     }
+
     if (selectedPostType !== initialData.postType) {
       return true;
     }
