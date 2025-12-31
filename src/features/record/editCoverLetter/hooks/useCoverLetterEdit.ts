@@ -36,10 +36,7 @@ const useCoverLetterEdit = () => {
   });
 
   const aiCoverLetter = useAiCoverLetter({
-    onSuccess: (question, answer) => {
-      form.handleQuestionChange(question);
-      form.handleAnswerChange(answer);
-    },
+    onSuccess: () => {},
   });
 
   const handleDeleteItem = useCallback(() => {
@@ -71,6 +68,7 @@ const useCoverLetterEdit = () => {
     handleDeleteItem,
     selectItem: list.selectItem,
     handleSave: save.handleSave,
+    dispatch: list.dispatch,
 
     ...aiCoverLetter,
   };

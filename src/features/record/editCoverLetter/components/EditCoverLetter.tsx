@@ -48,8 +48,9 @@ const EditCoverLetter = () => {
     openAiModal,
     closeAiModal,
     closeAiErrorModal,
-    handleGenerateAiCoverLetter,
+    handleGenerateAiCoverLetter: generateAiCoverLetter,
     isDirty,
+    dispatch,
   } = useCoverLetterEdit();
 
   const [isSaveSuccessModalVisible, setIsSaveSuccessModalVisible] =
@@ -58,6 +59,39 @@ const EditCoverLetter = () => {
   const [isOnWritingModalVisible, setIsOnWritingModalVisible] = useState(false);
 
   const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
+
+  const [isPageLimitModalVisible, setIsPageLimitModalVisible] = useState(false);
+
+  const handleGenerateAiCoverLetter = async ({
+    role,
+    question,
+  }: {
+    role: string;
+    question: string;
+  }) => {
+    if (coverLetters.length >= 10) {
+      setIsPageLimitModalVisible(true);
+      return;
+    }
+
+    handleAddItem();
+    const newIndex = coverLetters.length;
+
+    selectItem(newIndex);
+
+    const result = await generateAiCoverLetter({ role, question });
+
+    if (result?.data?.answer) {
+      dispatch({
+        type: 'UPDATE_QUESTION',
+        payload: { index: newIndex, text: question },
+      });
+      dispatch({
+        type: 'UPDATE_ANSWER',
+        payload: { index: newIndex, text: result.data.answer },
+      });
+    }
+  };
 
   useEffect(() => {
     if (isSaveSuccess) {
@@ -265,6 +299,14 @@ const EditCoverLetter = () => {
           }}
         />
       )}
+
+      {/* 페이지 초과 모달 */}
+      <ConfirmModal
+        visible={isPageLimitModalVisible}
+        title={'자기소개서는 최대 10개까지 작성할 수 있어요.'}
+        confirmText="확인"
+        onConfirm={() => setIsPageLimitModalVisible(false)}
+      />
     </View>
   );
 };
