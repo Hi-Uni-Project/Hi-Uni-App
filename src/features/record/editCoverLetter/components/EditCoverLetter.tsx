@@ -121,11 +121,13 @@ const EditCoverLetter = () => {
                         </Text>
                       </Pressable>
                     ))}
-                    <Pressable
-                      onPress={handleAddItem}
-                      className="h-[36px] w-[36px] items-center justify-center rounded-2xl border border-surface-300">
-                      <PlusIcon width={16} height={16} color="#B7B7B7" />
-                    </Pressable>
+                    {coverLetters.length < 10 && (
+                      <Pressable
+                        onPress={handleAddItem}
+                        className="h-[36px] w-[36px] items-center justify-center rounded-2xl border border-surface-300">
+                        <PlusIcon width={16} height={16} color="#B7B7B7" />
+                      </Pressable>
+                    )}
                   </View>
                 </ScrollView>
 
