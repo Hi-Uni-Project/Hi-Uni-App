@@ -51,6 +51,7 @@ const EditCoverLetter = () => {
     handleGenerateAiCoverLetter: generateAiCoverLetter,
     isDirty,
     dispatch,
+    isValid,
   } = useCoverLetterEdit();
 
   const [isSaveSuccessModalVisible, setIsSaveSuccessModalVisible] =
@@ -104,7 +105,7 @@ const EditCoverLetter = () => {
       <CoverLetterHeader
         title="내 자기소개서"
         rightButtonText={isSaving ? '저장 중...' : '저장'}
-        isRightButtonDisabled={isSaving || !isDirty}
+        isRightButtonDisabled={isSaving || !isDirty || !isValid}
         onRightButtonPress={handleSave}
         onBackButtonPress={() => {
           if (isDirty) {

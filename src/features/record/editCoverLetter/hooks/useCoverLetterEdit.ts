@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
 
 import { RouteProp, useRoute } from '@react-navigation/native';
 
@@ -48,7 +48,13 @@ const useCoverLetterEdit = () => {
 
   useEffect(() => {
     list.selectItem(coverLetterIdx ?? 0);
-  }, [coverLetterIdx, list.coverLetters.length]);
+  }, [coverLetterIdx]);
+
+  const isValid = useMemo(() => {
+    return list.coverLetters.every(
+      item => item.question.trim() !== '' && item.answer.trim() !== '',
+    );
+  }, [list.coverLetters]);
 
   return {
     coverLetters: list.coverLetters,
@@ -60,6 +66,7 @@ const useCoverLetterEdit = () => {
     isSaving: save.isSaving,
     isSaveSuccess: save.isSaveSuccess,
     isDirty: list.isDirty,
+    isValid,
 
     initializeFromServer: list.initializeFromServer,
     handleQuestionChange: form.handleQuestionChange,
