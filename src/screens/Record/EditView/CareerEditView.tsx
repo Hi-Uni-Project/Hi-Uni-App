@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import {
   Keyboard,
@@ -15,8 +15,11 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import DatePickerInput from '@/features/record/editResume/components/DatePickerInput';
 import EditDeleteButton from '@/features/record/editResume/components/EditDeleteButton';
 import EditSubmitButton from '@/features/record/editResume/components/EditSubmitButton';
+import MyReviewBottomSheet from '@/features/record/editResume/components/MyReviewBottomSheet';
 import ResumeHeader from '@/features/record/editResume/components/ResumeHeader';
 import useCareerEdit from '@/features/record/editResume/hooks/useCareerEdit';
+import { MyReviewData } from '@/features/record/editResume/types/responseType';
+import { mapMyReviewToCareer } from '@/features/record/editResume/utils/responseToDomainMapper';
 import { useBackModal } from '@/shared/hooks/useBackModal';
 import ConfirmModal from '@/shared/ui/organisms/ConfirmModal';
 
@@ -39,12 +42,35 @@ const CareerEditView = () => {
     handleCloseModal,
   } = useBackModal(isDirty);
 
+  const [isBottomSheetVisible, setIsBottomSheetVisible] = useState(false);
+
+  const handleBottomSheetPress = (review: MyReviewData) => {
+    const career = mapMyReviewToCareer(review);
+
+    setField('companyName', career.companyName);
+    setField('role', career.role);
+    setField('position', career.position);
+    setField('jobDescription', career.jobDescription);
+
+    const formatDate = (date: Date) => {
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const day = String(date.getDate()).padStart(2, '0');
+      return `${year}.${month}.${day}`;
+    };
+
+    setField('startDateStr', formatDate(career.startDate));
+    setField('endDateStr', formatDate(career.endDate));
+  };
+
   return (
     <View className="flex-1 bg-surface-50">
       <ResumeHeader
         title="경력"
         rightButtonText="불러오기"
-        onRightButtonPress={() => {}}
+        onRightButtonPress={() => {
+          setIsBottomSheetVisible(true);
+        }}
         onBackPress={handleBackPress}
       />
       <KeyboardAvoidingView
@@ -163,6 +189,13 @@ const CareerEditView = () => {
           isEditMode={isEditMode}
         />
       </View>
+
+      <MyReviewBottomSheet
+        visible={isBottomSheetVisible}
+        onClose={() => setIsBottomSheetVisible(false)}
+        onPress={handleBottomSheetPress}
+        title="내 후기 불러오기"
+      />
 
       <ConfirmModal
         visible={isBackModalVisible}
