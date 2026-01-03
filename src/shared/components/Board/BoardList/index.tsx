@@ -46,15 +46,16 @@ const BoardListScreen = ({
           isLoading={isLoading}
         />
 
-        {!data && (
-          <View className="flex-1 justify-end">
-            <Image
-              className="h-[420px] w-[230px] self-center"
-              source={require('@/assets/images/no-board-item.png')}
-              resizeMode="contain"
-            />
-          </View>
-        )}
+        {!data ||
+          (data.length === 0 && (
+            <View className="flex-1 justify-end">
+              <Image
+                className="h-[420px] w-[230px] self-center"
+                source={require('@/assets/images/no-board-item.png')}
+                resizeMode="contain"
+              />
+            </View>
+          ))}
       </View>
     </View>
   );

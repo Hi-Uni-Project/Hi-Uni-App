@@ -22,6 +22,7 @@ interface SortPostListProps {
   vertical?: boolean;
   scrollEnabled?: boolean;
   typeHide?: boolean;
+  makeInfoHide?: boolean;
 }
 
 const SortPostList = ({
@@ -35,6 +36,7 @@ const SortPostList = ({
   vertical = false,
   scrollEnabled = true,
   typeHide = false,
+  makeInfoHide = false,
 }: SortPostListProps) => {
   const navigation = useNavigation<MainStackNavigationProp>();
 
@@ -59,6 +61,7 @@ const SortPostList = ({
             }
             vertical={vertical}
             typeHide={typeHide}
+            makeInfoHide={makeInfoHide}
           />
         )}
         ListHeaderComponent={
