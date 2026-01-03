@@ -111,3 +111,11 @@ export interface ResumeEditForm {
   achievements: Achievement[];
   links: Link[];
 }
+
+export interface MyReview {
+  type: 'INTERNSHIP' | 'EXPERIENCE';
+  title: string;
+  content: string;
+  startDate: Date;
+  endDate: Date;
+}
