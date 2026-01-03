@@ -39,7 +39,10 @@ const BoardWriteHeader = ({
           글쓰기
         </Text>
 
-        <Pressable disabled={!isSubmitEnabled} onPress={onSubmit}>
+        <Pressable
+          disabled={!isSubmitEnabled}
+          onPressIn={onSubmit}
+          hitSlop={{ top: 10, bottom: 10, right: 10, left: 10 }}>
           <Text
             className={clsx(
               `${isSubmitEnabled ? 'text-primary-purple' : 'text-surface-300'} typo-sub-title-18-medium`,
