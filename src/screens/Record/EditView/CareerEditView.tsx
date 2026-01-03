@@ -133,7 +133,12 @@ const CareerEditView = () => {
 
               {/* 직무 */}
               <View className="mt-5 px-5">
-                <Text className="typo-body-17-semibold">직무</Text>
+                <Text className="typo-body-17-semibold">
+                  직무{' '}
+                  <Text className="text-primary-purple typo-body-17-semibold">
+                    *
+                  </Text>
+                </Text>
                 <TextInput
                   className="mt-[9px] w-[272px] rounded-[15px] border-[1px] border-gray-200 bg-white pb-[11px] pl-[14px] pt-[12px] typo-body-15-regular"
                   placeholder="직무를 입력해주세요"
