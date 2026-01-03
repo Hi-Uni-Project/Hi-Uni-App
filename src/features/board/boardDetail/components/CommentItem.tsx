@@ -17,6 +17,7 @@ import { formatDateOrTime, formatMajor } from '@/shared/utils/formatter';
 
 interface Props {
   comment: Comment;
+  anonymousMap: Map<string, number>;
   isLast: boolean;
   activeOption: string | null;
   commentOptions: OptionItem[];
@@ -44,6 +45,7 @@ interface Props {
 
 const CommentItem = ({
   comment,
+  anonymousMap,
   isLast,
   activeOption,
   commentOptions,
@@ -83,7 +85,7 @@ const CommentItem = ({
             <View className="flex-row items-center">
               <View className="mr-3 h-8 w-8 rounded-full bg-surface-300" />
               <Text className="mr-1 text-main-text typo-caption-14-semibold">
-                익명{comment.id}
+                익명{anonymousMap.get(comment.author) || 0}
               </Text>
               <Text className="text-surface-500 typo-caption-14-regular">
                 · {formatMajor(comment.firstMajorName, comment.secondMajorName)}
@@ -123,6 +125,7 @@ const CommentItem = ({
             <ReplyItem
               key={reply.id}
               reply={reply}
+              anonymousMap={anonymousMap}
               parentCommentId={comment.id}
               activeOption={activeOption}
               commentOptions={createCommentOptions(
