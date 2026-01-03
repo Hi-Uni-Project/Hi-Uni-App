@@ -43,6 +43,7 @@ const OptionBottomSheet = ({
     <Modal
       transparent
       statusBarTranslucent
+      navigationBarTranslucent
       visible={optionSheetVisible}
       animationType="fade">
       <Pressable className="flex-1 bg-black/40">
