@@ -16,7 +16,12 @@ interface Props {
 
 const DropdownModal = ({ visible, options, onSelect, position }: Props) => {
   return (
-    <Modal visible={visible} transparent animationType="fade">
+    <Modal
+      visible={visible}
+      transparent
+      statusBarTranslucent
+      navigationBarTranslucent
+      animationType="fade">
       <Pressable className="flex-1 bg-black/40">
         <View
           className="absolute space-y-2.5 rounded-[15px] bg-white p-2.5 shadow-lg"

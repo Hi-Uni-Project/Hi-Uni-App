@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { View } from 'react-native';
+import { Image, View } from 'react-native';
 
 import SortBoardHeaderLayout from './SortBoardHeaderLayout';
 
@@ -43,6 +43,14 @@ const SortBoardContentLayout = ({
       <SortBoardHeaderLayout title={title} icon={icon}>
         <View className="flex-1 bg-surface-50 px-5">
           <NoBoardLayout des={description ?? '게시물이'} />
+
+          <View className="flex-1 justify-end">
+            <Image
+              className="h-[420px] w-[230px] self-center"
+              source={require('@/assets/images/no-board-item.png')}
+              resizeMode="contain"
+            />
+          </View>
         </View>
       </SortBoardHeaderLayout>
     );

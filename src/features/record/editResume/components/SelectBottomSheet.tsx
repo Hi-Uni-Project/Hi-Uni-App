@@ -52,6 +52,7 @@ const SelectBottomSheet = ({
     <Modal
       transparent
       statusBarTranslucent
+      navigationBarTranslucent
       visible={visible}
       animationType="fade"
       onRequestClose={onClose}>
