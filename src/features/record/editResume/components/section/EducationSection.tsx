@@ -17,6 +17,12 @@ const EducationSection = ({
   onAddPress,
   onEditPress,
 }: EducationSectionProps) => {
+  const sortedEducations = [...educations].sort((a, b) => {
+    const aEndDate = a.endDate ? new Date(a.endDate) : new Date();
+    const bEndDate = b.endDate ? new Date(b.endDate) : new Date();
+    return bEndDate.getTime() - aEndDate.getTime();
+  });
+
   return (
     <>
       <View className="mt-[40px] px-5">
@@ -28,8 +34,8 @@ const EducationSection = ({
         </View>
       </View>
 
-      {educations.length > 0 &&
-        educations.map((education, index) => (
+      {sortedEducations.length > 0 &&
+        sortedEducations.map((education, index) => (
           <EducationCard
             key={education.educationId ?? education.tempId ?? index}
             education={education}

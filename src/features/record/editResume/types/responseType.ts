@@ -108,3 +108,30 @@ export interface AiAboutMeDataResponse {
 }
 
 export type AiAboutMeResponse = ResponseTypes<AiAboutMeDataResponse>;
+
+type MyReviewDataBase = {
+  category: 'JOBINFORMATION';
+  title: string;
+  content: string;
+  startDate: string;
+  endDate: string;
+};
+
+export type MyReviewExperienceData = MyReviewDataBase & {
+  type: 'EXPERIENCE';
+  organizationName: string;
+  position: string;
+  positionRank: string;
+  whatWork: string;
+};
+
+export type MyReviewInternshipData = MyReviewDataBase & {
+  type: 'INTERNSHIP';
+  companyName: string;
+  department: string;
+  tasks: string;
+};
+
+export type MyReviewData = MyReviewExperienceData | MyReviewInternshipData;
+
+export type MyReviewResponse = ResponseTypes<MyReviewData[]>;

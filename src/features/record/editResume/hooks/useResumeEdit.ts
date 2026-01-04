@@ -18,11 +18,7 @@ const useResumeEdit = () => {
     useResumeEditStore();
 
   const isValid = useCallback(() => {
-    return (
-      resumeData.name.trim() &&
-      resumeData.birthYear !== 0 &&
-      resumeData.title.trim()
-    );
+    return resumeData.title.trim();
   }, [resumeData]);
 
   const addLink = useCallback(

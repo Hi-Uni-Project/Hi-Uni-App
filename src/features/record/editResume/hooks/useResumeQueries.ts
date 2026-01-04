@@ -1,6 +1,10 @@
 import { useQuery } from '@tanstack/react-query';
 
-import { fetchResumeData, searchSkillData } from '../api/resumeApi';
+import {
+  fetchResumeData,
+  getMyReviews,
+  searchSkillData,
+} from '../api/resumeApi';
 import { mapSkillToDomain } from '../utils/responseToDomainMapper';
 
 const useResumeQueries = () => {
@@ -33,4 +37,19 @@ const useSkillSearchQuery = (keyword: string) => {
   };
 };
 
-export { useResumeQueries, useSkillSearchQuery };
+const useMyReviewsQuery = () => {
+  const result = useQuery({
+    queryKey: ['myReviews'],
+    queryFn: getMyReviews,
+    gcTime: 0,
+    staleTime: 0,
+  });
+
+  return {
+    myReviewsData: result.data,
+    myReviewsLoading: result.isLoading,
+    myReviewsError: result.isError,
+  };
+};
+
+export { useResumeQueries, useSkillSearchQuery, useMyReviewsQuery };

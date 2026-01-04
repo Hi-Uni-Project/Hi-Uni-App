@@ -109,7 +109,7 @@ const LinkEditView = () => {
 
       <ConfirmModal
         visible={isBackModalVisible}
-        title="작성 중인 내용이 있어요. 나가시겠어요?"
+        title={'작성 중인 내용이 있어요. \n나가시겠어요?'}
         confirmText="나가기"
         cancelText="계속 작성"
         onConfirm={handleConfirmBack}

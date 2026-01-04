@@ -38,8 +38,15 @@ const AboutMeSection = ({
   const [isConfirmModalVisible, setIsConfirmModalVisible] = useState(false);
   const [isGenerateModalVisible, setIsGenerateModalVisible] = useState(false);
   const [isInfoVisible, setIsInfoVisible] = useState(false);
+  const [isPostNotFoundModalVisible, setIsPostNotFoundModalVisible] =
+    useState(false);
 
   const handleGenerateButtonPress = () => {
+    if (isPostNotFoundError === true) {
+      setIsPostNotFoundModalVisible(true);
+      return;
+    }
+
     if (aboutMe.trim().length > 0) {
       setIsConfirmModalVisible(true);
     } else {
@@ -150,12 +157,12 @@ const AboutMeSection = ({
 
       {/* 후기글이 없어서 생성 불가 에러 모달 */}
       <ConfirmModal
-        visible={isPostNotFoundError}
-        onClose={onErrorModalClose}
+        visible={isPostNotFoundModalVisible}
+        onClose={() => setIsPostNotFoundModalVisible(false)}
         title={'현재 내 후기글이 없어\n내 소개를 생성할 수 없어요.'}
         description="후기를 1개 이상 작성 후 내 소개 생성을 눌러주세요."
         confirmText="확인"
-        onConfirm={onErrorModalClose}
+        onConfirm={() => setIsPostNotFoundModalVisible(false)}
       />
 
       {/* 생성 횟수 초과 에러 모달 */}

@@ -29,7 +29,7 @@ const CoverLetterList = ({ coverLetters }: CoverLetterListProps) => {
         style={animatedStyle}>
         {coverLetters.map((item, index) => (
           <View
-            key={item.question}
+            key={index}
             className="mr-4"
             style={{
               alignSelf: index % 2 === 0 ? 'flex-start' : 'flex-end',
