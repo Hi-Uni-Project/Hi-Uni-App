@@ -30,6 +30,7 @@ const ScheduleMemoInput = ({
         placeholder="메모를 입력해주세요"
         onFocus={onFocus}
         multiline={true}
+        maxLength={500}
         className="mt-[10px] rounded-[15px] bg-surface-100 px-[11px] py-[14px] text-main-text typo-body-15-regular"
         style={{
           minHeight: 100,
