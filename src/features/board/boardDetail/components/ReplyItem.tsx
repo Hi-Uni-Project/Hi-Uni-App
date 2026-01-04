@@ -15,7 +15,7 @@ import CommentArrowIcon from '@/static/icons/comment-arrow.svg';
 
 interface Props {
   reply: Reply;
-  anonymousMap: Map<string, number>;
+  anonymousMap: Map<number, number>;
   parentCommentId: number;
   activeOption: string | null;
   commentOptions: OptionItem[];
@@ -68,7 +68,7 @@ const ReplyItem = ({
           <View className="flex-row items-center">
             <View className="mr-3 h-8 w-8 rounded-full bg-surface-300" />
             <Text className="mr-2 text-main-text typo-caption-14-semibold">
-              익명{anonymousMap.get(reply.author) || 0}
+              익명{anonymousMap.get(reply.userId) || 0}
             </Text>
             <Text className="text-surface-500 typo-caption-14-regular">
               · {formatMajor(reply.firstMajorName, reply.secondMajorName)}

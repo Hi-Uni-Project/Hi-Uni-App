@@ -1,5 +1,6 @@
 export interface CommentResponse {
   id: number;
+  userId: number;
   nickname: string | null;
   firstMajorName: string | null;
   secondMajorName: string | null;
@@ -13,6 +14,7 @@ export interface CommentResponse {
 
 export interface Comment {
   id: number;
+  userId: number;
   author: string;
   content: string;
   isLiked: boolean;
@@ -26,6 +28,7 @@ export interface Comment {
 
 export interface Reply {
   id: number;
+  userId: number;
   author: string;
   firstMajorName: string;
   secondMajorName: string;
@@ -40,6 +43,7 @@ export interface Reply {
 export const convertToComment = (response: CommentResponse): Comment => {
   return {
     id: response.id,
+    userId: response.userId,
     author: response.nickname || '알 수 없음',
     firstMajorName: response.firstMajorName || '',
     secondMajorName: response.secondMajorName || '',
