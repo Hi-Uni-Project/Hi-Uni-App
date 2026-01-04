@@ -23,12 +23,14 @@ const MypageMain = () => {
   return (
     <ScrollView
       className="flex-1 bg-surface-50"
-      scrollEnabled={Platform.OS === 'ios' ? false : true}>
+      scrollEnabled={Platform.OS === 'ios' ? false : true}
+      contentContainerStyle={{
+        paddingBottom: 70,
+      }}>
       <MypageHeader
         title="마이페이지"
         onBackPress={() => navigation.goBack()}
       />
-
       <View className="flex-1">
         <ProfileSection
           univName={univ.univName}
