@@ -32,7 +32,7 @@ export const convertReviewFormToRequest = (
         fourthQuestion: data.focusArea,
         fifthQuestion: data.preparation,
         sixthQuestion: data.result,
-        seventhQuestion: data.feelings,
+        seventhQuestion: data.feelings || '',
         eighthQuestion: data.additionalExperience || '',
       };
     }
@@ -47,10 +47,10 @@ export const convertReviewFormToRequest = (
         secondQuestion: data.position,
         thirdQuestion: data.tasks,
         fourthQuestion: data.learnings,
-        fifthQuestion: '',
-        sixthQuestion: '',
-        seventhQuestion: data.feelings,
-        eighthQuestion: data.additionalExperience || '',
+        fifthQuestion: data.feelings || '',
+        sixthQuestion: data.additionalExperience || '',
+        seventhQuestion: '',
+        eighthQuestion: '',
         startDate: formatToISO(data.startDate),
         endDate: formatToISO(data.endDate),
       };
@@ -68,7 +68,7 @@ export const convertReviewFormToRequest = (
         fourthQuestion: data.questions,
         fifthQuestion: data.answerPreparation,
         sixthQuestion: data.atmosphere,
-        seventhQuestion: data.feelings,
+        seventhQuestion: data.feelings || '',
         eighthQuestion: data.additionalExperience || '',
       };
     }
@@ -85,7 +85,7 @@ export const convertReviewFormToRequest = (
         fourthQuestion: data.tasks,
         fifthQuestion: data.requiredSkills,
         sixthQuestion: '',
-        seventhQuestion: data.feelings,
+        seventhQuestion: data.feelings || '',
         eighthQuestion: data.additionalExperience || '',
         startDate: formatToISO(data.startDate),
         endDate: formatToISO(data.endDate),
@@ -104,7 +104,7 @@ export const convertReviewFormToRequest = (
         fourthQuestion: data.difficulty,
         fifthQuestion: data.studyMethod,
         sixthQuestion: data.tips,
-        seventhQuestion: data.feelings,
+        seventhQuestion: data.feelings || '',
         eighthQuestion: data.additionalExperience || '',
       };
     }

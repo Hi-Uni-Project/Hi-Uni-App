@@ -187,6 +187,7 @@ export const convertReviewToPostDetail = (
   response: ReviewPostResponse,
 ): PostDetail => {
   let reviewQuestions: ReviewQuestion[] = [];
+  let content = '';
 
   switch (response.type) {
     case PostType.JOB:
@@ -197,7 +198,9 @@ export const convertReviewToPostDetail = (
         { label: '면접 질문', value: response.interviewQuestions },
         { label: '준비 사항', value: response.preparation },
         { label: '결과', value: response.result },
+        { label: '느낀 점', value: response.feelings || '' },
       ];
+      content = response.preparation;
       break;
 
     case PostType.INTERNSHIP:
@@ -208,7 +211,9 @@ export const convertReviewToPostDetail = (
         { label: '실무 내용', value: response.learned },
         { label: '시작일', value: formatDate(response.startDate) },
         { label: '종료일', value: formatDate(response.endDate) },
+        { label: '느낀 점', value: response.feelings || '' },
       ];
+      content = response.learned;
       break;
 
     case PostType.INTERVIEW:
@@ -219,7 +224,9 @@ export const convertReviewToPostDetail = (
         { label: '질문 내용', value: response.interviewQuestions },
         { label: '답변 준비', value: response.preparation },
         { label: '면접 분위기', value: response.atmosphere },
+        { label: '느낀 점', value: response.feelings || '' },
       ];
+      content = response.preparation;
       break;
 
     case PostType.EXPERIENCE:
@@ -231,7 +238,9 @@ export const convertReviewToPostDetail = (
         { label: '필수 스킬', value: response.requiredSkills },
         { label: '시작일', value: formatDate(response.startDate) },
         { label: '종료일', value: formatDate(response.endDate) },
+        { label: '느낀 점', value: response.feelings || '' },
       ];
+      content = response.requiredSkills;
       break;
 
     case PostType.LICENSE:
@@ -242,7 +251,9 @@ export const convertReviewToPostDetail = (
         { label: '난이도', value: response.difficulty },
         { label: '학습 방법', value: response.studyMethod },
         { label: '합격 팁', value: response.tips },
+        { label: '느낀 점', value: response.feelings || '' },
       ];
+      content = response.studyMethod;
       break;
   }
 
@@ -254,10 +265,10 @@ export const convertReviewToPostDetail = (
     secondMajorName: response.secondMajorName || '',
     date: response.createdAt,
     title: response.title,
-    content: response.feelings,
+    content: content,
     isReview: true,
     reviewQuestions,
-    additionalReview: response.additional,
+    additionalReview: response.additional || '',
     views: response.viewCount,
     likes: response.likeCount,
     bookmarks: response.bookmarkCount,

@@ -53,32 +53,26 @@ const PostDetailContent = ({ post }: Props) => {
       {/* 후기 글일 경우 */}
       {post.isReview && post.reviewQuestions && (
         <View className="space-y-2">
-          {post.reviewQuestions.map((question, index) => (
-            <View key={index} className="flex-row">
-              <Text className="w-[80px] text-surface-700 typo-body-16-medium">
-                {question.label}
-              </Text>
+          {post.reviewQuestions
+            .filter(question => {
+              if (question.label === '느낀 점') {
+                return question.value && question.value.trim() !== '';
+              }
+              return true;
+            })
+            .map((question, index) => (
+              <View key={index} className="flex-row">
+                <Text className="w-[80px] text-surface-700 typo-body-16-medium">
+                  {question.label}
+                </Text>
 
-              <Text
-                className="flex-1 text-main-text typo-body-16-bold"
-                numberOfLines={0}>
-                {question.value}
-              </Text>
-            </View>
-          ))}
-
-          {post.content && (
-            <View className="flex-row">
-              <Text className="w-[80px] text-surface-700 typo-body-16-medium">
-                느낀 점
-              </Text>
-              <Text
-                className="flex-1 text-main-text typo-body-16-bold"
-                numberOfLines={0}>
-                {post.content}
-              </Text>
-            </View>
-          )}
+                <Text
+                  className="flex-1 text-main-text typo-body-16-bold"
+                  numberOfLines={0}>
+                  {question.value}
+                </Text>
+              </View>
+            ))}
         </View>
       )}
 
