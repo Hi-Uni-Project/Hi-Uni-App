@@ -2,21 +2,23 @@ import { Comment } from '../types/comment';
 
 export const createAnonymousMap = (
   comments: Comment[],
-): Map<string, number> => {
-  const authorMap = new Map<string, number>();
+): Map<number, number> => {
+  const userIdMap = new Map<number, number>();
   let counter = 1;
 
   comments.forEach(comment => {
-    if (!authorMap.has(comment.author)) {
-      authorMap.set(comment.author, counter++);
+    // 댓글 작성자
+    if (!userIdMap.has(comment.userId)) {
+      userIdMap.set(comment.userId, counter++);
     }
 
+    // 답글 작성자
     comment.replies?.forEach(reply => {
-      if (!authorMap.has(reply.author)) {
-        authorMap.set(reply.author, counter++);
+      if (!userIdMap.has(reply.userId)) {
+        userIdMap.set(reply.userId, counter++);
       }
     });
   });
 
-  return authorMap;
+  return userIdMap;
 };

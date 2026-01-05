@@ -1,5 +1,6 @@
 import { useCallback, useEffect } from 'react';
 
+import { getAiRemain } from '../api/resumeApi';
 import { useResumeEditStore } from '../stores/useResumeEditStore';
 import {
   Achievement,
@@ -18,11 +19,7 @@ const useResumeEdit = () => {
     useResumeEditStore();
 
   const isValid = useCallback(() => {
-    return (
-      resumeData.name.trim() &&
-      resumeData.birthYear !== 0 &&
-      resumeData.title.trim()
-    );
+    return resumeData.title.trim();
   }, [resumeData]);
 
   const addLink = useCallback(
@@ -252,8 +249,10 @@ const useResumeEdit = () => {
   }, [resumeData]);
 
   useEffect(() => {
-    console.log('resumeData updated:', resumeData);
-  }, [resumeData]);
+    getAiRemain().then(remain => {
+      updateField('aboutMeCnt', remain.aboutMeCnt);
+    });
+  }, []);
 
   return {
     resumeData,

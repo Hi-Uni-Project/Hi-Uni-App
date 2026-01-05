@@ -4,6 +4,7 @@ import {
   Education,
   Language,
   Link,
+  MyReview,
   Project,
   Resume,
   ResumeEditForm,
@@ -15,6 +16,7 @@ import {
   EducationResponse,
   LanguageResponse,
   LinkResponse,
+  MyReviewData,
   ProjectResponse,
   ResumeDataResponse,
   SkillResponse,
@@ -132,3 +134,45 @@ export const mapResumeToEditForm = (
   achievements: (response.achievements || []).map(mapAchievementToDomain),
   links: (response.links || []).map(mapLinkToDomain),
 });
+
+export const mapMyReviewToCareer = (response: MyReviewData): Career => {
+  if (response.type === 'EXPERIENCE') {
+    return {
+      careerId: null,
+      companyName: response.organizationName,
+      startDate: new Date(response.startDate),
+      endDate: new Date(response.endDate),
+      role: response.position,
+      position: response.positionRank,
+      jobDescription: response.whatWork,
+    };
+  }
+  return {
+    careerId: null,
+    companyName: response.companyName,
+    startDate: new Date(response.startDate),
+    endDate: new Date(response.endDate),
+    role: response.department,
+    position: '인턴',
+    jobDescription: response.tasks,
+  };
+};
+
+export const mapMyReviewToDomain = (response: MyReviewData): MyReview => {
+  if (response.type === 'EXPERIENCE') {
+    return {
+      type: 'EXPERIENCE',
+      title: response.title,
+      content: response.content,
+      startDate: new Date(response.startDate),
+      endDate: new Date(response.endDate),
+    };
+  }
+  return {
+    type: 'INTERNSHIP',
+    title: response.title,
+    content: response.content,
+    startDate: new Date(response.startDate),
+    endDate: new Date(response.endDate),
+  };
+};

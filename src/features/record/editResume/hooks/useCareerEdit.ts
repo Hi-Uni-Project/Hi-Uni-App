@@ -109,7 +109,8 @@ const useCareerEdit = () => {
   const isFormValid =
     companyName.trim() !== '' &&
     parseShortDate(startDateStr) !== null &&
-    parseShortDate(endDateStr) !== null;
+    parseShortDate(endDateStr) !== null &&
+    role.trim() !== '';
 
   const handleSubmit = () => {
     const startDate = parseShortDate(startDateStr);

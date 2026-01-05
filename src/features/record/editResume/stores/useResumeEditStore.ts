@@ -35,7 +35,7 @@ const initialState: ResumeEditForm = {
 
 export const useResumeEditStore = create<ResumeEditStore>((set, get) => ({
   resumeData: initialState,
-  initialResumeData: null,
+  initialResumeData: initialState,
 
   setResumeData: data =>
     set({ resumeData: data, initialResumeData: { ...data } }),

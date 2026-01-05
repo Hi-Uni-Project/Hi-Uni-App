@@ -11,12 +11,6 @@ interface UseEditScheduleProps {
   initialData: Schedule | ScheduleDatePayload;
 }
 
-/**
- * 이 훅은 일정 수정, 생성을 담당합니다.
- * - 일정의 초기 상태를 로딩합니다. *
- * - 처음 진입한 시점과 다르게 일정이 수정된 경우 이를 감지하여 사용자에게 알립니다. *
- * - 일정이 성공적으로 수정 또는 생성된 후, 관련 데이터를 갱신합니다. *
- */
 const useEditSchedule = ({ initialData }: UseEditScheduleProps) => {
   const { createSchedule, updateSchedule } = useScheduleSaveQueries();
   const { deleteSchedule } = useScheduleDeleteQueries();
@@ -33,12 +27,14 @@ const useEditSchedule = ({ initialData }: UseEditScheduleProps) => {
           memo: initialData.memo,
         };
       } else {
+        const endDate = new Date(new Date().toISOString());
+        endDate.setMinutes(0, 0, 0);
+        endDate.setHours(endDate.getHours() + 1);
+
         return {
           id: null,
-          startDate: new Date(initialData.ISODateString),
-          endDate: new Date(
-            new Date(initialData.ISODateString).getTime() + 60 * 60 * 1000,
-          ),
+          startDate: new Date(),
+          endDate: endDate,
           category: null,
           detail: '',
           memo: '',
