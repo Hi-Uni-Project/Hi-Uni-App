@@ -75,7 +75,7 @@ const MyReviewBottomSheet = ({
               </Text>
             </View>
 
-            {myReviewsData.length === 0 && (
+            {myReviewsData?.length === 0 && (
               <View className="items-center justify-center py-20">
                 <Text className="text-surface-500 typo-body-15-regular">
                   불러올 후기가 없습니다.
@@ -83,7 +83,7 @@ const MyReviewBottomSheet = ({
               </View>
             )}
 
-            {myReviewsData.length > 0 && (
+            {myReviewsData && myReviewsData.length > 0 && (
               <ScrollView
                 style={{ maxHeight: 500 }}
                 showsVerticalScrollIndicator={false}>
