@@ -73,7 +73,6 @@ const useBoardWrite = () => {
       questionMap[q.label] = q.value;
     });
 
-    const feelings = postData?.content || '';
     const additionalExperience = postData?.additionalReview || '';
 
     switch (type) {
@@ -83,9 +82,9 @@ const useBoardWrite = () => {
           position: questionMap['직무'] || '',
           applicationMethod: questionMap['지원 방법'] || '',
           focusArea: questionMap['면접 질문'] || '',
-          preparation: questionMap['준비 사항'] || '',
+          preparation: postData?.content || '',
           result: questionMap['결과'] || '',
-          feelings,
+          feelings: questionMap['느낀 점'] || '',
           additionalExperience,
         } as JobFormData;
       case PostType.INTERNSHIP:
@@ -93,10 +92,10 @@ const useBoardWrite = () => {
           companyName: questionMap['회사명'] || '',
           position: questionMap['부서/직무'] || '',
           tasks: questionMap['담당 업무'] || '',
-          learnings: questionMap['실무 내용'] || '',
+          learnings: postData?.content || '',
           startDate: parseDateString(questionMap['시작일']),
           endDate: parseDateString(questionMap['종료일']),
-          feelings,
+          feelings: questionMap['느낀 점'] || '',
           additionalExperience,
         } as InternshipFormData;
       case PostType.INTERVIEW:
@@ -105,9 +104,9 @@ const useBoardWrite = () => {
           position: questionMap['직무'] || '',
           interviewType: questionMap['면접 유형'] || '',
           questions: questionMap['질문 내용'] || '',
-          answerPreparation: questionMap['답변 준비'] || '',
+          answerPreparation: postData?.content || '',
           atmosphere: questionMap['면접 분위기'] || '',
-          feelings,
+          feelings: questionMap['느낀 점'] || '',
           additionalExperience,
         } as InterviewFormData;
       case PostType.EXPERIENCE:
@@ -116,10 +115,10 @@ const useBoardWrite = () => {
           position: questionMap['직무'] || '',
           jobLevel: questionMap['직급'] || '',
           tasks: questionMap['담당 업무'] || '',
-          requiredSkills: questionMap['필수 스킬'] || '',
+          requiredSkills: postData?.content || '',
           startDate: parseDateString(questionMap['시작일']),
           endDate: parseDateString(questionMap['종료일']),
-          feelings,
+          feelings: questionMap['느낀 점'] || '',
           additionalExperience,
         } as WorkStoryFormData;
       case PostType.LICENSE:
@@ -128,9 +127,9 @@ const useBoardWrite = () => {
           preparationPeriod: questionMap['준비 기간'] || '',
           materials: questionMap['교재'] || '',
           difficulty: questionMap['난이도'] || '',
-          studyMethod: questionMap['학습 방법'] || '',
+          studyMethod: postData?.content || '',
           tips: questionMap['합격 팁'] || '',
-          feelings,
+          feelings: questionMap['느낀 점'] || '',
           additionalExperience,
         } as LicenseFormData;
       default:

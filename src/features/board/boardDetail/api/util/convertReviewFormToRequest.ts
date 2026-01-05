@@ -24,7 +24,7 @@ export const convertReviewFormToRequest = (
       const data = formData as JobFormData;
       return {
         title,
-        content: data.feelings || '',
+        content: data.preparation || '',
         type,
         firstQuestion: data.companyName,
         secondQuestion: data.position,
@@ -41,7 +41,7 @@ export const convertReviewFormToRequest = (
       const data = formData as InternshipFormData;
       return {
         title,
-        content: data.feelings || '',
+        content: data.learnings || '',
         type,
         firstQuestion: data.companyName,
         secondQuestion: data.position,
@@ -60,7 +60,7 @@ export const convertReviewFormToRequest = (
       const data = formData as InterviewFormData;
       return {
         title,
-        content: data.feelings || '',
+        content: data.answerPreparation || '',
         type,
         firstQuestion: data.companyName,
         secondQuestion: data.position,
@@ -77,7 +77,7 @@ export const convertReviewFormToRequest = (
       const data = formData as WorkStoryFormData;
       return {
         title,
-        content: data.feelings || '',
+        content: data.requiredSkills || '',
         type,
         firstQuestion: data.companyName,
         secondQuestion: data.position,
@@ -96,7 +96,7 @@ export const convertReviewFormToRequest = (
       const data = formData as LicenseFormData;
       return {
         title,
-        content: data.feelings || '',
+        content: data.studyMethod || '',
         type,
         firstQuestion: data.licenseName,
         secondQuestion: data.preparationPeriod,
