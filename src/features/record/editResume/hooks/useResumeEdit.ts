@@ -1,5 +1,6 @@
 import { useCallback, useEffect } from 'react';
 
+import { getAiRemain } from '../api/resumeApi';
 import { useResumeEditStore } from '../stores/useResumeEditStore';
 import {
   Achievement,
@@ -248,8 +249,10 @@ const useResumeEdit = () => {
   }, [resumeData]);
 
   useEffect(() => {
-    console.log('resumeData updated:', resumeData);
-  }, [resumeData]);
+    getAiRemain().then(remain => {
+      updateField('aboutMeCnt', remain.aboutMeCnt);
+    });
+  }, []);
 
   return {
     resumeData,

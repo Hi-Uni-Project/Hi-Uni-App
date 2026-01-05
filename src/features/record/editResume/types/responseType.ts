@@ -135,3 +135,9 @@ export type MyReviewInternshipData = MyReviewDataBase & {
 export type MyReviewData = MyReviewExperienceData | MyReviewInternshipData;
 
 export type MyReviewResponse = ResponseTypes<MyReviewData[]>;
+
+export interface AiRemainData {
+  aboutMeCnt: number;
+}
+
+export type AiRemainResponse = ResponseTypes<AiRemainData>;

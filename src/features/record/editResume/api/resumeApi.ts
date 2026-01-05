@@ -2,6 +2,8 @@ import { ResumeUpdateRequest } from '../types/requestType';
 import {
   AiAboutMeDataResponse,
   AiAboutMeResponse,
+  AiRemainData,
+  AiRemainResponse,
   MyReviewData,
   ResumeDataResponse,
   ResumeResponse,
@@ -67,10 +69,19 @@ const getMyReviews = async (): Promise<MyReviewData[]> => {
   return response.data.data;
 };
 
+const getAiRemain = async (): Promise<AiRemainData> => {
+  const response = await axiosInstance.get<AiRemainResponse>(
+    '/resume/ai-about-me/remaining',
+  );
+
+  return response.data.data;
+};
+
 export {
   fetchResumeData,
   searchSkillData,
   postResume,
   generateAiAboutMe,
   getMyReviews,
+  getAiRemain,
 };
