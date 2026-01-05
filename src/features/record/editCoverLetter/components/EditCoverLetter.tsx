@@ -205,7 +205,15 @@ const EditCoverLetter = () => {
                   </Text>
 
                   <Pressable
-                    onPress={openAiModal}
+                    onPress={() => {
+                      if (coverLetters.length >= 10) {
+                        setIsPageLimitModalVisible(true);
+                        return;
+                      } else {
+                        openAiModal();
+                        return;
+                      }
+                    }}
                     disabled={aiGenerateCount === 0}
                     className={cn(
                       'mt-4 rounded-full px-[27px] py-[14px]',
