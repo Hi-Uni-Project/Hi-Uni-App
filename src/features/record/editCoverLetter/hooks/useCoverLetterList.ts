@@ -18,8 +18,10 @@ type UseCoverLetterListParams = {
 };
 
 const useCoverLetterList = ({ initialData }: UseCoverLetterListParams) => {
+  const defaultCoverLetters = useMemo(() => [createNewCoverLetter()], []);
+
   const [state, dispatch] = useReducer(coverLetterReducer, {
-    coverLetters: [createNewCoverLetter()],
+    coverLetters: defaultCoverLetters,
     currentIndex: 0,
   });
 
@@ -49,8 +51,10 @@ const useCoverLetterList = ({ initialData }: UseCoverLetterListParams) => {
           } as CoverLetter;
         }
       });
+    } else if (!initialCoverLettersRef.current) {
+      initialCoverLettersRef.current = defaultCoverLetters;
     }
-  }, [initialData]);
+  }, [initialData, defaultCoverLetters]);
 
   const currentItem = state.coverLetters[state.currentIndex];
 
