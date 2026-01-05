@@ -84,7 +84,6 @@ const InterviewTemplate = ({ reviewForm }: TemplateProps) => {
           value={formData.feelings}
           onChangeText={text => updateField('feelings', text)}
           multiline
-          required
           height={Platform.OS === 'android' ? 90 : 65}
         />
       </View>

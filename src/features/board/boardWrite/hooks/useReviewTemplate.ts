@@ -82,8 +82,7 @@ export const useReviewTemplate = (selectedPostType: PostType | null) => {
           data.endDate &&
           data.position?.trim() &&
           data.tasks?.trim() &&
-          data.learnings?.trim() &&
-          data.feelings?.trim()
+          data.learnings?.trim()
         );
       }
 
@@ -95,8 +94,7 @@ export const useReviewTemplate = (selectedPostType: PostType | null) => {
           data.applicationMethod?.trim() &&
           data.focusArea?.trim() &&
           data.preparation?.trim() &&
-          data.result?.trim() &&
-          data.feelings?.trim()
+          data.result?.trim()
         );
       }
 
@@ -108,8 +106,7 @@ export const useReviewTemplate = (selectedPostType: PostType | null) => {
           data.interviewType?.trim() &&
           data.questions?.trim() &&
           data.answerPreparation?.trim() &&
-          data.atmosphere?.trim() &&
-          data.feelings?.trim()
+          data.atmosphere?.trim()
         );
       }
 
@@ -122,8 +119,7 @@ export const useReviewTemplate = (selectedPostType: PostType | null) => {
           data.position?.trim() &&
           data.jobLevel?.trim() &&
           data.tasks?.trim() &&
-          data.requiredSkills?.trim() &&
-          data.feelings?.trim()
+          data.requiredSkills?.trim()
         );
       }
 
@@ -135,8 +131,7 @@ export const useReviewTemplate = (selectedPostType: PostType | null) => {
           data.materials?.trim() &&
           data.difficulty?.trim() &&
           data.studyMethod?.trim() &&
-          data.tips?.trim() &&
-          data.feelings?.trim()
+          data.tips?.trim()
         );
       }
 
