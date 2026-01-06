@@ -103,7 +103,7 @@
 ### 3️⃣ 스마트 일정 관리 (캘린더)
 
 <div align="center">
-  <img src="/src/docs/images/calendar.png" width="250" />
+  <img src="/src/docs/images/calendar-1.png" width="250" />
   <p><i>"중요한 내 일정, 놓치지 않게 기록해요"</i></p>
 </div>
 
