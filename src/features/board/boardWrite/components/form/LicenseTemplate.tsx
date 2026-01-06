@@ -73,7 +73,6 @@ const LicenseTemplate = ({ reviewForm }: TemplateProps) => {
           value={formData.tips}
           onChangeText={text => updateField('tips', text)}
           multiline
-          required
           height={65}
         />
 

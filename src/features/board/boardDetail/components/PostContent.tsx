@@ -54,11 +54,12 @@ const PostDetailContent = ({ post }: Props) => {
       {post.isReview && post.reviewQuestions && (
         <View className="space-y-2">
           {post.reviewQuestions
-            .filter(question => {
-              if (question.label === '느낀 점') {
-                return question.value && question.value.trim() !== '';
+            .filter(({ label, value }) => {
+              const shouldCheck = label === '느낀 점' || label === '합격 팁';
+              if (!shouldCheck) {
+                return true;
               }
-              return true;
+              return value?.trim();
             })
             .map((question, index) => (
               <View key={index} className="flex-row">

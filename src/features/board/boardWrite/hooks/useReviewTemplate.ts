@@ -130,8 +130,7 @@ export const useReviewTemplate = (selectedPostType: PostType | null) => {
           data.preparationPeriod?.trim() &&
           data.materials?.trim() &&
           data.difficulty?.trim() &&
-          data.studyMethod?.trim() &&
-          data.tips?.trim()
+          data.studyMethod?.trim()
         );
       }
 
