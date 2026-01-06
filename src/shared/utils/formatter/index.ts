@@ -56,8 +56,8 @@ export const formatDateOrTime = (
 /**
  * 학과 포맷 유틸
  * - 학과가 둘 다 없으면 → '과 미지정'
- * - 하나만 있으면 → 해당 학과명
- * - 두 개 다 있으면 → `${firstMajor} 외 1`
+ * - 하나만 있으면 → 해당 학과명 (9글자 초과 시 말줄임표)
+ * - 두 개 다 있으면 → `${firstMajor} 외 1` (학과명이 9글자 초과 시 학과명만 말줄임표)
  */
 export const formatMajor = (
   firstMajorName?: string | null,
@@ -69,12 +69,28 @@ export const formatMajor = (
   if (!first && !second) {
     return '과 미지정';
   }
-  if (first && !second) {
-    return first;
-  }
+
   if (!first && second) {
+    // 두 번째 학과만 있는 경우
+    if (second.length > 9) {
+      return second.slice(0, 9) + '...';
+    }
     return second;
   }
+
+  if (first && !second) {
+    // 첫 번째 학과만 있는 경우
+    if (first.length > 9) {
+      return first.slice(0, 9) + '...';
+    }
+    return first;
+  }
+
+  // 두 학과 모두 있는 경우 - 학과명만 9글자 제한
+  if (first.length > 9) {
+    return first.slice(0, 9) + '... 외 1';
+  }
+
   return `${first} 외 1`;
 };
 
