@@ -139,8 +139,7 @@ const ProjectEditView = () => {
         <EditSubmitButton
           text={isEditMode ? '프로젝트 수정하기' : '프로젝트 추가하기'}
           onPress={handleSubmit}
-          disabled={!isFormValid}
-          isFormValid={isFormValid}
+          disabled={!(isFormValid && isDirty)}
         />
         <EditDeleteButton
           text="프로젝트 삭제하기"

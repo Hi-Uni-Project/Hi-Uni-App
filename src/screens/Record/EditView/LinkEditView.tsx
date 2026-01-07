@@ -97,8 +97,7 @@ const LinkEditView = () => {
         <EditSubmitButton
           text={isEditMode ? '링크 수정하기' : '링크 추가하기'}
           onPress={handleSubmit}
-          disabled={!isFormValid}
-          isFormValid={isFormValid}
+          disabled={!(isFormValid && isDirty)}
         />
         <EditDeleteButton
           text="링크 삭제하기"

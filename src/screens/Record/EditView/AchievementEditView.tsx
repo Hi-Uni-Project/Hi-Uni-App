@@ -144,8 +144,7 @@ const AchievementEditView = () => {
               : '수상/자격증/교육 추가하기'
           }
           onPress={handleSubmit}
-          disabled={!isFormValid}
-          isFormValid={isFormValid}
+          disabled={!(isFormValid && isDirty)}
         />
         <EditDeleteButton
           text="수상/자격증/교육 삭제하기"

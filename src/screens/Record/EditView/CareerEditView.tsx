@@ -185,8 +185,7 @@ const CareerEditView = () => {
         <EditSubmitButton
           text={isEditMode ? '경력 수정하기' : '경력 추가하기'}
           onPress={handleSubmit}
-          disabled={!isFormValid}
-          isFormValid={isFormValid}
+          disabled={!(isFormValid && isDirty)}
         />
         <EditDeleteButton
           text="경력 삭제하기"
