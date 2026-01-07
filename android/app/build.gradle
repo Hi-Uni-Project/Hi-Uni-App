@@ -88,8 +88,8 @@ android {
         applicationId "com.hiunife"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 6
-        versionName "1.5"
+        versionCode 7
+        versionName "1.6"
         // env
         resValue "string", "KAKAO_APP_KEY", project.env.get("KAKAO_APP_KEY")
         resValue "string", "KAKAO_SCHEME_KEY", project.env.get("KAKAO_SCHEME_KEY")
