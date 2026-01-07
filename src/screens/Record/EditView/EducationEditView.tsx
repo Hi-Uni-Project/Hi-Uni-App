@@ -164,8 +164,7 @@ const EducationEditView = () => {
         <EditSubmitButton
           text={isEditMode ? '학력 수정하기' : '학력 추가하기'}
           onPress={handleSubmit}
-          disabled={!isFormValid}
-          isFormValid={isFormValid}
+          disabled={!(isFormValid && isDirty)}
         />
         <EditDeleteButton
           text="학력 삭제하기"

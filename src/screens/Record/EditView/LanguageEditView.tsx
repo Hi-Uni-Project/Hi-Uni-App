@@ -107,8 +107,7 @@ const LanguageEditView = () => {
         <EditSubmitButton
           text={isEditMode ? '어학 수정하기' : '어학 추가하기'}
           onPress={handleSubmit}
-          disabled={!isFormValid}
-          isFormValid={isFormValid}
+          disabled={!(isFormValid && isDirty)}
         />
         <EditDeleteButton
           text="어학 삭제하기"

@@ -6,15 +6,14 @@ interface Props {
   text: string;
   onPress: () => void;
   disabled: boolean;
-  isFormValid: boolean;
 }
 
-const EditSubmitButton = ({ text, onPress, disabled, isFormValid }: Props) => {
+const EditSubmitButton = ({ text, onPress, disabled }: Props) => {
   return (
     <Pressable onPress={onPress} disabled={disabled}>
       <View
         className={`flex-row items-center rounded-full px-[27px] py-[14px] ${
-          isFormValid ? 'bg-main-text' : 'bg-surface-300'
+          !disabled ? 'bg-main-text' : 'bg-surface-300'
         }`}>
         <Text className="text-surface-200 typo-body-16-medium">{text}</Text>
       </View>
